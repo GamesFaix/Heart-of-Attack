@@ -1,0 +1,20 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tokens\UnitFactory.cs">
+    <Files>
+      <File FileName="Assets\Scripts\GUI\GUIStats.cs" Line="26" Column="26" />
+      <File FileName="Assets\Scripts\CMD\CMD.cs" Line="96" Column="3" />
+      <File FileName="Assets\Scripts\Tokens\Unit.cs" Line="13" Column="29" />
+      <File FileName="Assets\Scripts\Tokens\UnitConstructor.cs" Line="219" Column="32" />
+      <File FileName="Assets\Scripts\TurnQueue.cs" Line="94" Column="36" />
+      <File FileName="Assets\Scripts\GUI\GUIQueue.cs" Line="28" Column="51" />
+      <File FileName="Assets\Scripts\CMD\CMD3.cs" Line="78" Column="43" />
+      <File FileName="Assets\Scripts\GameLog.cs" Line="46" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\UnitFactory.cs" Line="89" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

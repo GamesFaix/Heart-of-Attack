@@ -14,39 +14,42 @@ public static class TurnQueue {
 	static Unit Top() {return units[0];}
 	static Unit Bottom(){return units[units.Count-1];}
 	
-	public static void MoveUp(Unit unit, int n){
+	public static void MoveUp(Unit u, int n, bool report=true){
 		for (int i=0; i<=(n-1); i++){
-			if (unit != Top()){
-				int index = units.IndexOf(unit);
+			if (u != Top()){
+				int index = units.IndexOf(u);
 				Unit temp = units[index-1];
 				units.Remove(temp);
 				units.Insert(index, temp);             
 			}
 		}
+		if (report==true){GameLog.Add(u.fullName+" moved up "+n+" slot(s) in the Queue.",LogIO.OUT);}
 	}	
-	public static void MoveDown(Unit unit, int n){
+	public static void MoveDown(Unit u, int n){
 		for (int i=0; i<=(n-1); i++){
-			if (unit != Bottom()){
-				int index = units.IndexOf(unit);
+			if (u != Bottom()){
+				int index = units.IndexOf(u);
 				Unit temp = units[index+1];
 				units.Remove(temp);
 				units.Insert(index, temp);           	
 			}
 		}
+		GameLog.Add(u.fullName+" moved down "+n+" slot(s) in the Queue.",LogIO.OUT);
 	}
 	
-	public static void Advance(){
+	public static void Advance(bool log=true){
 		Dictionary<Unit, int> stunned = StunnedUnits();
 		
 		Unit oldTop = Top();
 		CorrosionDmg(oldTop);
-		
+		oldTop.SetAP(0,false);
+
 		Unit oldBtm = Bottom();
 		
 		units.Add(oldTop);
 		units.RemoveAt(0);
 		Top().skipped = false;
-		
+		Top().SetAP(Top().TurnAP(),false);
 		
 		if (oldBtm.IN() < oldTop.IN()){
 			int difference = oldTop.IN() - oldBtm.IN();
@@ -56,20 +59,20 @@ public static class TurnQueue {
 				if (units[index].IN() < oldTop.IN()
 				&& units[index].skipped == false){
 					units[index].skipped = true;
-					MoveUp(oldTop,1);
+					MoveUp(oldTop,1,false);
 				}
 				
 			}
 		}
 		HoldStunnedUnits(stunned);
 		StunDecrement();
+		if(log){GameLog.Add("Turn advanced.", LogIO.OUT);}
 	}
-	public static void UndoAdvance(){
-		
-	
+	public static void Undo(){
+		GameLog.Add("Queue undo not yet implemented.", LogIO.DEBUG);
 	}
 	
-	public static void Shuffle(){
+	public static void Shuffle(bool log=true){
 		List<Unit> oldUnits = units;
 		
 		List<Unit> shufUnits = new List<Unit>();
@@ -79,12 +82,13 @@ public static class TurnQueue {
 			oldUnits.Remove(oldUnits[rand]);
 		}
 		units = shufUnits;
+		if(log){GameLog.Add("Queue shuffled.",LogIO.OUT);}
 	}
 	
 	
 	static void StunDecrement(){
 		foreach (Unit u in units) {
-			if (u.STUN() > 0){u.ModSTUN("-",1);}
+			if (u.STUN() > 0){u.ModSTUN(-1);}
 		}
 	}
 	static Dictionary<Unit, int> StunnedUnits(){
@@ -101,7 +105,8 @@ public static class TurnQueue {
 				if (units[i] == sU){
 					if (i != stunned[sU]){
 						units.Remove(sU);
-						units.Insert(stunned[sU], sU);
+						if (stunned[sU]!=0){units.Insert(stunned[sU], sU);}
+						else {units.Add(sU);}
 					}
 				}
 			}
@@ -110,12 +115,15 @@ public static class TurnQueue {
 
 	static void CorrosionDmg(Unit u){
 		if (u.COR()>0){
-			u.ModHP("-",u.COR());	
-			u.ModCOR("=",(int)Mathf.Floor(u.COR()/2));	
+			GameLog.Add(u.fullName+" takes "+u.COR()+" corrision damage.", LogIO.OUT);
+			u.ModHP(0-u.COR());	
+			u.SetCOR((int)Mathf.Floor(u.COR()/2));	
 		}
 	}
 	
 	public static void Reset(){
 		units = new List<Unit>();
+		GUIStats.Inspect(default(Unit));
+		GameLog.Add("Queue cleared.", LogIO.DEBUG);
 	}
 }
