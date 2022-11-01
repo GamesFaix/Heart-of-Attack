@@ -4,6 +4,12 @@ Fantasy Battle Cardboard was a tabletop version of Fantasy Battle Deluxe, create
 
 Based on memory and the dates on archive files, I think this stage was worked on from around August 2011 to November 2011.
 
+## Tools
+
+* Open Office Calc, Excel, or Google Sheets for docs
+* [Unity3D 3.x](https://download.unity3d.com/download_unity/UnitySetup-3.5.7.exe) for running source files
+* Photoshop or Gimp for graphics
+
 ## Contents
 
 * `/PNGs` - This folder contains images for individual sides of cards.
