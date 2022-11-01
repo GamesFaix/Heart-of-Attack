@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+
+Project("{3FDAC08B-EC63-B038-7395-B1EB7B8884C9}") = "Queue App5", "Assembly-CSharp.csproj", "{010A241B-B6E5-397D-1053-A5CC3C5B4C25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{010A241B-B6E5-397D-1053-A5CC3C5B4C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{010A241B-B6E5-397D-1053-A5CC3C5B4C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{010A241B-B6E5-397D-1053-A5CC3C5B4C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{010A241B-B6E5-397D-1053-A5CC3C5B4C25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	
+EndGlobal

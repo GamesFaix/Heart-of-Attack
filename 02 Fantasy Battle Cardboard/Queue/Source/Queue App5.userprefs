@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\QueueGUI.cs">
+    <Files>
+      <File FileName="Assets\Scripts\QueueGUI.cs" Line="79" Column="6" />
+      <File FileName="Assets\Scripts\CMD.cs" Line="26" Column="56" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="62" Column="15" />
+      <File FileName="Assets\Scripts\TurnQueue.cs" Line="65" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
