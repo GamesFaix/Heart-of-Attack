@@ -48,7 +48,18 @@ public static class CMD {
 			}
 			return GetFullName(input,1);
 		}	
-		
+		else if (input[0] == "REP"){
+			string oldName;
+			string newName;
+			
+			if (ValidFullName(input,1)){
+				oldName = GetFullName(input,1);
+			
+				
+				
+			}
+			
+		}
 		
 		//unit modify commands
 		else if (ValidFullName(input,0)){
