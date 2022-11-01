@@ -7,7 +7,11 @@ Based on memory and the dates on archive files, I think this stage was worked on
 ## Tools
 
 * Open Office Calc, Excel, or Google Sheets for docs
-* [Unity3D 3.4.x](https://download.unity3d.com/download_unity/UnitySetup-3.4.2.exe) for running source files
+* Unity 3D to run source files
+    * v1 to v6 require [Unity 3.4](https://download.unity3d.com/download_unity/UnitySetup-3.4.2.exe)
+    * v7 requires a version around 4.0.1 < x < 4.2.2
+    * v8 requires a version around 4.2.2 < x < 4.3.4
+    * v9 to v10 requires Unity 4.3.4
 * Photoshop or Gimp for graphics
 
 ## Contents
