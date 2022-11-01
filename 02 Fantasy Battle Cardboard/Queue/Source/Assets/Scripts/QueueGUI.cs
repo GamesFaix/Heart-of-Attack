@@ -30,7 +30,7 @@ public class QueueGUI : MonoBehaviour {
 					
 		foreach (Unit u in TurnQueue.units){
 			Rect textBox = new Rect(x,y,w,h);
-			if (u.stun > 0) {GUI.Label(textBox,"Stun ("+u.stun+")",s);}
+			if (u.STUN() > 0) {GUI.Label(textBox,"Stun ("+u.STUN()+")",s);}
 			else if (u.skipped == true){GUI.Label(textBox,"Skipped!", s);}
 			x+=150;
 			
@@ -39,14 +39,14 @@ public class QueueGUI : MonoBehaviour {
 			x += 300;
 			
 			textBox = new Rect(x,y,w,h);
-			string info = "IN:"+u.init;
+			string info = "IN:"+u.IN();
 			GUI.Label(textBox, info, s);
 			x += 60;
 			
 			textBox = new Rect(x,y,w,h);
 			info = "HP:"+u.HPFraction();
-			if (u.def>0){info += ", DEF:"+u.def;}
-			if (u.cor>0){info += ", Corrosion:"+u.cor;}
+			if (u.DEF()>0){info += ", DEF:"+u.DEF();}
+			if (u.COR()>0){info += ", Corrosion:"+u.COR();}
 			GUI.Label(textBox, info, s);
 			
 			y+=h;
@@ -99,8 +99,8 @@ public class QueueGUI : MonoBehaviour {
 		if(GUI.Button(dnBox,"Dn") && offset<(commandLog.Count-1)) {offset+=1;}
 	}
 	
-	List<string> commandLog = new List<string>(); 
-	public void AddToLog(string text){
+	static List<string> commandLog = new List<string>(); 
+	public static void AddToLog(string text){
 		commandLog.Add(text);	
 	}
 	int lineH = 30;

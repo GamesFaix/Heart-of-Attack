@@ -8,15 +8,14 @@ public class Unit {
 	public char instance;
 	public string fullName;
 	
-	public int init;
+	int init;
 	int mhp;
 	int hp;
-	public int def = 0;
-	public int cor = 0;
-	
+	int def = 0;
+	int cor = 0;
+	int stun = 0;
 	
 	public bool skipped = false;
-	public int stun = 0;
 	
 	public Unit(string newCode){
 		code = newCode;
@@ -32,14 +31,24 @@ public class Unit {
 	public int ModHP (string operation, int magnitude){
 		if (operation == "="){
 			hp = magnitude;
+			if (hp>mhp){hp = mhp;}
+			if (hp<1){
+				QueueGUI.AddToLog(fullName+" has been killed!");
+				CMD.New("kill "+fullName);
+			}
 			return hp;
 		}
 		if (operation == "+"){
 			hp += magnitude;
+			if (hp>mhp){hp = mhp;}
 			return hp;
 		}
 		if (operation == "-"){
 			hp -= magnitude;
+			if (hp<1){
+				QueueGUI.AddToLog(fullName+" has been killed!");
+				CMD.New("kill "+fullName);
+			}
 			return hp;
 		}
 		return 9999;
@@ -64,6 +73,77 @@ public class Unit {
 	public int MHP(){return mhp;}
 	
 	public string HPFraction(){return hp+"/"+mhp;}
+	
+	public int ModIN (string operation, int magnitude){
+		if (operation == "="){
+			init = magnitude;
+			return init;
+		}
+		if (operation == "+"){
+			init += magnitude;
+			return init;
+		}
+		if (operation == "-"){
+			init -= magnitude;
+			return init;
+		}
+		return 9999;
+	}
+	public int IN(){return init;}
+	
+	public int ModDEF (string operation, int magnitude){
+		if (operation == "="){
+			def = magnitude;
+			if (def<0){def = 0;}
+			return def;
+		}
+		if (operation == "+"){
+			def += magnitude;
+			return def;
+		}
+		if (operation == "-"){
+			def -= magnitude;
+			return def;
+		}
+		return 9999;
+	}
+	public int DEF(){return def;}
+	
+	public int ModCOR (string operation, int magnitude){
+		if (operation == "="){
+			cor = magnitude;
+			return cor;
+		}
+		if (operation == "+"){
+			cor += magnitude;
+			return cor;
+		}
+		if (operation == "-"){
+			cor -= magnitude;
+			return cor;
+		}
+		return 9999;
+	}
+	public int COR(){return cor;}
+	
+	public int ModSTUN (string operation, int magnitude){
+		if (operation == "="){
+			stun = magnitude;
+			return stun;
+		}
+		if (operation == "+"){
+			stun += magnitude;
+			return stun;
+		}
+		if (operation == "-"){
+			stun -= magnitude;
+			return stun;
+		}
+		return 9999;
+	}
+	public int STUN(){return stun;}
+	
+	
 	
 	static char NextAvailableInstance(Unit unit){
 		List<Unit> likeUnits = new List<Unit>();

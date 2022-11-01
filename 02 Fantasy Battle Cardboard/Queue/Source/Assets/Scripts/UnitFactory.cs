@@ -9,7 +9,6 @@ public static class UnitFactory {
 		TurnQueue.units.Add(u);
 		return u.fullName;
 	}
-	
 	public static bool Delete(string fullName) {
 		foreach (Unit u in TurnQueue.units){
 			if (u.fullName == fullName) {
@@ -20,11 +19,6 @@ public static class UnitFactory {
 		return false;
 	}
 	
-	public static void Edit(Unit unit, string name, int init){
-		unit.name=name;
-		unit.init = init;	
-	}
-		
 	public static Dictionary<string,string> CodeNames = new Dictionary<string,string>{
 		{"KATA","Katandroid"},
 		{"CARA", "Carapace Invader"},

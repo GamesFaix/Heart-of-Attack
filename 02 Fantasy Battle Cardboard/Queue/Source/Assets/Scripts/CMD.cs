@@ -17,209 +17,43 @@ public static class CMD {
 	}
 	
 	static string Parse(string[] input){
-		if (input[0] == "+"){
-			TurnQueue.Advance();
-			return "Turn advanced.";
-		}
-		else if (input[0] == "-"){
-			TurnQueue.UndoAdvance();
-			return "Turn advance undone. !!Not yet implemented!!";
-		}
-		else if (input[0] == "RESET"){
-			TurnQueue.Reset();
-			return "Game reset.";
-		}
-
-		else if (input[0] == "ADD"){
-			string tryName = String.Join(" ",input,1,(input.Length-1));
-			if (ValidCode(tryName)){
-				string uName = UnitFactory.Add(TextToCode(tryName));
-				return "Created " +uName+ ".";
-			}
-			else {return "ERROR: Cannot create "+tryName+". Invalid unit name.";} 
-		}
-		
-		else if (input[0] == "KILL"){
-			string fn;
-			if (ValidFullName(input,1)){
-				fn = GetFullName(input,1);
-				UnitFactory.Delete(fn);
-				return "Killed "+fn+".";
-			}
-			return GetFullName(input,1);
-		}	
-		else if (input[0] == "REP"){
-			string oldName;
-			string newName;
-			
-			if (ValidFullName(input,1)){
-				oldName = GetFullName(input,1);
-			
-				
-				
-			}
-			
-		}
+		if (CAR(input) == "+"){return Advance();}
+		if (CAR(input) == "-"){return Undo();}
+		if (CAR(input) == "START"){return Start(CDR(input));}
+		if (CAR(input) == "SHUFFLE"){return Shuffle();}
+		if (CAR(input) == "RESET"){return Reset();}
+		if (CAR(input) == "CREATE" || CAR(input) == "C"){return Create(CDR(input));}
+		if (CAR(input) == "KILL" || CAR(input) == "K"){return Kill(CDR(input));}	
+		if (CAR(input) == "REP" || CAR(input) == "R"){return Replace(input);}
 		
 		//unit modify commands
-		else if (ValidFullName(input,0)){
+		if (ValidFullName(input,0)){
 			string fn = GetFullName(input,0);
 			Unit u = TurnQueue.FindUnit(fn);
 			
 			string[] restOfInput = RemoveFullName(input);
 			if (CheckError(restOfInput[0])){return restOfInput[0];}
 			
-			if (restOfInput[0] == "UP"){
-				int magnitude = 1;
-				if(restOfInput.Length > 1) {Int32.TryParse(restOfInput[1], out magnitude);}
-				TurnQueue.MoveUp(u,magnitude);
-				return fn+" moved up "+magnitude+" slot(s) in the Queue.";
-			}
-			else if (restOfInput[0] == "DOWN"){
-				int magnitude = 1;
-				if(restOfInput.Length > 1){Int32.TryParse(restOfInput[1], out magnitude);}
-				TurnQueue.MoveDown(u,magnitude);
-				return fn+" moved down "+magnitude+" slot(s) in the Queue.";	
-			}
+			if (restOfInput[0] == "UP"){return Up(u, restOfInput);}				
+			if (restOfInput[0] == "DOWN"){return Down(u, restOfInput);}
 			
-			else if (restOfInput[0] == "IN"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.init=magnitude;
-							return fn+"'s initiative set to "+u.init;
-						}
-						if (restOfInput[1] == "+"){
-							u.init+=magnitude;
-							return fn+"'s initiative +"+magnitude+", IN = "+u.init;
-						}
-						if (restOfInput[1] == "-"){
-							u.init-=magnitude;
-							return fn+"'s initiative -"+magnitude+", IN = "+u.init;
-						}	
-					}
-					return "ERROR: Initiative change requires number.";
-				}
-				return "ERROR: Initiative change requires operator (+ - =) and number.";
-			}
-			else if (restOfInput[0] == "HP"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.ModHP("=",magnitude);
-							return fn+"'s HP set to "+u.HPFraction();
-						}
-						if (restOfInput[1] == "+"){
-							u.ModHP("+",magnitude);
-							return fn+"'s HP +"+magnitude+", HP = "+u.HPFraction();
-						}
-						if (restOfInput[1] == "-"){
-							u.ModHP("-",magnitude);
-							return fn+"'s HP -"+magnitude+", HP = "+u.HPFraction();
-						}	
-					}
-					return "ERROR: HP change requires number.";
-				}
-				return "ERROR: HP change requires operator (+ - =) and number.";
-			}
-			else if (restOfInput[0] == "MHP"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.ModMHP("=",magnitude);
-							return fn+"'s MHP set to "+u.HPFraction();
-						}
-						if (restOfInput[1] == "+"){
-							u.ModMHP("+",magnitude);
-							return fn+"'s MHP +"+magnitude+", HP = "+u.HPFraction();
-						}
-						if (restOfInput[1] == "-"){
-							u.ModMHP("-",magnitude);
-							return fn+"'s MHP -"+magnitude+", HP = "+u.HPFraction();
-						}	
-					}
-					return "ERROR: MHP change requires number.";
-				}
-				return "ERROR: MHP change requires operator (+ - =) and number.";
-			}
-			else if (restOfInput[0] == "DEF"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.def=magnitude;
-							return fn+"'s defense set to "+u.def;
-						}
-						if (restOfInput[1] == "+"){
-							u.def+=magnitude;
-							return fn+"'s defense +"+magnitude+", DEF = "+u.def;
-						}
-						if (restOfInput[1] == "-"){
-							u.def-=magnitude;
-							return fn+"'s defense -"+magnitude+", DEF = "+u.def;
-						}	
-					}
-					return "ERROR: Defense change requires number.";
-				}
-				return "ERROR: Defense change requires operator (+ - =) and number.";
-			}	
-			else if (restOfInput[0] == "STUN"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.stun=magnitude;
-							return fn+"'s stun counters set to "+u.stun+".";
-						}
-						if (restOfInput[1] == "+"){
-							u.stun+=magnitude;
-							return fn+" +"+magnitude+" stun counters. ("+u.stun+" total)";
-						}
-						if (restOfInput[1] == "-"){
-							u.stun-=magnitude;
-							return fn+" -"+magnitude+" stun counters. ("+u.stun+" total)";
-						}	
-					}
-					return "ERROR: Stun change requires number.";
-				}
-				return "ERROR: Stun change requires operator (+ - =) and number.";
-			}	
-			else if (restOfInput[0] == "COR"){
-				if (restOfInput.Length >= 3){
-					int magnitude;
-					if(Int32.TryParse(restOfInput[2], out magnitude)){
-						if (restOfInput[1] == "="){
-							u.cor=magnitude;
-							return fn+"'s corrosion counters set to "+u.cor+".";
-						}
-						if (restOfInput[1] == "+"){
-							u.cor+=magnitude;
-							return fn+" +"+magnitude+" corrosion counters. ("+u.cor+" total)";
-						}
-						if (restOfInput[1] == "-"){
-							u.cor-=magnitude;
-							return fn+" -"+magnitude+" corrosion counters. ("+u.cor+" total)";
-						}	
-					}
-					return "ERROR: Corrosion change requires number.";
-				}
-				return "ERROR: Corrosion change requires operator (+ - =) and number.";
-			}	
+			if (restOfInput[0] == "IN"){return ModIN(u, restOfInput);}
+			if (restOfInput[0] == "HP"){return ModHP(u, restOfInput);}
+			if (restOfInput[0] == "MHP"){return ModMHP(u, restOfInput);}
+			if (restOfInput[0] == "DEF"){return ModDEF(u, restOfInput);}
+			if (restOfInput[0] == "STUN"){return ModSTUN(u, restOfInput);}
+			if (restOfInput[0] == "COR"){return ModCOR(u, restOfInput);}
 			return "Selected "+fn+".";
 		}			
 		return "ERROR: "+input+" is not a valid command.";
 	}
 	
-	
-
-	
 	static string TextToCode(string text){
-		string firstFour = text.Substring(0,4);
-		foreach (string code in UnitFactory.Codes()){
-			if (firstFour == code){return firstFour;}
+		if (text.Length>=4){
+			string firstFour = text.Substring(0,4);
+			foreach (string code in UnitFactory.Codes()){
+				if (firstFour == code){return firstFour;}
+			}
 		}
 		return "ERROR";
 	}
@@ -245,7 +79,7 @@ public static class CMD {
 					return u.fullName;
 				}
 			}
-			return "ERROR: "+tryName+" "+tryInstance+" does not currently exist.";	
+			return "ERROR: "+tryName+" does not currently exist.";	
 		}	
 		return "ERROR: "+tryName+" is not a valid unit name.";
 	}
@@ -253,10 +87,9 @@ public static class CMD {
 		string fn = GetFullName(input, start);
 		if (CheckError(fn)){return false;}
 		return true;
-	}
-	
+	}	
 	static string[] RemoveFullName(string[] input){
-		for(int i=0; i<input.Length; i++){
+		for(int i=1; i<input.Length; i++){
 			if ((input[i].Length == 1) && (Char.IsLetter(input[i][0]))){
 				if (input.Length > (i+1)){
 					string restOfInput = String.Join(" ", input, (i+1), (input.Length-(i+1)));
@@ -276,4 +109,217 @@ public static class CMD {
 		return false;
 	}
 	
+	static string Advance(){
+		TurnQueue.Advance();
+		return "Turn advanced.";
+	}
+	static string Undo(){
+		TurnQueue.UndoAdvance();
+		return "Turn advance undone. !!Not yet implemented!!";		
+	}
+	static string Start(string[] input){
+		Reset();
+		while(input.Length>0){
+			Create(input);
+			input = CDR(input);
+		}
+		Shuffle();		
+		
+		return "New game ready.";
+	}
+	static string Shuffle(){
+		TurnQueue.Shuffle();
+		return "Queue shuffled.";
+	}
+	
+	static string Reset(){
+		TurnQueue.Reset();
+		return "Game reset.";
+	}
+	static string Create(string[] input){
+		string tryName = String.Join(" ",input);
+		if (ValidCode(tryName)){
+			string uName = UnitFactory.Add(TextToCode(tryName));
+			return "Created " +uName+ ".";
+		}
+		else {return "ERROR: Cannot create "+tryName+". Invalid unit name.";} 
+	}
+	static string Kill(string[] input){
+		string fn;
+		if (ValidFullName(input,0)){
+			fn = GetFullName(input,0);
+			UnitFactory.Delete(fn);
+			return "Killed "+fn+".";
+		}
+		return GetFullName(input,0);
+	}
+	static string Replace(string[] input){
+		string oldFN;
+		if (ValidFullName(input,1)){
+			oldFN = GetFullName(input,1);
+			string[] restOfInput = RemoveFullName(input);
+			string tryName = String.Join(" ",restOfInput,0,restOfInput.Length);
+			if (ValidCode(tryName)){
+				string newFN = UnitFactory.Add(TextToCode(tryName));
+				UnitFactory.Delete(oldFN);
+				return "Replaced "+oldFN+" with "+newFN+".";
+			}
+			return "ERROR: Cannot replace "+oldFN+" with "+tryName+". Invalid unit name.";
+		}
+		return GetFullName(input,1);
+	}
+
+	static string Up(Unit u, string[] input){
+		int magnitude = 1;
+		if(input.Length > 1) {Int32.TryParse(input[1], out magnitude);}
+		TurnQueue.MoveUp(u,magnitude);
+		return u.fullName+" moved up "+magnitude+" slot(s) in the Queue.";
+	}
+	static string Down(Unit u, string[] input){
+		int magnitude = 1;
+		if(input.Length > 1){Int32.TryParse(input[1], out magnitude);}
+		TurnQueue.MoveDown(u,magnitude);
+		return u.fullName+" moved down "+magnitude+" slot(s) in the Queue.";	
+	}
+	
+	static string ModIN(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModIN("=",magnitude);
+					return u.fullName+"'s initiative set to "+u.IN();
+				}
+				if (input[1] == "+"){
+					u.ModIN("+",magnitude);
+					return u.fullName+"'s initiative +"+magnitude+", IN = "+u.IN();
+				}
+				if (input[1] == "-"){
+					u.ModIN("-",magnitude);
+					return u.fullName+"'s initiative -"+magnitude+", IN = "+u.IN();
+				}	
+			}
+			return "ERROR: Initiative change requires number.";
+		}
+		return "ERROR: Initiative change requires operator (+ - =) and number.";
+	}
+	static string ModHP(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModHP("=",magnitude);
+					return u.fullName+"'s HP set to "+u.HPFraction();
+				}
+				if (input[1] == "+"){
+					u.ModHP("+",magnitude);
+					return u.fullName+"'s HP +"+magnitude+", HP = "+u.HPFraction();
+				}
+				if (input[1] == "-"){
+					u.ModHP("-",magnitude);
+					return u.fullName+"'s HP -"+magnitude+", HP = "+u.HPFraction();
+				}	
+			}
+			return "ERROR: HP change requires number.";
+		}
+		return "ERROR: HP change requires operator (+ - =) and number.";
+	}
+	static string ModMHP(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModMHP("=",magnitude);
+					return u.fullName+"'s MHP set to "+u.HPFraction();
+				}
+				if (input[1] == "+"){
+					u.ModMHP("+",magnitude);
+					return u.fullName+"'s MHP +"+magnitude+", HP = "+u.HPFraction();
+				}
+				if (input[1] == "-"){
+					u.ModMHP("-",magnitude);
+					return u.fullName+"'s MHP -"+magnitude+", HP = "+u.HPFraction();
+				}	
+			}
+			return "ERROR: MHP change requires number.";
+		}
+		return "ERROR: MHP change requires operator (+ - =) and number.";
+	}
+	static string ModDEF(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModDEF("=",magnitude);
+					return u.fullName+"'s defense set to "+u.DEF();
+				}
+				if (input[1] == "+"){
+					u.ModDEF("+",magnitude);
+					return u.fullName+"'s defense +"+magnitude+", DEF = "+u.DEF();
+				}
+				if (input[1] == "-"){
+					u.ModDEF("-",magnitude);
+					return u.fullName+"'s defense -"+magnitude+", DEF = "+u.DEF();
+				}	
+			}
+			return "ERROR: Defense change requires number.";
+		}
+		return "ERROR: Defense change requires operator (+ - =) and number.";
+	}
+	static string ModSTUN(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModSTUN("=",magnitude);
+					return u.fullName+"'s stun counters set to "+u.STUN()+".";
+				}
+				if (input[1] == "+"){
+					u.ModSTUN("+",magnitude);
+					return u.fullName+"+"+magnitude+" stun counters. ("+u.STUN()+" total)";
+				}
+				if (input[1] == "-"){
+					u.ModSTUN("-",magnitude);
+					return u.fullName+" -"+magnitude+" stun counters. ("+u.STUN()+" total)";
+				}	
+			}
+			return "ERROR: Stun change requires number.";
+		}
+		return "ERROR: Stun change requires operator (+ - =) and number.";
+	}
+	static string ModCOR(Unit u, string[] input){
+		if (input.Length >= 3){
+			int magnitude;
+			if(Int32.TryParse(input[2], out magnitude)){
+				if (input[1] == "="){
+					u.ModCOR("=",magnitude);
+					return u.fullName+"'s corrosion counters set to "+u.COR()+".";
+				}
+				if (input[1] == "+"){
+					u.ModCOR("+",magnitude);
+					return u.fullName+" +"+magnitude+" corrosion counters. ("+u.COR()+" total)";
+				}
+				if (input[1] == "-"){
+					u.ModCOR("-",magnitude);
+					return u.fullName+" -"+magnitude+" corrosion counters. ("+u.COR()+" total)";
+				}	
+			}
+			return "ERROR: Corrosion change requires number.";
+		}
+		return "ERROR: Corrosion change requires operator (+ - =) and number.";
+	}
+	
+	
+	static string[] CDR (string[] input){
+		string[] cdr; 
+		if (input.Length>1){	
+			cdr = new string[(input.Length-1)];
+			Array.Copy(input, 1, cdr, 0, input.Length-1);
+		}
+		else {cdr = new string[0];}
+		return cdr;
+	}
+	static string CAR (string[] input){
+		return input[0];
+	}
 }
