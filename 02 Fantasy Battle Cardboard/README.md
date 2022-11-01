@@ -7,13 +7,16 @@ Based on memory and the dates on archive files, I think this stage was worked on
 ## Tools
 
 * Open Office Calc, Excel, or Google Sheets for docs
-* [Unity3D 3.x](https://download.unity3d.com/download_unity/UnitySetup-3.5.7.exe) for running source files
+* [Unity3D 3.4.x](https://download.unity3d.com/download_unity/UnitySetup-3.4.2.exe) for running source files
 * Photoshop or Gimp for graphics
 
 ## Contents
 
-* `/PNGs` - This folder contains images for individual sides of cards.
-* `/page PNGs` - This folder contains images for sides of print sheets, each containing a 2x3 grid of card images.
-* `master print sheet.pdf` - This is the final collated document that was sent to Kinkos or wherever I printed it, it contains all the images from `/page PNGs`.
-* `TeamSheet.ods` - This was our primary design document, outlining the factions, their units, and their abilities.
-* `new team sheet.ods` - This was an updated design document.
+* `/Cards` contains graphics files for printing the game tokens.
+* `/Documentation` contains some design documents.
+* `/Queue` contains Unity project files and exports for the queue app.
+
+## Highlights
+
+* Queue v3 is a pretty stable and easy to use early version. You can type in unit names and initiative values, and add them to the queue.
+* Queue v7 is a lot less intuitive, but more advanced. The screen is divided into three panes: left is the queue of units, middle is an inspector that shows the details of the last unit you clicked on, right is a command prompt. Try `create katandroid` and `kill katandroid a` in the text box.
