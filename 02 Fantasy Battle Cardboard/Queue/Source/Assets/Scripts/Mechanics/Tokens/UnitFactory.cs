@@ -42,6 +42,8 @@ public static class UnitFactory {
 	}
 	
 	public static Dictionary<string,string> CodeNames = new Dictionary<string,string>{
+		{"",""},
+
 		{"KATA","Katandroid"},
 		{"CARA", "Carapace Invader"},
 		{"MAWT", "MAWTH"},
@@ -60,7 +62,7 @@ public static class UnitFactory {
 		{"GARG", "Gargoliath"},
 		
 		{"GRIZ", "Grizzly Elder"},
-		{"LAUG", "Laughing Owl"},
+		{"TALO", "Taloned Scout"},
 		{"META", "Metaterrainean"},
 		{"ULTR", "Ultratherium"},
 		
@@ -95,4 +97,38 @@ public static class UnitFactory {
 	public static Dictionary<string,string>.KeyCollection Codes(){
 		return CodeNames.Keys;
 	}
+
+	static string[] gearp = new string[4] {"KABU","MAWT","CARA","KATA"};
+	static string[] newrep = new string[4] {"DECI","PANO","MEIN","DEMO"};
+	static string[] torrid= new string[6] {"GARG","BATT","CONF","ASHE","SMAS","ROOK"};
+	static string[] forgot = new string[4] {"ULTR","META","TALO","GRIZ"};
+	static string[] chrono = new string[4] {"OLDT","REPR","PIEC","REVO"};
+	static string[] psycho = new string[5] {"BLAC","MART","MYCO","BEES","LICH"};
+	static string[] psilent = new string[4] {"DREA","PRIE","AREN","PRIS"};
+	static string[] voidoid = new string[4] {"MONO","MOUT","NECR","RECY"};
+	static string[][] factions = new string[9][] {new string[0], gearp, newrep, torrid, forgot, chrono, psycho, psilent, voidoid};
+
+	public static string[] Faction(int i){
+		if (i>0 && i<=8){return factions[i];}
+		else{
+			GameLog.Add("UnitFactory: Attempt to lookup invalid faction.",LogIO.DEBUG);
+			return new string[0];
+		}
+
+	}
+
+	public static string[] kings = new string[8] {"KABU","DECI","GARG","ULTR","OLDT","BLAC","DREA","MONO"};
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

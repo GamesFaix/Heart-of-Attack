@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{442F5FD7-51BC-721E-7B2B-C1FEEE102BCE}</ProjectGuid>
+	<ProjectGuid>{23333422-D83E-773B-0BE5-A81EEE473526}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -49,15 +49,23 @@
      <Compile Include="Assets\Scripts\CMD\CMD.cs" />
      <Compile Include="Assets\Scripts\CMD\CMD2.cs" />
      <Compile Include="Assets\Scripts\CMD\CMD3.cs" />
+     <Compile Include="Assets\Scripts\CMD\GameLog.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUIBoard.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUIInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\GUILog.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIQueue.cs" />
-     <Compile Include="Assets\Scripts\GUI\GUIStats.cs" />
-     <Compile Include="Assets\Scripts\GameLog.cs" />
-     <Compile Include="Assets\Scripts\ReDictionary.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Unit.cs" />
-     <Compile Include="Assets\Scripts\Tokens\UnitConstructor.cs" />
-     <Compile Include="Assets\Scripts\Tokens\UnitFactory.cs" />
-     <Compile Include="Assets\Scripts\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUITools.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Board.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\DiceCoin.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Roster.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Unit.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitConstructor.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitFactory.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\StartRoutine.cs" />
+     <Compile Include="Assets\Scripts\Utilities\Ratio.cs" />
+     <Compile Include="Assets\Scripts\Utilities\ReDictionary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

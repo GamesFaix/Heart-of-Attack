@@ -21,6 +21,8 @@ public static partial class CMD {
 		if (Head(fnail) == "COR") {ModCOR(u, Tail(fnail));}
 		if (Head(fnail) == "AP")  {ModAP(u, Tail(fnail));}
 		if (Head(fnail) == "FP")  {ModFP(u, Tail(fnail));}
+		if (Head(fnail) == "OWNER")  {ModOwner(u, Tail(fnail));}
+
 	}
 	
 	
@@ -122,5 +124,12 @@ public static partial class CMD {
 			}
 		}
 		else {GameLog.Add(name+"FP change requires operator (+ - =) and number.", LogIO.DEBUG);}
+	}
+	static void ModOwner(Unit u, string[] input){
+		if (input.Length >= 1){
+			int n;
+			if(Int32.TryParse(input[0], out n)) {u.SetOwner(n);}
+		}
+		else {GameLog.Add(name+"Owner change requires a number.", LogIO.DEBUG);}
 	}
 }

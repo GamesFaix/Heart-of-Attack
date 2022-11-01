@@ -11,6 +11,8 @@ public static class TurnQueue {
 		}
 		return default(Unit);
 	}
+	public static int Length(){return units.Count;}
+
 	static Unit Top() {return units[0];}
 	static Unit Bottom(){return units[units.Count-1];}
 	
@@ -123,7 +125,7 @@ public static class TurnQueue {
 	
 	public static void Reset(){
 		units = new List<Unit>();
-		GUIStats.Inspect(default(Unit));
+		GUIInspector.Inspect(default(Unit));
 		GameLog.Add("Queue cleared.", LogIO.DEBUG);
 	}
 }

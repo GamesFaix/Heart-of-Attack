@@ -11,52 +11,112 @@ public class GUILog : MonoBehaviour {
 	public static void Hide(){hide = true;}
 	public static void Show(){hide = false;}
 
+	static float w;
+	static float x;
+	static float y;
+	static float h;
+	static int lineH = 25;
+	static int lines;
+	static bool minimize = false;
+	static string label = "Expand";
+
 	void OnGUI(){
-		float w = Screen.width*0.3f;
-		float x = Screen.width-w;
-		float y = 0;
-		float h = Screen.height;
-		
-		Rect box = new Rect(x, y, w, h);
-		if (hide==false){GUI.Box(box," ");}
-		
-		CommandField(x,y,w,h);
-		//ScrollButtons(x,y,w,h);
-		if (hide==false){CommandHistory(x,y,w,h);}
+		w = Screen.width*0.35f;
+		x = Screen.width-w;
+		if (!minimize){
+			y = Screen.height/2;
+			h = Screen.height/2;
+		}
+		else {
+			h = 5*lineH;
+			y = Screen.height-h;
+		}
+		lines = (int)Mathf.Floor((h-lineH)/lineH)-1;
+
+		if (hide==false){GUI.Box(new Rect(x,y,w,h)," ");}
+
+		CommandField();
+		if (GameLog.Count(ShowLog())>lines){DrawScroll();}
+		if (hide==false){CommandHistory();}
+		ControlButtons();
+
 	}
-	
+
+	int view = 2;
+	void ControlButtons(){
+		float btnW = (w-scrollW)/5;
+		GUI.Label(new Rect(x+5,y,btnW,lineH),"LOG");
+		string[] views = new string[3]{"Input","Output","Debug"};
+		view = GUI.Toolbar(new Rect(x+btnW,y,btnW*3,lineH), view, views);
+		switch (view){
+		case 0:
+			debugLog=false;
+			inLog=true;
+			outLog=false;
+			break;
+		case 1:
+			debugLog=false;
+			inLog=false;
+			outLog=true;
+			break;
+		case 2:
+			debugLog=true;
+			break;
+		default:
+			break;
+		}
+			
+		if (GUI.Button(new Rect(x+w-btnW-scrollW/2,y,btnW,lineH),label)){
+			minimize = !minimize;
+			if (minimize){label = "Expand";}
+			else {label = "Shrink";}
+		}
+
+
+	}
+
 	string input = "";
-	void CommandField(float x, float y, float w, float h){
-		//Rect fieldLabel = new Rect(x-100,h-25,100,25);
-		//GUI.Label(fieldLabel,"Type here ==>",l);
-		
-		Rect fieldBox = new Rect(x, h-25, w, 25);
+	void CommandField(){
+
+		Rect fieldBox = new Rect(x, y+h-lineH, w, lineH);
 		input = GUI.TextField(fieldBox,input,100);
 		if(EnterKeyPressed()){
 			CMD.New(input);
 			input="";
+			ScrollToBottom();
 		}
 	}
-	
+
+	public static void ScrollToBottom(){
+		scrollPos = scrollBtm;
+	}
+
 	bool EnterKeyPressed(){
 		if(Event.current.type==EventType.KeyDown 
 		   && Event.current.character=='\n'){return true;}
 		return false;
 	}
-	
-	
-	byte offset = 0; 
-	void ScrollButtons (float x, float y, float w, float h){
-		//offset buttons created - cannot not offset past 0 or mlog size
-		int btnSize = 30;
-		Rect upBox = new Rect(x+w-btnSize, 0, btnSize, btnSize);
-		Rect dnBox = new Rect(x+w-btnSize, btnSize, btnSize, btnSize);
-		if(GUI.Button(upBox,"Up") && offset>0) 				{offset-=1;}
-		if(GUI.Button(dnBox,"Dn") && offset<(GameLog.LastIndex(ShowLog()))) {offset+=1;}
+
+	static int offset = 0;
+	int First(){return offset;}
+	int Last(){
+		if(GameLog.Count(ShowLog())<=lines) {return GameLog.Count(ShowLog())-1;}
+		else {return First()+lines-1;}
 	}
-	
-	int lineH = 30;
-	
+
+	static float scrollW = 30;
+	static float scrollPos = 0;
+	static float scrollBtm;
+	void DrawScroll(){
+		float size = lines;
+		scrollBtm = GameLog.Count(ShowLog());
+		float top = 0;
+		Rect scrollBox = new Rect(x+w-(scrollW/2),y,scrollW,h-lineH);
+
+		scrollPos = GUI.VerticalScrollbar(scrollBox, scrollPos, size, top, scrollBtm);
+		int round = (int)Mathf.RoundToInt(scrollPos);
+		offset = round;
+	}
 	
 	public static bool inLog = false;
 	public static bool outLog = true;
@@ -73,22 +133,16 @@ public class GUILog : MonoBehaviour {
 		return LogIO.OUT;
 	}
 	
-	void CommandHistory(float x,float y,float w,float h){
-		LogIO showLog = ShowLog();
-		float printY = Screen.height-50;
-		for (int i=(GameLog.LastIndex(showLog)); i>=0; i--){ 
-			int j = i+offset;
-			//Debug.Log(j);
-			if (GameLog.Count(showLog) > j){
-				string c = GameLog.Index(j,showLog);
-				
-				if (printY >= 0){
-					Rect cBox = new Rect(x+5,printY,w-10,lineH);
-					GUI.Label(cBox,c,s);
-					printY-=lineH;
-					
-				}
+	void CommandHistory(){
+		float printY = Screen.height-lineH*2;
+		for (int i=Last(); i>=First(); i--){
+			string c = GameLog.Index(i,ShowLog());
+			if (c.Length>50){
+				c = c.Remove(50);
+				c +="...";
 			}
+			GUI.Label(new Rect(x+5,printY,w-10,lineH),c,s);
+			printY-=lineH;
 		}
 	}	
 }

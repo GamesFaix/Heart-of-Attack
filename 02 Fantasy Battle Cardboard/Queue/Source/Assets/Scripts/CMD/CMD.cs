@@ -11,6 +11,7 @@ public static partial class CMD {
 	public static void New(string input){
 		GameLog.Add(input,LogIO.IN);
 		Parse(Format(input));
+		GUILog.ScrollToBottom();
 	}
 	
 	static string[] Format(string input){
@@ -26,12 +27,14 @@ public static partial class CMD {
 		else if (Head(input) == "-"){TurnQueue.Undo(); return;}
 		else if (Head(input) == "SHUFFLE"){TurnQueue.Shuffle(); return;}
 		else if (Head(input) == "RESET"){Reset(); return;}
+		else if (Head(input) == "SHIFT"){Shift(Tail(input)); return;}
 
 		//creation/destruction commands
 		else if (Head(input) == "START"){Start(Tail(input)); return;}
 		else if (Head(input) == "CREATE" || Head(input) == "C"){Create(Tail(input)); return;}
 		else if (Head(input) == "KILL" || Head(input) == "K"){Kill(Tail(input)); return;}	
 		else if (Head(input) == "REPLACE" || Head(input) == "R"){Replace(Tail(input)); return;}
+		else if (Head(input) == "CAPTURE"){Capture(Tail(input)); return;}
 
 		//display commands
 		else if (Head(input) == "GUI"){
@@ -89,14 +92,30 @@ public static partial class CMD {
 		else {GameLog.Add(name+"Cannot replace "+input+".  Unit does not exist.", LogIO.DEBUG);}
 	}
 
+	static void Capture(string[] input){
+		if (input.Length>1){
+			int captive;
+			int captor;
+			if (Int32.TryParse(input[0], out captive)
+			&& Int32.TryParse(input[1], out captor)){
+				Roster.Capture(captive,captor);
+				return;
+			}
+		}
+		GameLog.Add(name+"Capture requires two player numbers.", LogIO.DEBUG);
+	}
+
+	static void Shift(string[] input){UnitCommands(input);}
+
+
 	static void Up(Unit u, string[] input){
 		int n = 1;
-		if(input.Length > 1) {Int32.TryParse(input[1], out n);}
+		if(input.Length > 0) {Int32.TryParse(input[0], out n);}
 		TurnQueue.MoveUp(u,n);
 	}
 	static void Down(Unit u, string[] input){
 		int n = 1;
-		if(input.Length > 1){Int32.TryParse(input[1], out n);}
+		if(input.Length > 0){Int32.TryParse(input[0], out n);}
 		TurnQueue.MoveDown(u,n);
 	}
 	

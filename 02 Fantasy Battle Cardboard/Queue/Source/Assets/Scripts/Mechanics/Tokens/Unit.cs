@@ -11,7 +11,9 @@ public class Unit {
 	public char instance;
 	public string fullName;
 	public string deathCode = "CORP";
-	
+
+	int owner=0;
+
 	int mhp;
 	int hp;
 	int def = 0;
@@ -40,6 +42,13 @@ public class Unit {
 		hp = mhp;
 		
 	}
+
+	public int Owner(){return owner;}
+	public void SetOwner(int o, bool log=true){
+		owner=o;
+		if (log){GameLog.Add(Roster.Name(o)+" has taken possession of "+fullName+".",LogIO.OUT);}
+	}
+
 
 	public void SetPlane (PLANE p){
 		for (int i=0; i<planes; i++) {plane[i] = false;}
@@ -128,7 +137,6 @@ public class Unit {
 		hp += n;
 		string change = "+"+n;
 		if (n<0) {change = ""+n;}
-		int diff = hp-mhp;
 		if (hp>mhp){hp = mhp;
 			if(log){GameLog.Add(fullName+" "+change+"HP. HP above max. "+HPFraction(),LogIO.OUT);}}
 		else{if(log){GameLog.Add(fullName+" "+change+"HP. "+HPFraction(),LogIO.OUT);}}
@@ -150,7 +158,6 @@ public class Unit {
 		mhp += n;
 		string change = "+"+n;
 		if (n<0) {change = ""+n;}
-		int diff = hp-mhp;
 		if (hp>mhp){hp=mhp;
 			if(log){GameLog.Add(fullName+" "+change+"MHP. HP above max. "+HPFraction(),LogIO.OUT);}}
 		else {if(log){GameLog.Add(fullName+" "+change+"MHP. "+HPFraction(),LogIO.OUT);}}
@@ -201,7 +208,7 @@ public class Unit {
 		return def;
 	}
 	public int ModDEF (int n, bool log=true){
-		def = n;
+		def += n;
 		if (def<0){def = 0;}
 		string change = "+"+n;
 		if (n<0) {change = ""+n;}
