@@ -1,72 +1,82 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tokens;
+
+
 
 public static class UnitFactory {
-	
-	public static void Add(string code, out string fullName, bool log=true) {
+	static Dictionary<string, Token> tokens = new Dictionary<string, Token>();
+
+	public static bool IsInstance(string str) {
+		if (tokens.ContainsKey(str)) {return true;}
+		else {return false;}
+	}
+	public static bool IsInstance(string fullName, out Token t) {
+		t = default(Token);
+		if (tokens.ContainsKey(fullName)) {
+			t = tokens[fullName];
+			return true;
+		}
+		else {return false;}
+	}
+
+
+	public static void Add(TTYPE code, out string fullName, bool log=true) {
 		fullName="";
-		Unit u = new Unit(code);
-		TurnQueue.units.Add(u);
-		if (log) {GameLog.Out("Created " +u+".");}
-		fullName = u.FullName();
+		Token t = new Unit(code);
+		tokens.Add(t.FullName(), t);
+		if (t is Unit) {TurnQueue.units.Add((Unit)t);}
+		if (log) {GameLog.Out("Created " +t+".");}
+		fullName = t.FullName();
 	}
 
-	public static void Add(string code, bool log=true) {
-		Unit u = new Unit(code);
-		TurnQueue.units.Add(u);
-		if (log) {GameLog.Out("Created " +u+".");}
+	public static void Add(TTYPE code, bool log=true) {
+		Token t;
+		if (code == TTYPE.KATA){t = new Katandroid();}
+		else {t = new Unit(code);}
+		tokens.Add(t.FullName(), t);
+		if (t is Unit) {TurnQueue.units.Add((Unit)t);}
+		if (log) {GameLog.Out("Created " +t+".");}
 	}
 
-	public static void Add(string[] codes, bool log=true){
-		string fns="";
-		foreach (string s in codes){
-			string fn;
-			Add(s,out fn, false);
-			fns+=(fn+", ");
-		}
-		char[] trimChars = {' ',','};
-		fns = fns.TrimEnd(trimChars);
-		if (log) {GameLog.Out("Created "+fns+".)");}
-	}
-
-	public static void Delete(string fullName, bool log=true) {
-		foreach (Unit u in TurnQueue.units){
-			if (u.FullName() == fullName) {
-				if (log) {GameLog.Out("Killed "+u+".");}
-				TurnQueue.units.Remove(u);
+	public static void Delete(List<Token> ts, bool log=true) {
+		foreach (Token t in ts){
+			if (tokens.ContainsValue(t)){
+				tokens.Remove(t.FullName());
+				if (log) {GameLog.Out("Killed "+t+".");}
+				if (t is Unit) {TurnQueue.units.Remove((Unit)t);}
 				return;
+
 			}
+			GameLog.Debug("UnitFactory: Cannot kill '"+t+"'. Token does not exist."); 
 		}
-		GameLog.Debug("UnitFactory: Cannot kill "+fullName+". Unit does not exist."); 
 	}
 	
 
 	
 
-	static string[] gearp = new string[4] {"KABU","MAWT","CARA","KATA"};
-	static string[] newrep = new string[4] {"DECI","PANO","MEIN","DEMO"};
-	static string[] torrid= new string[6] {"GARG","BATT","CONF","ASHE","SMAS","ROOK"};
-	static string[] forgot = new string[4] {"ULTR","META","TALO","GRIZ"};
-	static string[] chrono = new string[4] {"OLDT","REPR","PIEC","REVO"};
-	static string[] psycho = new string[5] {"BLAC","MART","MYCO","BEES","LICH"};
-	static string[] psilent = new string[4] {"DREA","PRIE","AREN","PRIS"};
-	static string[] voidoid = new string[4] {"MONO","MOUT","NECR","RECY"};
-	static string[][] factions = new string[9][] {new string[0], gearp, newrep, torrid, forgot, chrono, psycho, psilent, voidoid};
+	static TTYPE[] gearp = new TTYPE[4] {TTYPE.KABU,TTYPE.MAWT,TTYPE.CARA,TTYPE.KATA};
+	static TTYPE[] newrep = new TTYPE[4] {TTYPE.DECI,TTYPE.PANO,TTYPE.MEIN,TTYPE.DEMO};
+	static TTYPE[] torrid= new TTYPE[6] {TTYPE.GARG,TTYPE.BATT,TTYPE.CONF,TTYPE.ASHE,TTYPE.SMAS,TTYPE.ROOK};
+	static TTYPE[] forgot = new TTYPE[4] {TTYPE.ULTR,TTYPE.META,TTYPE.TALO,TTYPE.GRIZ};
+	static TTYPE[] chrono = new TTYPE[4] {TTYPE.OLDT,TTYPE.REPR,TTYPE.PIEC,TTYPE.REVO};
+	static TTYPE[] psycho = new TTYPE[5] {TTYPE.BLAC,TTYPE.MART,TTYPE.MYCO,TTYPE.BEES,TTYPE.LICH};
+	static TTYPE[] psilent = new TTYPE[4] {TTYPE.DREA,TTYPE.PRIE,TTYPE.AREN,TTYPE.PRIS};
+	static TTYPE[] voidoid = new TTYPE[4] {TTYPE.MONO,TTYPE.MOUT,TTYPE.NECR,TTYPE.RECY};
+	static TTYPE[][] factions = new TTYPE[9][] {new TTYPE[0], gearp, newrep, torrid, forgot, chrono, psycho, psilent, voidoid};
 
-	public static string[] Faction(int i){
+	public static TTYPE[] Faction(int i){
 		if (i>0 && i<=8){return factions[i];}
 		else{
 			GameLog.Debug("UnitFactory: Attempt to lookup invalid faction.");
-			return new string[0];
+			return new TTYPE[0];
 		}
 
 	}
 
-	public static string[] kings = new string[8] {"KABU","DECI","GARG","ULTR","OLDT","BLAC","DREA","MONO"};
-
-
-
+	public static TTYPE[] kings = new TTYPE[8] {TTYPE.KABU,TTYPE.DECI,TTYPE.GARG,TTYPE.ULTR,TTYPE.OLDT,TTYPE.BLAC,TTYPE.DREA,TTYPE.MONO};
 
 
 

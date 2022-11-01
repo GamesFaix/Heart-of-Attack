@@ -81,7 +81,7 @@ public class GUILog : MonoBehaviour {
 		Rect fieldBox = new Rect(x, y+h-lineH, w, lineH);
 		input = GUI.TextField(fieldBox,input,100);
 		if(EnterKeyPressed()){
-			CMD.New(input);
+			Console.Submit(input);
 			input="";
 			ScrollToBottom();
 		}

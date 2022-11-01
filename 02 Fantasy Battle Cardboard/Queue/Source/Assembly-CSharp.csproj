@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{46071BE4-9C23-841C-4A36-D80FE19CEE36}</ProjectGuid>
+	<ProjectGuid>{36BAFEED-F309-5799-05EB-AF0F65D138ED}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,9 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CMD\CMD.cs" />
-     <Compile Include="Assets\Scripts\CMD\CMD2.cs" />
-     <Compile Include="Assets\Scripts\CMD\CMD3.cs" />
+     <Compile Include="Assets\Scripts\CMD\Command.cs" />
+     <Compile Include="Assets\Scripts\CMD\Console.cs" />
+     <Compile Include="Assets\Scripts\CMD\Console2.cs" />
      <Compile Include="Assets\Scripts\CMD\GameLog.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIBoard.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIInspector.cs" />
@@ -68,9 +68,9 @@
      <Compile Include="Assets\Scripts\Mechanics\Tokens\Unit.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitConstructor.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitFactory.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitsGearp.cs" />
      <Compile Include="Assets\Scripts\Mechanics\TurnQueue.cs" />
      <Compile Include="Assets\Scripts\StartRoutine.cs" />
-     <Compile Include="Assets\Scripts\Utilities\Ratio.cs" />
      <Compile Include="Assets\Scripts\Utilities\ReDictionary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

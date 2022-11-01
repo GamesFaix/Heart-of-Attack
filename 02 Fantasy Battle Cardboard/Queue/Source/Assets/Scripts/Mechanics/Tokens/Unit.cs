@@ -11,17 +11,23 @@ public class Unit : Token{
 	Tokens.Resources resources;
 	Health health;
 	Tokens.Clock clock;
-	
-	public Unit(string code){
+
+
+	public Unit(){
+
+	}
+
+	public Unit(TTYPE code){
 		label = new Label(this, code);
 		resources = new Tokens.Resources(this);
 		UnitConstructor.Make(this,label.Code());
 
 	}
 	//label
+	public void NewLabel(TTYPE code) {label = new Label(this,code);}
 	public override string ToString() {return label.FullName();}
 	public string FullName() {return label.FullName();}
-	public string Code() {return label.Code();}
+	public TTYPE Code() {return label.Code();}
 	public string Name() {return label.Name();}
 	public char Instance() {return label.Instance();}
 	public void SetOwner(int n, bool log=true){label.SetOwner(n, log);}
@@ -34,14 +40,15 @@ public class Unit : Token{
 	public void SetSpecial(SPECIAL[] ss, bool log=true) {body.SetSpecial(ss,log);}
 	public bool IsSpecial(SPECIAL s) {return body.IsSpecial(s);}
 	public string SpecialString() {return body.SpecialString();}
-	public void SetOnDeath(string code, bool log=true) {body.SetOnDeath(code,log);}
-	public string OnDeath() {return body.OnDeath();}
+	public void SetOnDeath(TTYPE code, bool log=true) {body.SetOnDeath(code,log);}
+	public TTYPE OnDeath() {return body.OnDeath();}
 	public void NewBody(PLANE p, SPECIAL s=SPECIAL.NONE){body = new Body(this,p,s);}
 	public void NewBody(PLANE[] p, SPECIAL s=SPECIAL.NONE){body = new Body(this,p,s);}
 	public void NewBody(PLANE p, SPECIAL[] s){body = new Body(this,p,s);}
 	public void NewBody(PLANE[] p, SPECIAL[] s){body = new Body(this,p,s);}
 
 	//resources
+	public void NewResources(int n=2) {resources = new Tokens.Resources(this,n);}
 	public int AP() {return resources.AP();}
 	public int FP() {return resources.FP();}
 	public int MaxAP() {return resources.MaxAP();}

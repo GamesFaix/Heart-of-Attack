@@ -80,7 +80,7 @@ public class GUITools : MonoBehaviour {
 		if (gameStart) {GameStart(x,box.y+lineH);}
 
 		box.x+=btnW;
-		if (GUI.Button(box,"Reset")){CMD.New("RESET");}
+		if (GUI.Button(box,"Reset")){Console.Submit("RESET");}
 	}
 
 	bool gameStart = false;
@@ -110,7 +110,7 @@ public class GUITools : MonoBehaviour {
 					kings[i] = false;
 				}
 			}
-			CMD.New(command);
+			Console.Submit(command);
 			view = TOOLVIEW.HIDE;
 		}
 	}
@@ -137,13 +137,13 @@ public class GUITools : MonoBehaviour {
 				box.y += selectH+5;
 				printUnit = Label.codeNames[selectedUnit];
 				if (GUI.Button(box,"Create "+printUnit)){
-					CMD.New("CREATE "+selectedUnit);
-					selectedUnit = "";
+					Console.Submit("CREATE "+selectedUnit);
+					selectedUnit = TTYPE.NONE;
 				}
 
 				break;
 			case TOKENVIEW.KILL:   
-				selectedUnit = "";
+				selectedUnit = TTYPE.NONE;
 				printUnit = "";
 				box.y+=lineH+5;
 				GUI.Label(new Rect(x+((w-btnW)/2), box.y, btnW, lineH),"Kill:",s);
@@ -151,7 +151,7 @@ public class GUITools : MonoBehaviour {
 				box.y += selectH+5;
 				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 				if (GUI.Button(box,"Kill "+printInst)){
-					CMD.New("KILL "+selectedInstance);
+					Console.Submit("KILL "+selectedInstance);
 					selectedInstance = "";
 				}
 
@@ -168,8 +168,8 @@ public class GUITools : MonoBehaviour {
 				printUnit = Label.codeNames[selectedUnit];
 				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 				if (GUI.Button(box,"Replace "+printInst+" with "+printUnit)){
-					CMD.New("REPLACE "+selectedInstance+" "+selectedUnit);
-					selectedUnit = "";
+					Console.Submit("REPLACE "+selectedInstance+" "+selectedUnit);
+					selectedUnit = TTYPE.NONE;
 					selectedInstance = "";
 				}
 
@@ -215,7 +215,7 @@ public class GUITools : MonoBehaviour {
 		if (signBtn>=0)	{command+=signLabels[signBtn]+" ";}
 		if (magnitude >=0) {command+=""+magnitude;}
 		if (GUI.Button(new Rect(x,drawY,w,lineH),command)){
-			CMD.New(command);
+			Console.Submit(command);
 			selectedInstance = "";
 			signBtn = -1;
 			modifyBtn = -1;
@@ -234,10 +234,10 @@ public class GUITools : MonoBehaviour {
 	void Queue(){
 		Rect box = new Rect(x,y+lineH+5,btnW,lineH);
 		
-		if (GUI.Button(box,"Advance")){CMD.New("+");};
+		if (GUI.Button(box,"Advance")){Console.Submit("+");};
 		
 		box.x+=btnW;
-		if (GUI.Button(box,"Shuffle")){CMD.New("SHUFFLE");}
+		if (GUI.Button(box,"Shuffle")){Console.Submit("SHUFFLE");}
 		
 		box.x+=btnW;
 		if (GUI.Button(box,"Shift")){viewShift = !viewShift;}
@@ -263,7 +263,7 @@ public class GUITools : MonoBehaviour {
 			command+=shiftLabels[shiftBtn]+" ";
 			if (magnitude >=0) {command+=""+magnitude;}
 			if (GUI.Button(box,command)){
-				CMD.New(command);
+				Console.Submit(command);
 				selectedInstance="";
 
 
@@ -284,15 +284,15 @@ public class GUITools : MonoBehaviour {
 
 	}
 
-	string selectedUnit ="";
+	TTYPE selectedUnit = TTYPE.NONE;
 	void UnitSelect(float drawX, float drawY, out float height){
 		height = 0;
 		float buttonW = w/8;
 		Rect box = new Rect(drawX,drawY,buttonW,lineH);
 		for (int i=1; i<=8; i++){
-			string[] faction = UnitFactory.Faction(i);
+			TTYPE[] faction = UnitFactory.Faction(i);
 			for (int j=0; j<faction.Length; j++){
-				if (GUI.Button(box,faction[j])){selectedUnit = faction[j];};
+				if (GUI.Button(box,faction[j].ToString())){selectedUnit = faction[j];};
 				box.y+=lineH;
 				if (box.y-drawY > height){height = box.y-drawY;}
 
@@ -334,13 +334,13 @@ public class GUITools : MonoBehaviour {
 		Rect box = new Rect(drawX,drawY,buttonW,lineH);
 
 		for (int i=0; i<4; i++){
-			if (GUI.Button(box,UnitFactory.kings[i])){kings[i] = !kings[i];};
+			if (GUI.Button(box,UnitFactory.kings[i].ToString())){kings[i] = !kings[i];};
 			box.x+=buttonW;
 		}
 		box.x=drawX;
 		box.y+=lineH;
 		for (int i=4; i<8; i++){
-			if (GUI.Button(box,UnitFactory.kings[i])){kings[i] = !kings[i];};
+			if (GUI.Button(box,UnitFactory.kings[i].ToString())){kings[i] = !kings[i];};
 			box.x+=buttonW;
 		}
 		height+=lineH*2;

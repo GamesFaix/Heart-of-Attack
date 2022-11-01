@@ -32,7 +32,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" HP set to max. "+HPString());}
 				else {GameLog.Out(parent+" HP set to "+HPString()+".");}
 			}		
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return hp;
 		}
 		public int SetMaxHP (int n, bool log=true){
@@ -43,7 +43,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" max HP set below HP. -"+reduce+"HP. "+HPString());}
 				else {GameLog.Out(parent+" max HP set to "+HPString()+".");}
 			}
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return max;
 		}
 		public int AddHP (int n, bool log=true){
@@ -56,7 +56,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" "+sign+n+"HP. HP full. "+HPString());}
 				else {GameLog.Out(parent+" "+sign+n+"HP. "+HPString());}
 			}	
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return hp;
 		}
 		public int AddMaxHP (int n, bool log=true){
@@ -68,7 +68,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" "+sign+n+" max HP. HP full. "+HPString());}
 				else {GameLog.Out(parent+" "+sign+n+" max HP. "+HPString());}
 			}
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return max;	
 		}
 
@@ -84,7 +84,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" "+sign+change+"HP. HP full. "+HPString());}
 				else {GameLog.Out(parent+" "+sign+change+"HP. "+HPString());}
 			}	
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return hp;
 		}
 		public int MultMaxHP (float f, bool log=true){
@@ -98,7 +98,7 @@ namespace Tokens {
 				if (full) {GameLog.Out(parent+" "+sign+change+" max HP. HP full. "+HPString());}
 				else {GameLog.Out(parent+" "+sign+change+" max HP. "+HPString());}
 			}
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return max;
 
 		}
@@ -131,7 +131,7 @@ namespace Tokens {
 				}
 				else {GameLog.Debug("Units cannot take negative damage.");}
 			}			
-			if (Empty()) {CMD.New("KILL "+parent);}
+			if (Empty()) {Console.Submit("KILL "+parent);}
 			return hp;
 		}
 

@@ -1,30 +1,48 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Tokens {
+	public enum TTYPE {
+		NONE,
+		KATA,CARA,MAWT,KABU,HSIL,
+		DEMO,MEIN,MINE,PANO,DECI,HSTE,
+		ROOK,SMAS,CONF,ASHE,BATT,GARG,HSTO,
+		GRIZ,TALO,META,ULTR,HFIR,
+		REVO,PIEC,APER,REPR,OLDT,HBRA,
+		LICH,BEES,MYCO,MART,BLAC,WEBB,HSLK,
+		PRIS,AREN,PRIE,DREA,HGLA,
+		RECY,NECR,MOUT,MONO,HBLO,
+		CORP,TREE
+	}
+
 	public class Label {
-		string code;
+		TTYPE code;
 		string name = "";
+		bool unique;
 		char instance;
 		string fullName;
 		int owner;
 		Token parent;
 
-		public Label (Token t, string c, int own = 0){
+		public Label (Token t, TTYPE c, int own = 0, bool uni=false){
 			parent = t;
 			owner = own;
 			code = c;
 			name = "";
+			unique = uni;
+
 			codeNames.TryGetValue(code,out name);
-			instance = NextAvailableInstance();
+			if(!unique){instance = NextAvailableInstance();}
+			else {instance = ' ';}
 			fullName = name+" "+instance;
 		}
 
 		public char Instance() {return instance;}
 		public string Name() {return name;}
 		public string FullName() {return fullName;}
-		public string Code() {return code;}
+		public TTYPE Code() {return code;}
 
 		public int Owner(){return owner;}
 		public void SetOwner(int o, bool log=true){
@@ -70,62 +88,86 @@ namespace Tokens {
 			return 'Z';
 		}
 
-		public static Dictionary<string,string> codeNames = new Dictionary<string,string>{
-			{"",""},
+		public static Dictionary<TTYPE,string> codeNames = new Dictionary<TTYPE,string>{
+			{TTYPE.NONE,""},
 			
-			{"KATA", "Katandroid"},
-			{"CARA", "Carapace Invader"},
-			{"MAWT", "MAWTH"},
-			{"KABU", "Kabutomachine"},
+			{TTYPE.KATA, "Katandroid"},
+			{TTYPE.CARA, "Carapace Invader"},
+			{TTYPE.MAWT, "MAWTH"},
+			{TTYPE.KABU, "Kabutomachine"},
+			{TTYPE.HSIL, "Silicon Heart of Attack"},
 			
-			{"DEMO", "Demolitia"},
-			{"MEIN", "Mein Schutz"},
-			{"PANO", "Panopticannon"},
-			{"DECI", "Decimatrix"},
+			{TTYPE.DEMO, "Demolitia"},
+			{TTYPE.MEIN, "Mein Schutz"},
+			{TTYPE.MINE, "Mine"},
+			{TTYPE.PANO, "Panopticannon"},
+			{TTYPE.DECI, "Decimatrix"},
+			{TTYPE.HSTE, "Steel Heart of Attack"},
 			
-			{"ROOK", "Rook"},
-			{"SMAS", "Smashbuckler"},
-			{"CONF", "Conflagragon"},
-			{"ASHE", "Ashes"},
-			{"BATT", "Battering Rambuchet"},
-			{"GARG", "Gargoliath"},
+			{TTYPE.ROOK, "Rook"},
+			{TTYPE.SMAS, "Smashbuckler"},
+			{TTYPE.CONF, "Conflagragon"},
+			{TTYPE.ASHE, "Ashes"},
+			{TTYPE.BATT, "Battering Rambuchet"},
+			{TTYPE.GARG, "Gargoliath"},
+			{TTYPE.HSTO, "Stone Heart of Attack"},
+
+			{TTYPE.GRIZ, "Grizzly Elder"},
+			{TTYPE.TALO, "Taloned Scout"},
+			{TTYPE.META, "Metaterrainean"},
+			{TTYPE.ULTR, "Ultratherium"},
+			{TTYPE.HFIR, "Fir Heart of Attack"},
 			
-			{"GRIZ", "Grizzly Elder"},
-			{"TALO", "Taloned Scout"},
-			{"META", "Metaterrainean"},
-			{"ULTR", "Ultratherium"},
+			{TTYPE.REVO, "Revolving Tom"},
+			{TTYPE.PIEC, "Piecemaker"},
+			{TTYPE.APER, "Aperture"},
+			{TTYPE.REPR, "Reprospector"},
+			{TTYPE.OLDT, "Old Three Hands"},
+			{TTYPE.HBRA, "Brass Heart of Attack"},
+
+			{TTYPE.LICH, "Lichenthrope"},
+			{TTYPE.BEES, "Beesassin"},
+			{TTYPE.MYCO, "Mycolonist"},
+			{TTYPE.MART, "Martian Man Trap"},
+			{TTYPE.BLAC, "Black Winnow"},
+			{TTYPE.WEBB, "Web"},
+			{TTYPE.HSLK, "Silk Heart of Attack"},
+
+			{TTYPE.PRIS, "Prism Guard"},
+			{TTYPE.AREN, "Arena Non Sensus"},
+			{TTYPE.PRIE, "Priest of Naja"},
+			{TTYPE.DREA, "Dream Reaver"},
+			{TTYPE.HGLA, "Glass Heart of Attack"},
+
+			{TTYPE.RECY, "Recyclops"},	
+			{TTYPE.NECR, "Necrochancellor"},
+			{TTYPE.MOUT, "Mouth of the Underworld"},
+			{TTYPE.MONO, "Monolith"},
+			{TTYPE.HBLO, "Blood Heart of Attack"},
 			
-			{"REVO", "Revolving Tom"},
-			{"PIEC", "Piecemaker"},
-			{"REPR", "Reprospector"},
-			{"OLDT", "Old Three Hands"},
-			
-			{"LICH", "Lichenthrope"},
-			{"BEES", "Beesassin"},
-			{"MYCO", "Mycolonist"},
-			{"MART", "Martian Man Trap"},
-			{"BLAC", "Black Winnow"},
-			
-			{"PRIS", "Prism Guard"},
-			{"AREN", "Arena Non Sensus"},
-			{"PRIE", "Priest of Naja"},
-			{"DREA", "Dream Reaver"},
-			
-			{"RECY", "Recyclops"},	
-			{"NECR", "Necrochancellor"},
-			{"MOUT", "Mouth of the Underworld"},
-			{"MONO", "Monolith"},
-			
-			{"CORP", "Corpse"},
-			{"TREE", "Tree"}
+			{TTYPE.CORP, "Corpse"},
+			{TTYPE.TREE, "Tree"}
 		};
-		public static Dictionary<string,string>.ValueCollection Names(){
+		public static Dictionary<TTYPE,string>.ValueCollection Names(){
 			return codeNames.Values;
 		}
-		public static Dictionary<string,string>.KeyCollection Codes(){
+		public static Dictionary<TTYPE,string>.KeyCollection Codes(){
 			return codeNames.Keys;
 		}
+		public static bool IsCode (string str, out TTYPE code){
+			try {
+				code = (TTYPE)Enum.Parse(typeof(TTYPE),str);
+				return true;
+			}
+			catch (ArgumentException){
+				code = TTYPE.NONE;
+				GameLog.Debug("Invalid token name input, cannot parse to TTYPE.");
+				return false;
+			}
+		}
+		public static string CodeToString (TTYPE code){
+			return codeNames[code];
 
-
+		}
 	}
 }

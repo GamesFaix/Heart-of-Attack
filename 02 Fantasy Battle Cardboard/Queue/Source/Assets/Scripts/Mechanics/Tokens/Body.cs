@@ -18,7 +18,7 @@ namespace Tokens {
 		bool[] plane = new bool[planes];
 		bool[] special = new bool[specials];
 
-		string deathCode = "";
+		TTYPE deathCode;
 
 		public Body(Token t, PLANE p = PLANE.GND, SPECIAL s = SPECIAL.NONE){
 			parent = t;
@@ -44,11 +44,11 @@ namespace Tokens {
 			SetSpecial(s, false);
 		}
 
-		public void SetOnDeath(string code, bool log=true){
+		public void SetOnDeath(TTYPE code, bool log=true){
 			deathCode = code;
 			if (log) {GameLog.Out(parent+" death token set to "+deathCode+".");}
 		}
-		public string OnDeath(){return deathCode;}
+		public TTYPE OnDeath(){return deathCode;}
 
 		public void SetPlane (PLANE p, bool log=true){
 			for (int i=0; i<planes; i++) {plane[i] = false;}

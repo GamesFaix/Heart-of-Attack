@@ -4,247 +4,247 @@ using Tokens;
 
 public static class UnitConstructor {
 
-	public static void Make (Unit u, string code){
+	public static void Make (Unit u, TTYPE code){
 
 		switch (code){
-		case "KATA":
+		case TTYPE.KATA:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(25);
 			u.SetOwner(1,false);
 			u.NewClock(5);	
 			break;
-		case "CARA":	
+		case TTYPE.CARA:	
 			u.NewBody(PLANE.GND);
 			u.NewHealth(35,3);
 			u.SetOwner(1,false);
 			u.NewClock(4);
 			break;
-		case "MAWT":
+		case TTYPE.MAWT:
 			u.NewBody(PLANE.AIR);
 			u.NewHealth(55);
 			u.SetOwner(1,false);
 			u.NewClock(3);
 			break;
-		case "KABU":
+		case TTYPE.KABU:
 			u.NewBody(PLANE.GND, SPECIAL.KING);
 			u.NewHealth(75);
 			u.SetOwner(1,false);
 			u.NewClock(4);
-			u.SetOnDeath("HSIL", false);
+			u.SetOnDeath(TTYPE.HSIL, false);
 			Roster.Activate(1);
 			break;
 			
-		case "DEMO":
+		case TTYPE.DEMO:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(30);
 			u.SetOwner(2,false);
 			u.NewClock(3);
 			break;
-		case "MEIN":
+		case TTYPE.MEIN:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(40);
 			u.SetOwner(2,false);
 			u.NewClock(4);
 			break;
-		case "PANO":
+		case TTYPE.PANO:
 			u.NewBody(PLANE.GND, SPECIAL.TRAM);
 			u.NewHealth(65);
 			u.SetOwner(2,false);
 			u.NewClock(1);
 			break;
-		case "DECI":
+		case TTYPE.DECI:
 			u.NewBody(PLANE.GND,new SPECIAL[]{SPECIAL.KING, SPECIAL.TRAM});
 			u.NewHealth(85,3);
 			u.SetOwner(2,false);
 			u.NewClock(2);
-			u.SetOnDeath("HSTE", false);
+			u.SetOnDeath(TTYPE.HSTE, false);
 			Roster.Activate(2);
 			break;
 			
-		case "ROOK":
+		case TTYPE.ROOK:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(30,5);
 			u.SetOwner(3,false);
 			u.NewClock(3);
-			u.SetOnDeath("",false);
+			u.SetOnDeath(TTYPE.NONE,false);
 			break;
-		case "SMAS":
+		case TTYPE.SMAS:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(30);
 			u.SetOwner(3,false);
 			u.NewClock(3);
 			break;
-		case "CONF":
+		case TTYPE.CONF:
 			u.NewBody(PLANE.AIR);
 			u.NewHealth(40);
 			u.SetOwner(3,false);
 			u.NewClock(4);
-			u.SetOnDeath("ASHE", false);
+			u.SetOnDeath(TTYPE.ASHE, false);
 			break;
-		case "ASHE":
+		case TTYPE.ASHE:
 			u.NewBody(PLANE.GND, new SPECIAL[]{SPECIAL.DEST, SPECIAL.REM});
 			u.NewHealth(15);
 			u.SetOwner(3,false);
 			u.NewClock(2);
-			u.SetOnDeath("", false);
+			u.SetOnDeath(TTYPE.NONE, false);
 			break;
-		case "BATT":
+		case TTYPE.BATT:
 			u.NewBody(PLANE.GND, SPECIAL.TRAM);
 			u.NewHealth(65);
 			u.SetOwner(3,false);
 			u.NewClock(1);
 			break;
-		case "GARG":
+		case TTYPE.GARG:
 			u.NewBody(PLANE.AIR, SPECIAL.KING);
 			u.NewHealth(75);
 			u.SetOwner(3,false);
 			u.NewClock(3);
-			u.SetOnDeath("HSTO", false);
+			u.SetOnDeath(TTYPE.HSTO, false);
 			Roster.Activate(3);
 			break;
 			
-		case "GRIZ":
+		case TTYPE.GRIZ:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(25);
 			u.SetOwner(4,false);
 			u.NewClock(3);
 			break;
-		case "TALO":
+		case TTYPE.TALO:
 			u.NewBody(PLANE.AIR);
 			u.NewHealth(45);
 			u.SetOwner(4,false);
 			u.NewClock(4);
 			break;
-		case "META":
+		case TTYPE.META:
 			u.NewBody(PLANE.GND, SPECIAL.TRAM);
 			u.NewHealth(50);
 			u.SetOwner(4,false);
 			u.NewClock(1);
-			u.SetOnDeath("TREE", false);
+			u.SetOnDeath(TTYPE.TREE, false);
 			break;
-		case "ULTR":
+		case TTYPE.ULTR:
 			u.NewBody(PLANE.GND,new SPECIAL[]{SPECIAL.KING, SPECIAL.TRAM});
 			u.NewHealth(80);
 			u.SetOwner(4,false);
 			u.NewClock(2);
-			u.SetOnDeath("HFIR", false);
+			u.SetOnDeath(TTYPE.HFIR, false);
 			Roster.Activate(4);
 			break;
 			
-		case "REVO":
+		case TTYPE.REVO:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(30);
 			u.SetOwner(5,false);
 			u.NewClock(4);
 			break;
-		case "PIEC":
+		case TTYPE.PIEC:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(35,3);
 			u.SetOwner(5,false);
 			u.NewClock(1);
 			break;
-		case "REPR":
+		case TTYPE.REPR:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(55);
 			u.SetOwner(5,false);
 			u.NewClock(2);
 			break;
-		case "OLDT":
+		case TTYPE.OLDT:
 			u.NewBody(PLANE.GND, SPECIAL.KING);
 			u.NewHealth(85,2);
 			u.SetOwner(5,false);
 			u.NewClock(3);
-			u.SetOnDeath("HBRA",false);
+			u.SetOnDeath(TTYPE.HBRA,false);
 			Roster.Activate(5);
 			break;
 			
-		case "LICH":
+		case TTYPE.LICH:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(15);
 			u.SetOwner(6,false);
 			u.NewClock(3);
-			u.SetOnDeath("", false);
+			u.SetOnDeath(TTYPE.NONE, false);
 			break;
-		case "BEES":
+		case TTYPE.BEES:
 			u.NewBody(PLANE.AIR);
 			u.NewHealth(25);
 			u.SetOwner(6,false);
 			u.NewClock(5);
 			break;
-		case "MYCO":
+		case TTYPE.MYCO:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(40);
 			u.SetOwner(6,false);
 			u.NewClock(2);
 			break;
-		case "MART":
+		case TTYPE.MART:
 			u.NewBody(PLANE.GND, SPECIAL.TRAM);
 			u.NewHealth(70);
 			u.SetOwner(6,false);
 			u.NewClock(4);
 			break;
-		case "BLAC":
+		case TTYPE.BLAC:
 			u.NewBody(PLANE.GND, SPECIAL.KING);
 			u.NewHealth(75);
 			u.SetOwner(6,false);
 			u.NewClock(3);
-			u.SetOnDeath("HSIL",false);
+			u.SetOnDeath(TTYPE.HSLK,false);
 			Roster.Activate(6);
 			break;
 			
-		case "PRIS":
+		case TTYPE.PRIS:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(15);
 			u.SetOwner(7,false);
 			u.NewClock(3);
 			break;
-		case "AREN":
+		case TTYPE.AREN:
 			u.NewBody(PLANE.ETH);
 			u.NewHealth(55,3);
 			u.SetOwner(7,false);
 			u.NewClock(1);
-			u.SetOnDeath("",false);
+			u.SetOnDeath(TTYPE.NONE,false);
 			break;
-		case "PRIE":
+		case TTYPE.PRIE:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(50,2);
 			u.SetOwner(7,false);
 			u.NewClock(4);
 			break;
-		case "DREA":
+		case TTYPE.DREA:
 			u.NewBody(PLANE.AIR, SPECIAL.KING);
 			u.NewHealth(75,2);
 			u.SetOwner(7,false);
 			u.NewClock(3);
-			u.SetOnDeath("HGLA",false);
+			u.SetOnDeath(TTYPE.HGLA,false);
 			Roster.Activate(7);
 			break;
 			
-		case "RECY":
+		case TTYPE.RECY:
 			u.NewBody(PLANE.GND, new SPECIAL[]{SPECIAL.DEST, SPECIAL.REM});
 			u.NewHealth(15);
 			u.SetOwner(8,false);
 			u.NewClock(4);
 			break;
-		case "NECR":
+		case TTYPE.NECR:
 			u.NewBody(PLANE.ETH);
 			u.NewHealth(30,5);
 			u.SetOwner(8,false);
 			u.NewClock(3);
-			u.SetOnDeath("",false);
+			u.SetOnDeath(TTYPE.NONE,false);
 			break;
-		case "MOUT":
+		case TTYPE.MOUT:
 			u.NewBody(PLANE.GND);
 			u.NewHealth(30);
 			u.SetOwner(8,false);
 			u.NewClock(4);
 			break;
-		case "MONO":
+		case TTYPE.MONO:
 			u.NewBody(new PLANE[] {PLANE.GND, PLANE.AIR}, SPECIAL.KING);
 			u.NewHealth(100);
 			u.SetOwner(8,false);
 			u.NewClock(2);
-			u.SetOnDeath("HBLO",false);
+			u.SetOnDeath(TTYPE.HBLO,false);
 			Roster.Activate(8);
 			break;
 		default:
