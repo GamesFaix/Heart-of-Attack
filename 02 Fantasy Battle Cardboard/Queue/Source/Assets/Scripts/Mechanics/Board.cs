@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using Tokens;
+
 public static class Board {
 
 	/*static Cell[,] cells;
@@ -22,11 +24,11 @@ public class Cell {
 		return units[(int)p];
 	}
 	public void Occupy (PLANE p, Unit u){
-		if (units[(int)p] == default(Unit)){GameLog.Add("Cell already contains token in that plane.",LogIO.DEBUG);}
+		if (units[(int)p] == default(Unit)){GameLog.Debug("Cell already contains token in that plane.");}
 		else {units[(int)p] = u;}
 	}
 	public void Empty (PLANE p){
-		if (units[(int)p] == default(Unit)){GameLog.Add("Cell does not contain token in that plane.",LogIO.DEBUG);}
+		if (units[(int)p] == default(Unit)){GameLog.Debug("Cell does not contain token in that plane.");}
 		units[(int)p] = default(Unit);
 	}
 	public List<Sensor> Sensors (){
@@ -38,7 +40,7 @@ public class Cell {
 	}
 	public void RemoveSensor(Sensor s){
 		if (sensors.Contains(s)) {sensors.Remove(s);}
-		else {GameLog.Add("Attempt to remove invalid sensor from cell.",LogIO.DEBUG);}
+		else {GameLog.Debug("Attempt to remove invalid sensor from cell.");}
 	}
 
 

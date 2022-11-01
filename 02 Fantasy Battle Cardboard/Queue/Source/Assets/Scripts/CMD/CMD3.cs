@@ -31,44 +31,44 @@ public static partial class CMD {
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetIN(n);}
-				if (input[0] == "+"){u.ModIN(n);}
-				if (input[0] == "-"){u.ModIN(0-n);}
+				if (input[0] == "+"){u.AddIN(n);}
+				if (input[0] == "-"){u.AddIN(0-n);}
 			}
 		}
-		else {GameLog.Add(name+"IN change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"IN change requires operator (+ - =) and number.");}
 	}
 	static void ModHP(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetHP(n);}
-				if (input[0] == "+"){u.ModHP(n);}
-				if (input[0] == "-"){u.ModHP(0-n);}
+				if (input[0] == "+"){u.AddHP(n);}
+				if (input[0] == "-"){u.AddHP(0-n);}
 			}
 		}
-		else {GameLog.Add(name+"HP change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"HP change requires operator (+ - =) and number.");}
 	}
 	static void ModMHP(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
-				if (input[0] == "="){u.SetMHP(n);}
-				if (input[0] == "+"){u.ModMHP(n);}
-				if (input[0] == "-"){u.ModMHP(0-n);}	
+				if (input[0] == "="){u.SetMaxHP(n);}
+				if (input[0] == "+"){u.AddMaxHP(n);}
+				if (input[0] == "-"){u.AddMaxHP(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"MHP change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"MHP change requires operator (+ - =) and number.");}
 	}
 	static void ModDEF(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetDEF(n);}
-				if (input[0] == "+"){u.ModDEF(n);}
-				if (input[0] == "-"){u.ModDEF(0-n);}	
+				if (input[0] == "+"){u.AddDEF(n);}
+				if (input[0] == "-"){u.AddDEF(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"DEF change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"DEF change requires operator (+ - =) and number.");}
 	}
 	static void Damage(Unit u, string[] input){
 		if (input.Length >= 1){
@@ -77,7 +77,7 @@ public static partial class CMD {
 				u.Damage(n);
 			}
 		}
-		else {GameLog.Add(name+"DMG requires a value.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"DMG requires a value.");}
 	}
 
 
@@ -85,51 +85,51 @@ public static partial class CMD {
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
-				if (input[0] == "="){u.SetSTUN(n);}
-				if (input[0] == "+"){u.ModSTUN(n);}
-				if (input[0] == "-"){u.ModSTUN(0-n);}	
+				if (input[0] == "="){u.SetStun(n);}
+				if (input[0] == "+"){u.AddStun(n);}
+				if (input[0] == "-"){u.AddStun(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"STUN change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"STUN change requires operator (+ - =) and number.");}
 	}
 	static void ModCOR(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetCOR(n);}
-				if (input[0] == "+"){u.ModCOR(n);}
-				if (input[0] == "-"){u.ModCOR(0-n);}	
+				if (input[0] == "+"){u.AddCOR(n);}
+				if (input[0] == "-"){u.AddCOR(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"COR change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"COR change requires operator (+ - =) and number.");}
 	}
 	static void ModAP(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetAP(n);}
-				if (input[0] == "+"){u.ModAP(n);}
-				if (input[0] == "-"){u.ModAP(0-n);}	
+				if (input[0] == "+"){u.AddAP(n);}
+				if (input[0] == "-"){u.AddAP(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"AP change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"AP change requires operator (+ - =) and number.");}
 	}
 	static void ModFP(Unit u, string[] input){
 		if (input.Length >= 2){
 			int n;
 			if(Int32.TryParse(input[1], out n)){
 				if (input[0] == "="){u.SetFP(n);}
-				if (input[0] == "+"){u.ModFP(n);}
-				if (input[0] == "-"){u.ModFP(0-n);}	
+				if (input[0] == "+"){u.AddFP(n);}
+				if (input[0] == "-"){u.AddFP(0-n);}	
 			}
 		}
-		else {GameLog.Add(name+"FP change requires operator (+ - =) and number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"FP change requires operator (+ - =) and number.");}
 	}
 	static void ModOwner(Unit u, string[] input){
 		if (input.Length >= 1){
 			int n;
 			if(Int32.TryParse(input[0], out n)) {u.SetOwner(n);}
 		}
-		else {GameLog.Add(name+"Owner change requires a number.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"Owner change requires a number.");}
 	}
 }

@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tokens;
+
 
 enum TOOLVIEW {GAME, TOKEN, MODIFY, QUEUE, RANDOM, HIDE}
 enum TOKENVIEW {CREATE, KILL, REPLACE}
@@ -94,7 +96,7 @@ public class GUITools : MonoBehaviour {
 		for (int i=0; i<8; i++){
 			if (kings[i]){
 
-				GUI.Label(new Rect(drawX,drawY,w,lineH),UnitFactory.CodeNames[UnitFactory.kings[i]]);
+				GUI.Label(new Rect(drawX,drawY,w,lineH),Label.codeNames[UnitFactory.kings[i]]);
 				drawY+=lineH;
 
 			}
@@ -133,7 +135,7 @@ public class GUITools : MonoBehaviour {
 				GUI.Label(new Rect(x+((w-btnW)/2), box.y, btnW, lineH),"Create:",s);
 				UnitSelect(x,box.y+lineH, out selectH); 
 				box.y += selectH+5;
-				printUnit = UnitFactory.CodeNames[selectedUnit];
+				printUnit = Label.codeNames[selectedUnit];
 				if (GUI.Button(box,"Create "+printUnit)){
 					CMD.New("CREATE "+selectedUnit);
 					selectedUnit = "";
@@ -147,7 +149,7 @@ public class GUITools : MonoBehaviour {
 				GUI.Label(new Rect(x+((w-btnW)/2), box.y, btnW, lineH),"Kill:",s);
 				InstanceSelect(x,box.y+lineH, out selectH);
 				box.y += selectH+5;
-				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).fullName;}
+				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 				if (GUI.Button(box,"Kill "+printInst)){
 					CMD.New("KILL "+selectedInstance);
 					selectedInstance = "";
@@ -163,8 +165,8 @@ public class GUITools : MonoBehaviour {
 				GUI.Label(new Rect(x+((w-btnW)/2), box.y, btnW, lineH),"with:",s);
 				UnitSelect(x,box.y+lineH, out selectH); 
 				box.y += selectH+5;
-				printUnit = UnitFactory.CodeNames[selectedUnit];
-				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).fullName;}
+				printUnit = Label.codeNames[selectedUnit];
+				if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 				if (GUI.Button(box,"Replace "+printInst+" with "+printUnit)){
 					CMD.New("REPLACE "+selectedInstance+" "+selectedUnit);
 					selectedUnit = "";
@@ -207,7 +209,7 @@ public class GUITools : MonoBehaviour {
 		InstanceSelect(x,drawY, out selectH);
 
 		drawY += selectH+5;
-		if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).fullName;}
+		if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 		string command = printInst+" ";
 		if (modifyBtn>=0){command+=modifyLabels[modifyBtn]+" ";}
 		if (signBtn>=0)	{command+=signLabels[signBtn]+" ";}
@@ -256,7 +258,7 @@ public class GUITools : MonoBehaviour {
 			box.y+=selectH;
 			box.x=x;
 			box.width = w;
-			if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).fullName;}
+			if (selectedInstance != "") {printInst = TurnQueue.FindUnit(selectedInstance).FullName();}
 			string command = "Shift "+printInst+" ";
 			command+=shiftLabels[shiftBtn]+" ";
 			if (magnitude >=0) {command+=""+magnitude;}
@@ -313,7 +315,7 @@ public class GUITools : MonoBehaviour {
 		for (int i=0; i<pCount; i++){
 			List<Unit> team = Roster.OwnedUnits(players[i]);
 			foreach (Unit u in team){
-				if (GUI.Button(box,u.code+" "+u.instance)){selectedInstance = u.fullName;};
+				if (GUI.Button(box,u.Code()+" "+u.Instance())){selectedInstance = u.FullName();};
 				box.y+=lineH;
 				if (box.y-drawY > height){height = box.y-drawY;}
 			}

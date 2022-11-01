@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using Tokens;
 
 public static partial class CMD {
 	//Core text interpretation methods
@@ -14,7 +15,7 @@ public static partial class CMD {
 	static string TextToCode(string text){
 		if (text.Length>=4){
 			string firstFour = text.Substring(0,4);
-			foreach (string code in UnitFactory.Codes()){
+			foreach (string code in Label.Codes()){
 				if (firstFour == code){return firstFour;}
 			}
 		}
@@ -59,15 +60,15 @@ public static partial class CMD {
 			char instance = NextLetter(input, out index);
 			if (instance!=' '){
 				foreach (Unit u in TurnQueue.units){
-					if ((u.code == code) && (u.instance == instance)){
+					if ((u.Code() == code) && (u.Instance() == instance)){
 
-						return u.fullName;
+						return u.FullName();
 					}
 				}
 			}
-			else {GameLog.Add(name+String.Join(" ",input)+" does not currently exist.", LogIO.DEBUG);}	
+			else {GameLog.Debug(name+String.Join(" ",input)+" does not currently exist.");}	
 		}	
-		else {GameLog.Add(name+String.Join(" ",input)+" is not a valid unit name.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+String.Join(" ",input)+" is not a valid unit name.");}
 		return "";
 	}
 	static string FNead(string[] input, out int tailStart){
@@ -78,15 +79,15 @@ public static partial class CMD {
 			char instance = NextLetter(input, out index);
 			if (instance!=' '){
 				foreach (Unit u in TurnQueue.units){
-					if ((u.code == code) && (u.instance == instance)){
+					if ((u.Code() == code) && (u.Instance() == instance)){
 						tailStart = index+1;
-						return u.fullName;
+						return u.FullName();
 					}
 				}
 			}
-			else {GameLog.Add(name+String.Join(" ",input)+" does not currently exist.", LogIO.DEBUG);}	
+			else {GameLog.Debug(name+String.Join(" ",input)+" does not currently exist.");}	
 		}	
-		else {GameLog.Add(name+String.Join(" ",input)+" is not a valid unit name.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+String.Join(" ",input)+" is not a valid unit name.");}
 		return "";
 	}
 
@@ -98,13 +99,13 @@ public static partial class CMD {
 		if (fnead!=""){
 			string[] fnail = new string[input.Length-start];
 			if (fnail.Length<1){
-				GameLog.Add(name+"No command specified after unit name.", LogIO.DEBUG);
+				GameLog.Debug(name+"No command specified after unit name.");
 				return new string[0];
 			}
 			Array.Copy(input, start, fnail, 0, input.Length-start);
 			return fnail;
 		}
-		GameLog.Add(name+"Input does not start with a unit full name.", LogIO.DEBUG);
+		GameLog.Debug(name+"Input does not start with a unit full name.");
 		return new string[0];
 	}
 }

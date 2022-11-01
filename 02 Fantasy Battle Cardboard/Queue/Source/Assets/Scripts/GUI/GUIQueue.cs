@@ -70,7 +70,7 @@ public class GUIQueue : MonoBehaviour {
 		for (int i=First(); i<=Last(); i++){
 			Unit u = TurnQueue.units[i];
 			float fieldW = 250;
-			if(GUI.Button(new Rect(drawX,drawY,fieldW,lineH),u.fullName, s)){
+			if(GUI.Button(new Rect(drawX,drawY,fieldW,lineH),u.FullName(), s)){
 				GUIInspector.Inspect(u);
 			}
 			drawX+=fieldW;
@@ -79,21 +79,21 @@ public class GUIQueue : MonoBehaviour {
 
 			drawX+=fieldW;
 			fieldW = 90;
-			if (u.STUN() > 0) {GUI.Label(new Rect(drawX,drawY,fieldW,lineH),"Stun ("+u.STUN()+")",s);}
-			else if (u.skipped == true){GUI.Label(new Rect(drawX,drawY,fieldW,lineH),"Skipped!", s);}
+			if (u.IsStunned()) {GUI.Label(new Rect(drawX,drawY,fieldW,lineH),"Stun ("+u.Stunned()+")",s);}
+			else if (u.IsSkipped()){GUI.Label(new Rect(drawX,drawY,fieldW,lineH),"Skipped!", s);}
 
 			if (!minimize){
 				drawX+=fieldW;
 				fieldW=70;
-				if(u.FP()>0){GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "FP ("+u.FP()+")", s);}
+				if(u.FP()>0){GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "FP "+u.FPString(), s);}
 
 				drawX+=fieldW;
 				fieldW=120;
-				GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "HP "+u.HPFraction(), s);
+				GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "HP "+u.HPString(), s);
 
 				drawX+=fieldW;
 				fieldW=80;
-				if(u.DEF()>0){GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "DEF ("+u.DEF()+")", s);}
+				if(u.DEF()>0){GUI.Label(new Rect(drawX,drawY,fieldW,lineH), "DEF "+u.DEFString(), s);}
 
 				drawX+=fieldW;
 				fieldW=70;

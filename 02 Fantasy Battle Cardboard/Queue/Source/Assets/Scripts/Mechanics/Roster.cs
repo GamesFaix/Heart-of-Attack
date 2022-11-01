@@ -8,11 +8,11 @@ public static class Roster {
 
 	public static void Activate(int p){
 		if (p>0 && p<=8) {active[p]=true;}
-		else {GameLog.Add("Roster: Attempt to activate invalid player number.",LogIO.DEBUG);}
+		else {GameLog.Debug("Roster: Attempt to activate invalid player number.");}
 	}
 	public static void Deactivate(int p){
 		if (p>0 && p<=8) {active[p]=false;}
-		else {GameLog.Add("Roster: Attempt to deactivate invalid player number.",LogIO.DEBUG);}
+		else {GameLog.Debug("Roster: Attempt to deactivate invalid player number.");}
 	}
 
 	public static void Reset(){
@@ -59,7 +59,7 @@ public static class Roster {
 	public static string Name (int p){
 		if (p>0 && p<=8) {return pNames[p];}
 		else {
-			GameLog.Add("Roster: Attempt to get name from invalid player number.",LogIO.DEBUG);
+			GameLog.Debug("Roster: Attempt to get name from invalid player number.");
 			return "";
 		}
 	}
@@ -70,7 +70,7 @@ public static class Roster {
 				u.SetOwner(captor);
 			}
 		}
-		else {GameLog.Add("Roster: Attempt to capture invalid team.",LogIO.DEBUG);}
+		else {GameLog.Debug("Roster: Attempt to capture invalid team.");}
 
 
 	}

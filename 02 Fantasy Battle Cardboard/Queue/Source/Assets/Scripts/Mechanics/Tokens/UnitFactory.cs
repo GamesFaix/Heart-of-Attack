@@ -8,17 +8,17 @@ public static class UnitFactory {
 		fullName="";
 		Unit u = new Unit(code);
 		TurnQueue.units.Add(u);
-		if(log==true){GameLog.Add("Created " +u.name+ " ("+u.instance+").",LogIO.OUT);}
-		fullName = u.fullName;
+		if (log) {GameLog.Out("Created " +u+".");}
+		fullName = u.FullName();
 	}
 
 	public static void Add(string code, bool log=true) {
 		Unit u = new Unit(code);
 		TurnQueue.units.Add(u);
-		if(log==true){GameLog.Add("Created " +u.name+ " ("+u.instance+").",LogIO.OUT);}
+		if (log) {GameLog.Out("Created " +u+".");}
 	}
 
-	public static void Add(string[] codes){
+	public static void Add(string[] codes, bool log=true){
 		string fns="";
 		foreach (string s in codes){
 			string fn;
@@ -27,76 +27,22 @@ public static class UnitFactory {
 		}
 		char[] trimChars = {' ',','};
 		fns = fns.TrimEnd(trimChars);
-		GameLog.Add("Created "+fns+".)", LogIO.OUT); 
+		if (log) {GameLog.Out("Created "+fns+".)");}
 	}
 
-	public static void Delete(string fullName) {
+	public static void Delete(string fullName, bool log=true) {
 		foreach (Unit u in TurnQueue.units){
-			if (u.fullName == fullName) {
-				GameLog.Add("Killed "+u.fullName+".",LogIO.OUT);
+			if (u.FullName() == fullName) {
+				if (log) {GameLog.Out("Killed "+u+".");}
 				TurnQueue.units.Remove(u);
 				return;
 			}
 		}
-		GameLog.Add("UnitFactory: Cannot kill "+fullName+". Unit does not exist.", LogIO.DEBUG); 
+		GameLog.Debug("UnitFactory: Cannot kill "+fullName+". Unit does not exist."); 
 	}
 	
-	public static Dictionary<string,string> CodeNames = new Dictionary<string,string>{
-		{"",""},
 
-		{"KATA","Katandroid"},
-		{"CARA", "Carapace Invader"},
-		{"MAWT", "MAWTH"},
-		{"KABU", "Kabutomachine"},
-		
-		{"DEMO", "Demolitia"},
-		{"MEIN", "Mein Schutz"},
-		{"PANO", "Panopticannon"},
-		{"DECI", "Decimatrix"},
-		
-		{"ROOK", "Rook"},
-		{"SMAS", "Smashbuckler"},
-		{"CONF", "Conflagragon"},
-		{"ASHE", "Ashes"},
-		{"BATT", "Battering Rambuchet"},
-		{"GARG", "Gargoliath"},
-		
-		{"GRIZ", "Grizzly Elder"},
-		{"TALO", "Taloned Scout"},
-		{"META", "Metaterrainean"},
-		{"ULTR", "Ultratherium"},
-		
-		{"REVO", "Revolving Tom"},
-		{"PIEC", "Piecemaker"},
-		{"REPR", "Reprospector"},
-		{"OLDT", "Old Three Hands"},
-		
-		{"LICH", "Lichenthrope"},
-		{"BEES", "Beesassin"},
-		{"MYCO", "Mycolonist"},
-		{"MART", "Martian Man Trap"},
-		{"BLAC", "Black Winnow"},
-		
-		{"PRIS", "Prism Guard"},
-		{"AREN", "Arena Non Sensus"},
-		{"PRIE", "Priest of Naja"},
-		{"DREA", "Dream Reaver"},
-		
-		{"RECY", "Recyclops"},	
-		{"NECR", "Necrochancellor"},
-		{"MOUT", "Mouth of the Underworld"},
-		{"MONO", "Monolith"},
-
-		{"CORP", "Corpse"},
-		{"TREE", "Tree"}
-	};
 	
-	public static Dictionary<string,string>.ValueCollection Names(){
-		return CodeNames.Values;
-	}
-	public static Dictionary<string,string>.KeyCollection Codes(){
-		return CodeNames.Keys;
-	}
 
 	static string[] gearp = new string[4] {"KABU","MAWT","CARA","KATA"};
 	static string[] newrep = new string[4] {"DECI","PANO","MEIN","DEMO"};
@@ -111,7 +57,7 @@ public static class UnitFactory {
 	public static string[] Faction(int i){
 		if (i>0 && i<=8){return factions[i];}
 		else{
-			GameLog.Add("UnitFactory: Attempt to lookup invalid faction.",LogIO.DEBUG);
+			GameLog.Debug("UnitFactory: Attempt to lookup invalid faction.");
 			return new string[0];
 		}
 

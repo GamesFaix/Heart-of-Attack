@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{23333422-D83E-773B-0BE5-A81EEE473526}</ProjectGuid>
+	<ProjectGuid>{46071BE4-9C23-841C-4A36-D80FE19CEE36}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -58,7 +58,13 @@
      <Compile Include="Assets\Scripts\Mechanics\Board.cs" />
      <Compile Include="Assets\Scripts\Mechanics\DiceCoin.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Roster.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Body.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Clock.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Health.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Label.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Resources.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Mechanics\Tokens\Token.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\Unit.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitConstructor.cs" />
      <Compile Include="Assets\Scripts\Mechanics\Tokens\UnitFactory.cs" />

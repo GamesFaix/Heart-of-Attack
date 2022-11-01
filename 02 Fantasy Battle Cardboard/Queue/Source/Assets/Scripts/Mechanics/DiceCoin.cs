@@ -17,7 +17,7 @@ public static class DiceCoin{
 			case DICE.D20: max=20; break;
 			default: 
 				max = 1; 
-				GameLog.Add("DiceCoin: Illegal dice type.", LogIO.DEBUG);
+				GameLog.Debug("DiceCoin: Illegal dice type.");
 				break;
 		}
 		return Mathf.RoundToInt(Random.Range(1,max));

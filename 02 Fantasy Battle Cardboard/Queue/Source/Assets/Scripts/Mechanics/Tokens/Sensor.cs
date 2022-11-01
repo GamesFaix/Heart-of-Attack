@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sensor {
-	Unit parent;
+namespace Tokens {
+	public class Sensor {
+		Unit parent;
 
-	public Sensor(Unit u){
-		parent = u;
+		public Sensor(Unit u){
+			parent = u;
+		}
 	}
 }

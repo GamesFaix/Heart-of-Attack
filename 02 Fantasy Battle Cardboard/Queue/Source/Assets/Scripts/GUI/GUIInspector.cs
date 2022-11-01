@@ -11,12 +11,7 @@ public class GUIInspector : MonoBehaviour {
 		s.fontSize = 20;
 	}
 
-	public static void Inspect(Unit unit){
-		u = unit;
-		if (u!=default(Unit)){GameLog.Add("Inspected "+unit.fullName+".", LogIO.DEBUG);}
-		else {GameLog.Add("Inspector cleared.", LogIO.DEBUG);}
-
-	}
+	public static void Inspect(Unit unit) {u = unit;}
 
 	bool hide = false;
 
@@ -39,7 +34,7 @@ public class GUIInspector : MonoBehaviour {
 				
 				//NAME
 				box = new Rect(x,y,w,lineH);
-				GUI.Label(box,u.fullName,s);
+				GUI.Label(box,u.FullName(),s);
 
 				box.x+=250;
 				GUI.Label(box,Roster.Name(u.Owner()),s);
@@ -48,19 +43,19 @@ public class GUIInspector : MonoBehaviour {
 
 				//PLANE & CLASS
 				box.y += lineH;
-				GUI.Label(box,PlaneToString(u.Plane()),s);
-				if (TClassToString(u.TClass())!=""){
+				GUI.Label(box,u.PlaneString(),s);
+				if (u.SpecialString()!=""){
 					box.x += 150;
-					GUI.Label(box,TClassToString(u.TClass()),s);
+					GUI.Label(box,u.SpecialString(),s);
 					box.x = x;
 				}
 
 				//HP, DEF, COR
 				box.y += lineH;
-				GUI.Label(box,"HP "+u.HPFraction(),s);
+				GUI.Label(box,"HP "+u.HPString(),s);
 				if (u.DEF() > 0){
 					box.x += 150;
-					GUI.Label(box,"DEF ("+u.DEF()+")",s);
+					GUI.Label(box,"DEF "+u.DEFString(),s);
 				}
 				if (u.COR()>0){
 					box.x += 150;
@@ -72,12 +67,12 @@ public class GUIInspector : MonoBehaviour {
 				box.y += lineH;
 				GUI.Label(box,"IN ("+u.IN()+")",s);
 
-				if (u.STUN() > 0) {
+				if (u.IsStunned()) {
 					box.x += 150;
-					GUI.Label(box,"Stunned ("+u.STUN()+")",s);
+					GUI.Label(box,"Stunned ("+u.Stunned()+")",s);
 					box.x = x;
 				}
-				else if (u.skipped == true){
+				else if (u.IsSkipped()){
 					box.x += 150;
 					GUI.Label(box,"Skipped!", s);
 					box.x = x;
@@ -85,9 +80,9 @@ public class GUIInspector : MonoBehaviour {
 			
 				//AP, FP
 				box.y += lineH;
-				GUI.Label(box,"AP ("+u.AP()+")",s);
+				GUI.Label(box,"AP: "+u.APString(),s);
 				box.x += 150;
-				GUI.Label(box,"FP ("+u.FP()+")",s);
+				GUI.Label(box,"FP "+u.FPString(),s);
 			}
 		}
 		else{
@@ -101,30 +96,7 @@ public class GUIInspector : MonoBehaviour {
 
 	}
 
-	string PlaneToString(List<PLANE> planes){
-		string s = "";
-		foreach (PLANE p in planes){
-			if (p == PLANE.SUNK){s += "Sunken, ";}
-			if (p == PLANE.GND) {s += "Ground, ";}
-			if (p == PLANE.AIR) {s += "Air, ";}
-			if (p == PLANE.ETH) {s += "Ethereal, ";}
-		}
-		char[] trim = new char[2]{' ',','};
-		s = s.Trim(trim);
-		return s;
-	}
-	string TClassToString(List<TCLASS> tClasses){
-		string s = "";
-		foreach (TCLASS tc in tClasses){
-			if (tc == TCLASS.KING){s += "Attack King, ";}
-			if (tc == TCLASS.TRAM){s += "Trample, ";}
-			if (tc == TCLASS.DEST){s += "Destructible, ";}
-			if (tc == TCLASS.REM) {s += "Remains, ";}
-		}
-		char[] trim = new char[2]{' ',','};
-		s = s.Trim(trim);
-		return s;
-	}
+
 
 
 }

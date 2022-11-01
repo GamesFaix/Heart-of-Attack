@@ -9,7 +9,7 @@ public static partial class CMD {
 	static string name = "CMD: ";
 
 	public static void New(string input){
-		GameLog.Add(input,LogIO.IN);
+		GameLog.In(input);
 		Parse(Format(input));
 		GUILog.ScrollToBottom();
 	}
@@ -36,15 +36,10 @@ public static partial class CMD {
 		else if (Head(input) == "REPLACE" || Head(input) == "R"){Replace(Tail(input)); return;}
 		else if (Head(input) == "CAPTURE"){Capture(Tail(input)); return;}
 
-		//display commands
-		else if (Head(input) == "GUI"){
-			input = Tail(input);
-			if (Head(input) == "LOG"){LogDisplay(Tail(input)); return;}
-		}
 		//unit modify commands
 		else if (FNead(input)!=""){UnitCommands(input);}
 
-		else {GameLog.Add(name+input+" is not a valid command.",LogIO.DEBUG);}
+		else {GameLog.Debug(name+input+" is not a valid command.");}
 	}
 	
 	static void Start(string[] input){
@@ -55,7 +50,7 @@ public static partial class CMD {
 		}
 		TurnQueue.Shuffle(false);
 		TurnQueue.Advance(false);
-		GameLog.Add("New game ready.", LogIO.DEBUG);
+		GameLog.Out("New game ready.");
 	}
 
 	static void Create(string[] input){
@@ -64,7 +59,7 @@ public static partial class CMD {
 		if (IsCode(tryName, out code)){
 			UnitFactory.Add(code);
 		}
-		else {GameLog.Add(name+"Cannot create "+tryName+". Invalid unit name.",LogIO.DEBUG);}
+		else {GameLog.Debug(name+"Cannot create "+tryName+". Invalid unit name.");}
 	}
 	static void Kill(string[] input){
 		string fn;
@@ -73,7 +68,7 @@ public static partial class CMD {
 			UnitFactory.Delete(fn);
 
 		}
-		else {GameLog.Add(name+"Cannot kill "+input+". Unit does not exist.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"Cannot kill "+input+". Unit does not exist.");}
 	}
 	static void Replace(string[] input){
 		string oldFN;
@@ -85,11 +80,11 @@ public static partial class CMD {
 				string newFN;
 				UnitFactory.Add(code, out newFN);
 				UnitFactory.Delete(oldFN);
-				GameLog.Add("Replaced "+oldFN+" with "+newFN+".", LogIO.OUT);
+				GameLog.Out("Replaced "+oldFN+" with "+newFN+".");
 			}
-			else {GameLog.Add(name+"Cannot replace "+oldFN+" with "+tryNewFN+". Invalid unit name.",LogIO.DEBUG);}
+			else {GameLog.Debug(name+"Cannot replace "+oldFN+" with "+tryNewFN+". Invalid unit name.");}
 		}
-		else {GameLog.Add(name+"Cannot replace "+input+".  Unit does not exist.", LogIO.DEBUG);}
+		else {GameLog.Debug(name+"Cannot replace "+input+".  Unit does not exist.");}
 	}
 
 	static void Capture(string[] input){
@@ -102,7 +97,7 @@ public static partial class CMD {
 				return;
 			}
 		}
-		GameLog.Add(name+"Capture requires two player numbers.", LogIO.DEBUG);
+		GameLog.Debug(name+"Capture requires two player numbers.");
 	}
 
 	static void Shift(string[] input){UnitCommands(input);}
@@ -117,37 +112,6 @@ public static partial class CMD {
 		int n = 1;
 		if(input.Length > 0){Int32.TryParse(input[0], out n);}
 		TurnQueue.MoveDown(u,n);
-	}
-	
-
-	
-	static void LogDisplay (string[] input){
-		if (Head(input) == "IN"){ 
-			GUILog.inLog = !GUILog.inLog;
-			GameLog.Add("Input log display toggled.", LogIO.DEBUG);
-			return;
-		}
-		else if (Head(input) == "OUT"){ 
-			GUILog.outLog = !GUILog.outLog;
-			GameLog.Add("Output log display toggled.", LogIO.DEBUG);
-			return;
-		}
-		else if (Head(input) == "DEBUG"){ 
-			GUILog.debugLog = !GUILog.debugLog;
-			GameLog.Add("Debug log display toggled.", LogIO.DEBUG);
-			return;
-		}
-		else if (Head(input) == "HIDE"){ 
-			GUILog.Hide();
-			GameLog.Add("Log hidden.", LogIO.DEBUG);
-			return;
-		}
-		else if (Head(input) == "SHOW"){ 
-			GUILog.Show();
-			GameLog.Add("Log unhidden.", LogIO.DEBUG);
-			return;
-		}
-		else {GameLog.Add("CMD: Invalid LogDisplay command.", LogIO.DEBUG);}
 	}
 
 	static void Reset(){
