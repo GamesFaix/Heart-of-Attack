@@ -11,7 +11,7 @@ namespace HOA{
 			NewHealth(75);
 			NewWatch(3); 
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new ACorrode("Bite", Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Add(new ABlacLich(this));
 			arsenal.Add(new ABlacWeb(this));
@@ -42,11 +42,11 @@ namespace HOA{
 			Charge();
 			Cell c = (Cell)targets[0];
 
-			AEffects.Create(new Source(actor), EToken.WEBB, c);
+			EffectQueue.Add(new ECreate(new Source(actor), EToken.WEBB, c));
 
 			TokenGroup occupants = c.Occupants.OnlyClass(EClass.UNIT);
 			foreach (Unit u in occupants) {
-				AEffects.Damage(new Source(actor), u, 12);
+				EffectQueue.Add(new EDamage(new Source(actor), u, 12));
 			}
 			Targeter.Reset();
 
@@ -69,7 +69,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Create(new Source(actor), EToken.LICH, (Cell)targets[0]);
+			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
 
 			CellGroup cg = actor.Cell.Neighbors();
 			bool second = false;
@@ -101,7 +101,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Create(new Source(actor), EToken.LICH, (Cell)targets[0]);
+			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
 			Targeter.Reset();
 		}
 		

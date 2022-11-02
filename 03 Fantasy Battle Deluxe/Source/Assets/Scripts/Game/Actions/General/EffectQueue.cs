@@ -3,35 +3,49 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public static class EffectQueue {
+	public class EffectQueue : MonoBehaviour {
 
-		static List<List<Effect>> effects = new List<List<Effect>>();
+		static List<IEffect> effects = new List<IEffect>();
 
-		public static void Add (Effect e) {
-			effects.Add(new List<Effect> {e});
-			if (!processing) {Process();}
-		}
-		public static void Add (List<Effect> e) {
+		public static void Add (IEffect e) {
 			effects.Add(e);
 			if (!processing) {Process();}
 		}
 
-		static List<Effect> Top {get {return effects[0];} }
+		public static void Interrupt (IEffect e) {
+			effects.Insert(1, e);
+		}
+
+		static IEffect Top {get {return effects[0];} }
 		static void RemoveTop () {effects.Remove(Top);}
 
-		static float duration = 2;
+		static float duration = 0.5f;
 		static float startTime = 0;
 		static bool processing = false;
+		public static bool Processing { get { return processing; } }
 
 		static void Process () {
 			processing = true;
 			startTime = Time.time;
+			Top.Process();
+		}
 
-			foreach (Effect e in Top) {e.Process();}
-			if (Time.time - startTime >= duration) {
-				RemoveTop();
+		void Update () {
+			if (processing && Time.time - startTime >= duration) {
+				if (!ActiveSequence) {RemoveTop();}
 				if (effects.Count > 0) {Process();}
 				else {processing = false;}
+			}
+
+		}
+
+		bool ActiveSequence {
+			get {
+				if (Top is EffectSeq) {
+					EffectSeq es = (EffectSeq)Top;
+					if (es.Count > 1) {return true;}
+				}
+				return false;
 			}
 		}
 	}

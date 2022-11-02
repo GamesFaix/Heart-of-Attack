@@ -20,7 +20,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Rage(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new ERage(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();
 		}
 	}

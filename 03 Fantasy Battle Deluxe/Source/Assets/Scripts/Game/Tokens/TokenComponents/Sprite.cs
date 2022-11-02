@@ -65,7 +65,7 @@ namespace HOA {
 
 		float moveStartTime = 0;
 		float MoveElapsedTime {get {return Time.time - moveStartTime;} }
-		float moveTotalTime = 2;
+		float moveTotalTime = 0.5f;
 		float Percent{ get {return MoveElapsedTime/moveTotalTime;} }
 		
 		bool moving = false;

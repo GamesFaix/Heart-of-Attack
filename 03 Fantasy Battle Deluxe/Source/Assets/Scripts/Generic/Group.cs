@@ -10,6 +10,7 @@ public class Group<t> {
 	public Group (List<t> items) {list = items;}
 	
 	public void Add (t item) {if (!Contains(item)) {list.Add(item);} }
+	public void Add (List<t> list) {foreach (t item in list) {Add(item);} }
 	public void Add (Group<t> group) {foreach (t item in group) {Add(item);} }
 
 	public void Remove (t item) {if (Contains(item)) {list.Remove(item);} }

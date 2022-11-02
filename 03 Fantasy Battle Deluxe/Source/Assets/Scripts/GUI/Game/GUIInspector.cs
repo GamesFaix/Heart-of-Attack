@@ -356,11 +356,22 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 
 			box = p.Box(btnW);
-			
-			if (GUI.Button(box, a.Name)) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
-				Targeter.Find(a);
+
+			if (a.Playable) {
+				if (GUI.Button(box, a.Name)) {
+					//Debug.Log("button clicked "+a.Name);
+					GUIMaster.PlaySound(EGUISound.CLICK);
+					Targeter.Find(a);
+				}
 			}
+			else {
+				Color oldColor = p.s.normal.textColor;
+				p.s.normal.textColor = Color.gray;
+				GUI.Box (box, a.Name);
+
+				p.s.normal.textColor = oldColor;
+			}
+
 			if (box.Contains(MousePos())) {inspectedAction = a;}
 			p.NextLine();
 			
@@ -377,7 +388,7 @@ public class GUIInspector : MonoBehaviour {
 
 			p.NudgeX();
 			if (GUI.Button(p.Box(btnW), "Execute") || Input.GetKeyUp("space")) {
-
+				//Debug.Log("executing");
 				if (Targeter.Ready) {
 					Targeter.Execute();
 					GUIMaster.PlaySound(EGUISound.CLICK);
@@ -389,25 +400,24 @@ public class GUIInspector : MonoBehaviour {
 				Targeter.Reset();
 				GUIMaster.PlaySound(EGUISound.CLICK);
 			}
+
+			p.NextLine();
+
+			p.NudgeX();
+			if (Targeter.Passable) {
+				if (GUI.Button(p.Box(btnW), "Pass")) {
+					//Debug.Log("executing");
+					Targeter.Pass();
+					GUIMaster.PlaySound(EGUISound.CLICK);
+				}
+			}
 		}
 	}
 
 	void Action (Panel p) {
 		GUI.Box (p.FullBox, "");
 		if (inspectedAction != default(Action)) {
-			Action a = inspectedAction;
-			GUI.Label(p.LineBox, a.Name, p.s);
-
-			a.DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
-
-			a.DrawAim(0, new Panel(p.LineBox, p.LineH, p.s));
-
-
-
-			float descH = (p.H-(p.LineH*2))/p.H;
-			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
-
-			GUI.Label(p.TallBox(descH), a.Desc());			
+			inspectedAction.Draw(p);
 		}
 	}
 

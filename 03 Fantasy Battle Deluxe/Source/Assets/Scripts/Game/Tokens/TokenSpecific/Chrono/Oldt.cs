@@ -12,7 +12,9 @@ namespace HOA{
 			NewHealth(85,2);
 			watch = new WatchOldt(this, 2);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			//arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Add(new AMovePath(this, 2));
+
 			Aim attackAim = new Aim (EAim.ARC, EClass.UNIT, 3);
 			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.REVO));
@@ -81,10 +83,12 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			TurnQueue.Remove(u);
-			TurnQueue.Add(u);
 
-			u.SpriteEffect(EEffect.STATDOWN);
+			int last = TurnQueue.Count-1;
+			int current = TurnQueue.IndexOf(u);
+			int magnitude = 0-(last-current);
+
+			EffectQueue.Add(new EShift(new Source(actor), u, magnitude));
 			Targeter.Reset();
 		}
 	}
@@ -103,7 +107,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TurnQueue.Shuffle(new Source(actor));
+			EffectQueue.Add(new EShuffle(new Source(actor)));
 			Targeter.Reset();
 		}
 	}
@@ -125,8 +129,8 @@ namespace HOA{
 			Charge();
 			Unit u = (Unit)targets[0];
 			int magnitude = TurnQueue.IndexOf(u) - 1;
-			TurnQueue.MoveUp(u, magnitude);
-			u.SpriteEffect(EEffect.STATUP);
+
+			EffectQueue.Add(new EShift (new Source(actor), u, magnitude));
 			Targeter.Reset();
 		}
 	}

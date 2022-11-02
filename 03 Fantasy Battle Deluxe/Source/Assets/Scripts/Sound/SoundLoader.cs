@@ -9,6 +9,7 @@ namespace HOA {
 		public static AudioClip click;
 		public static AudioClip inspect;
 		public static AudioClip target;
+		static Dictionary<EEffect, AudioClip> effects;
 
 		public static void Load () {
 			themes = new List<AudioClip>();
@@ -24,6 +25,28 @@ namespace HOA {
 			click = LoadSound("GUI/Click");
 			inspect = LoadSound("GUI/Inspect");
 			target = LoadSound("GUI/Target");
+
+			effects = new Dictionary<EEffect, AudioClip>();
+			
+//			Add(EEffect.SHOW, "show");
+			AddEffect(EEffect.BIRTH, "Birth");
+			AddEffect(EEffect.DEATH, "Death");
+			AddEffect(EEffect.DMG, "Punch");
+			AddEffect(EEffect.DESTRUCT, "Destruct");
+			AddEffect(EEffect.STATUP, "StatUp");
+			AddEffect(EEffect.STATDOWN, "StatDown");
+			AddEffect(EEffect.FIRE, "Fire");
+			AddEffect(EEffect.SHUFFLE, "Shuffle");
+			AddEffect(EEffect.ADVANCE, "Advance");
+			AddEffect(EEffect.CORRODE, "Corrode");
+			AddEffect(EEffect.WATERLOG, "Waterlog");
+			AddEffect(EEffect.INCINERATE, "Incinerate");
+			AddEffect(EEffect.LASER, "Laser");
+			AddEffect(EEffect.TAILS, "Tails");
+			AddEffect(EEffect.STICK, "Stick");
+			AddEffect(EEffect.DETONATE, "Detonate");
+			AddEffect(EEffect.EXP, "Explosion");
+
 		}
 
 		static void AddTheme(string fileName) {
@@ -41,7 +64,10 @@ namespace HOA {
 			return default(AudioClip);
 
 		}
+		static void AddEffect (EEffect e, string fileName) {effects.Add(e, LoadSound("Effects/"+fileName));}
+		
 
+		public static AudioClip Effect (EEffect e) {return effects[e];}
 
 	}
 

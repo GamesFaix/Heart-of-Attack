@@ -16,7 +16,7 @@ namespace HOA{
 //			Cell oldCell = Cell;
 			Exit();
 			if (log && !IsClass(EClass.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
-			AEffects.Explosion (new Source(this), Cell, 12);
+			EffectQueue.Interrupt(new EExplosion(new Source(this), Cell, 12));
 
 			BodyMine bodyMine = (BodyMine)body;
 			bodyMine.DestroySensors();
@@ -84,12 +84,38 @@ namespace HOA{
 		public override void Exit () {}
 		
 		public override void OtherEnter (Token t) {
-			parent.Die(new Source(t));
+			EffectQueue.Interrupt(new EDetonate(new Source(t), parent));
 		}
 		public override void OtherExit (Token t) {}
 		
 		public override string ToString () {
 			return "Trigger ("+parent.ToString()+")";
+		}
+	}
+
+	public class EDetonate : Effect {
+		public override string ToString () {return "Effect - Detonate";}
+		Token target;
+		
+		public EDetonate (Source s, Token t) {
+			source = s; target = t;
+		}
+		public override void Process() {
+			Mixer.Play(SoundLoader.Effect(EEffect.DETONATE));
+			target.SpriteEffect(EEffect.DETONATE);
+			EffectQueue.Interrupt(new EDetonate2(source, target));
+		}
+	}
+
+	public class EDetonate2 : Effect {
+		public override string ToString () {return "Effect - Detonate2";}
+		Token target;
+		
+		public EDetonate2 (Source s, Token t) {
+			source = s; target = t;
+		}
+		public override void Process() {
+			target.Die(source);
 		}
 	}
 }

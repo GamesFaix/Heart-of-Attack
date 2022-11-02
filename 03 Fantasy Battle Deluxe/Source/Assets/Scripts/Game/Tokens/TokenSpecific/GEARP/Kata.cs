@@ -11,7 +11,7 @@ namespace HOA {
 			NewHealth(25);
 			NewWatch(5);	
 
-			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new AKataMove(this));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Sort();
@@ -19,36 +19,62 @@ namespace HOA {
 		public override string Notes () {return "";}
 	}
 
-	public class AKataMove : Action {
-		
+	public class AKataMove : Action, IMultiMove {
+		Cell target;
+		public int Optional () {return 1;}
+
 		public AKataMove (Unit u) {
 			weight = 1;
-			price = new Price(0,0);
 			actor = u;
-			AddAim(HOA.Aim.MovePath(0));
-			
+			price = new Price(0,0);
 			name = "Sprint";
 			desc = "Move "+actor+" to target cell.  \nRange +1 per focus (up to +6).  \n"+actor+" loses all focus.";
+
+			ResetAim();
 			
 		}
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 6);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Purpose, aim[0].Range+bonus);
+			for (int i=0; i<bonus; i++) {
+				aim.Add(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
+			}
+		}
+		
+		public override void UnAdjust () {
+			ResetAim();
 		}
 
-		public override void UnAdjust () {
-			aim[0] = HOA.Aim.MovePath(0);
+		void ResetAim () {
+			aim = new List<Aim>();
 		}
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			actor.SetStat(new Source(actor), EStat.FP, 0, false);
-
-			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			foreach (ITargetable target in targets) {
+				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+			}
 			Targeter.Reset();
+			actor.SetStat(new Source(actor), EStat.FP, 0);
+		}
+		
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			
+			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			
+			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, Mathf.Min(6, actor.FP));
+			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
+			
+			float descH = (p.H-(p.LineH*2))/p.H;
+			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+			
+			GUI.Label(p.TallBox(descH), Desc());	
+			
+			
 		}
 	}
+
 
 	public class AKataSpin : Action {
 		int damage;

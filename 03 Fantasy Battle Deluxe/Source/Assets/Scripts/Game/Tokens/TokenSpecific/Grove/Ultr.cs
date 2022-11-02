@@ -12,7 +12,7 @@ namespace HOA{
 			NewHealth(80);
 			NewWatch(2);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 20));
 			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 16));
 			arsenal.Add(new AUltrBlast(this));
@@ -42,8 +42,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Kill (new Source(actor), (Token)targets[0]);
-			AEffects.Damage(new Source(actor), (Unit)targets[1], damage);
+			EffectQueue.Add(new EKill (new Source(actor), (Token)targets[0]));
+			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[1], damage));
 			Targeter.Reset();
 		}
 	}
@@ -69,7 +69,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Replace(new Source(actor), (Token)targets[0], child);
+			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], child));
 			Targeter.Reset();
 		}
 	}
@@ -92,7 +92,7 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			AEffects.Damage (new Source(actor), u, damage);
+			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
 
 			u.AddStat (new Source(actor), EStat.IN, -2);
 			u.timers.Add(new TBlast(u, actor));

@@ -20,7 +20,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Laser(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new ELaser(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();
 		}
 	}

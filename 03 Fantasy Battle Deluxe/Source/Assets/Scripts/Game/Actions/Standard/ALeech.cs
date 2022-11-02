@@ -19,7 +19,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Leech(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new ELeech(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();
 		}
 	}

@@ -86,7 +86,7 @@ namespace HOA {
 			if (t is Unit && t.IsPlane(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
-				AEffects.Damage(new Source(parent), u, 7);
+				EffectQueue.Add(new EIncinerate(new Source(parent), u, 7));
 			}
 		}
 		public override void OtherExit (Token t) {
@@ -118,11 +118,25 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			AEffects.Damage(new Source(source), parent, 7);
+			EffectQueue.Add(new EIncinerate(new Source(source), parent, 7));
 			turns++;
 		}
 	}
+
 	
+	public class EIncinerate : Effect {
+		public override string ToString () {return "Effect - Incinerate";}
+		Unit target; int dmg;
+		
+		public EIncinerate (Source s, Unit u, int n) {
+			source = s; target = u; dmg = n;
+		}
+		public override void Process() {
+			target.Damage(source, dmg);
+			Mixer.Play(SoundLoader.Effect(EEffect.INCINERATE));
+			target.SpriteEffect(EEffect.INCINERATE);
+		}
+	}
 	
 	
 	

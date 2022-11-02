@@ -9,7 +9,7 @@ namespace HOA{
 			NewHealth(65);
 			NewWatch(1);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Add(new AMovePath(this, 2));
 			arsenal.Add(new AAttack("Ram", Price.Cheap, this, Aim.Melee(), 16));
 
 			arsenal.Add(new AAttack("Fling", new Price(1,1), this, Aim.Arc(3), 12));

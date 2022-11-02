@@ -10,7 +10,7 @@ namespace HOA{
 			NewHealth(15);
 			NewWatch(3);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new APrisRefract(new Price(1,1), this, Aim.Shoot(3), 12));
 			arsenal.Sort();
@@ -25,7 +25,7 @@ namespace HOA{
 			}
 			else {
 				GameLog.Out(s.ToString()+" tried to target "+FullName+" and missed.");
-				SpriteEffect(EEffect.TAILS);
+				EffectQueue.Add(new ETails(new Source(this), this));
 			}
 		}
 		
@@ -64,7 +64,7 @@ namespace HOA{
 				
 				while (dmg > 0 && !stop) {
 					affected = cell.Occupants;
-					if (affected.OnlyClass(EClass.OB).Count > 0) {stop = true; Debug.Log("obstacle hit");}
+					if (affected.OnlyClass(EClass.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}
 					foreach(Token t in affected.OnlyClass(EClass.UNIT)) {
 						((Unit)t).Damage(new Source(actor), dmg);
 						t.SpriteEffect(EEffect.LASER);
@@ -78,9 +78,10 @@ namespace HOA{
 				}
 			}
 			else {
-				actor.SpriteEffect(EEffect.TAILS);
+				EffectQueue.Add(new ETails(new Source(actor), actor));
 				GameLog.Out(actor+" attempts to Refract and misses.");
 			}
+			Targeter.Reset();
 		}
 	}
 }

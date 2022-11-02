@@ -118,11 +118,24 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			AEffects.Damage(new Source(source), parent, 5);
+			EffectQueue.Add(new EWaterlog(new Source(source), parent, 5));
 			turns++;
 		}
 	}
 
+	public class EWaterlog : Effect {
+		public override string ToString () {return "Effect - Waterlog";}
+		Unit target; int dmg;
+		
+		public EWaterlog (Source s, Unit u, int n) {
+			source = s; target = u; dmg = n;
+		}
+		public override void Process() {
+			target.Damage(source, dmg);
+			Mixer.Play(SoundLoader.Effect(EEffect.WATERLOG));
+			target.SpriteEffect(EEffect.WATERLOG);
+		}
+	}
 
 
 

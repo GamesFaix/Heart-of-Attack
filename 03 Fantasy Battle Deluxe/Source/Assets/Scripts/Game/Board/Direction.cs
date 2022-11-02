@@ -24,7 +24,10 @@ namespace HOA {
 		
 		public static int[] FromCells (Cell c1, Cell c2) {
 			int x = c2.X - c1.X;
+			if (x!=0) {x = x/(Mathf.Abs(x));}
+
 			int y = c2.Y - c1.Y;
+			if (y!=0) {y = y/(Mathf.Abs(y));}
 			return new int[2] {x,y};
 		}
 		

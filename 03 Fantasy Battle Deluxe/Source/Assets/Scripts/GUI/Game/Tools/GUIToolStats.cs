@@ -51,9 +51,9 @@ namespace HOA {
 			label += " "+statLabels[statBtn]+" "+signLabels[signBtn]+" "+magnitude;
 		
 			if (GUI.Button(p.LineBox, label) || Input.GetKeyUp("space")){
-				if (signBtn == 0) {AEffects.SetStat(Source.ActivePlayer, (Unit)instance, stat, magnitude);}
-				if (signBtn == 1) {AEffects.AddStat(Source.ActivePlayer, (Unit)instance, stat, magnitude);}
-				if (signBtn == 2) {AEffects.AddStat(Source.ActivePlayer, (Unit)instance, stat, 0-magnitude);}
+				if (signBtn == 0) {EffectQueue.Add(new ESetStat(Source.ActivePlayer, (Unit)instance, stat, magnitude));}
+           		if (signBtn == 1) {EffectQueue.Add(new EAddStat(Source.ActivePlayer, (Unit)instance, stat, magnitude));}
+                if (signBtn == 2) {EffectQueue.Add(new EAddStat(Source.ActivePlayer, (Unit)instance, stat, 0-magnitude));}
 				GUISelectors.Reset();
 			}
 			

@@ -1,15 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AAttack.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game\Actions\General\Effects.cs">
     <Files>
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AMove.cs" Line="23" Column="6" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\General\Effects.cs" Line="319" Column="2" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\General\EffectQueue.cs" Line="17" Column="57" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Misc\Core.cs" Line="17" Column="3" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AGrenade.cs" Line="21" Column="3" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\GUI\Graphics\SpriteEffects.cs" Line="18" Column="38" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Tokens\TokenComponents\Health.cs" Line="111" Column="23" />
-      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AAttack.cs" Line="20" Column="4" />
+      <File FileName="Assets\Scripts\Game\Tokens\TokenComponents\Sprite.cs" Line="68" Column="26" />
+      <File FileName="Assets\Scripts\Game\Tokens\TokenHandling\Token.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Game\Actions\General\AEffects.cs" Line="7" Column="3" />
+      <File FileName="Assets\Scripts\Game\Actions\General\EffectQueue.cs" Line="37" Column="3" />
+      <File FileName="Assets\Scripts\Game\Actions\General\Effects.cs" Line="319" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

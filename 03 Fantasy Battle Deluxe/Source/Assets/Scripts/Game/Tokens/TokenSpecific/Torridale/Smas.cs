@@ -10,7 +10,7 @@ namespace HOA{
 			NewHealth(30);
 			NewWatch(3);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new ASmasFlail(Price.Cheap, this));
 			arsenal.Add(new ASmasSlam(new Price(1,1), this));
 			arsenal.Sort();
@@ -48,7 +48,7 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
-			AEffects.Damage(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
 			UnAdjust();
 			Targeter.Reset();
 		}

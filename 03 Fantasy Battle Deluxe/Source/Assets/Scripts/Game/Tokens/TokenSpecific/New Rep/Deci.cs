@@ -30,35 +30,69 @@ namespace HOA{
 		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
 	}
 
-	public class ADeciMove : Action {
+	public class ADeciMove : Action, IMultiMove {
+		Cell target;
+		int range = 3;
+		public int Optional () {return 1;}
 		
 		public ADeciMove (Unit u) {
 			weight = 1;
-			price = new Price(1,0);
 			actor = u;
-			AddAim(HOA.Aim.MovePath(3));
-			
 			name = "Move";
-			desc = "Move "+actor+" to target cell.  \nRange -1 per focus.";
+			desc = "Move "+actor+" to target cell.";
+			
+			ResetAim();
+			
 			
 		}
-		
+
 		public override void Adjust () {
 			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Purpose, aim[0].Range-bonus);
+			for (int i=0; i<bonus; i++) {
+				aim.Remove(aim[aim.Count-1]);
+			}
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = HOA.Aim.MovePath(3);
+			ResetAim();
 		}
-		
+
+		void ResetAim () {
+			aim = new List<Aim>();
+			for (int i=0; i<range; i++) {
+				Aim a = new Aim(EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE) ;
+				AddAim(a);
+				//Debug.Log(a);
+			}
+		}
+
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			
-			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			foreach (ITargetable target in targets) {
+				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+			}
 			Targeter.Reset();
 		}
+		
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			
+			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			
+			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, Mathf.Max(0, range-actor.FP));
+			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
+			
+			float descH = (p.H-(p.LineH*2))/p.H;
+			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+			
+			GUI.Label(p.TallBox(descH), Desc());	
+			
+			
+		}
+
+
 	}
+
 
 	public class ADeciFortify : Action {
 		public ADeciFortify (Unit u) {
@@ -75,9 +109,9 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			AEffects.AddStat(new Source(actor), actor, EStat.MHP, 10);
-			AEffects.AddStat(new Source(actor), actor, EStat.HP, 10);
-			AEffects.AddStat(new Source(actor), actor, EStat.DEF, 1);
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, 10));
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.HP, 10));
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 1));
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {if (a is AAttack) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is ADeciFortify) {actor.Arsenal().Remove(a);} }
@@ -103,9 +137,9 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			AEffects.AddStat(new Source(actor), actor, EStat.MHP, -10);
-			AEffects.AddStat(new Source(actor), actor, EStat.HP, -10);
-			AEffects.AddStat(new Source(actor), actor, EStat.DEF, -1);
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, -10));
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.HP, -10));
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -1));
 			foreach (Action a in actor.Arsenal()) {	if (a is AAttack) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) { if (a is ADeciMortar) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is ADeciMobilize) {actor.Arsenal().Remove(a);} }
@@ -144,7 +178,8 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);
+			EffectQueue.Add(new EExplosion(new Source(actor), (Cell)targets[0], damage));
+			//AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);
 			Targeter.Reset();
 		}
 	}

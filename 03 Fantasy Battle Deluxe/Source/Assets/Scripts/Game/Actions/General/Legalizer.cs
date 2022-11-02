@@ -4,62 +4,73 @@ namespace HOA {
 	
 	public static class Legalizer {
 		
-		public static void Find (Token t, Aim a, Token other=default(Token)) {
+		public static void Find (Token actor, Aim a, Cell start=default(Cell), Token other=default(Token)) {
 			//GUISelectors.Reset();
+			if (start == default(Cell)) {start = actor.Cell;}
+
 			switch (a.AimType) {
-				case EAim.CELLMATE: FindCellmate(t, a, other); break;
-				case EAim.NEIGHBOR: FindNeighbor(t, a, other); break;
-				case EAim.PATH: FindPath(t, a, other); break;
-				case EAim.LINE: FindLine(t, a, other); break;
-				case EAim.ARC: FindArc(t, a, other); break;
-				case EAim.GLOBAL: FindGlobal(t, a, other); break;
-				case EAim.FREE: FindFree(t,a, other); break;
+				case EAim.CELLMATE: FindCellmate(start, actor, a, other); break;
+				case EAim.NEIGHBOR: FindNeighbor(start, actor, a, other); break;
+				case EAim.PATH: FindPath(start, actor, a, other); break;
+				case EAim.LINE: FindLine(start, actor, a, other); break;
+				case EAim.ARC: FindArc(start, actor, a, other); break;
+				case EAim.GLOBAL: FindGlobal(actor, a, other); break;
+				case EAim.FREE: FindFree(actor, a, other); break;
 				default: break;
 			}
 		}
 		
 		//cellmate
-		static void FindCellmate (Token t, Aim a, Token other) {}
+		static void FindCellmate (Cell start, Token actor, Aim a, Token other) {}
 
 		//neighbor
-		static void FindNeighbor (Token t, Aim a, Token other) {
-			if (!a.TargetClass.Contains(EClass.CELL)) {NeighborTokens(t, a);}
+		static void FindNeighbor (Cell start, Token actor, Aim a, Token other) {
+			if (!a.TargetClass.Contains(EClass.CELL)) {NeighborTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.CREATE) {NeighborCellCreate(t, other);}
+				if (a.Purpose == EPurpose.CREATE) {NeighborCellCreate(start, other);}
+				if (a.Purpose == EPurpose.MOVE) {NeighborCellMove(start, actor);}
+
 			}
 		}
 
-		static void NeighborTokens (Token actor, Aim a) {
-			TokenGroup targets = actor.Cell.Neighbors().Occupants;
-			targets.Add(actor.Cell.Occupants);
+		static void NeighborTokens (Cell start, Token actor, Aim a) {
+			TokenGroup targets = start.Neighbors().Occupants;
+			targets.Add(start.Occupants);
 			targets = targets.OnlyClass(a.TargetClass);
 			targets = Restrict(targets, actor, a);
 			foreach (Token t in targets) {t.Legalize();}
 		}
 		
-		static void NeighborCellCreate (Token actor, Token child) {
-			Cell start = actor.Cell;
+		static void NeighborCellCreate (Cell start, Token other) {
 			CellGroup neighbors = start.Neighbors();
 			foreach (Cell c in neighbors) {
-				if (child.CanEnter(c)) {
+				if (other.CanEnter(c)) {
+					c.Legalize();
+				}
+			}
+		}
+
+		static void NeighborCellMove (Cell start, Token actor) {
+			CellGroup neighbors = start.Neighbors();
+			foreach (Cell c in neighbors) {
+				if (actor.CanEnter(c)) {
 					c.Legalize();
 				}
 			}
 		}
 		
 		//path
-		static void FindPath (Token t, Aim a, Token other) {
-			if (!a.TargetClass.Contains(EClass.CELL)) {PathTokens (t,a);}
+		static void FindPath (Cell start, Token actor, Aim a, Token other) {
+			if (!a.TargetClass.Contains(EClass.CELL)) {PathTokens (start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.MOVE) {PathCellMove (t,a);}
+				if (a.Purpose == EPurpose.MOVE) {PathCellMove (start, actor, a);}
 		
 			}
 		}
 		
-		static void PathTokens (Token actor, Aim a) {
+		static void PathTokens (Cell start, Token actor, Aim a) {
 			int range = a.Range;
-			Cell start = actor.Cell;
-			
+
 			CellGroup toCheck = new CellGroup();
 			CellGroup nextRad = new CellGroup();
 			
@@ -91,10 +102,9 @@ namespace HOA {
 			}
 		}
 			
-		static void PathCellMove (Token actor, Aim a) {
+		static void PathCellMove (Cell start, Token actor, Aim a) {
 			int range = a.Range;
-			Cell start = actor.Cell;
-			
+
 			CellGroup legal = new CellGroup();
 			CellGroup toCheck = new CellGroup();
 			CellGroup nextRad = new CellGroup();
@@ -138,17 +148,16 @@ namespace HOA {
 		
 		
 		//line
-		static void FindLine (Token t, Aim a, Token other) {
-			if (!a.TargetClass.Contains(EClass.CELL)) {LineTokens(t,a);}
+		static void FindLine (Cell start, Token actor, Aim a, Token other) {
+			if (!a.TargetClass.Contains(EClass.CELL)) {LineTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.MOVE) {LineCellMove(t,a);}
+				if (a.Purpose == EPurpose.MOVE) {LineCellMove(start, actor, a);}
 		
 			}
 		}
 			
-		static void LineTokens (Token actor, Aim a) {
+		static void LineTokens (Cell start, Token actor, Aim a) {
 			int range = a.Range;
-			Cell start = actor.Cell;
 			
 			for (int i=0; i<8; i++) {
 				int[] dir = Direction.FromInt(i);
@@ -174,9 +183,8 @@ namespace HOA {
 			}
 		}
 			
-		static void LineCellMove (Token actor, Aim a) {
+		static void LineCellMove (Cell start, Token actor, Aim a) {
 			int range = a.Range;
-			Cell start = actor.Cell;
 			CellGroup legal = new CellGroup();
 			
 			for (int i=0; i<8; i++) {
@@ -204,20 +212,19 @@ namespace HOA {
 		}
 		
 		//arc
-		static void FindArc (Token t, Aim a, Token other) {
-			if (!a.TargetClass.Contains(EClass.CELL)) {ArcTokens(t,a);}
+		static void FindArc (Cell start, Token actor, Aim a, Token other) {
+			if (!a.TargetClass.Contains(EClass.CELL)) {ArcTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.ATTACK) {ArcCellAttack(t,a);}
-				if (a.Purpose == EPurpose.CREATE) {ArcCellCreate(t,a,other);}
-				if (a.Purpose == EPurpose.MOVE) {ArcCellMove(t,a,other);}
+				if (a.Purpose == EPurpose.ATTACK) {ArcCellAttack(start, actor, a);}
+				if (a.Purpose == EPurpose.CREATE) {ArcCellCreate(start, actor, a, other);}
+				if (a.Purpose == EPurpose.MOVE) {ArcCellMove(start, actor, a, other);}
 			}
 			
 		}
-		static void ArcTokens (Token actor, Aim a) {
+		static void ArcTokens (Cell start, Token actor, Aim a) {
 			int r = a.Range;
 			int min = a.MinRange;
 
-			Cell start = actor.Cell;
 			int left = start.X-r;
 			int right = start.X+r;
 			int top = start.Y-r;
@@ -247,10 +254,9 @@ namespace HOA {
 			}
 		}
 				
-		static void ArcCellMove (Token actor, Aim a, Token other) {
+		static void ArcCellMove (Cell start, Token actor, Aim a, Token other) {
 			int r = a.Range;
-			
-			Cell start = actor.Cell;
+
 			int left = start.X-r;
 			int right = start.X+r;
 			int top = start.Y-r;
@@ -276,10 +282,9 @@ namespace HOA {
 			}
 		}
 
-		static void ArcCellCreate (Token actor, Aim a, Token child) {
+		static void ArcCellCreate (Cell start, Token actor, Aim a, Token child) {
 			int r = a.Range;
-			
-			Cell start = actor.Cell;
+
 			int left = start.X-r;
 			int right = start.X+r;
 			int top = start.Y-r;
@@ -296,10 +301,9 @@ namespace HOA {
 				}
 			}
 		}
-		static void ArcCellAttack (Token actor, Aim a) {
+		static void ArcCellAttack (Cell start, Token actor, Aim a) {
 			int r = a.Range;
 			int min = a.MinRange;
-			Cell start = actor.Cell;
 			int left = start.X-r;
 			int right = start.X+r;
 			int top = start.Y-r;

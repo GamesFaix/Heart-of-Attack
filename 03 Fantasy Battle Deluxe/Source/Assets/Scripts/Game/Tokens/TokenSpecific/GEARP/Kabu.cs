@@ -12,8 +12,9 @@ namespace HOA {
 			
 			NewHealth(75);
 			NewWatch(4);
-			
-			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
+
+			arsenal.Add(new AMoveLine(this, 5));
+			//arsenal.Add(new AMove(this, Aim.MoveLine(5)));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.KATA));
 			arsenal.Add(new ACreate(new Price(0,2), this, EToken.CARA));
@@ -94,7 +95,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Move(new Source(actor), (Unit)targets[0], (Cell)targets[1]);
+			EffectQueue.Add(new EMove(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
 			Targeter.Reset();
 		}
 	}

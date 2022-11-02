@@ -11,7 +11,7 @@ namespace HOA{
 			NewWatch(5);
 			AddStat(new Source(this), EStat.COR, 12, false);
 			
-			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
+			arsenal.Add(new AMoveLine(this, 5));;
 			arsenal.Add(new ACorrode("Sting", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new ABeesDeathSting(new Price(1,1), this, Aim.Melee(), 15));
 			arsenal.Sort();
@@ -38,12 +38,10 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			int cor = (int)Mathf.Floor(damage*0.5f);
 
 			Unit u = (Unit)targets[0];
-			u.Damage(new Source(actor), damage);
-			u.AddStat(new Source(actor), EStat.COR, cor);
-			u.SpriteEffect(EEffect.COR);
+			EffectQueue.Add(new ECorrode (new Source(actor), u, damage));
+
 			actor.Die(new Source(actor));
 		}
 	}

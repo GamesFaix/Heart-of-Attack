@@ -19,7 +19,7 @@ namespace HOA {
 			p.y2 += 5;
 			if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){ 
 				if (instance != default(Token)) {
-					AEffects.Kill(Source.ActivePlayer, instance);
+					EffectQueue.Add(new EKill(Source.ActivePlayer, instance));
 					GUISelectors.Reset();
 					btnLabel = "Kill ";
 				}

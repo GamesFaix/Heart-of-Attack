@@ -3,6 +3,7 @@ using System.Collections.Generic;
 namespace HOA {
 
 	public class Aim {
+
 		EAim aimType;
 		public EAim AimType {get {return aimType;} }
 
@@ -16,6 +17,7 @@ namespace HOA {
 		public int Range {get {return range;} }
 		int minRange;
 		public int MinRange {get {return minRange;} }
+
 
 		bool teamOnly = false;
 		public bool TeamOnly { 

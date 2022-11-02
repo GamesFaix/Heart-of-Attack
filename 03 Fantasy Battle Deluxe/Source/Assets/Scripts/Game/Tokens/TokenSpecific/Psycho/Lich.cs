@@ -10,7 +10,7 @@ namespace HOA{
 			NewHealth(15);
 			NewWatch(5);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(0)));
+			arsenal.Add(new AMovePath(this, 0));
 			arsenal.Add(new ALeech("Feed",Price.Cheap, this, Aim.Melee(), 5));
 			arsenal.Add(new AEvolve(Price.Cheap, this, EToken.BEES));
 			arsenal.Add(new AEvolve(new Price(1,2), this, EToken.MYCO));
@@ -40,7 +40,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Replace(new Source(actor), actor, child);
+			EffectQueue.Add(new EReplace(new Source(actor), actor, child));
 			Targeter.Reset();
 		}
 	}

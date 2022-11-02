@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Token : ITargetable {
+	public abstract class Token : ITargetable, ISource{
 
 		protected bool isTemplate = false;
 		public void BuildTemplate () {isTemplate = true;}
@@ -117,5 +117,29 @@ namespace HOA {
 		public void Legalize (bool l=true) {legal = l;}
 
 		public List<Timer> timers = new List<Timer>();
+
+		//ISource
+
+		ISource source;
+		
+		public ISource Source () {
+			return source;
+		}
+		
+		public List<ISource> SourceList () {
+			List<ISource> sources = new List<ISource>();
+			
+			ISource nextSource = Source();
+			
+			while (nextSource != default(ISource)) {
+				sources.Add(nextSource);
+				nextSource = nextSource.Source();
+			}
+			return sources;
+		}
+
+
+
+
 	}
 }

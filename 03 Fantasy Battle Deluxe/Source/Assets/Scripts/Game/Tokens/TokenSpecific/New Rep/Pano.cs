@@ -9,8 +9,8 @@ namespace HOA{
 			
 			health = new HealthPano(this, 65);
 			NewWatch(1);
-			
-			arsenal.Add(new AMove(this, Aim.MovePath(1)));
+
+			arsenal.Add(new AMovePath(this, 1));
 			arsenal.Add(new APanoCannon(Price.Cheap, this, 17));
 			arsenal.Add(new APanoPierce(new Price(1,2), this, 20));
 			arsenal.Sort();
@@ -54,7 +54,7 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Damage(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();
 		}
 	}
@@ -84,7 +84,8 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Pierce(new Source(actor), (Unit)targets[0], damage);
+			EffectQueue.Add(new EPierce (new Source(actor), (Unit)targets[0], damage));
+			//AEffects.Pierce(new Source(actor), (Unit)targets[0], damage);
 			Targeter.Reset();
 		}
 	}

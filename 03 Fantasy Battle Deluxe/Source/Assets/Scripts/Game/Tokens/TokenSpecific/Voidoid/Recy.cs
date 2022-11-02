@@ -11,7 +11,7 @@ namespace HOA{
 			NewHealth(15);
 			NewWatch(4);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Add(new AMovePath(this, 2));
 			arsenal.Add(new ARage(new Price(1,0), this, Aim.Melee(), 12));
 			arsenal.Add(new ARecyExplode(this));
 			arsenal.Add(new ARecyCannibal(this));
@@ -63,10 +63,12 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			TokenGroup victims = actor.Neighbors(true).OnlyClass(EClass.UNIT);
+			EffectGroup nextEffects = new EffectGroup();
+			nextEffects.Add(new EKill(new Source(actor), actor));
 			foreach (Token t in victims) {
-				AEffects.Corrode(new Source(actor), (Unit)t, damage);	
+				nextEffects.Add(new ECorrode(new Source(actor), (Unit)t, damage));	
 			}
-			actor.Die(new Source(actor));
+			EffectQueue.Add(nextEffects);
 			Targeter.Reset();
 		}
 	}

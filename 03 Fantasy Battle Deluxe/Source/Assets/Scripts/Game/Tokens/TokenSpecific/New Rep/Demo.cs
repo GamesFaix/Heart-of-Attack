@@ -9,8 +9,8 @@ namespace HOA{
 			
 			health = new HealthDemo(this, 30);
 			NewWatch(3);
-			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AGrenade("Throw", new Price(1,1), this, 3, 10));
 			arsenal.Add(new ADemoSticky(this));
 			arsenal.Sort();
@@ -63,7 +63,8 @@ namespace HOA{
 		}
 		
 		public override void Activate () {
-			AEffects.Explosion(new Source(source), parent.Cell, 10);
+			EffectQueue.Add(new EExplosion(new Source(source), parent.Cell, 10));
+			//AEffects.Explosion(new Source(source), parent.Cell, 10);
 		}
 	}
 

@@ -8,7 +8,7 @@ namespace HOA{
 			NewHealth(55,3);
 			NewWatch(2);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Add(new AMovePath(this, 2));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}

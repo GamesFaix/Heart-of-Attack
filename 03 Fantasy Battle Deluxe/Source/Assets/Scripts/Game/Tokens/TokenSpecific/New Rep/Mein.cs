@@ -9,8 +9,8 @@ namespace HOA{
 			
 			NewHealth(40);
 			NewWatch(4);
-			
-			arsenal.Add(new AMove(this, Aim.MovePath(5)));
+
+			arsenal.Add(new AMovePath(this, 5));
 			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 12));
 			arsenal.Add(new ACreate(new Price(1,1), this, EToken.MINE));
 			arsenal.Add(new AMeinDetonate(new Price(1,1), this));

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace HOA{
 	public class Reprospector : Unit {
@@ -8,8 +8,8 @@ namespace HOA{
 			
 			NewHealth(55);
 			NewWatch(2);
-			
-			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+
+			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new AReprMine(Price.Cheap, this));
 			arsenal.Add(new AReprSlam(this));
 			arsenal.Add(new AReprBomb(this));
@@ -34,15 +34,20 @@ namespace HOA{
 			Charge();
 			Token t = (Token)targets[0];
 			Cell c = t.Cell;
-			t.Die(new Source(actor));
-			if (actor.CanEnter(c)) {
-				AEffects.Move(new Source(actor), actor, c);
-			}
+
+			EffectQueue.Add(new EKill(new Source(actor), t));
+
+			EffectGroup nextEffects = new EffectGroup();
 
 			if (actor.IN < 7) {
-				actor.AddStat(new Source(actor), EStat.IN, 1);
-				actor.SpriteEffect(EEffect.STATUP);
+				nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.IN, 1));
 			}
+			if (actor.CanEnter(c)) {
+				nextEffects.Add(new EMove(new Source(actor), actor, c));
+			}
+
+			if (nextEffects.Count > 0) {EffectQueue.Add(nextEffects);}
+
 			Targeter.Reset();
 		}
 	}
@@ -65,11 +70,17 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			actor.Swap(u);
 
-			AEffects.Damage (new Source(actor), u, damage);
-			
-			u.AddStat (new Source(actor), EStat.IN, -2);
+			EffectGroup effects = new EffectGroup();
+
+			effects.Add(new ESwap(new Source(actor), actor, u));
+			effects.Add(new EDamage (new Source(actor), u, damage));
+
+			EffectQueue.Add(effects);
+
+
+			EffectQueue.Add(new EAddStat (new Source(actor), u, EStat.IN, -2));
+
 			u.timers.Add(new TSlam(u, actor));
 
 
@@ -113,18 +124,22 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Cell c = (Cell)targets[0];
-			AEffects.Explosion (new Source(actor), c, damage);
+			EffectQueue.Add(new EExplosion (new Source(actor), c, damage));
+			//AEffects.Explosion (new Source(actor), c, damage);
+
+			EffectGroup nextEffects = new EffectGroup();
 
 			TokenGroup affected = c.Occupants.OnlyClass(EClass.UNIT);
 			foreach (Unit u in affected) {
-				u.AddStat (new Source(actor), EStat.IN, -2);
+				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -2));
 				u.timers.Add(new TBomb(u, actor, 2));
 			}
 			affected = c.Neighbors().Occupants.OnlyClass(EClass.UNIT);
 			foreach (Unit u in affected) {
-				u.AddStat (new Source(actor), EStat.IN, -1);
+				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -1));
 				u.timers.Add(new TBomb(u, actor, 1));
 			}
+			EffectQueue.Add(nextEffects);
 			Targeter.Reset();
 		}
 	}

@@ -12,6 +12,10 @@ namespace HOA {
 		static int steps;
 		static int currentStep;
 
+		static bool passable;
+		public static bool Passable { get {return passable;} }
+
+
 		public static void Find (Action a) {
 			if (currentAction != default(Action)) {Reset();}
 			a.Adjust();
@@ -21,11 +25,12 @@ namespace HOA {
 				ready = false;
 
 				currentAction = a;
-				//Debug.Log(a.Name);
+				//Debug.Log("targeting for "+a.Name);
 
 				targets = new List<ITargetable>();
 
 				steps = a.Aim.Count;
+				//Debug.Log("steps: "+steps);
 				currentStep = 0;
 
 				StartStep (currentStep);
@@ -37,12 +42,25 @@ namespace HOA {
 			Token actor = currentAction.Actor;
 			Aim aim = currentAction.Aim[currentStep];
 			Token child = currentAction.ChildTemplate;
+			Cell start = actor.Cell;
+
+			AllowPass (currentAction, currentStep);
+
+			if (currentAction is IMultiMove && currentStep > 0) {
+				int index = targets.Count-1;
+				ITargetable last = targets[index];
+				if (last is Cell) {start = (Cell)last;}
+				if (last is Token) {start = ((Token)last).Cell;}
+			}
+
+			//Debug.Log(start);
 
 			if (aim.AimType == EAim.SELF) {FinishStep();}
 			else {
 				//Debug.Log(aim);
-				if (child!= default(Token)) {Debug.Log(child.ToString());}
-				Legalizer.Find(actor, aim, child); }
+				//if (child!= default(Token)) {Debug.Log(child.ToString());}
+				Legalizer.Find(actor, aim, start, child); }
+
 		}
 
 		public static void Select (ITargetable t) {
@@ -50,6 +68,21 @@ namespace HOA {
 				targets.Add(t);
 				//Debug.Log("new target selected: "+t.ToString());
 				FinishStep();
+			}
+		}
+
+		static void AllowPass (Action a, int n) {
+			if (a is IMultiMove) {
+				if (n >= ((IMultiMove)a).Optional()) {passable = true;}
+			}
+			if (a is IMultiTarget) {
+				if (n >= ((IMultiTarget)a).Optional()) {passable = true;}
+			}
+		}
+
+		public static void Pass () {
+			if (passable) {
+				currentAction.Execute(targets);
 			}
 		}
 
@@ -96,6 +129,7 @@ namespace HOA {
 			currentStep =0;
 			Board.ClearLegal();
 			TokenFactory.ClearLegal();
+			passable = false;
 		}
 	}
 }

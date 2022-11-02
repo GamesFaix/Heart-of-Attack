@@ -7,7 +7,7 @@
 			NewHealth(50,2);
 			NewWatch(4);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Sort();
 		}		

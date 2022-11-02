@@ -24,7 +24,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Create(new Source(actor), child, (Cell)targets[0]);
+			EffectQueue.Add(new ECreate(new Source(actor), child, (Cell)targets[0]));
 			Targeter.Reset();
 		}
 	}

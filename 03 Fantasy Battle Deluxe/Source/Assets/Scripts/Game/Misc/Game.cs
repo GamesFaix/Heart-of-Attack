@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace HOA {
 	public static class Game {
@@ -8,12 +9,13 @@ namespace HOA {
 				GameLog.Reset();
 				TurnQueue.Reset();
 				//Board.New(boardSize);
-				Map.Map3();
+				Map.Map2();
 
 				GUIBoard.ZoomOut();
 				SpawnKings();
-				TurnQueue.Shuffle(new Source(),false);
-				TurnQueue.Initialize();
+				EffectQueue.Add(new EShuffle(new Source()));
+				EffectQueue.Add(new EInitialize(new Source()));
+
 				GameLog.Out("New game ready.");
 				GUIMaster.Toggle();
 			}
@@ -21,19 +23,23 @@ namespace HOA {
 		}
 
 		static void SpawnKings () {
+			EffectGroup heroSpawn = new EffectGroup();
 
 			foreach (Player p in Roster.Players()) {
 				Cell cell;
 				Token temp = TemplateFactory.Template(p.King);
 
+			
 				if (Board.RandomLegalCell(temp, out cell)) {
-					TokenFactory.Add(p.King, new Source(p), cell, false);
+					heroSpawn.Add(new ECreate (new Source(p), p.King, cell));
+//					TokenFactory.Add(p.King, new Source(p), cell, false);
 				}
 				else {
 					Debug.Log("Cannot spawn "+temp+". No legal cells.");
 				}
-
+			
 			}
+			EffectQueue.Add(heroSpawn);
 		}
 
 

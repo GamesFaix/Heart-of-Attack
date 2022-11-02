@@ -10,17 +10,17 @@ namespace HOA{
 			
 			NewHealth(30);
 			NewWatch(4);
-			
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 8));
 			arsenal.Add(new ARevoQuick(this));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 
-		public class ARevoQuick : Action {
+		public class ARevoQuick : Action, IMultiTarget {
 			
 			int damage;
+			public int Optional () {return 1;}
 			
 			public ARevoQuick (Unit u) {
 				weight = 4;
@@ -48,7 +48,7 @@ namespace HOA{
 			public override void Execute (List<ITargetable> targets) {
 				Charge();
 				for (int i=0; i<targets.Count; i++) {
-					AEffects.Damage (new Source(actor), (Unit)targets[i], damage);
+					EffectQueue.Add(new EDamage (new Source(actor), (Unit)targets[i], damage));
 				}
 				actor.SetStat(new Source(actor), EStat.FP, 0);
 				Targeter.Reset();

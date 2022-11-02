@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace HOA {
 
@@ -16,13 +16,17 @@ namespace HOA {
 		}
 
 		static void Spawn (EToken t, int x, int y) {
-			AEffects.Create(new Source(), t, Board.Cell(x,y));
+			terrain.Add(new ECreate(new Source(), t, Board.Cell(x,y)));
 		}
+
+		static EffectGroup terrain;
 
 		public static void Map1 () {
 			Board.New(10);
 			
 			cellTexs = new Texture2D[2] {ImageLoader.cells[4], ImageLoader.cells[5]};
+
+			terrain = new EffectGroup();
 
 			Spawn(EToken.MNTN, 5,5); 
 			Spawn(EToken.MNTN, 5,6);
@@ -61,12 +65,14 @@ namespace HOA {
 			Spawn(EToken.WATR, 9,8); 
 			Spawn(EToken.WATR, 8,9);
 
+			EffectQueue.Add(terrain);
 		}
 
 		public static void Map2 () {
 			cellTexs = new Texture2D[2] {ImageLoader.cells[2], ImageLoader.cells[3]};
 
 			Board.New(10);
+			terrain = new EffectGroup();
 
 			Spawn(EToken.TREE, 5,5);
 			Spawn(EToken.TREE, 5,6);
@@ -97,13 +103,13 @@ namespace HOA {
 			Spawn(EToken.LAVA, 7,10);
 			Spawn(EToken.LAVA, 4,1);
 			Spawn(EToken.LAVA, 7,2);
-
+			EffectQueue.Add(terrain);
 		}
 
 		public static void Map3 () {
 			Board.New(10);
 			cellTexs = new Texture2D[2] {ImageLoader.cells[6], ImageLoader.cells[7]};
-
+			terrain = new EffectGroup();
 
 			Spawn(EToken.WATR, 5,4);
 			Spawn(EToken.WATR, 6,4);
@@ -153,6 +159,8 @@ namespace HOA {
 			Spawn(EToken.TREE, 8,9);
 			Spawn(EToken.TREE, 9,8);
 			Spawn(EToken.HILL, 8,8);
+
+			EffectQueue.Add(terrain);
 		}
 	}
 }

@@ -77,11 +77,14 @@ namespace HOA {
 			return cor;
 		}
 		public int DecayCOR(bool log=true){
-			int oldCor=cor;
-			parent.AddStat(new Source(), EStat.HP, 0-cor, false);
+
+			EffectQueue.Add(new ECorrode2 (new Source(parent), parent, cor));
+
+			int oldCor = cor;
 			cor = (int)Math.Floor(cor*0.5f);
-			parent.SpriteEffect(EEffect.COR);
+
 			if (log) {GameLog.Out(parent+" takes "+oldCor+" corrision damage. HP:"+parent.HPString+" COR:"+cor);}
+
 			return cor;
 		}
 

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine;
 
 namespace HOA {
 	
 	
-	public abstract class Action {
+	public abstract class Action : ISource{
 		protected int weight;
 		public int Weight {get {return weight;} }
 
@@ -15,17 +16,43 @@ namespace HOA {
 		protected List<Aim> aim = new List<Aim>();
 		public List<Aim> Aim {get {return aim;} }
 		public void AddAim (Aim a) {aim.Add(a);}
-		public void DrawAim (int n, Panel p) {aim[n].Draw(p);}
+		public virtual void DrawAim (int n, Panel p) {aim[n].Draw(p);}
 
 		protected Price price = new Price(1,0);
 		
 		public string Name {get {return name;} }
 		public string Desc () {return desc;}
+
+		public virtual void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			
+			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			
+			DrawAim(0, new Panel(p.LineBox, p.LineH, p.s));
+			
+			float descH = (p.H-(p.LineH*2))/p.H;
+			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+			
+			GUI.Label(p.TallBox(descH), Desc());	
+		}
+
 		public void DrawPrice (Panel p) {price.Draw(p);}
 
 		protected bool used = false;
 		public void Reset () {used = false;}
-		
+
+		public bool Playable {
+			get {
+				if (!used && !Restrict() && actor.CanAfford(price) && !EffectQueue.Processing && actor == TurnQueue.Top) {
+					return true;
+				}
+				return false;
+			}
+		}
+
+		protected bool multiAim = false;
+		public bool MultiAim { get{return multiAim;} }
+
 		protected Unit actor;
 		public Unit Actor {get {return actor;} }
 		protected Token childTemplate = default(Token);
@@ -50,6 +77,26 @@ namespace HOA {
 		public void Charge () {
 			used = true;
 			actor.Charge(price);
+		}
+
+		//ISource
+
+		ISource source;
+		
+		public ISource Source () {
+			return source;
+		}
+		
+		public List<ISource> SourceList () {
+			List<ISource> sources = new List<ISource>();
+			
+			ISource nextSource = Source();
+			
+			while (nextSource != default(ISource)) {
+				sources.Add(nextSource);
+				nextSource = nextSource.Source();
+			}
+			return sources;
 		}
 	}
 }

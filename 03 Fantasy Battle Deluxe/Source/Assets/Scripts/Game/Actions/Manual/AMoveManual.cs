@@ -19,7 +19,7 @@ namespace HOA {
 		public override bool Legal() {return true;}
 		
 		public override void Execute (List<ITargetable> targets) {
-			AEffects.Move(new Source(actor), childTemplate, (Cell)targets[0]);
+			EffectQueue.Add(new EMove(new Source(actor), childTemplate, (Cell)targets[0]));
 			Targeter.Reset();
 		}
 	}

@@ -108,7 +108,7 @@ namespace HOA {
 			TokenGroup tokens = newCell.Occupants;
 			tokens = tokens.OnlyClass(EClass.DEST);
 			for (int i=tokens.Count-1; i>=0; i--) {
-				AEffects.Kill(new Source(parent), tokens[i]);
+				EffectQueue.Add(new EDestruct(new Source(parent), tokens[i]));
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace HOA {
 		protected void GetHeart (Cell newCell) {
 			if (CanGetHeart(newCell)) {
 				Token heart = newCell.Occupant(EPlane.GND);
-				AEffects.GetHeart(Source.ActivePlayer, heart);
+				EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart));
 			}
 		}
 		

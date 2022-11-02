@@ -5,6 +5,7 @@ public class Core : MonoBehaviour {
 	//public static NetworkConsole nc;
 
 	public GameObject guiPrefab;
+	public GameObject mixerPrefab;
 
 	public static GUISelectors guiSelectors;
 	static AudioSource music;
@@ -20,11 +21,13 @@ public class Core : MonoBehaviour {
 		//nc = gameObject.AddComponent("NetworkConsole") as NetworkConsole;
 	
 		Instantiate(guiPrefab, new Vector3(0,0,0),Quaternion.identity);
+		Instantiate(mixerPrefab, new Vector3(0,0,0), Quaternion.identity);
 
 		ImageLoader.Load();
 		SoundLoader.Load();
 		TemplateFactory.MakeTemplates();
 		guiSelectors = gameObject.AddComponent("GUISelectors") as GUISelectors;
+		gameObject.AddComponent("EffectQueue");
 		SetupMusic();
 	}
 

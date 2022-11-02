@@ -11,7 +11,7 @@ namespace HOA{
 			NewHealth(75);
 			NewWatch(3);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 18));
 			arsenal.Add(new AGargLand(this));
 			arsenal.Add(new AGargPetrify(this));
@@ -56,7 +56,7 @@ namespace HOA{
 				}
 			}
 			
-			AEffects.AddStat(new Source(actor), actor, EStat.DEF, 2);
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 2));
 			actor.SetPlane(EPlane.GND);
 			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
@@ -89,7 +89,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.AddStat(new Source(actor), actor, EStat.DEF, -2);
+			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -2));
 			actor.SetPlane(EPlane.AIR);
 			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
@@ -126,7 +126,7 @@ namespace HOA{
 			neighbors = neighbors.OnlyClass(EClass.UNIT);
 			foreach (Token t in neighbors) {
 				Unit u = (Unit)t;
-				AEffects.Damage(new Source(actor), u, damage);
+				EffectQueue.Add(new EDamage(new Source(actor), u, damage));
 			}
 			Targeter.Reset();
 		}
@@ -176,7 +176,7 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			AEffects.Damage (new Source(actor), u, damage);
+			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
 			if ((u.Arsenal()[0]) is AMove) {
 				AMove move = (AMove)u.Arsenal()[0];
 				u.timers.Add(new TPetrify(u, actor, move));

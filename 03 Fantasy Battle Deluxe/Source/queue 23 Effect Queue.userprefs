@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 24 EQ sequences\Assets\Scripts\Game\Actions\General\EffectQueue.cs">
+    <Files>
+      <File FileName="..\queue 24 EQ sequences\Assets\Scripts\Game\Actions\General\EffectQueue.cs" Line="17" Column="48" />
+      <File FileName="..\queue 24 EQ sequences\Assets\Scripts\Game\Players\Player.cs" Line="80" Column="1" />
+      <File FileName="..\queue 24 EQ sequences\Assets\Scripts\Game\Actions\General\EffectGroup.cs" Line="1" Column="1" />
+      <File FileName="..\queue 24 EQ sequences\Assets\Scripts\Game\Actions\General\EffectSeq.cs" Line="28" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

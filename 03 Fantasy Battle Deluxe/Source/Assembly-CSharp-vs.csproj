@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{789185CD-57AF-E282-EDEF-3E23B56BFB13}</ProjectGuid>
+	<ProjectGuid>{0773BF2D-D83F-E175-E230-74C3242C0747}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -84,18 +84,18 @@
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolRandom.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolStats.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolTips.cs" />
-     <Compile Include="Assets\Scripts\GUI\Graphics\Icons.cs" />
-     <Compile Include="Assets\Scripts\GUI\Graphics\ImageLoader.cs" />
-     <Compile Include="Assets\Scripts\GUI\Graphics\SpriteEffects.cs" />
-     <Compile Include="Assets\Scripts\GUI\Graphics\Thumbs.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
-     <Compile Include="Assets\Scripts\Game\Actions\General\AEffects.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Action.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Aim.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectGroup.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\EffectQueue.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectSeq.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Effects.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IMultiMove.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IMultiTarget.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Legalizer.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Price.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Targeter.cs" />
@@ -103,6 +103,7 @@
      <Compile Include="Assets\Scripts\Game\Actions\Manual\AMoveManual.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AAttack.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AAttackFir.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ABurrow.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ACorrode.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ACreate.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ADonate.cs" />
@@ -112,6 +113,8 @@
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ALaser.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ALeech.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AMove.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AMoveLine.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AMovePath.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ARage.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AShock.cs" />
      <Compile Include="Assets\Scripts\Game\Board\Board.cs" />
@@ -125,6 +128,7 @@
      <Compile Include="Assets\Scripts\Game\Misc\Enums.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\Game.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\GameLog.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\ISource.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\ITargetable.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\QueueStunner.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\RandomSync.cs" />
@@ -198,6 +202,11 @@
      <Compile Include="Assets\Scripts\Generic\Group.cs" />
      <Compile Include="Assets\Scripts\Generic\Queue.cs" />
      <Compile Include="Assets\Scripts\Generic\ReDictionary.cs" />
+     <Compile Include="Assets\Scripts\Graphics\Icons.cs" />
+     <Compile Include="Assets\Scripts\Graphics\ImageLoader.cs" />
+     <Compile Include="Assets\Scripts\Graphics\SpriteEffects.cs" />
+     <Compile Include="Assets\Scripts\Graphics\Thumbs.cs" />
+     <Compile Include="Assets\Scripts\Sound\Mixer.cs" />
      <Compile Include="Assets\Scripts\Sound\SoundLoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

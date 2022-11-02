@@ -15,7 +15,7 @@ namespace HOA{
 			
 			NewArsenal();
 			arsenal.Add(new AFocus(this));
-			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new ARage(Price.Cheap, this, Aim.Melee(), 20));
 			
 			//arsenal.Add(new AMonoFlame(this));
@@ -32,7 +32,7 @@ namespace HOA{
 		}		
 		public override string Notes () {return "";}
 	}
-
+	/*
 	public class AMonoFlame : Action {
 		int damage;
 		
@@ -80,6 +80,7 @@ namespace HOA{
 
 		}
 	}
+	*/
 
 	public class AMonoReanimate : Action {
 
@@ -97,7 +98,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Replace(new Source(actor), (Token)targets[0], EToken.RECY);
+			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], EToken.RECY));
 			Targeter.Reset();
 		}
 	}
@@ -127,7 +128,7 @@ namespace HOA{
 			affected.Remove(actor);
 
 			foreach (Unit u in affected) {
-				AEffects.Leech(new Source(actor), u, damage);
+				EffectQueue.Add(new ELeech(new Source(actor), u, damage));
 			}
 			Targeter.Reset();
 		}
@@ -168,7 +169,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Kill(new Source(actor), (Token)targets[0]);
+			EffectQueue.Add(new EKill(new Source(actor), (Token)targets[0]));
 
 			actor.AddStat (new Source(actor), EStat.IN, 4);
 			actor.timers.Add(new TAltar(actor));

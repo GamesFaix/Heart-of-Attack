@@ -21,7 +21,9 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			AEffects.Corrode(new Source(actor), (Unit)targets[0], damage);
+			//Debug.Log("action corrode");
+			EffectQueue.Add(new ECorrode(new Source(actor), (Unit)targets[0], damage));
+			Targeter.Reset();
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace HOA {
 		}
 
 		public override void Execute (List<ITargetable> targets) {
-			TurnQueue.Advance();
+			EffectQueue.Add(new EAdvance(new Source(actor)));
 			Targeter.Reset();
 		}
 	}

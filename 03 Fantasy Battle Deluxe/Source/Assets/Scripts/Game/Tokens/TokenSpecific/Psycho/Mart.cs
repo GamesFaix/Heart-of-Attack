@@ -22,37 +22,61 @@ namespace HOA{
 		public override string Notes () {return "";}
 	}
 
-	public class AMartMove : Action {
-		
+	public class AMartMove : Action, IMultiMove {
+		Cell target;
+		int range = 1;
+		public int Optional () {return 1;}
+
 		public AMartMove (Unit u) {
 			weight = 1;
-			price = Price.Cheap;
 			actor = u;
-			
-			AddAim(new Aim(EAim.PATH, EClass.CELL, 1));
-			
+			price = new Price(1,0);
 			name = "Move";
 			desc = "Range +1 per focus.";
+			
+			ResetAim();
 			
 		}
 		
 		public override void Adjust () {
-			Debug.Log("adjusting");
 			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			for (int i=0; i<bonus; i++) {
+				aim.Add(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
+			}
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.CELL, 1);
+			ResetAim();
+
+		}
+		
+		void ResetAim () {
+			aim = new List<Aim>();
+			AddAim(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-
-			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
-			
-			UnAdjust();
+			foreach (ITargetable target in targets) {
+				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+			}
 			Targeter.Reset();
+		}
+		
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			
+			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			
+			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, range+actor.FP);
+			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
+			
+			float descH = (p.H-(p.LineH*2))/p.H;
+			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+			
+			GUI.Label(p.TallBox(descH), Desc());	
+			
+			
 		}
 	}
 	public class AMartGrow : Action {
@@ -123,7 +147,7 @@ namespace HOA{
 
 			Unit u = (Unit)targets[0];
 			Cell c = u.Cell;
-			AEffects.Damage(new Source(actor), u, damage);
+			EffectQueue.Add(new EDamage(new Source(actor), u, damage));
 			Token dest;
 			if (c.Contains(EClass.DEST, out dest)) {
 				actor.Body.Swap(dest);

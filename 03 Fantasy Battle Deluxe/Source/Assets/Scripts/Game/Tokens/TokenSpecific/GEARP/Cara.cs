@@ -15,8 +15,8 @@ namespace HOA {
 			NewWatch(4);
 			
 			NewArsenal();
-			arsenal.Add(new AFocus(this)); 
-			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AFocus(this)); 			
+			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AShock(Price.Cheap, this, Aim.Melee(), 10, 5));
 			arsenal.Add(new ACaraDischarge(new Price(1,2), this, 10, 5));
 			arsenal.Sort();
@@ -119,9 +119,12 @@ namespace HOA {
 			TokenGroup neighbors = actor.Cell.Neighbors().Occupants;
 			foreach (Token t in neighbors) {cellMates.Add(t);}
 			cellMates = cellMates.OnlyClass(EClass.UNIT);
+
+			EffectGroup nextEffects = new EffectGroup();
 			foreach (Token t in cellMates) {
-				AEffects.Shock(new Source(actor), (Unit)t, damage, stun);
+				nextEffects.Add(new EShock(new Source(actor), (Unit)t, damage, stun));
 			}
+			EffectQueue.Add(nextEffects);
 			Targeter.Reset();
 		}
 	}
