@@ -15,59 +15,91 @@ namespace HOA {
 			thumb = Thumbs.CodeToThumb(parent.Code);
 		}
 
-		Rect currentBox;
-		Rect endBox;
+		Rect Box {
+			get {
+				if (!moving) {
+					Cell c = parent.Cell;
+					Rect cBox = c.Sprite.Box;
+					if (c.TokenCount > 1) {
+						float size = cBox.width/2;
+						Rect box = new Rect (cBox.x, cBox.y, size, size);
+						if (parent.IsPlane(EPlane.AIR)) {box.x += size;}
+						else if (parent.IsPlane(EPlane.GND)) {box.y += size;}
+						else if (parent.IsPlane(EPlane.SUNK)) {box.x += size; box.y += size;}
+						return box;
+					}
+					else {return cBox;}
+				}
+				else {
+					return MovingBox();
+				}
+			} 
+		}
+	
 
-		public void Draw (Rect box) {
-			if (!moving) {currentBox = box;}
-			else {
-				currentBox = MovingBox();
 
+		public void Draw () {
+
+			GUI.Box(Box, thumb);
+			LabelInstance(Box);
+			Effects(Box);
+			HighlightLegal(Box);
+
+			if (GUI.Button(Box, "", GUIMaster.S)){
+				if (Input.GetMouseButtonUp(0) && parent.IsLegal()){
+					Targeter.Select(parent);
+					GUIMaster.PlaySound(EGUISound.TARGET);
+				}
+				else if (Input.GetMouseButtonUp(1)) {
+					
+					GUIInspector.Inspected = parent;
+					GUIMaster.PlaySound(EGUISound.INSPECT);
+					
+				}
+				else if (Input.GetMouseButtonUp(0) && parent.Cell.IsLegal()) {
+					Targeter.Select(parent.Cell);
+					GUIMaster.PlaySound(EGUISound.TARGET);
+				} 
 			}
-
-
-			if (currentBox == endBox) {moving = false;}
-
-			GUI.Box(currentBox, thumb);
-			LabelInstance(currentBox);
-			Effects(currentBox);
-			HighlightLegal(currentBox);
 		}
 
 		float moveStartTime = 0;
 		float MoveElapsedTime {get {return Time.time - moveStartTime;} }
-		static float moveTotalTime = 22000;
+		float moveTotalTime = 2;
+		float Percent{ get {return MoveElapsedTime/moveTotalTime;} }
 		
 		bool moving = false;
 		Vector2 distance;
 		
 		public void Move (Cell newCell) {
+			//Debug.Log("move started");
 			moving = true;
 			moveStartTime = Time.time;
-			Cell startCell = parent.Cell;
+			startBox = parent.Cell.Sprite.Box;
+			endBox = newCell.Sprite.Box;
 
-			distance = new Vector2(newCell.X-startCell.X, newCell.Y-startCell.Y);
-			
-			
-		}
-		
-		Rect MovingBox (Rect box) {
-			float x = box.x + (MoveElapsedTime/moveTotalTime)*distance.x;
-			float y = box.y + (MoveElapsedTime/moveTotalTime)*distance.y;
-			
-			return new Rect (x,y,box.width,box.height);
-			
+			distance = new Vector2(endBox.x-startBox.x, endBox.y-startBox.y);
+			//Debug.Log("distance: "+distance);
 		}
 
+		Rect startBox;
+		Rect endBox;
 
+		Rect MovingBox () {
+			//Debug.Log("currently moving ("+Percent+"%), elapsed time: "+MoveElapsedTime+"/"+moveTotalTime);
+			float x = startBox.x + Percent*distance.x;
+			float y = startBox.y + Percent*distance.y;
+			
+			Rect box = new Rect (x,y,startBox.width,startBox.height);
 
-
-
-
-
-
-
-
+			if (Mathf.Abs(MoveElapsedTime - moveTotalTime) < 0.05) {
+			  //  (endBox.x - box.x < 0.05) && (endBox.y - box.y < 0.05) ) {
+				box = endBox;
+				moving = false;
+				//Debug.Log("moving done");
+			}
+			return box;
+		}
 
 
 		void LabelInstance (Rect box) {
@@ -118,5 +150,7 @@ namespace HOA {
 			}
 		}
 	
+	
+
 	}
 }

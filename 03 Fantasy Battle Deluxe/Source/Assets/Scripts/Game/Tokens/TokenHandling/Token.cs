@@ -41,7 +41,7 @@ namespace HOA {
 		}
 		//graphics
 		public Texture2D Thumb {get {return sprite.Thumb;} }
-		public void Draw (Rect rect) {sprite.Draw(rect);}
+		public void Draw () {sprite.Draw();}
 		public void SpriteEffect (EEffect e) {sprite.Effect(e);}
 		public void SpriteMove (Cell c) {sprite.Move(c);}
 

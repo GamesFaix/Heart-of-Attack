@@ -12,7 +12,9 @@ public class GUIBoard : MonoBehaviour {
 	public static void ZoomOut () {zoomOut = true;}
 	
 	static bool zoomOut = false;
-	
+
+
+
 	public void Display(Panel p){
 		p.x2 += 5;
 		
@@ -38,23 +40,16 @@ public class GUIBoard : MonoBehaviour {
 		
 		if (Board.ready){
 			
-			Rect board = BoardRect(new Panel(p.TallBox(externalH), p.LineH, p.s));
-			board.x += center;
+			box = BoardRect(new Panel(p.TallBox(externalH), p.LineH, p.s));
+			box.x += center;
 
-			center = (p.W-board.width)/2;
+			center = (p.W-box.width)/2;
 
-			GUI.Box(board, "");
-			
-			for (int x=1; x<=Board.Size; x++) {
-				for (int y=1; y<=Board.Size; y++) {
-					Cell cell = Board.Cell(x,y);
-					Rect cellRect = CellRect(board,x,y);
+			GUI.Box(box, "");
 
-					GUICell.Draw(cell, cellRect);
+			foreach (Cell c in Board.Cells) {c.Sprite.Draw();}
+			foreach (Token t in TokenFactory.Tokens) {t.Draw();}
 
-
-				}
-			}
 		}
 		GUI.EndScrollView();
 		
@@ -63,21 +58,16 @@ public class GUIBoard : MonoBehaviour {
 			zoomOut = false;			
 		}
 	}
-	
+
+	static Rect box;
+
+	public static Rect Box {get {return box;} }
+
 	Rect BoardRect (Panel p) {
 		float boardSize = Board.Size*scale;
 		float boardX = p.X;
 		float boardY = p.Y;
 		return new Rect(boardX, boardY, boardSize, boardSize);
-	}
-	
-	Rect CellRect (Rect board, int x, int y) {
-		float size = board.width/Board.Size;
-		
-		float x2 = board.x + (x-1)*size;
-		float y2 = board.y + (y-1)*size;
-		
-		return new Rect(x2,y2,size,size);
 	}
 }
 

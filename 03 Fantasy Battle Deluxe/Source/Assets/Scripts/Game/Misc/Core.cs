@@ -5,7 +5,6 @@ public class Core : MonoBehaviour {
 	//public static NetworkConsole nc;
 
 	public GameObject guiPrefab;
-	GameObject gui;
 
 	public static GUISelectors guiSelectors;
 	static AudioSource music;
@@ -19,9 +18,8 @@ public class Core : MonoBehaviour {
 
 	void Setup () {
 		//nc = gameObject.AddComponent("NetworkConsole") as NetworkConsole;
-		//gameObject.AddComponent("GUIMaster");
-
-		gui = GameObject.Instantiate(guiPrefab, new Vector3(0,0,0),Quaternion.identity) as GameObject;
+	
+		Instantiate(guiPrefab, new Vector3(0,0,0),Quaternion.identity);
 
 		ImageLoader.Load();
 		SoundLoader.Load();

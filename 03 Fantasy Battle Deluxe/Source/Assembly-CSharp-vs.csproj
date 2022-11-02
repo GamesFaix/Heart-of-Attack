@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6ED2CAA1-664B-1F19-4568-694037E42B70}</ProjectGuid>
+	<ProjectGuid>{789185CD-57AF-E282-EDEF-3E23B56BFB13}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -50,7 +50,6 @@
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIBoard.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\GUICell.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
@@ -95,6 +94,8 @@
      <Compile Include="Assets\Scripts\Game\Actions\General\AEffects.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Action.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Aim.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectQueue.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Legalizer.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Price.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Targeter.cs" />
@@ -116,6 +117,7 @@
      <Compile Include="Assets\Scripts\Game\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Game\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Game\Board\CellGroup.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\CellSprite.cs" />
      <Compile Include="Assets\Scripts\Game\Board\Direction.cs" />
      <Compile Include="Assets\Scripts\Game\Board\Map.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\Core.cs" />

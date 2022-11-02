@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AAttack.cs">
+    <Files>
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AMove.cs" Line="23" Column="6" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\General\Effects.cs" Line="319" Column="2" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\General\EffectQueue.cs" Line="17" Column="57" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Misc\Core.cs" Line="17" Column="3" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AGrenade.cs" Line="21" Column="3" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\GUI\Graphics\SpriteEffects.cs" Line="18" Column="38" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Tokens\TokenComponents\Health.cs" Line="111" Column="23" />
+      <File FileName="..\queue 23 Effect Queue\Assets\Scripts\Game\Actions\Standard\AAttack.cs" Line="20" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

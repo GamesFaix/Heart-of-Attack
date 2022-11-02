@@ -86,7 +86,8 @@ namespace HOA {
 					if (GUI.Button(box, "")) {Instance = t;
 						Debug.Log("instance selected");}
 					p.ResetX();
-					t.Draw(box);
+					GUI.Box(box, t.Thumb, p.s);
+//					t.Draw(box);
 					
 					p.y2 += btnW;
 				}

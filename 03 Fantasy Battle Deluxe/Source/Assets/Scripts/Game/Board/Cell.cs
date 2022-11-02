@@ -11,6 +11,7 @@ namespace HOA {
 		public Cell (int xx, int yy) {
 			x = xx;
 			y = yy;
+			sprite = new CellSprite(this);
 		}
 		
 		public override string ToString() {return "("+x+","+y+")";}
@@ -161,5 +162,8 @@ namespace HOA {
 			if (p == EPlane.AIR) {stop[2] = s;}
 			if (p == EPlane.ETH) {stop[3] = s;}
 		}
+
+		CellSprite sprite;
+		public CellSprite Sprite { get {return sprite;} }
 	}
 }
