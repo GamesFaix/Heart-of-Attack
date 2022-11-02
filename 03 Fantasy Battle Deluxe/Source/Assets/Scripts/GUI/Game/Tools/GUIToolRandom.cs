@@ -11,7 +11,7 @@ namespace HOA {
 			GUI.Box(p.FullBox,"");
 			
 			randBtn = GUI.Toolbar(p.LineBox, randBtn, randLabels);
-			DICE d = (DICE)randBtn;
+			EDice d = (EDice)randBtn;
 			
 			p.y2 += 5;
 			string actionLabel = "Roll";

@@ -6,7 +6,7 @@ namespace HOA {
 	public class GUISelectors : MonoBehaviour {
 
 		public static void Reset () {
-			token = TTYPE.NONE;
+			token = EToken.NONE;
 			instance = default(Token);	
 			tokenScroll = new Vector2 (0,0);
 			instanceScroll = new Vector2 (0,0);
@@ -21,8 +21,8 @@ namespace HOA {
 		static float btnW = 400/9;
 			
 		//Token Types
-		static TTYPE token = TTYPE.NONE;
-		public static TTYPE Token {
+		static EToken token = EToken.NONE;
+		public static EToken Token {
 			get {return token;}
 			set {token = value;}
 		}
@@ -86,7 +86,8 @@ namespace HOA {
 				foreach (Token t in player.OwnedUnits){
 					p.x2 = x3;
 					Rect box = new Rect(p.x2, p.y2, btnW, btnW);
-					if (GUI.Button(box, "")) {Instance = t;}
+					if (GUI.Button(box, "")) {Instance = t;
+						Debug.Log("instance selected");}
 					p.ResetX();
 					t.Draw(box);
 					
@@ -133,14 +134,14 @@ namespace HOA {
 		}
 		
 		static bool LegalCellSelection () {
-			if (cell != default(Cell) && cell.Legal) {
+			if (cell != default(Cell) && cell.IsLegal()) {
 				return true;
 			}
 			return false;
 		}
 		
 		static bool LegalInstanceSelection () {
-			if (instance !=default(Token) && instance.Legal) {
+			if (instance !=default(Token) && instance.IsLegal()) {
 				return true;	
 			}
 			return false;

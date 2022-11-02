@@ -24,7 +24,7 @@ namespace HOA {
 
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.CELL());
+			GUI.Box(iconBox, Icons.Class(EClass.CELL));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Cell", p.s);
 			p.NudgeY();
@@ -36,25 +36,25 @@ namespace HOA {
 			GUI.Label(p.TallBox(2), "A Cell is a location on the \nBoard. Each Cell contains\n four Planes:", p.s);
 			
 			p.NudgeX();
-			GUI.Box (p.Box(iconSize), Icons.Plane(PLANE.SUNK), p.s);
+			GUI.Box (p.Box(iconSize), Icons.Plane(EPlane.SUNK), p.s);
 			p.NudgeY(); p.NudgeX();
 			GUI.Box (p.Box(iconSize*3), "Sunken", p.s);
 			p.NudgeY(false);
 			p.NextLine();
 			p.NudgeX();
-			GUI.Box (p.Box(iconSize), Icons.Plane(PLANE.GND), p.s);
+			GUI.Box (p.Box(iconSize), Icons.Plane(EPlane.GND), p.s);
 			p.NudgeY(); p.NudgeX();
 			GUI.Box (p.Box(iconSize*3), "Ground", p.s);
 			p.NudgeY(false);
 			p.NextLine();
 			p.NudgeX();
-			GUI.Box (p.Box(iconSize), Icons.Plane(PLANE.AIR), p.s);
+			GUI.Box (p.Box(iconSize), Icons.Plane(EPlane.AIR), p.s);
 			p.NudgeY(); p.NudgeX();
 			GUI.Box (p.Box(iconSize*3), "Air", p.s);
 			p.NudgeY(false);
 			p.NextLine();
 			p.NudgeX();
-			GUI.Box (p.Box(iconSize), Icons.Plane(PLANE.ETH), p.s);
+			GUI.Box (p.Box(iconSize), Icons.Plane(EPlane.ETH), p.s);
 			p.NudgeY(); p.NudgeX();
 			GUI.Box (p.Box(iconSize*3), "Ethereal", p.s);
 			p.NudgeY(false);

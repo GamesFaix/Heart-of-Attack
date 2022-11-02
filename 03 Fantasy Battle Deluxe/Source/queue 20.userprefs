@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 21\Assets\Scripts\Game\Actions\General\AEffects.cs">
+    <Files>
+      <File FileName="..\queue 21\Assets\Scripts\Game\Console\InputBuffer.cs" Line="9" Column="4" />
+      <File FileName="..\queue 21\Assets\Scripts\Game\Actions\General\AEffects.cs" Line="52" Column="40" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

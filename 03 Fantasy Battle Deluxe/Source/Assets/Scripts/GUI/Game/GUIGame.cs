@@ -26,13 +26,11 @@ public class GUIGame : MonoBehaviour {
 	public void Display() {
 		float sW = Screen.width;
 		float sH = Screen.height;
-		
+
+		GUI.DrawTexture(new Rect(0,0,sW,sH), ImageLoader.wood[1], ScaleMode.StretchToFill);
+
 		float barW = 400;
 		float lineH = 30;
-		
-		Panel boardPanel = new Panel(new Rect(0, 0, sW-barW, sH), 30, s);
-		board.Display(boardPanel);
-		
 		
 		if (GUI.Button(new Rect(sW-barW, 0, barW/4, lineH), "Game")) {
 			showTools = false;	
@@ -44,27 +42,26 @@ public class GUIGame : MonoBehaviour {
 			InputBuffer.Submit(new RQuit(Source.ActivePlayer));	
 		}
 		
-		
-		
+		float inspH = sH-lineH;
+		float qH = 150;
+		float qW = (sW - barW)/2;
+
 		if (showTools) {
 			Panel toolsPanel = new Panel(new Rect(sW-barW, lineH, barW, sH-lineH), 30, s);
 			tools.Display (toolsPanel);
 		}
 		else {
-
-			float logH = 150;
-			float qH = lineH * 5;
-			float inspH = sH - lineH - qH - logH;
-
-
 			Panel inspectorPanel = new Panel(new Rect(sW-barW, lineH, barW, inspH), lineH, s);
 			inspector.Display(inspectorPanel);
 
-			Panel queuePanel = new Panel(new Rect(sW-barW, inspH + lineH, barW, qH), 20, s);
+			Panel queuePanel = new Panel(new Rect(0, sH-qH, qW, qH), 20, s);
 			queue.Display(queuePanel);
 
-			Panel logPanel = new Panel(new Rect(sW-barW, sH-logH, barW, logH), 20, s);
+			Panel logPanel = new Panel(new Rect(qW, sH-qH, qW, qH), 20, s);
 			log.Display(logPanel);
 		}
+
+		Panel boardPanel = new Panel(new Rect(0, 0, sW-barW, sH-qH), 30, s);
+		board.Display(boardPanel);
 	}
 }

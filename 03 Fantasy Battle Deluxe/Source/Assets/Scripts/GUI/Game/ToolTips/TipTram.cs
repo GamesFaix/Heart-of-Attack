@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Special(SPECIAL.TRAM));
+			GUI.Box(iconBox, Icons.Class(EClass.TRAM));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Trample", p.s);
 			p.NudgeY();

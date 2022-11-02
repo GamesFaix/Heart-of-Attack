@@ -4,16 +4,8 @@ using HOA;
 public class GUILog : MonoBehaviour {
 	
 	public void Display (Panel p){
-		GUI.Box(p.FullBox, " ");
-		p.x2 += 5;
-		
-		GUI.Label(p.Box(0.2f), "LOG");
-		
-		Panel controlPanel = new Panel(p.Box(0.8f), p.LineH, p.s);
-		ControlButtons(controlPanel);
-		
-		p.NextLine();		
-		
+		p.NudgeY();
+
 		float historySize = (p.H-2*p.LineH) / p.H;
 		Panel historyPanel = new Panel(p.TallBox(historySize), p.LineH, p.s);
 		CommandHistory(historyPanel);
@@ -24,25 +16,25 @@ public class GUILog : MonoBehaviour {
 
 	//Control Buttons
 	int view = 1;
-	LogIO showLog;
-	
+	ELog showLog = ELog.OUT;
+	/*
 	void ControlButtons(Panel p){
 		string[] views = new string[3]{"Input","Output","Debug"};
 		view = GUI.Toolbar(p.LineBox, view, views);
 		switch (view){
 		case 0:
-			showLog = LogIO.IN;
+			showLog = ELog.IN;
 			break;
 		case 1:
-			showLog = LogIO.OUT;
+			showLog = ELog.OUT;
 			break;
 		case 2:
-			showLog = LogIO.DEBUG;
+			showLog = ELog.DEBUG;
 			break;
 		default:
 			break;
 		}
-	}
+	}*/
 
 
 	static Vector2 historyScroll = new Vector2 (0,0);
@@ -53,7 +45,7 @@ public class GUILog : MonoBehaviour {
 	
 	//Command History
 	void CommandHistory(Panel p){
-		GUI.Box(p.FullBox,"");
+		//GUI.Box(p.FullBox,"");
 
 		internalH = p.LineH * GameLog.Count(showLog);
 		historyScroll = GUI.BeginScrollView(p.FullBox, historyScroll, new Rect(p.X,p.Y,internalW,internalH));

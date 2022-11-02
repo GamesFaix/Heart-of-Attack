@@ -5,32 +5,32 @@ namespace HOA {
 
 	public static class Thumbs {
 		
-		static Dictionary<TTYPE, Texture2D> thumbnails;
+		static Dictionary<EToken, Texture2D> thumbnails;
 		
 		public static void Load() {
-			thumbnails = new Dictionary<TTYPE, Texture2D>();
+			thumbnails = new Dictionary<EToken, Texture2D>();
 
-			Add(TTYPE.KATA, "KATA"); Add(TTYPE.CARA, "CARA"); Add(TTYPE.MAWT, "MAWT"); Add(TTYPE.KABU, "KABU");
-			Add(TTYPE.DEMO, "DEMO"); Add(TTYPE.MEIN, "MEIN"); Add(TTYPE.MINE, "MINE"); Add(TTYPE.PANO, "PANO"); Add(TTYPE.DECI, "DECI");
-			Add(TTYPE.ROOK, "ROOK"); Add(TTYPE.SMAS, "SMAS"); Add(TTYPE.CONF, "CONF"); Add(TTYPE.ASHE, "ASHE"); Add(TTYPE.BATT, "BATT"); Add(TTYPE.GARG, "GARG");
-			Add(TTYPE.GRIZ, "GRIZ"); Add(TTYPE.TALO, "TALO"); Add(TTYPE.META, "META"); Add(TTYPE.ULTR, "ULTR");
-			Add(TTYPE.REVO, "REVO"); Add(TTYPE.PIEC, "PIEC"); Add(TTYPE.APER, "APER"); Add(TTYPE.REPR, "REPR"); Add(TTYPE.OLDT, "OLDT");
-			Add(TTYPE.LICH, "LICH"); Add(TTYPE.BEES, "BEES"); Add(TTYPE.MYCO, "MYCO"); Add(TTYPE.MART, "MART"); Add(TTYPE.BLAC, "BLAC"); Add(TTYPE.WEBB, "WEBB");
-			Add(TTYPE.PRIS, "PRIS"); Add(TTYPE.AREN, "AREN"); Add(TTYPE.PRIE, "PRIE"); Add(TTYPE.DREA, "DREA");
-			Add(TTYPE.RECY, "RECY"); Add(TTYPE.NECR, "NECR"); Add(TTYPE.MOUT, "MOUT"); Add(TTYPE.MONO, "MONO");
+			Add(EToken.KATA, "KATA"); Add(EToken.CARA, "CARA"); Add(EToken.MAWT, "MAWT"); Add(EToken.KABU, "KABU");
+			Add(EToken.DEMO, "DEMO"); Add(EToken.MEIN, "MEIN"); Add(EToken.MINE, "MINE"); Add(EToken.PANO, "PANO"); Add(EToken.DECI, "DECI");
+			Add(EToken.ROOK, "ROOK"); Add(EToken.SMAS, "SMAS"); Add(EToken.CONF, "CONF"); Add(EToken.ASHE, "ASHE"); Add(EToken.BATT, "BATT"); Add(EToken.GARG, "GARG");
+			Add(EToken.GRIZ, "GRIZ"); Add(EToken.TALO, "TALO"); Add(EToken.META, "META"); Add(EToken.ULTR, "ULTR");
+			Add(EToken.REVO, "REVO"); Add(EToken.PIEC, "PIEC"); Add(EToken.APER, "APER"); Add(EToken.REPR, "REPR"); Add(EToken.OLDT, "OLDT");
+			Add(EToken.LICH, "LICH"); Add(EToken.BEES, "BEES"); Add(EToken.MYCO, "MYCO"); Add(EToken.MART, "MART"); Add(EToken.BLAC, "BLAC"); Add(EToken.WEBB, "WEBB");
+			Add(EToken.PRIS, "PRIS"); Add(EToken.AREN, "AREN"); Add(EToken.PRIE, "PRIE"); Add(EToken.DREA, "DREA");
+			Add(EToken.RECY, "RECY"); Add(EToken.NECR, "NECR"); Add(EToken.MOUT, "MOUT"); Add(EToken.MONO, "MONO");
 
-			Add(TTYPE.HSIL, "HSIL"); Add(TTYPE.HSTE, "HSTE"); Add(TTYPE.HSTO, "HSTO"); Add(TTYPE.HFIR, "HFIR"); 
-			Add(TTYPE.HBRA, "HBRA"); Add(TTYPE.HSLK, "HSLK"); Add(TTYPE.HGLA, "HGLA"); Add(TTYPE.HBLO, "HBLO");
+			Add(EToken.HSIL, "HSIL"); Add(EToken.HSTE, "HSTE"); Add(EToken.HSTO, "HSTO"); Add(EToken.HFIR, "HFIR"); 
+			Add(EToken.HBRA, "HBRA"); Add(EToken.HSLK, "HSLK"); Add(EToken.HGLA, "HGLA"); Add(EToken.HBLO, "HBLO");
 
-			Add(TTYPE.MNTN, "MNTN"); Add(TTYPE.HILL, "HILL"); Add(TTYPE.WATR, "WATR"); Add(TTYPE.LAVA, "LAVA");
-			Add(TTYPE.ROCK, "ROCK"); Add(TTYPE.TREE, "TREE"); Add(TTYPE.CORP, "CORP");
+			Add(EToken.MNTN, "MNTN"); Add(EToken.HILL, "HILL"); Add(EToken.WATR, "WATR"); Add(EToken.LAVA, "LAVA");
+			Add(EToken.ROCK, "ROCK"); Add(EToken.TREE, "TREE"); Add(EToken.CORP, "CORP");
 
-			thumbnails.Add(TTYPE.NONE, default(Texture2D));
+			thumbnails.Add(EToken.NONE, default(Texture2D));
 		}
-		static void Add (TTYPE code, string fileName) {thumbnails.Add(code, LoadFile(fileName));}
+		static void Add (EToken code, string fileName) {thumbnails.Add(code, LoadFile(fileName));}
 
 		static Texture2D LoadFile (string name) {return (Resources.Load("Thumbnails/"+name) as Texture2D);}
 
-		public static Texture2D CodeToThumb (TTYPE code) {return thumbnails[code];}
+		public static Texture2D CodeToThumb (EToken code) {return thumbnails[code];}
 	}
 }

@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Stat(STAT.AP));
+			GUI.Box(iconBox, Icons.Stat(EStat.AP));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Energy", p.s);
 			p.NudgeY();

@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.AimType(AIMTYPE.NEIGHBOR));
+			GUI.Box(iconBox, Icons.Aim(EAim.NEIGHBOR));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Neighbor", p.s);
 			p.NudgeY();

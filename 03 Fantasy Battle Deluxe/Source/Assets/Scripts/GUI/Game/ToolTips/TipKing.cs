@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Special(SPECIAL.KING));
+			GUI.Box(iconBox, Icons.Class(EClass.KING));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Attack King", p.s);
 			p.NudgeY();

@@ -13,10 +13,9 @@ public class GUIBoard : MonoBehaviour {
 	static bool zoomOut = false;
 	
 	public void Display(Panel p){
-		GUI.Box(p.FullBox,"");
 		p.x2 += 5;
 		
-		GUI.Label(p.Box(0.2f), "BOARD");
+		//GUI.Label(p.Box(0.2f), "BOARD");
 		
 		float minDimension = Mathf.Min(p.W, p.H-p.LineH);
 		minScale = minDimension/Board.Size;
@@ -39,27 +38,19 @@ public class GUIBoard : MonoBehaviour {
 		if (Board.ready){
 			
 			Rect board = BoardRect(new Panel(p.TallBox(externalH), p.LineH, p.s));
+			board.x = (p.W-board.width)/2;
+
+
 			GUI.Box(board, "");
 			
 			for (int x=1; x<=Board.Size; x++) {
 				for (int y=1; y<=Board.Size; y++) {
 					Cell cell = Board.Cell(x,y);
 					Rect cellRect = CellRect(board,x,y);
-					
-					if (cell.IsEmpty()) {
-						if (GUI.Button(cellRect, cell.ToString()) && 
-						   Input.GetMouseButtonUp(0) && GUISelectors.WaitForCell){
-							GUISelectors.Cell = cell;	
-						}
-					}
-					else {DrawOccupants(cellRect, cell, p.s);}
-					
-					if (cell.Legal) {
-						Color c = GUI.color;
-						GUI.color = new Color (1,1,1,0.25f);
-						GUI.Box(cellRect, ImageLoader.yellowBtn, p.s);
-						GUI.color = c;
-					}
+
+					GUICell.Draw(cell, cellRect);
+
+
 				}
 			}
 		}
@@ -85,56 +76,6 @@ public class GUIBoard : MonoBehaviour {
 		float y2 = board.y + (y-1)*size;
 		
 		return new Rect(x2,y2,size,size);
-	}
-						
-	Rect TokenRect (Rect cellRect, Cell cell, int n) {
-		if (cell.TokenCount > 1) {
-			float size = cellRect.width/2;
-			Rect tokenRect = new Rect (cellRect.x, cellRect.y, size, size);
-			if (n==1 || n==3) {tokenRect.x += size;}
-			if (n==2 || n==3) {tokenRect.y += size;}
-			return tokenRect;
-		}
-		else {return cellRect;}
-	}
-	
-	string Coordinates (int x, int y) {
-		return "("+x+","+y+")";
-	}
-
-	void DrawOccupants (Rect cellRect, Cell cell, GUIStyle s) {
-		GUI.Box(cellRect, cell.ToString());
-		Rect tokenRect;
-			
-		TokenGroup tg = cell.Occupants;
-		
-		for (int i=0; i<4; i++) {
-			if (i < tg.Count) {
-				Token t = tg[i];
-				if (t != default(Token)) {
-					tokenRect = TokenRect(cellRect, cell ,i);
-					t.Draw(tokenRect);
-					if (GUI.Button(tokenRect, "", s)){
-						if (Input.GetMouseButtonUp(0) && GUISelectors.WaitForCell) {
-							GUISelectors.Cell = cell;
-						}
-						else if (Input.GetMouseButtonUp(0) && GUISelectors.WaitForInstance) {
-							t.Select(new Source(TurnQueue.Top));
-						}
-						else if (Input.GetMouseButtonUp(1)) {
-							GUIInspector.Inspected = t;
-						}
-					}
-				}
-			}
-			else {
-				tokenRect = TokenRect(cellRect, cell, i);
-				if (GUI.Button(tokenRect, "", s)
-					&& Input.GetKey("left shift")) {
-						GUISelectors.Cell = cell;
-				}
-			}
-		}
 	}
 }
 

@@ -1,0 +1,119 @@
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+namespace HOA{
+	public class Ultratherium : Unit {
+		public Ultratherium(Source s, bool template=false){
+			NewLabel(EToken.ULTR, s, true, template);
+			BuildTrample();
+			AddKing();
+			OnDeath = EToken.HFIR;
+			
+			NewHealth(80);
+			NewWatch(2);
+			
+			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
+			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 20));
+			arsenal.Add(new AUltrBlast(this));
+			arsenal.Add(new ACreate(Price.Cheap, this, EToken.GRIZ));
+			arsenal.Add(new ACreate(new Price(1,1), this, EToken.TALO));
+			arsenal.Add(new AUltrCreateMeta(new Price(1,2), this, EToken.META));
+			arsenal.Sort();
+		}		
+		public override string Notes () {return "";}
+	}	
+
+	public class AUltrThrow : Action {
+		int damage;
+		Aim aim2;
+		
+		public AUltrThrow (Price p, Unit u, int range, int dmg) {
+			weight = 4;
+			actor = u;
+			price = p;
+			AddAim(new Aim(EAim.NEIGHBOR, EClass.DEST));
+			AddAim(HOA.Aim.Arc(range));
+			damage = dmg;
+			
+			name = "Throw Terrain";
+			desc = "Destroy target non-Remains destructible.\n"+aim[1].ToString()+"\nDo "+damage+" damage to target unit.";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			InputBuffer.Submit(new RKill (new Source(actor), (Token)targets[0]));
+			InputBuffer.Submit(new RDamage(new Source(actor), (Unit)targets[1], damage));
+		}
+	}
+
+	public class AUltrCreateMeta : Action {
+		
+		Cell cell;
+		EToken child;
+		Token chiTemplate;
+		
+		public AUltrCreateMeta (Price p, Unit par, EToken chi) {
+			weight = 5;
+			price = p;
+			actor = par;
+			AddAim(new Aim (EAim.NEIGHBOR, EClass.DEST));
+			
+			child = chi;
+			chiTemplate = TemplateFactory.Template(child);
+			
+			name = chiTemplate.Name;
+			desc = "Replace target non-remains destructible with "+name+".";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			InputBuffer.Submit(new RReplace(new Source(actor), (Token)targets[0], child));
+
+		}
+	}
+
+	public class AUltrBlast : Action {
+		
+		int damage;
+		
+		public AUltrBlast (Unit u) {
+			weight = 4;
+			actor = u;
+			price = new Price(1,1);
+			AddAim(HOA.Aim.Shoot(2));
+			damage = 12;
+			
+			name = "Ice Blast";
+			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			Unit u = (Unit)targets[0];
+			InputBuffer.Submit(new RDamage (new Source(actor), u, damage));
+
+			u.AddStat (new Source(actor), EStat.IN, -2);
+			u.timers.Add(new TBlast(u, actor));
+
+		}
+	}
+	public class TBlast : Timer {
+		Token source;
+
+		public TBlast (Unit par, Token s) {
+			parent = par;
+			source = s;
+
+			turns = 2;
+			
+			name = "Ice Blasted";
+			desc = parent.ToString()+" Initiative -2 for 2 turns.";
+			
+		}
+		
+		public override void Activate () {
+			parent.AddStat(new Source(source), EStat.IN, 2);
+		}
+	}
+}

@@ -22,7 +22,7 @@ namespace HOA {
 			p.NextLine();
 			
 			statBtn = GUI.SelectionGrid(p.LineBox, statBtn, statLabels, 8);
-			STAT stat = (STAT)statBtn;
+			EStat stat = (EStat)statBtn;
 			
 			p.y2 += 5;
 			

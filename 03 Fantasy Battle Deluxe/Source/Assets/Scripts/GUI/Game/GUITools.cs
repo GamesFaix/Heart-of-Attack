@@ -3,12 +3,10 @@ using System;
 using System.Collections.Generic;
 using HOA;
 
-enum TOOLVIEW {NONE, TOKENS, STATS, QUEUE, RANDOM, GAME, NETWORK}
-
 public class GUITools : MonoBehaviour {
 	
 	int toolView = 0;
-	string[] toolLabels = new string[7] {"Create", "Move", "Kill", "Replace", "Stats", "Queue", "Dice"};
+	string[] toolLabels = new string[6] {"Create", "Move", "Kill", "Stats", "Queue", "Dice"};
 
 	public void Display (Panel p){
 		
@@ -32,10 +30,9 @@ public class GUITools : MonoBehaviour {
 			case 0: GUIToolCreate.Display(subPanel); break;
 			case 1: GUIToolMove.Display(subPanel); break;
 			case 2: GUIToolKill.Display(subPanel); break;
-			case 3: GUIToolReplace.Display(subPanel); break;
-			case 4: GUIToolStats.Display(subPanel); break;
-			case 5: GUIToolQueue.Display(subPanel); break;
-			case 6: GUIToolRandom.Display(subPanel); break;
+			case 3: GUIToolStats.Display(subPanel); break;
+			case 4: GUIToolQueue.Display(subPanel); break;
+			case 5: GUIToolRandom.Display(subPanel); break;
 			default: break;
 		}
 	}
