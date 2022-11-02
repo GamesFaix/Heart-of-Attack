@@ -100,8 +100,18 @@ namespace HOA {
 			return false;
 		}
 		
-		protected bool CanTrample (Cell newCell) {
-			if (IsClass(EClass.TRAM) && newCell.Contains(EClass.DEST)) {return true;}
+		public bool CanTrample (Cell newCell) {
+			if (IsClass(EClass.TRAM)) {
+				foreach (EPlane p in Plane) {
+					Token dest;
+					if (newCell.Contains(p, out dest)) {
+						if (!dest.IsClass(EClass.DEST)) {
+							return false;
+						}
+					}
+				}
+				return true;
+			}
 			return false;
 		}
 		protected void Trample (Cell newCell) {
@@ -112,7 +122,7 @@ namespace HOA {
 			}
 		}
 
-		protected bool CanGetHeart (Cell newCell) {
+		public bool CanGetHeart (Cell newCell) {
 			if (IsClass(EClass.KING) && newCell.Contains(EClass.HEART)){
 				return true;
 			}

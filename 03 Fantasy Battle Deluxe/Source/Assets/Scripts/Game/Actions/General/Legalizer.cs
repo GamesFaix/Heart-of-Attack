@@ -409,10 +409,7 @@ namespace HOA {
 		}
 
 		static bool Stop (Token mover, Cell c) {
-			foreach (EPlane p in mover.Plane) {
-				if (c.Stop(p)) {return true;}
-			}
-			return false;
+			return c.StopToken(mover);
 		}
 	}
 }

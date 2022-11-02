@@ -90,7 +90,7 @@ namespace HOA{
 			actor = par;
 			AddAim(new Aim (EAim.NEIGHBOR, EClass.REM));
 
-			Token childTemplate = TemplateFactory.Template(EToken.RECY);
+			//Token childTemplate = TemplateFactory.Template(EToken.RECY);
 			
 			name = "Recycle";
 			desc = "Replace target remains with "+name+".";
@@ -110,7 +110,7 @@ namespace HOA{
 		
 		public AMonoField (Unit u) {
 			weight = 4;
-			price = new Price(1,2);
+			price = new Price(1,1);
 			actor = u;
 			AddAim(HOA.Aim.Self);
 			damage = 5;

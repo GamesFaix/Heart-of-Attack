@@ -55,6 +55,41 @@ namespace HOA {
 				}
 				GUI.color = c;
 			}
+			Effects(Box);
 		}
+
+		float effectedTime = 0;
+		float EffectElapsedTime () {return Time.time - effectedTime;}
+		static float fadeDuration = 1.5f;
+		EEffect currentEffect = EEffect.NONE;
+		Texture2D effectTex;
+		
+		public void Effect (EEffect e) {
+			effectedTime = Time.time;
+			currentEffect = e;
+			effectTex = SpriteEffects.Effect(e);
+		}
+		
+		void Effects (Rect box) {
+			if (EffectElapsedTime() < fadeDuration 
+			    && currentEffect != EEffect.NONE) {
+				Color oldColor = GUI.color;
+				float alpha;
+				
+				if (EffectElapsedTime() < (fadeDuration/2)) {alpha = (EffectElapsedTime()/fadeDuration)*2;}
+				else {alpha = (1 - (EffectElapsedTime()/fadeDuration))*2;}
+				
+				GUI.color = new Color (1,1,1,alpha);
+				GUI.Box (box, effectTex /*,spriteLabel*/);
+				
+				GUI.color = oldColor;
+			}
+			
+			else {
+				effectedTime = 0;
+				currentEffect = EEffect.NONE;
+			}
+		}
+
 	}
 }

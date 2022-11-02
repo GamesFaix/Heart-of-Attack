@@ -148,11 +148,21 @@ namespace HOA {
 
 		bool[] stop = new bool[4];
 
-		public bool Stop (EPlane p) {
+		bool Stop (EPlane p) {
 			if (p == EPlane.SUNK) {return stop[0];}
 			if (p == EPlane.GND) {return stop[1];}
 			if (p == EPlane.AIR) {return stop[2];}
 			if (p == EPlane.ETH) {return stop[3];}
+			return false;
+		}
+
+		public bool StopToken (Token t) {
+			foreach (EPlane p in t.Plane) {
+				if (Stop(p)) {return true;}
+			}
+			if (t.CanTrample(this) || t.CanGetHeart(this)) {
+				return true;
+			}
 			return false;
 		}
 
@@ -165,5 +175,6 @@ namespace HOA {
 
 		CellSprite sprite;
 		public CellSprite Sprite { get {return sprite;} }
+		public void SpriteEffect (EEffect e) {sprite.Effect(e);}
 	}
 }

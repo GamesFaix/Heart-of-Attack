@@ -4,6 +4,7 @@ namespace HOA {
 	public class Source {
 		Player player;
 		Token token;
+		EffectSeq sequence;
 		
 		public Source () {
 			player = default(Player);
@@ -19,10 +20,17 @@ namespace HOA {
 			player = t.Owner;
 			token = t;
 		}
-		
+
+		public Source (Token t, EffectSeq e) {
+			player = t.Owner;
+			token = t;
+			sequence = e;
+		}
+
 		public Player Player {get {return player;} }
 		public Token Token {get {return token;} }
-		
+		public EffectSeq Sequence {get {return sequence;} }
+
 		public override string ToString() {
 			if (token != default(Token)) {return token.ToString();}
 			if (player != default(Player)) {return player.ToString();}

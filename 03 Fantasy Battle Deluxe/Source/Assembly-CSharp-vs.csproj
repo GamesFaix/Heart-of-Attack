@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{0773BF2D-D83F-E175-E230-74C3242C0747}</ProjectGuid>
+	<ProjectGuid>{2AED21DD-5384-C2D6-55AB-5F9E8C412880}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -92,10 +92,15 @@
      <Compile Include="Assets\Scripts\Game\Actions\General\EffectGroup.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\EffectQueue.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\EffectSeq.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - CreateDestroy.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Damage.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Move.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Queue.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Effects.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\IEffect.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\IMultiMove.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\IMultiTarget.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\ITeleport.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Legalizer.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Price.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Targeter.cs" />
@@ -110,6 +115,7 @@
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AEnd.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AFocus.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AGrenade.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AKnock.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ALaser.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\ALeech.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\Standard\AMove.cs" />

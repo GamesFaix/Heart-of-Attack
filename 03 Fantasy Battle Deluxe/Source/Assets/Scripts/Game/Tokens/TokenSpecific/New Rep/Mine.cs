@@ -11,13 +11,20 @@ namespace HOA{
 		public override string Notes () {return "If any Token enters Mine's Cell or a neighboring Cell, destroy Mine.\nWhen Mine is destroyed, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";}
 		
 		public override void Die (Source s, bool corpse = false, bool log=true) {
+			Debug.Log(this+" dying");
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			TokenFactory.Remove(this);
 //			Cell oldCell = Cell;
 			Exit();
 			if (log && !IsClass(EClass.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
-			EffectQueue.Interrupt(new EExplosion(new Source(this), Cell, 12));
-
+			/*if (s.Sequence != default(EffectSeq)) {
+				Debug.Log("valid sequence");
+				s.Sequence.AddToNext(new EExplosion(s, Cell, 12));
+			}
+			else {
+		*/
+				EffectQueue.Interrupt(new EExplosion(new Source(this), Cell, 12));
+		//	}
 			BodyMine bodyMine = (BodyMine)body;
 			bodyMine.DestroySensors();
 		}
@@ -93,18 +100,34 @@ namespace HOA{
 		}
 	}
 
-	public class EDetonate : Effect {
-		public override string ToString () {return "Effect - Detonate";}
+	public class EDetonate : EffectSeq {
+		public override string ToString () {return "EffectSeq - Detonate";}
 		Token target;
 		
 		public EDetonate (Source s, Token t) {
+			source = s; target = t;
+
+			list = new List<EffectGroup>();
+
+			EffectGroup group = new EffectGroup();
+			group.Add(new EDetonate1 (new Source(source.Token, this), target));
+			list.Add(group);
+		}
+	}
+
+	public class EDetonate1 : Effect {
+		public override string ToString () {return "Effect - Detonate1";}
+		Token target;
+		
+		public EDetonate1 (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
 			Mixer.Play(SoundLoader.Effect(EEffect.DETONATE));
 			target.SpriteEffect(EEffect.DETONATE);
-			EffectQueue.Interrupt(new EDetonate2(source, target));
+			source.Sequence.AddToNext(new EDetonate2(source, target));
 		}
+
 	}
 
 	public class EDetonate2 : Effect {
@@ -113,8 +136,10 @@ namespace HOA{
 		
 		public EDetonate2 (Source s, Token t) {
 			source = s; target = t;
+			Debug.Log(ToString());
 		}
 		public override void Process() {
+			Debug.Log("processing "+ToString());
 			target.Die(source);
 		}
 	}

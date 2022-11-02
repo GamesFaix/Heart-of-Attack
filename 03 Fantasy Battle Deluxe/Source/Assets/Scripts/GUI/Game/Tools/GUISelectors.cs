@@ -84,7 +84,8 @@ namespace HOA {
 					p.x2 = x3;
 					Rect box = new Rect(p.x2, p.y2, btnW, btnW);
 					if (GUI.Button(box, "")) {Instance = t;
-						Debug.Log("instance selected");}
+						//Debug.Log("instance selected");
+					}
 					p.ResetX();
 					GUI.Box(box, t.Thumb, p.s);
 //					t.Draw(box);

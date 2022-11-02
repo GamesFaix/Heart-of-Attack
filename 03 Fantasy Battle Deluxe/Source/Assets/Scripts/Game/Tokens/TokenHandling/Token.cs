@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Token : ITargetable, ISource{
+	public abstract class Token : ITargetable{
 
 		protected bool isTemplate = false;
 		public void BuildTemplate () {isTemplate = true;}
@@ -67,6 +67,8 @@ namespace HOA {
 		public TokenGroup CellMates {get {return body.CellMates;} }
 		public Cell Cell {get {return body.Cell;} }
 		public bool CanEnter (Cell cell) {return body.CanEnter(cell);}
+		public bool CanTrample (Cell cell) {return body.CanTrample(cell);}
+		public bool CanGetHeart (Cell cell) {return body.CanGetHeart(cell);}
 		public bool Enter (Cell cell) {return body.Enter(cell);}
 		public void Exit () {body.Exit();}
 		public bool Swap (Token other) {return body.Swap(other);}
@@ -117,28 +119,6 @@ namespace HOA {
 		public void Legalize (bool l=true) {legal = l;}
 
 		public List<Timer> timers = new List<Timer>();
-
-		//ISource
-
-		ISource source;
-		
-		public ISource Source () {
-			return source;
-		}
-		
-		public List<ISource> SourceList () {
-			List<ISource> sources = new List<ISource>();
-			
-			ISource nextSource = Source();
-			
-			while (nextSource != default(ISource)) {
-				sources.Add(nextSource);
-				nextSource = nextSource.Source();
-			}
-			return sources;
-		}
-
-
 
 
 	}

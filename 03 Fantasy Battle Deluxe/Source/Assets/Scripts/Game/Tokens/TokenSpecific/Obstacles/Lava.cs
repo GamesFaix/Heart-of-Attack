@@ -86,7 +86,7 @@ namespace HOA {
 			if (t is Unit && t.IsPlane(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
-				EffectQueue.Add(new EIncinerate(new Source(parent), u, 7));
+				EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 7));
 			}
 		}
 		public override void OtherExit (Token t) {

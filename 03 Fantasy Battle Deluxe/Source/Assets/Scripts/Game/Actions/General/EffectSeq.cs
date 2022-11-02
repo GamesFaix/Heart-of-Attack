@@ -4,24 +4,55 @@ using UnityEngine;
 
 namespace HOA {
 	
-	public class EffectSeq : Group<IEffect>, IEffect {
-		public EffectSeq () {list = new List<IEffect>();}
-		public EffectSeq (Effect e) {list = new List<IEffect>{e};}
-		public EffectSeq (List<IEffect> e) {list = e;}
-		public EffectSeq (EffectSeq es) {
-			list = new List<IEffect>();
-			foreach (Effect e in es) {list.Add(e);}
+	public class EffectSeq : Group<EffectGroup>, IEffect {
+
+		public Source source;
+
+		public EffectSeq () {}
+
+		public EffectSeq (Source s) {
+			source = s;
+			list = new List<EffectGroup>();
+		}
+		public EffectSeq (Source s, Effect e) {
+			source = s;
+			list = new List<EffectGroup>{new EffectGroup(e)};
+		}
+		public EffectSeq (Source s, EffectGroup e) {
+			source = s;
+			list = new List<EffectGroup> {e};
 		}
 
-		public IEffect Pop () {
-			IEffect e = default(IEffect);
-			if (list.Count > 0) {e = list[0];}
-			list.Remove(e);
-			return e;
+		public void AddToNext (EffectGroup e) {
+			if (list.Count>1) {
+				list[1].Add(e);
+			}
+			else {list.Add(e);}
+		}
+		public void AddToNext (Effect e) {
+			if (list.Count>1) {
+				list[1].Add(e);
+			}
+			else {list.Add(new EffectGroup(e));}
+		}
+
+		public void AddToNext (EffectSeq e) {
+			Debug.Log(e[0][0]);
+
+			AddToNext(e[0]);
+		}
+
+		public EffectGroup Pop () {
+			if (list.Count > 0) {
+				EffectGroup e = list[0];
+				list.Remove(e);
+				return e;
+			}
+			return new EffectGroup();
 		}
 
 		public void Process () {
-			IEffect top = Pop();
+			EffectGroup top = Pop();
 			top.Process();
 		}
 	}

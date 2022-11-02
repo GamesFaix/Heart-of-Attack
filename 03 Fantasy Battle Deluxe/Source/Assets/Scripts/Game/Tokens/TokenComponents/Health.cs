@@ -53,7 +53,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. "+HPString);}
 			}	
 			if (Empty()) {
-				EffectQueue.Interrupt(new EKill(s, parent));
+				EffectQueue.Add(new EKill(s, parent));
 			}
 			return hp;
 		}
@@ -67,7 +67,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. "+HPString);}
 			}
 			if (Empty()) {
-				EffectQueue.Interrupt(new EKill(s, parent));
+				EffectQueue.Add(new EKill(s, parent));
 			}
 			return max;	
 		}
@@ -85,7 +85,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. "+HPString);}
 			}	
 			if (Empty()) {
-				EffectQueue.Interrupt(new EKill(s, parent));
+				EffectQueue.Add(new EKill(s, parent));
 			}
 			return hp;
 		}
@@ -101,7 +101,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. "+HPString);}
 			}
 			if (Empty()) {
-				EffectQueue.Interrupt(new EKill(s, parent));
+				EffectQueue.Add(new EKill(s, parent));
 			}
 			return max;
 

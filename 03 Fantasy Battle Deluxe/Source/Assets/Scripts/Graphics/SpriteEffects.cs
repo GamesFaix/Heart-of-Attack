@@ -31,6 +31,9 @@ namespace HOA {
 			Add(EEffect.STICK, "stick");
 			Add(EEffect.DETONATE, "detonate");
 			Add(EEffect.BURROW, "burrow");
+			Add(EEffect.TELEPORT, "teleport");
+			Add(EEffect.GETHEART, "getHeart");
+
 
 		}
 

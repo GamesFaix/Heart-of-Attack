@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HOA {
 	
 	
-	public abstract class Action : ISource{
+	public abstract class Action{
 		protected int weight;
 		public int Weight {get {return weight;} }
 
@@ -79,24 +79,6 @@ namespace HOA {
 			actor.Charge(price);
 		}
 
-		//ISource
-
-		ISource source;
-		
-		public ISource Source () {
-			return source;
-		}
-		
-		public List<ISource> SourceList () {
-			List<ISource> sources = new List<ISource>();
-			
-			ISource nextSource = Source();
-			
-			while (nextSource != default(ISource)) {
-				sources.Add(nextSource);
-				nextSource = nextSource.Source();
-			}
-			return sources;
-		}
+	
 	}
 }

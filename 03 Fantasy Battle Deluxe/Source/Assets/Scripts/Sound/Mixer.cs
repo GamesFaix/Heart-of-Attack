@@ -8,6 +8,8 @@ public class Mixer : MonoBehaviour {
 	static List<AudioSource> sources;
 	static Dictionary<AudioSource, float> startTimes;
 
+	static float volume;
+
 	void Awake () {
 		sources = new List<AudioSource>();
 		startTimes = new Dictionary<AudioSource, float>();
@@ -31,6 +33,7 @@ public class Mixer : MonoBehaviour {
 		if (startTimes.ContainsKey(channel)) {startTimes.Remove(channel);}
 		startTimes.Add(channel, Time.time);
 
+		channel.volume = volume;
 		channel.clip = clip;
 		channel.Play();
 	}
@@ -54,7 +57,18 @@ public class Mixer : MonoBehaviour {
 		return oldest;
 	}
 
+	void Update () {
 
+		int playing = 0;
+		for (int i=0; i<sources.Count; i++) {
+			if (sources[i].isPlaying) {playing++;}
+		}
+		if (playing > 0) {
+			volume = 1f/(float)playing;
+		}
+		else {volume = 1;}
+
+	}
 
 
 }

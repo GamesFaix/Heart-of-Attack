@@ -74,7 +74,7 @@ namespace HOA{
 		}
 	}
 
-	public class ANecrTeleport : Action {
+	public class ANecrTeleport : Action, ITeleport {
 		Aim aim2;
 		
 		public ANecrTeleport (Unit u) {
@@ -91,7 +91,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			EffectQueue.Add(new EMove(new Source(actor), (Token)targets[0], (Cell)targets[1]));
+			EffectQueue.Add(new ETeleport(new Source(actor), (Token)targets[0], (Cell)targets[1]));
 			Targeter.Reset();
 		}
 	}

@@ -79,7 +79,7 @@ namespace HOA {
 		}
 	}
 
-	public class AKabuTeleport : Action {
+	public class AKabuTeleport : Action, ITeleport {
 		
 		public AKabuTeleport (Unit u) {
 			weight = 4;
@@ -95,7 +95,7 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			EffectQueue.Add(new EMove(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
+			EffectQueue.Add(new ETeleport(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
 			Targeter.Reset();
 		}
 	}

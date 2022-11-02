@@ -49,9 +49,23 @@ namespace HOA {
 			if (currentAction is IMultiMove && currentStep > 0) {
 				int index = targets.Count-1;
 				ITargetable last = targets[index];
+
 				if (last is Cell) {start = (Cell)last;}
 				if (last is Token) {start = ((Token)last).Cell;}
+
+				if (start.StopToken(actor)) {
+					FinishStep();
+					return;
+				}
+
 			}
+
+			if (currentAction is ITeleport && currentStep > 0) {
+				start = currentAction.Actor.Cell;
+				actor = (Token)targets[0];
+
+			}
+
 
 			//Debug.Log(start);
 
@@ -59,7 +73,8 @@ namespace HOA {
 			else {
 				//Debug.Log(aim);
 				//if (child!= default(Token)) {Debug.Log(child.ToString());}
-				Legalizer.Find(actor, aim, start, child); }
+				Legalizer.Find(actor, aim, start, child); 
+			}
 
 		}
 

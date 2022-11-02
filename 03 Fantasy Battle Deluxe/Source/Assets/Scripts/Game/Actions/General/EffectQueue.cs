@@ -6,6 +6,11 @@ namespace HOA {
 	public class EffectQueue : MonoBehaviour {
 
 		static List<IEffect> effects = new List<IEffect>();
+		static float duration = 0.3f;
+		static float startTime = 0;
+
+		static bool processing = false;
+		public static bool Processing { get {return processing;} }
 
 		public static void Add (IEffect e) {
 			effects.Add(e);
@@ -17,12 +22,15 @@ namespace HOA {
 		}
 
 		static IEffect Top {get {return effects[0];} }
-		static void RemoveTop () {effects.Remove(Top);}
 
-		static float duration = 0.5f;
-		static float startTime = 0;
-		static bool processing = false;
-		public static bool Processing { get { return processing; } }
+		static IEffect Pop () {
+			if (effects.Count > 0) {
+				IEffect e = Top;
+				effects.Remove(e);
+				return e;
+			}
+			return default(IEffect);
+		}
 
 		static void Process () {
 			processing = true;
@@ -32,21 +40,19 @@ namespace HOA {
 
 		void Update () {
 			if (processing && Time.time - startTime >= duration) {
-				if (!ActiveSequence) {RemoveTop();}
+				if (!ActiveSequence) {Pop();}
 				if (effects.Count > 0) {Process();}
 				else {processing = false;}
 			}
-
 		}
 
-		bool ActiveSequence {
+		bool ActiveSequence { 
 			get {
-				if (Top is EffectSeq) {
-					EffectSeq es = (EffectSeq)Top;
-					if (es.Count > 1) {return true;}
+				if (Top is EffectSeq && ((EffectSeq)Top).Count > 0) {
+					return true;
 				}
 				return false;
-			}
+			} 
 		}
 	}
 }

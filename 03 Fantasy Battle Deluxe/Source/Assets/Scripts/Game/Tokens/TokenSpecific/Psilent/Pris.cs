@@ -61,7 +61,7 @@ namespace HOA{
 				bool stop = false;
 				
 				TokenGroup affected;
-				
+				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
 				while (dmg > 0 && !stop) {
 					affected = cell.Occupants;
 					if (affected.OnlyClass(EClass.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}

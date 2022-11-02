@@ -107,42 +107,47 @@ namespace HOA {
 
 	}
 
-	public class EMawtExplosion : Effect {
+	public class EMawtExplosion : EffectSeq {
 		public override string ToString () {return "Effect - Mawth Explosion";}
 		Cell target; int dmg;
 		
 		public EMawtExplosion (Source s, Cell c, int n) {
 			source = s; target = c; dmg = n;
-		}
-		public override void Process() {
+		
+			list = new List<EffectGroup>();
+
 			CellGroup affected = new CellGroup();
 			CellGroup thisRad = new CellGroup(target);
 			CellGroup nextRad = new CellGroup();
 			
 			int currentDmg = dmg;
 
-			EffectSeq sequence = new EffectSeq();
+		//	EffectSeq sequence = new EffectSeq();
 
 			while (currentDmg > 0) {
-				EffectGroup nextEffects = new EffectGroup();
+				EffectGroup group = new EffectGroup();
 				for (int j=0; j<thisRad.Count; j++) {
 					Cell next = thisRad[j];
 					
 					if (!affected.Contains(next)) {
 						if (next.Occupants.Count > 0) {
-							nextEffects.Add(new EMawtExplosion2 (source, next, currentDmg));
+							group.Add(new EMawtExplosion2 (new Source(source.Token, this), next, currentDmg));
 						}
-						foreach (Cell c in next.Neighbors()) {nextRad.Add(c);}
+						else {
+							group.Add(new EExplosionDummy (new Source (source.Token, this), next));
+						}
+						foreach (Cell cell in next.Neighbors()) {nextRad.Add(cell);}
 						affected.Add(next);
 					}
 				}
-				sequence.Add(nextEffects);
+				//sequence.Add(nextEffects);
 				//EffectQueue.Interrupt(nextEffects);
 				thisRad = nextRad;
 				nextRad = new CellGroup();
 				currentDmg = (int)Mathf.Floor(currentDmg * 0.5f);
+				list.Add(group);
 			}
-			EffectQueue.Interrupt(sequence);
+		//	EffectQueue.Add(sequence);
 		}
 	}
 	
@@ -161,7 +166,7 @@ namespace HOA {
 				t.SpriteEffect(EEffect.EXP);
 				Mixer.Play(SoundLoader.Effect(EEffect.EXP));
 				if (t.IsClass(EClass.DEST)) {
-					nextEffects.Add(new EDestruct(source, t));
+					source.Sequence.AddToNext(new EDestruct(source, t));
 				}
 				
 				else if (t is Unit && t!=source.Token) {
@@ -169,7 +174,7 @@ namespace HOA {
 					u.Damage(source, dmg);
 				}
 			}		
-			EffectQueue.Interrupt(nextEffects);
+			EffectQueue.Add(nextEffects);
 		}
 	}
 }
