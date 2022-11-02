@@ -14,6 +14,8 @@ public static class GameLog {
 		if (io == LogIO.IN) {inLog.Add(text); ioLog.Add(text); debug.Add(text);}
 		if (io == LogIO.IO) {Add("GameLog: Event added to IO log: "+text, LogIO.DEBUG);}
 		if (io == LogIO.DEBUG){debug.Add(text);}
+
+		GUILog.ScrollToBottom();
 	}
 
 	public static void In (string text) {Add(text, LogIO.IN);}

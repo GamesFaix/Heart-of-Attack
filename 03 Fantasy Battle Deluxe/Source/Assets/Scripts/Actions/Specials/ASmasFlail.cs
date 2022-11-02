@@ -10,6 +10,7 @@ namespace HOA.Actions {
 		int damage;
 		
 		public ASmasFlail (Price p, Unit u, Aim a, int d) {
+			weight = 3;
 			price = p;
 			actor = u;
 			

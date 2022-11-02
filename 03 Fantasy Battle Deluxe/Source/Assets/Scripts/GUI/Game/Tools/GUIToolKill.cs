@@ -11,6 +11,7 @@ public static class GUIToolKill {
 	
 		Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
+		GUISelectors.WaitForInstance = true;
 
 		Token instance = GUISelectors.Instance;
 		string btnLabel = "Kill ";

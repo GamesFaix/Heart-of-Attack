@@ -1,11 +1,18 @@
 ﻿using HOA.Tokens;
 using HOA.Map;
+using HOA.Actions;
 
 public class RMove : RCellSelect{
 	public Token instance;
 	public RMove (Source s, Token t, Cell c) {source = s; instance = t; cell = c;}
 
-	public override void Grant () {instance.Enter(cell);}
+	public override void Grant () {
+		Cell oldCell = instance.Cell;
+		instance.Enter(cell);
+		Cell newCell = instance.Cell;
+		GameLog.Out (instance+" moved from "+oldCell+" to "+newCell+".");
+		Reset();
+	}
 }
 
 public class RSetStat : RInstanceSelect {
@@ -17,6 +24,7 @@ public class RSetStat : RInstanceSelect {
 			Unit u = (Unit)instance;
 			u.SetStat(source, stat, magnitude);
 		}
+		Reset();
 	}
 }
 
@@ -29,5 +37,17 @@ public class RAddStat : RInstanceSelect {
 			Unit u = (Unit)instance;
 			u.AddStat(source, stat, magnitude);
 		}
+		Reset();
 	}
+}
+
+public class RGetHeart : Request {
+	public Token heart;
+	public RGetHeart (Source s, Token t) {source = s; heart = t;}
+
+	public override void Grant () {
+		GameLog.Out(source.Player.ToString() + " acquired the "+heart.ToString()); 
+		heart.Die(source);
+	}
+
 }

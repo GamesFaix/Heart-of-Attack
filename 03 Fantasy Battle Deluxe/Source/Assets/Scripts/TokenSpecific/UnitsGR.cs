@@ -15,6 +15,7 @@ namespace HOA.Tokens {
 			
 			arsenal.Add(new AMoveKata(Price.Cheap, this, Aim.MovePath(4)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 8));
+			arsenal.Sort();
 		}
 		public override string Notes () {return "";}
 	}
@@ -34,6 +35,7 @@ namespace HOA.Tokens {
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
 			arsenal.Add(new AShock(Price.Cheap, this, Aim.Melee(), 10, 5));
 			arsenal.Add(new ACaraDischarge(new Price(1,2), this, 10, 5));
+			arsenal.Sort();
 		}
 		public override string Notes () {return "+1 DEF per FP. DEF can never exceed 5.";}
 
@@ -61,6 +63,8 @@ namespace HOA.Tokens {
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MoveLine(4)));
+			arsenal.Add(new ALaser(Price.Cheap, this, Aim.Shoot(3), 16));
+			arsenal.Sort();
 		}
 		public override string Notes () {return "";}
 	}
@@ -80,6 +84,9 @@ namespace HOA.Tokens {
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.KATA));
 			arsenal.Add(new ACreate(new Price(0,2), this, TTYPE.CARA));
 			arsenal.Add(new ACreate(new Price(2,2), this, TTYPE.MAWT));
+			arsenal.Add(new AKabuTeleport(new Price(1,1), this, 5));
+			arsenal.Add(new AKabuLaser(new Price (1,2), this, Aim.Shoot(20), 16));
+			arsenal.Sort();
 		}
 		public override string Notes () {return "";}
 	}

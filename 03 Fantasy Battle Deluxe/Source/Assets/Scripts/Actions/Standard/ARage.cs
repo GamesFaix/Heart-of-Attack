@@ -10,6 +10,8 @@ namespace HOA.Actions {
 		int damage;
 		
 		public ARage (Price p, Unit u, Aim a, int d) {
+			weight = 3;
+			
 			price = p;
 			aim = a;
 			damage = d;

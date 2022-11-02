@@ -10,6 +10,7 @@ namespace HOA.Actions {
 		int damage;
 		
 		public ARecyExplode (Price p, Unit u, int d) {
+			weight = 4;
 			price = p;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, TTAR.NA);
 			actor = u;

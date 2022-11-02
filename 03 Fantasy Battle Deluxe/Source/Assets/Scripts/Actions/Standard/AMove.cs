@@ -7,9 +7,11 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class AMove : Action {
+
 		Cell target;
 		
 		public AMove (Unit u, Aim a) {
+			weight = 1;
 			aim = a;
 			actor = u;
 			

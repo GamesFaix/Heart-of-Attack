@@ -10,6 +10,8 @@ namespace HOA.Actions {
 		int damage;
 		
 		public ACorrode (Price p, Unit u, Aim a, int d) {
+			weight = 3;
+			
 			price = p;
 			aim = a;
 			damage = d;

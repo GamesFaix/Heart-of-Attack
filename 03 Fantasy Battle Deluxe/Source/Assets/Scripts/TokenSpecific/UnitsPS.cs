@@ -15,8 +15,24 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 8));
+			arsenal.Add(new APrisRefract(new Price(1,1), this, Aim.Shoot(3), 12));
+			arsenal.Sort();
 		}		
-		public override string Notes () {return "";}
+		public override string Notes () {return "Actions targetting "+Name+" have a 50% of missing.";}
+
+		public override void Select (Source s) {
+			int flip = DiceCoin.Throw(s, DICE.COIN);
+			if (flip == 1) {
+				SpriteEffect(EFFECT.HEADS);
+				GUISelectors.Instance = this;
+			}
+			else {
+				GameLog.Out(s.ToString()+" tried to target "+FullName+" and missed.");
+				SpriteEffect(EFFECT.TAILS);
+			}
+		}
+
+
 	}
 
 	public class ArenaNonSensus : Unit {
@@ -28,6 +44,7 @@ namespace HOA.Tokens{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -42,6 +59,7 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 15));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -61,6 +79,8 @@ namespace HOA.Tokens{
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.PRIS));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.AREN));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.PRIE));
+			arsenal.Add(new ADreaTeleport(new Price(1,1), this, 5));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}

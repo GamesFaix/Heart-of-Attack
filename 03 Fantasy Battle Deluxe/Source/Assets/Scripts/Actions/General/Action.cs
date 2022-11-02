@@ -7,6 +7,8 @@ namespace HOA.Actions {
 	
 	
 	public abstract class Action {
+		protected int weight;
+		public int Weight {get {return weight;} }
 
 		protected string name;
 		protected string desc;

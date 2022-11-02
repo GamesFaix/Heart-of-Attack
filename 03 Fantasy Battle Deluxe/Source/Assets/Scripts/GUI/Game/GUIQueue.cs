@@ -29,61 +29,79 @@ public class GUIQueue : MonoBehaviour {
 	//List
 	Vector2 scrollPos = new Vector2 (0,0);
 	float internalW = 100;
-	float iconSize = 30;
-	
+
 	
 	void DrawList (Panel p) {
+		int oldSize = p.s.fontSize;
+		p.s.fontSize = 16;
+
+		float iconSize = p.LineH;
 		float internalH = TurnQueue.Count * p.LineH;
-		
+		float nameW = 150;
+
 		scrollPos = GUI.BeginScrollView(p.FullBox, scrollPos, new Rect(p.X, p.Y, internalW, internalH));
 		
 			for (int i=0; i<TurnQueue.Count; i++) {
 				Unit u = TurnQueue.Index(i);	
 				
-				p.x2 += 5;
-				if (GUI.Button(p.Box(250), "", p.s)) {
-					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspect(u);}
+				p.NudgeX();
+				if (GUI.Button(p.Box(nameW), "", p.s)) {
+					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspected = u;}
 					else if (Input.GetMouseButtonUp(0)) {u.SpriteEffect(EFFECT.SHOW);}
 				}
-				p.ResetX();
-				StyledText.Highlight(p.Box(250), u.ToString(), p.s, u.Owner.Colors);
-			
+				p.ResetX(); p.NudgeX();
+				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
+
+			////watch
 				GUI.Box(p.Box(iconSize), Icons.IN(), p.s);
 				p.x2 += 5;
-				GUI.Label(p.Box(30), u.IN+"", p.s);
+				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
 				
+				if (u.IsStunned()) {
+					GUI.Box(p.Box(iconSize), Icons.STUN(), p.s);
+					p.x2 += 5;
+					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
+				}
+				else if (u.IsSkipped()) {
+					GUI.Box(p.Box(iconSize), Icons.SKIP(), p.s);
+				}
+				else {p.x2 += iconSize;}
+
+			////wallet
+				p.NudgeX();		
 				if (u.FP > 0) {
 					GUI.Box(p.Box(iconSize), Icons.FP(), p.s);
-					p.x2 += 5;
-					GUI.Label(p.Box(30), u.FP+"", p.s);
+					p.NudgeX();
+					GUI.Label(p.Box(iconSize), u.FP+"", p.s);
 				}
-				else {p.x2 += 65;}
+				else {p.x2 += iconSize*2 +5;}
 	
+
+			////health
+				//p.NudgeX();
 				GUI.Box(p.Box(iconSize), Icons.HP(), p.s);
-				p.x2 += 5;
-				GUI.Label (p.Box(90), u.HPString, p.s);
+				p.NudgeX();
+				GUI.Label (p.Box(iconSize*3), u.HPString, p.s);
 				
 				if (u.DEF > 0) {
 					GUI.Box(p.Box(iconSize), Icons.DEF(), p.s);
 					p.x2 += 5;
-					GUI.Label(p.Box(30), u.DEF+"", p.s);
+					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
 				}
 				
 				if (u.COR > 0) {
 					GUI.Box(p.Box(iconSize), Icons.COR(), p.s);
 					p.x2 += 5;
-					GUI.Label(p.Box(30), u.COR+"", p.s);}
-				
-				if (u.IsStunned()) {
-					GUI.Box(p.Box(iconSize), Icons.STUN(), p.s);
-					p.x2 += 5;
-					GUI.Label(p.Box(30), u.STUN+"", p.s);
+					GUI.Label(p.Box(iconSize), u.COR+"", p.s);
 				}
-				else if (u.IsSkipped()) {GUI.Label(p.Box(100), "Skipped!", p.s);}
 				
-				if (p.x2 > internalW) {internalW = p.x2;}
+				
+				if (p.x2-p.X > internalW) {internalW = p.x2-p.X;}
 				p.NextLine();
 			}
 		GUI.EndScrollView();
+
+		p.s.fontSize = oldSize;
 	}
+
 }

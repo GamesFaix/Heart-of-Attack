@@ -9,13 +9,17 @@ public class RCreate : RCellSelect{
 		Token newToken;
 		TokenFactory.Add(token, source, cell, out newToken);
 		newToken.SpriteEffect(EFFECT.BIRTH);
+		Reset();
 	}
 }
 
 public class RKill : RInstanceSelect{
 	public RKill (Source s, Token t) {source = s; instance = t;}
 
-	public override void Grant () {instance.Die(source);}
+	public override void Grant () {
+		instance.Die(source);
+		Reset();
+	}
 }
 
 public class RReplace : RInstanceSelect{
@@ -26,5 +30,6 @@ public class RReplace : RInstanceSelect{
 		Cell cell = instance.Cell;
 		instance.Die(source, false, false);
 		TokenFactory.Add(token, source, cell, false);
+		Reset();
 	}
 }

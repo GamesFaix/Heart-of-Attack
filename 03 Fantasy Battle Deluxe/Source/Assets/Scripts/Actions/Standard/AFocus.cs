@@ -3,10 +3,11 @@ using System.Collections;
 
 namespace HOA.Actions {
 	public class AFocus : Action {
-		
+
 		int magnitude;
 		
 		public AFocus (Unit u, int n=1) {
+			weight = 2;
 			actor = u;
 			price = Price.Cheap;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, CTAR.NA);

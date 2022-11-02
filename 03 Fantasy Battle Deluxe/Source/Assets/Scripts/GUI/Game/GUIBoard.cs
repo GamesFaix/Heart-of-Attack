@@ -49,7 +49,7 @@ public class GUIBoard : MonoBehaviour {
 					
 					if (cell.IsEmpty()) {
 						if (GUI.Button(cellRect, cell.ToString()) && 
-						   Input.GetMouseButtonUp(0) && GUISelectors.WaitingForCell()){
+						   Input.GetMouseButtonUp(0) && GUISelectors.WaitForCell){
 							GUISelectors.Cell = cell;	
 						}
 					}
@@ -116,14 +116,14 @@ public class GUIBoard : MonoBehaviour {
 					tokenRect = TokenRect(cellRect, cell ,i);
 					t.Draw(tokenRect);
 					if (GUI.Button(tokenRect, "", s)){
-						if (Input.GetMouseButtonUp(0) && GUISelectors.WaitingForCell()) {
+						if (Input.GetMouseButtonUp(0) && GUISelectors.WaitForCell) {
 							GUISelectors.Cell = cell;
 						}
-						else if (Input.GetMouseButtonUp(0) && GUISelectors.WaitingForInstance()) {
-							GUISelectors.Instance = t;
+						else if (Input.GetMouseButtonUp(0) && GUISelectors.WaitForInstance) {
+							t.Select(new Source(TurnQueue.Top));
 						}
 						else if (Input.GetMouseButtonUp(1)) {
-							GUIInspector.Inspect(t);
+							GUIInspector.Inspected = t;
 						}
 					}
 				}

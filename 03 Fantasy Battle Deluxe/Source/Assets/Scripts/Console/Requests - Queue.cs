@@ -21,5 +21,6 @@ public class RQueueShift : RInstanceSelect {
 			if (magnitude > 0) {TurnQueue.MoveUp( (Unit)instance, magnitude);}
 			if (magnitude < 0) {TurnQueue.MoveDown( (Unit)instance, 0-magnitude); }
 		}	
+		Reset();
 	}
 }

@@ -5,13 +5,42 @@ namespace HOA.Actions {
 	public enum TTAR {UNIT, UNITDEST, DEST, REM, DESTREM, NA}
 	
 	public class Aim {
-		int range;
-		int minRange;
 		AIMTYPE aimType;
+		public AIMTYPE AimType {get {return aimType;} }
 		TARGET target;
+		public TARGET Target {get {return target;} }
 		CTAR ctar;
+		public CTAR CTar {get {return ctar;} }
 		TTAR ttar;
-		
+		public TTAR TTar {get {return ttar;} }
+
+		int range;
+		public int Range {get {return range;} }
+		int minRange;
+		public int MinRange {get {return minRange;} }
+
+		bool teamOnly = false;
+		public bool TeamOnly { 
+			get {return teamOnly;} 
+			set {teamOnly = value;}
+		}
+		bool enemyOnly = false;
+		public bool EnemyOnly { 
+			get {return enemyOnly;} 
+			set {enemyOnly = value;}
+		}
+		bool includeSelf = true;
+		public bool IncludeSelf { 
+			get {return includeSelf;} 
+			set {includeSelf = value;}
+		}
+		bool noKings = false;
+		public bool NoKings {
+			get {return noKings;}
+			set {noKings = value;}
+		}
+
+
 		public Aim (AIMTYPE a, TARGET t, CTAR ct, int r=0, int rMin=0) {
 			aimType = a;
 			target = t;
@@ -22,8 +51,6 @@ namespace HOA.Actions {
 			
 		}
 		
-		
-		
 		public Aim (AIMTYPE a, TARGET t, TTAR tt, int r=0, int rMin=0) {
 			aimType = a;
 			target = t;
@@ -32,14 +59,7 @@ namespace HOA.Actions {
 			range = r;
 			minRange = rMin;
 		}
-		
-		public AIMTYPE AimType {get {return aimType;} }
-		public TARGET Target {get {return target;} }
-		public TTAR TTar {get {return ttar;} }
-		public CTAR CTar {get {return ctar;} }
-		public int Range {get {return range;} }
-		public int MinRange {get {return minRange;} }
-		
+
 		public override string ToString () {
 			string s = "[";
 			if (AimTypeString != "") {s += AimTypeString;}
@@ -103,7 +123,11 @@ namespace HOA.Actions {
 		public static Aim Shoot (int n) {
 			return new Aim (AIMTYPE.LINE, TARGET.TOKEN, TTAR.UNIT, n);
 		}
-		
+
+		public static Aim Arc (int n) {
+			return new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, n);
+		}
+
 		public static Aim Powerup () {
 			return new Aim (AIMTYPE.SELF, TARGET.SELF, TTAR.NA);
 		}

@@ -19,6 +19,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new AEvolve(Price.Cheap, this, TTYPE.BEES));
 			arsenal.Add(new AEvolve(new Price(1,2), this, TTYPE.MYCO));
 			arsenal.Add(new AEvolve(new Price(2,3), this, TTYPE.MART));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -35,6 +36,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
 			arsenal.Add(new ACorrode(Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new ABeesDeathSting(new Price(1,1), this, Aim.Melee(), 15));
+			arsenal.Sort();
 			
 		}		
 		public override string Notes () {return "";}
@@ -52,6 +54,8 @@ namespace HOA.Tokens{
 			Aim corrAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, 2);
 			arsenal.Add(new ACorrode(new Price(1,0), this, corrAim, 12));
 			arsenal.Add(new ADonate(new Price(1,1), this, Aim.Melee(), 6));
+			arsenal.Add(new AMycoSeed(new Price(1,1), this));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -65,6 +69,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -84,6 +89,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new ACreate(new Price(0,0), this, TTYPE.LICH));
 			Aim webAim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.CREATE, 3);
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.WEBB, webAim));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -95,6 +101,20 @@ namespace HOA.Tokens{
 			AddDest();
 		}
 		public override string Notes () {return "";}
+
+		public override bool Enter (Cell cell) {
+			bool enter = body.Enter(cell);
+			if (enter) {DamageCellmates();}
+			return enter;
+		}
+
+		void DamageCellmates () {
+			foreach (Token t in CellMates){
+				if (t is Unit) {
+					InputBuffer.Submit(new RDamage(new Source(this), (Unit)t, 12));
+				}
+			}
+		}
 	}
 
 }

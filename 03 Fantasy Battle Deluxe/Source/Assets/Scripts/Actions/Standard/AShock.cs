@@ -7,10 +7,12 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class AShock : Action {
+
 		int damage;
 		int stun;
 		
 		public AShock (Price p, Unit u, Aim a, int d, int st) {
+			weight = 3;
 			price = p;
 			aim = a;
 			damage = d;

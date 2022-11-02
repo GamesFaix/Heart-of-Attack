@@ -12,6 +12,7 @@ public static class GUIToolReplace {
 	
 		Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);  
+		GUISelectors.WaitForInstance = true;
 
 		p.y2 += 5;
 		p.x2 += p.W*0.45f;

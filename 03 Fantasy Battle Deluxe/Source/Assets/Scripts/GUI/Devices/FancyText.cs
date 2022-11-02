@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public static class StyledText {
+public static class FancyText {
 	
 	static float slur = 0.5f;
 	

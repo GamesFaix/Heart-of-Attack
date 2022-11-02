@@ -7,9 +7,11 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class AAttackFir : Action {
+
 		int damage;
 		
 		public AAttackFir (Price p, Unit u, Aim a, int d) {
+			weight = 3;
 			price = p;
 			aim = a;
 			damage = d;

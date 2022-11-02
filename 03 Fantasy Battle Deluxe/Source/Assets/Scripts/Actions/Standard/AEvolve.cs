@@ -4,11 +4,12 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class AEvolve : Action {
-		
+
 		TTYPE child;
 		Token chiTemplate;
 		
 		public AEvolve (Price p, Unit par, TTYPE chi) {
+			weight = 4;
 			price = p;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, TTAR.NA);
 

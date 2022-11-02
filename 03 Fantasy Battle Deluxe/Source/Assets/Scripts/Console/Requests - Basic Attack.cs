@@ -1,5 +1,6 @@
 ﻿using HOA.Tokens;
 using HOA.Map;
+using HOA.Actions;
 using UnityEngine;
 
 public class RDamage : RInstanceSelect {
@@ -12,6 +13,21 @@ public class RDamage : RInstanceSelect {
 			u.Damage(source, magnitude);
 			u.SpriteEffect(EFFECT.DMG);
 		}
+		Reset();
+	}
+}
+
+public class RDamagePierce : RInstanceSelect {
+	public int magnitude;	
+	public RDamagePierce (Source s, Token t, int n) {source = s; instance = t; magnitude = n;}
+	
+	public override void Grant () {
+		if (instance is Unit) {
+			Unit u = (Unit)instance;
+			u.AddStat(source, STAT.HP, -magnitude);
+			u.SpriteEffect(EFFECT.DMG);
+		}
+		Reset();
 	}
 }
 
@@ -24,8 +40,9 @@ public class RDamageDest : RInstanceSelect {
 		else if (instance is Unit) {
 			Unit u = (Unit)instance;
 			u.Damage(source, magnitude);
-			u.SpriteEffect(EFFECT.DMG);
+			//u.SpriteEffect(EFFECT.DMG);
 		}
+		Reset();
 	}
 }
 
@@ -47,7 +64,9 @@ public class RExplosion : RCellSelect {
 				Cell next = thisRad[j];
 				
 				if (!affected.Contains(next)) {
-					foreach (Token t in next.Occupants) {
+					TokenGroup targets = next.Occupants.FilterTarget(TTAR.UNITDEST);
+
+					foreach (Token t in targets) {
 						t.SpriteEffect(EFFECT.EXP);
 						InputBuffer.Submit(new RDamageDest(source, t, dmg));
 					}
@@ -59,6 +78,7 @@ public class RExplosion : RCellSelect {
 			nextRad = new CellGroup();
 			dmg = (int)Mathf.Floor(dmg * 0.5f);
 		}
+		Reset();
 	}
 }
 
@@ -69,6 +89,7 @@ public class RDamageFir : RInstanceSelect {
 	public override void Grant () {
 		TokenGroup neighbors = instance.Neighbors(true);
 		neighbors.Remove(source.Token);
+		neighbors = neighbors.FilterTarget(TTAR.UNITDEST);
 		
 		instance.SpriteEffect(EFFECT.FIRE);
 		InputBuffer.Submit(new RDamageDest(source, instance, magnitude));
@@ -78,7 +99,41 @@ public class RDamageFir : RInstanceSelect {
 			t.SpriteEffect(EFFECT.FIRE);
 			InputBuffer.Submit(new RDamageDest(source, t, newDmg));
 		}
+		Reset();
 	}
+}
+
+public class RDamageLaser : RInstanceSelect {
+	public int magnitude;
+	public RDamageLaser (Source s, Token t, int n) {source = s; instance = t; magnitude = n;}
+
+	public override void Grant () {
+		Token actor = source.Token;
+		int dmg = magnitude;
+		Cell cell = instance.Cell;
+		int[] direction = Direction.FromCells(cell, actor.Cell);
+		bool stop = false;
+
+		TokenGroup targets;
+
+		while (dmg > 0 && !stop) {
+			targets = cell.Occupants;
+			if (targets.FilterObstacle.Count > 0) {stop = true; Debug.Log("obstacle hit");}
+			foreach (Token t in targets.FilterUnit) {
+				((Unit)t).Damage(source, magnitude);
+				t.SpriteEffect(EFFECT.LASER);
+			}
+			if (targets.Count > 0) {dmg = (int)Mathf.Floor(dmg*0.5f);}
+
+			int nextX = cell.X-direction[0];
+			int nextY = cell.Y-direction[1];
+
+			if (!Board.HasCell(nextX, nextY, out cell)) {stop = true;}
+		}
+		Reset();
+	}
+
+
 }
 
 public class RLeech : RInstanceSelect {
@@ -96,6 +151,7 @@ public class RLeech : RInstanceSelect {
 			actor.AddStat(source, STAT.HP, dmg);
 			actor.SpriteEffect(EFFECT.STATUP);
 		}
+		Reset();
 	}
 }
 
@@ -114,6 +170,7 @@ public class RDonate : RInstanceSelect {
 			actor.Damage(source, diff);
 			actor.SpriteEffect(EFFECT.STATDOWN);
 		}
+		Reset();
 	}
 }
 
@@ -129,6 +186,7 @@ public class RCorrode : RInstanceSelect {
 			u.AddStat(source, STAT.COR, cor);
 			u.SpriteEffect(EFFECT.COR);
 		}
+		Reset();
 	}
 }
 
@@ -143,6 +201,7 @@ public class RShock : RInstanceSelect {
 			u.AddStat(source, STAT.STUN, stun);
 			u.SpriteEffect(EFFECT.STUN);
 		}
+		Reset();
 	}
 }
 
@@ -159,5 +218,6 @@ public class RRage : RInstanceSelect {
 			actor.Damage(source, (int)Mathf.Floor(magnitude*0.5f));
 			actor.SpriteEffect(EFFECT.DMG);
 		}
+		Reset();
 	}
 }

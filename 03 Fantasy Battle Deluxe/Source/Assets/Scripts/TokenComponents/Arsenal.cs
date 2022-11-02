@@ -1,18 +1,20 @@
 using System.Collections.Generic;
 using HOA.Actions;
+using UnityEngine;
 
 namespace HOA.Tokens.Components {
 	public class Arsenal : Group<Action> {
-
-		List<Action> actions;
+		//Unit parent;
+		//List<Action> actions;
 		
 		public Arsenal (Unit unit) {
-			actions = new List<Action>();	
+		//	parent = unit;
+			list = new List<Action>();	
 		}
 
 		public bool HasMove (out AMove move) {
 			move = default(AMove);
-			foreach (Action a in actions) {
+			foreach (Action a in list) {
 				if (a is AMove) {move = (AMove)a; return true;}
 			}
 			return false;
@@ -25,7 +27,7 @@ namespace HOA.Tokens.Components {
 		
 		public bool HasFocus (out AFocus focus) {
 			focus = default(AFocus);
-			foreach (Action a in actions) {
+			foreach (Action a in list) {
 				if (a is AFocus) {focus = (AFocus)a; return true;}
 			}
 			return false;
@@ -35,9 +37,33 @@ namespace HOA.Tokens.Components {
 			AFocus focus;
 			if (HasFocus (out focus)) {focus.Perform();}
 		}
-		
+
+		public void Sort () {
+			List<Action> sorted = new List<Action>();
+			List<Action> temp;
+
+			for (int i=1; i<6; i++) {
+				temp = ActionsOfWeight(i);
+				temp = SortByPrice(temp);
+				foreach (Action a in temp) {sorted.Add(a);}
+			}
+			list = sorted;
+		}
+
+		List<Action> ActionsOfWeight (int weight) {
+			List<Action> temp = new List<Action>();
+			foreach (Action a in list) {if (a.Weight == weight) {temp.Add(a);} }
+			return temp;
+		}
+
+		List<Action> SortByPrice (List<Action> actions) {
+			return actions;
+
+
+		}
+
 		public void Reset () {
-			foreach (Action a in actions) {a.Reset();}
+			foreach (Action a in list) {a.Reset();}
 		}
 	}
 }

@@ -14,6 +14,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -30,6 +31,8 @@ namespace HOA.Tokens{
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 10));
 			Aim aperAim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.CREATE, 2);
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.APER, aperAim));
+			arsenal.Add(new APiecHeal(new Price(0,2), this, 10));
+			arsenal.Sort();
 			
 		}		
 		public override string Notes () {return "";}
@@ -44,6 +47,8 @@ namespace HOA.Tokens{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AReprMine(Price.Cheap, this));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -64,6 +69,9 @@ namespace HOA.Tokens{
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.REVO));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.PIEC));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.REPR));
+			arsenal.Add(new AOldtSecond(new Price(1,1), this));
+			arsenal.Add(new AOldtHour(new Price(1,1), this));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "+1 IN per FP, up to 5";}
 	}

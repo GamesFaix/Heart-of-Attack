@@ -1,6 +1,7 @@
 ﻿using HOA.Map;
 using HOA.Tokens;
 using HOA.Players;
+using UnityEngine;
 
 public class RStart : Request {
 	public int boardSize;
@@ -13,9 +14,12 @@ public class RStart : Request {
 			TurnQueue.Reset();
 			Board.New(boardSize);	
 			GUIBoard.ZoomOut();
-			foreach (Player p in Roster.Players()){
-				Cell cell = Board.RandomCell;
-				TokenFactory.Add(p.King, new Source(p), cell, false);
+			foreach (Player p in Roster.Players(false)){
+				if (p != Roster.Neutral) {
+					Cell cell = Board.RandomCell;
+				//	Debug.Log(p.ToString()+"'s king is"+p.King.ToString());
+					TokenFactory.Add(p.King, new Source(p), cell, false);
+				}
 			}
 			TurnQueue.Shuffle(new Source(),false);
 			TurnQueue.Initialize();

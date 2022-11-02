@@ -12,7 +12,8 @@ public static class GUIToolMove {
 	
 		Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
-		
+		GUISelectors.WaitForInstance = true;
+
 		p.x2 += p.W*0.25f;
 		GUI.Label(p.Box(0.1f), "To:");
 		p.x2 += 5;
@@ -21,20 +22,18 @@ public static class GUIToolMove {
 		p.NextLine();		
 		p.y2 += 5;
 
+
+
 		Token instance = GUISelectors.Instance;
 		Cell cell = GUISelectors.Cell;
 
 		string btnLabel = "Move ";
 		if (instance != default(Token)) {
 			btnLabel += instance.FullName+" to ";
-		
 			foreach (Cell c in Board.cells) {
-				if (instance.CanEnter(c)) {
-					c.Legal = true;
-				}
+				if (instance.CanEnter(c)) {c.Legal = true;}
 			}
-			GUISelectors.waitForCell = true;
-		
+			GUISelectors.WaitForCell = true;
 		
 		}
 		if (cell != default(Cell)) {btnLabel += cell.ToString();}

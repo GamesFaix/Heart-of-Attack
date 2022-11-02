@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 
 public class Panel {
-	float x;
-	float y;
-	float w;
-	float h;
-	float dy;
-	public float x2;
-	public float y2;
+	float x, y, w, h, dy;
+	public float x2, y2;
 	public GUIStyle s;
 
 	public Panel (Rect rect, float lineH, GUIStyle style){
@@ -25,13 +20,27 @@ public class Panel {
 	public float Y {get {return y;} }
 	public float H {get {return h;} }
 	public float W {get {return w;} }
-	public float LineH {get {return dy;} }
+	public float LineH {
+		get {return dy;} 
+		//set {dy = value;}
+	}
+
 	public void ResetY() {y2 = y;}
 	public void ResetX() {x2 = x;}
 
 	public void NextLine () {y2 += dy; x2 = x;}
 	public void PrevLine () {y2 -= dy; x2 = x;}
-	
+
+	public void NudgeX (bool right=true) {
+		if (right) {x2 += 5;}
+		else {x2 -=5;}
+	}
+
+	public void NudgeY (bool down=true) {
+		if (down) {y2 += 5;}
+		else {y2 -= 5;}
+	}
+
 	public int Lines {get {return (int)Mathf.Ceil(h/dy)-1;} }
 	
 	public Rect FullBox {get {return new Rect (x,y,w,h);} }
@@ -54,7 +63,7 @@ public class Panel {
 			return rect;
 		}
 	}
-
+	
 	public Rect Box (float n) {
 		Rect rect;
 		if (n <= 1) {rect = new Rect(x2,y2,w*n,dy);}
@@ -65,5 +74,4 @@ public class Panel {
 	}
 	
 	public Rect ScrollBox {get {return new Rect(x+w-15, y, 30, h);} }
-	
 }

@@ -13,13 +13,7 @@ public static class GUIToolStats {
 	static string magString="";
 	
 	public static void Display (Panel p) {
-		
-		if (Input.GetKey("left ctrl") && Input.GetKey("f")) {
-			Unit u = TurnQueue.Top;
-			GUISelectors.Instance = u;
-			u.Focus();		
-		}
-		
+
 		GUI.Box(p.FullBox,"");
 		
 		p.y2 += 5;
@@ -49,6 +43,8 @@ public static class GUIToolStats {
 		
 		Panel subPanel = new Panel(p.TallBox(0.5f), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
+
+		GUISelectors.WaitForInstance = true;
 		Token instance = GUISelectors.Instance;
 		
 		string label = "";

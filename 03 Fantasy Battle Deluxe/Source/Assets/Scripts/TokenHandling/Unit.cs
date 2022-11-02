@@ -156,6 +156,7 @@ namespace HOA.Tokens {
 			set {watch.STUN = value;}
 		}
 		public bool IsStunned() {return watch.IsStunned();}
+
 		//corrosion
 		public bool IsCOR() {return watch.IsCOR();}
 		public int COR {

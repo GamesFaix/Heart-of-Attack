@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum EFFECT {NONE, SHOW, BIRTH, DEATH, DMG, STATUP, STATDOWN, FIRE, EXP, LASER, COR, STUN}
+public enum EFFECT {NONE, SHOW, BIRTH, DEATH, DMG, STATUP, STATDOWN, FIRE, EXP, LASER, COR, STUN, HEADS, TAILS}
 
 public static class SpriteEffects {
 
@@ -15,6 +15,8 @@ public static class SpriteEffects {
 	static Texture2D laser;
 	static Texture2D cor;
 	static Texture2D stun;
+	static Texture2D heads;
+	static Texture2D tails;
 
 	public static void Load() {
 		show = Resources.Load("Effects/show") as Texture2D;
@@ -28,6 +30,8 @@ public static class SpriteEffects {
 		laser = Resources.Load("Effects/laser") as Texture2D;
 		cor = Resources.Load("Effects/corrosion") as Texture2D;
 		stun = Resources.Load("Effects/stun") as Texture2D;
+		heads = Resources.Load("Effects/heads") as Texture2D;
+		tails = Resources.Load("Effects/tails") as Texture2D;
 	}
 
 	public static Texture2D Effect (EFFECT e) {
@@ -43,6 +47,8 @@ public static class SpriteEffects {
 			case EFFECT.LASER: return laser;
 			case EFFECT.COR: return cor;
 			case EFFECT.STUN: return stun;
+			case EFFECT.HEADS: return heads;
+			case EFFECT.TAILS: return tails;
 			default: return default(Texture2D);
 		}
 	}

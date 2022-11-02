@@ -42,19 +42,10 @@ public class GUISelectors : MonoBehaviour {
 			Faction faction = FactionRef.Index(i);
 			
 			for (int j=0; j<faction.Count; j++){
-				TTYPE code = faction[j];
 				p.x2 = x3;
 				Rect box = new Rect(p.x2, p.y2, btnW, btnW);
-				if (GUI.Button(box, Thumbs.CodeToThumb(code))){
-					token = code;
-					foreach (Cell c in Board.cells) {
-						if (TemplateFactory.Template(code).CanEnter(c)) {
-							c.Legal = true;
-						}
-					}
-					waitForCell = true;
-
-
+				if (GUI.Button(box, Thumbs.CodeToThumb(faction[j]))){
+					token = faction[j];
 				}
 				p.y2 += btnW;
 			}
@@ -117,11 +108,17 @@ public class GUISelectors : MonoBehaviour {
 	}
 
 	//waiting
-	public static bool waitForCell = false;
-	public static bool WaitingForCell () {return waitForCell;}
+	static bool waitForCell = false;
+	public static bool WaitForCell {
+		get {return waitForCell;}
+		set {waitForCell = value;}
+	}
 
 	static bool waitForInstance = false;
-	public static bool WaitingForInstance () {return waitForInstance;}
+	public static bool WaitForInstance {
+		get {return waitForInstance;}
+		set {waitForInstance = value;}
+	}
 
 	static Request request;
 	
@@ -155,7 +152,7 @@ public class GUISelectors : MonoBehaviour {
 				RCellSelect r2 = (RCellSelect)request;
 				r2.cell = cell;
 				InputBuffer.Submit(r2);
-				Reset();
+			//	Reset();
 			}
 		}
 		
@@ -164,7 +161,7 @@ public class GUISelectors : MonoBehaviour {
 				RInstanceSelect r2 = (RInstanceSelect)request;
 				r2.instance = instance;
 				InputBuffer.Submit(r2);
-				Reset();
+			//	Reset();
 			}
 		}
 	}

@@ -12,6 +12,7 @@ public static class TurnQueue {
 	public static void Remove (Unit u) {units.Remove(u);}	
 	
 	public static Unit Index (int i) {return units[i];} 
+	public static int IndexOf (Unit u) {return units.IndexOf(u);}
 	public static Unit Top {get {return units.Top;} }
 	public static Unit Bottom {get {return units.Bottom;} }
 
@@ -38,9 +39,9 @@ public static class TurnQueue {
 		Unit oldTop = Top;
 		Unit oldBtm = Bottom;
 
-		ResetOldTop(Top);
+		ResetOldTop(oldTop);
 
-		units.Remove(Top);
+		units.Remove(oldTop);
 		PrepareNewTop(Top);
 
 		units.Add(oldTop);
@@ -94,7 +95,7 @@ public static class TurnQueue {
 
 	public static void Reset(){
 		units = new HOAQueue<Unit>();
-		GUIInspector.Inspect(default(Unit));
+		GUIInspector.Inspected = default(Unit);
 		GameLog.Debug("Queue cleared.");
 	}
 }

@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 18\Assets\Scripts\Actions\Components\Aim.cs">
+    <Files>
+      <File FileName="..\queue 18\Assets\Scripts\GUI\Game\GUIInspector.cs" Line="347" Column="2" />
+      <File FileName="..\queue 18\Assets\Scripts\Actions\Components\Price.cs" Line="33" Column="24" />
+      <File FileName="..\queue 18\Assets\Scripts\Actions\General\Action.cs" Line="3" Column="26" />
+      <File FileName="..\queue 18\Assets\Scripts\Actions\Components\Aim.cs" Line="169" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

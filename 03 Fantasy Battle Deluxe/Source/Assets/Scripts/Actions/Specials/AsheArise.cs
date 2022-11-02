@@ -9,6 +9,7 @@ namespace HOA.Actions {
 		Token chiTemplate;
 		
 		public AsheArise (Price p, Unit par, TTYPE chi) {
+			weight = 4;
 			price = p;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, TTAR.NA);
 

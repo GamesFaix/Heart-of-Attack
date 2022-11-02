@@ -4,8 +4,7 @@ using HOA.Map;
 using HOA.Players;
 
 public static class GUIToolCreate {
-	static string printCommand = "";
-	
+
 	public static void Display (Panel p) {
 		TTYPE token = GUISelectors.Token;
 		Cell cell = GUISelectors.Cell;
@@ -25,24 +24,24 @@ public static class GUIToolCreate {
 		p.NextLine();		
 		
 		p.y2 += 5;
-		printCommand = "Create ";
+		string btnLabel = "Create ";
 		
 		if (token != TTYPE.NONE) {
-			printCommand += TokenRef.CodeToString(token)+" at ";
+			btnLabel += TokenRef.CodeToString(token)+" at ";
+			Token t = TemplateFactory.Template(token);
+			foreach (Cell c in Board.cells) {
+				if (t.CanEnter(c)) {c.Legal = true;}
+			}
+			GUISelectors.WaitForCell = true;
 		}
 		
 		if (cell != default(Cell)) {
-			printCommand += cell.ToString()+".";
+			btnLabel += cell.ToString()+".";
 		}
 		
-		if (GUI.Button(p.LineBox, printCommand) || Input.GetKeyUp("space")){
+		if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){
 			InputBuffer.Submit(new RCreate(Source.ActiveUnit, token, cell));
-			Reset();
 			GUISelectors.Reset();
 		}
-	}
-	
-	public static void Reset () {
-		printCommand = "";
 	}
 }

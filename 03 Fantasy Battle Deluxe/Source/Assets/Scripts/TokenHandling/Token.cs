@@ -70,7 +70,7 @@ namespace HOA.Tokens {
 		public TokenGroup CellMates {get {return body.CellMates;} }
 		public Cell Cell {get {return body.Cell;} }
 		public bool CanEnter (Cell cell) {return body.CanEnter(cell);}
-		public bool Enter (Cell cell) {return body.Enter(cell);}
+		public virtual bool Enter (Cell cell) {return body.Enter(cell);}
 		public void Exit () {body.Exit();}
 		
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
@@ -82,7 +82,7 @@ namespace HOA.Tokens {
 			Exit();
 			if (corpse) {CreateRemains(oldCell);}
 			if (IsSpecial(SPECIAL.KING)) {Owner.Kill();}
-			if (log) {GameLog.Out(s.Token+" killed "+this+".");}
+			if (log && !IsSpecial(SPECIAL.HOA)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
 			
 		}
 		
@@ -99,6 +99,11 @@ namespace HOA.Tokens {
 		public bool Legal {
 			get {return legal;} 
 			set {legal = value;}
+		}
+
+		public virtual void Select (Source s) {
+			GUISelectors.Instance = this;
+
 		}
 	}
 }

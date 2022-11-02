@@ -14,6 +14,8 @@ namespace HOA.Actions {
 		
 		public int AP {get {return ap;} }
 		public int FP {get {return fp;} }
+		public int Total {get {return ap+fp;} }
+
 		public bool Other {get {return other;} }
 		
 		public override string ToString () {

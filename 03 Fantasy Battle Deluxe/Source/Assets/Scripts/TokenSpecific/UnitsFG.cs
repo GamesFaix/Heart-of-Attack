@@ -16,6 +16,8 @@ namespace HOA.Tokens{
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
 			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 7));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.TREE));
+			arsenal.Add(new AGrizHeal(new Price(1,1), this, 10));
+			arsenal.Sort();
 			
 		}		
 		public override string Notes () {return "";}
@@ -30,6 +32,7 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(6)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 10));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -44,6 +47,8 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 20));
+			arsenal.Add(new AMetaConsume(new Price(1,1), this));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -59,9 +64,11 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
 			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 16));
+			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 20));
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.GRIZ));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.TALO));
 			arsenal.Add(new AUltrCreateMeta(new Price(1,2), this, TTYPE.META));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}	

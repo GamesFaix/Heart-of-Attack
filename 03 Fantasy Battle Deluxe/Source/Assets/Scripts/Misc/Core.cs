@@ -27,7 +27,7 @@ public class Core : MonoBehaviour {
 			InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer, new Player(i)));
 		}
 		InputBuffer.Submit(new RRosterRandom(Source.ActivePlayer));
-		InputBuffer.Submit(new RStart(Source.ActivePlayer, 12));
+		InputBuffer.Submit(new RStart(Source.ActivePlayer, 6));
 		
 		
 	}

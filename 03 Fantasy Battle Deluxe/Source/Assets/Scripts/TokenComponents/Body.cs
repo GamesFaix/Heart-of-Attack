@@ -198,6 +198,7 @@ namespace HOA.Tokens.Components {
 				if (cell != default(Cell)) {Exit();}
 				cell = newCell;
 				if (CanTrample(newCell)) {Trample(newCell);}
+				if (CanGetHeart(newCell)) {GetHeart(newCell);}
 				newCell.Enter(parent);
 				return true;
 			}	
@@ -212,6 +213,8 @@ namespace HOA.Tokens.Components {
 			if (!newCell.Occupied(Plane)) {return true;}
 			
 			if (CanTrample (newCell)) {return true;}
+
+			if (CanGetHeart (newCell)) {return true;}
 			
 			return false;
 		}
@@ -225,11 +228,25 @@ namespace HOA.Tokens.Components {
 			}
 			return false;
 		}
-		
+
+		protected bool CanGetHeart (Cell newCell) {
+			if (IsSpecial(SPECIAL.KING) && newCell.Contains(SPECIAL.HOA)){
+				return true;
+			}
+			return false;
+		}
+
 		protected void Trample (Cell newCell) {
 			if (CanTrample(newCell)) {
-				Token t = newCell.Occupant(PLANE.GND);
-				InputBuffer.Submit(new RKill(Source.ActivePlayer, t));
+				Token dest = newCell.Occupant(PLANE.GND);
+				InputBuffer.Submit(new RKill(Source.ActivePlayer, dest));
+			}
+		}
+
+		protected void GetHeart (Cell newCell) {
+			if (CanGetHeart(newCell)) {
+				Token heart = newCell.Occupant(PLANE.GND);
+				InputBuffer.Submit(new RGetHeart(Source.ActivePlayer, heart));
 			}
 		}
 		

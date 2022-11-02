@@ -7,10 +7,12 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class AGrenade : Action {
+
 		int range;
 		int damage;
 		
 		public AGrenade (Price p, Unit u, int r, int d) {
+			weight = 3;
 			price = p;
 			actor = u;
 			aim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.ATTACK, r);

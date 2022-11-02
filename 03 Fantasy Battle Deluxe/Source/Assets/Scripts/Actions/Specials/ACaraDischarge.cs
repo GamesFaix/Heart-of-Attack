@@ -11,6 +11,8 @@ namespace HOA.Actions {
 		int stun;
 		
 		public ACaraDischarge (Price p, Unit u, int d, int st) {
+			weight = 4;
+			
 			price = p;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, TTAR.NA);
 			actor = u;

@@ -8,6 +8,7 @@ public static class Icons {
 	static Texture2D init;
 	static Texture2D cor;
 	static Texture2D stun;
+	static Texture2D skip;
 	static Texture2D ap;
 	static Texture2D fp;
 	
@@ -27,6 +28,7 @@ public static class Icons {
 		init = Resources.Load("Icons/IN") as Texture2D;
 		cor = Resources.Load("Icons/COR") as Texture2D;
 		stun = Resources.Load("Icons/STUN") as Texture2D;
+		skip = Resources.Load("Icons/SKIP") as Texture2D;
 		ap = Resources.Load("Icons/AP") as Texture2D;
 		fp = Resources.Load("Icons/FP") as Texture2D;
 		
@@ -49,6 +51,7 @@ public static class Icons {
 	public static Texture2D FP() {return fp;}
 	public static Texture2D COR() {return cor;}
 	public static Texture2D STUN() {return stun;}
+	public static Texture2D SKIP() {return skip;}
 	public static Texture2D AIR() {return air;}
 	public static Texture2D GND() {return gnd;}
 	public static Texture2D ETH() {return eth;}

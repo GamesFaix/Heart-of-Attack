@@ -25,7 +25,7 @@ namespace HOA.Tokens.Components {
 
 		void LabelInstance (Rect box) {
 			if (!parent.Unique && parent is Unit) {
-				StyledText.Highlight(box, ""+parent.Instance, spriteLabel, parent.Owner.Colors);
+				FancyText.Highlight(box, ""+parent.Instance, spriteLabel, parent.Owner.Colors);
 			}
 		}
 	

@@ -17,6 +17,8 @@ namespace HOA.Tokens{
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			arsenal.Add(new ARage(new Price(1,0), this, Aim.Melee(), 12));
 			arsenal.Add(new ARecyExplode(new Price(1,1), this, 12));
+			arsenal.Add(new ARecyCannibal(new Price(1,1), this));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -30,6 +32,9 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new ANecrTeleport(new Price(0,1), this, 5));
+			arsenal.Add(new ANecrTouch(Price.Cheap, this, Aim.Melee(), 12));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -43,6 +48,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(1)));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}
@@ -70,6 +76,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new AMonoReanimate(Price.Cheap, this, TTYPE.RECY));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.NECR));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.MOUT));
+			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
 	}

@@ -7,9 +7,11 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class ALeech : Action {
+
 		int damage;
 		
 		public ALeech (Price p, Unit u, Aim a, int d) {
+			weight = 3;
 			price = p;
 			aim = a;
 			damage = d;

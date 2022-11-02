@@ -11,6 +11,8 @@ namespace HOA.Actions {
 		int damage;
 		
 		public ASmasSlam (Price p, Unit u, Aim a, int d) {
+			weight = 4;
+			
 			price = p;
 			actor = u;
 			aim = a;

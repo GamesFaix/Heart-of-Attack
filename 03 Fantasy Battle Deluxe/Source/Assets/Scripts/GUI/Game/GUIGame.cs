@@ -27,8 +27,6 @@ public class GUIGame : MonoBehaviour {
 		float sH = Screen.height;
 		
 		float barW = 400;
-		float inspH = 350;
-		float logH = 150;
 		float lineH = 30;
 		
 		Panel boardPanel = new Panel(new Rect(0, 0, sW-barW, sH), 30, s);
@@ -40,7 +38,6 @@ public class GUIGame : MonoBehaviour {
 		}
 		if (GUI.Button(new Rect(sW-(barW*3/4), 0, barW/4, lineH), "Manual")) {
 			showTools = true;	
-			GUISelectors.Reset();
 		}
 		if (GUI.Button(new Rect(sW-(barW*1/4), 0, barW/4, lineH), "Quit")) {
 			InputBuffer.Submit(new RQuit(Source.ActivePlayer));	
@@ -53,11 +50,16 @@ public class GUIGame : MonoBehaviour {
 			tools.Display (toolsPanel);
 		}
 		else {
-		
-			Panel inspectorPanel = new Panel(new Rect(sW-barW, lineH, barW, inspH), 30, s);
+
+			float logH = 150;
+			float qH = lineH * 5;
+			float inspH = sH - lineH - qH - logH;
+
+
+			Panel inspectorPanel = new Panel(new Rect(sW-barW, lineH, barW, inspH), lineH, s);
 			inspector.Display(inspectorPanel);
 
-			Panel queuePanel = new Panel(new Rect(sW-barW, lineH+inspH, barW, sH-lineH-inspH-logH), 30, s);
+			Panel queuePanel = new Panel(new Rect(sW-barW, inspH + lineH, barW, qH), 20, s);
 			queue.Display(queuePanel);
 
 			Panel logPanel = new Panel(new Rect(sW-barW, sH-logH, barW, logH), 20, s);

@@ -10,6 +10,7 @@ namespace HOA.Actions {
 		Token chiTemplate;
 		
 		public AUltrCreateMeta (Price p, Unit par, TTYPE chi) {
+			weight = 5;
 			price = p;
 			actor = par;
 			aim = new Aim (AIMTYPE.NEIGHBOR, TARGET.TOKEN, TTAR.DEST);

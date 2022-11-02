@@ -4,12 +4,14 @@ using HOA.Map;
 namespace HOA.Actions {
 
 	public class ACreate : Action {
-		
+
+
 		Cell cell;
 		TTYPE child;
 		Token chiTemplate;
 		
 		public ACreate (Price p, Unit par, TTYPE chi, Aim a=default(Aim)) {
+			weight = 5;
 			actor = par;
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);

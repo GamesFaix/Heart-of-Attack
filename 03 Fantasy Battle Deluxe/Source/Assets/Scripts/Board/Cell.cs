@@ -50,7 +50,24 @@ namespace HOA.Map {
 			}
 			return false;
 		}
-		
+		public bool Contains (SPECIAL s) {
+			foreach (Token t in Occupants) {
+				if (t.IsSpecial(s)) {return true;}
+			}
+			return false;
+		}
+
+		public bool Contains (PLANE p) {
+			foreach (Token t in Occupants) {
+				if (t.IsPlane(p)) {return true;}
+			}
+			return false;
+		}
+
+		public bool ContainsOnly (PLANE p) {
+			if (Contains(p) && Occupants.Count == 1) {return true;}
+			return false;
+		}
 		
 		public void Enter (Token t) {
 			List<PLANE> planes = t.Plane;

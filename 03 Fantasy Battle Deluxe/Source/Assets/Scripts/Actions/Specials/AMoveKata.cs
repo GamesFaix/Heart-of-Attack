@@ -9,6 +9,7 @@ namespace HOA.Actions {
 	public class AMoveKata : Action {
 		
 		public AMoveKata (Price p, Unit u, Aim a) {
+			weight = 1;
 			price = p;
 			actor = u;
 			aim = a;
