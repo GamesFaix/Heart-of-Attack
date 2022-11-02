@@ -23,54 +23,20 @@ public class GUITools : MonoBehaviour {
 		
 		p.NextLine();
 		p.y2 += 5;
-		
-		if (Input.GetKey("left ctrl")) {
-			if (Input.GetKey("c")) {toolView = 0;}
-			if (Input.GetKey("m")) {toolView = 1;}
-			if (Input.GetKey("k")) {toolView = 2;}
-			if (Input.GetKey("r")) {toolView = 3;}
-			if (Input.GetKey("s")) {toolView = 4;}
-			if (Input.GetKey("q")) {toolView = 5;}
-			if (Input.GetKey("d")) {toolView = 6;}
-		}
-		
-		
+
 		float panelH = (p.H-p.LineH)/p.H;
 		Panel subPanel = new Panel (p.TallBox(panelH), p.LineH, p.s);
 		
 		
 		switch(toolView){
-			
-			case 0:   
-				GUIToolCreate.Display(subPanel);
-				break;
-			
-			case 1:  
-				GUIToolMove.Display(subPanel);  	
-				break;
-			
-			case 2: 
-				GUIToolKill.Display(subPanel); 
-				break;
-			
-			case 3: 
-				GUIToolReplace.Display(subPanel);  
-				break;
-			
-			case 4: 
-				GUIToolStats.Display(subPanel);  
-				break;
-			
-			case 5: 
-				GUIToolQueue.Display(subPanel);  
-				break;
-			
-			case 6: 
-				GUIToolRandom.Display(subPanel);  
-				break;
-					
-			default: 
-				break;
+			case 0: GUIToolCreate.Display(subPanel); break;
+			case 1: GUIToolMove.Display(subPanel); break;
+			case 2: GUIToolKill.Display(subPanel); break;
+			case 3: GUIToolReplace.Display(subPanel); break;
+			case 4: GUIToolStats.Display(subPanel); break;
+			case 5: GUIToolQueue.Display(subPanel); break;
+			case 6: GUIToolRandom.Display(subPanel); break;
+			default: break;
 		}
 	}
 }

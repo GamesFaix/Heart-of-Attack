@@ -73,7 +73,9 @@ namespace HOA.Tokens {
 		public bool Enter (Cell cell) {return body.Enter(cell);}
 		public void Exit () {body.Exit();}
 		
-		public void Die (Source s, bool corpse=true, bool log=true) {
+		public virtual void Die (Source s, bool corpse=true, bool log=true) {
+			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
+			if (this == TurnQueue.Top) {TurnQueue.Advance();}
 			if (this is Unit) {TurnQueue.Remove((Unit)this);}
 			TokenFactory.Remove(this);
 			Cell oldCell = Cell;
@@ -84,7 +86,7 @@ namespace HOA.Tokens {
 			
 		}
 		
-		void CreateRemains (Cell oldCell) {
+		protected void CreateRemains (Cell oldCell) {
 			if (OnDeath != TTYPE.NONE) {
 				Token remains = default(Token);
 				if (TokenFactory.Add(OnDeath, new Source(this), oldCell, out remains, false)) {

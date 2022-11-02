@@ -27,7 +27,11 @@ public static class TurnQueue {
 		units.Shuffle();
 		if (log) {GameLog.Out(s+" shuffled the Queue.");}
 	}
-	
+
+	public static void Initialize () {
+		PrepareNewTop(Top);
+	}
+
 	public static void Advance(bool log=true){
 		QueueStunner.Find(units);
 
@@ -59,6 +63,7 @@ public static class TurnQueue {
 	static void PrepareNewTop (Unit newTop) {
 		newTop.ClearSkip(false);
 		newTop.FillAP(false);
+		GUIInspector.Inspected = newTop;
 	}
 
 	static void Skip (Unit oldTop, Unit oldBtm) {

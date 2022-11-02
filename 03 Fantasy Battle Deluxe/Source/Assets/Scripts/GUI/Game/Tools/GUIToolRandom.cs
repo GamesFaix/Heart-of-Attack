@@ -17,8 +17,7 @@ public static class GUIToolRandom {
 		if (randBtn == 0) {actionLabel = "Flip";}
 		
 		p.x2 += 5;
-		if (GUI.Button(p.Box(0.5f), actionLabel)
-		|| Input.GetKey("right shift")) {
+		if (GUI.Button(p.Box(0.5f), actionLabel)) {
 			InputBuffer.Submit(new RRandom(new Source(Referee.ActivePlayer), d));
 		}
 		

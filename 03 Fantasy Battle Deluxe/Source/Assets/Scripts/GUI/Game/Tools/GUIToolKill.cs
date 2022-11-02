@@ -4,8 +4,6 @@ using HOA.Players;
 
 public static class GUIToolKill {
 	public static void Display (Panel p) {
-		Token instance = GUISelectors.Instance();
-		
 		p.y2 += 5;
 		p.x2 += p.W*0.4f;
 		GUI.Label(p.Box(0.3f), "Kill:");
@@ -13,15 +11,17 @@ public static class GUIToolKill {
 	
 		Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
-		
+
+		Token instance = GUISelectors.Instance;
+		string btnLabel = "Kill ";
+		if (instance != default(Token)) {btnLabel += instance.FullName;}
+
 		p.y2 += 5;
-		if (instance != default(Token)) {
-			if (GUI.Button(p.LineBox, "Kill "+instance.FullName)
-			|| Input.GetKeyUp("space")){ 
-				if (instance != default(Token)) {
-					InputBuffer.Submit(new RKill(Source.ActivePlayer, instance));
-					GUISelectors.Reset();
-				}
+		if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){ 
+			if (instance != default(Token)) {
+				InputBuffer.Submit(new RKill(Source.ActivePlayer, instance));
+				GUISelectors.Reset();
+				btnLabel = "Kill ";
 			}
 		}
 	}

@@ -40,6 +40,7 @@ public class GUIGame : MonoBehaviour {
 		}
 		if (GUI.Button(new Rect(sW-(barW*3/4), 0, barW/4, lineH), "Manual")) {
 			showTools = true;	
+			GUISelectors.Reset();
 		}
 		if (GUI.Button(new Rect(sW-(barW*1/4), 0, barW/4, lineH), "Quit")) {
 			InputBuffer.Submit(new RQuit(Source.ActivePlayer));	

@@ -36,6 +36,21 @@ namespace HOA.Tokens {
 			arsenal.Add(new ACaraDischarge(new Price(1,2), this, 10, 5));
 		}
 		public override string Notes () {return "+1 DEF per FP. DEF can never exceed 5.";}
+
+		public override void Die (Source s, bool corpse=true, bool log=true) {
+			BodyCara bc = (BodyCara)body;
+			bc.DestroySensors();
+
+			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
+			if (this == TurnQueue.Top) {TurnQueue.Advance();}
+			TurnQueue.Remove((Unit)this);
+			TokenFactory.Remove(this);
+			Cell oldCell = Cell;
+			Exit();
+			if (corpse) {CreateRemains(oldCell);}
+			if (log) {GameLog.Out(s.Token+" killed "+this+".");}
+		}
+
 	}
 	public class Mawth : Unit {
 		public Mawth(Source s, bool template=false){

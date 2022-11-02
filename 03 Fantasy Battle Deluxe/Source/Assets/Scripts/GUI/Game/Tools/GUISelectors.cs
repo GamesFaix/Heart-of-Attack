@@ -22,7 +22,11 @@ public class GUISelectors : MonoBehaviour {
 		
 	//Token Types
 	static TTYPE token = TTYPE.NONE;
-	public static TTYPE Token () {return token;}
+	public static TTYPE Token {
+		get {return token;}
+		set {token = value;}
+	}
+
 	static Vector2 tokenScroll = new Vector2 (0,0);
 	
 	public static void TokenGrid (Panel p){
@@ -38,10 +42,19 @@ public class GUISelectors : MonoBehaviour {
 			Faction faction = FactionRef.Index(i);
 			
 			for (int j=0; j<faction.Count; j++){
+				TTYPE code = faction[j];
 				p.x2 = x3;
 				Rect box = new Rect(p.x2, p.y2, btnW, btnW);
-				if (GUI.Button(box, Thumbs.CodeToThumb(faction[j]))){
-					token = faction[j];
+				if (GUI.Button(box, Thumbs.CodeToThumb(code))){
+					token = code;
+					foreach (Cell c in Board.cells) {
+						if (TemplateFactory.Template(code).CanEnter(c)) {
+							c.Legal = true;
+						}
+					}
+					waitForCell = true;
+
+
 				}
 				p.y2 += btnW;
 			}
@@ -53,31 +66,36 @@ public class GUISelectors : MonoBehaviour {
 
 	//Token Instances
 	static Token instance;
-	public static Token Instance () {return instance;}
+	public static Token Instance {
+		get {return instance;}
+		set {instance = value;}
+	}
+
 	static Vector2 instanceScroll = new Vector2 (0,0);
-	public static void SelectInstance (Token t) {instance = t;}
-	
+
 	public static void InstanceGrid (Panel p){
 		GUI.Box (p.FullBox, "");
 		
-		int playerCount = Roster.Count;
-		float internalW = btnW * playerCount;
+		float internalW = btnW * Roster.Count(true);
 		float internalH = btnW * Roster.LargestTeamSize;
 		float x3 = p.x2;
 		
 		instanceScroll = GUI.BeginScrollView (p.FullBox, instanceScroll, new Rect(p.X, p.Y, internalW, internalH));
-		
-		for (int i=0; i<playerCount; i++){
+
+		//Debug.Log(Roster.Count(true));
+
+		for (int i=0; i<Roster.Count(true); i++){
+			Player player = Roster.Players(true)[i];
+			//Debug.Log(player);
+
 			p.x2 = x3+10;
-			GUI.Label(p.Box(btnW), Roster.Players(true)[i].ToString());
+			GUI.Label(p.Box(btnW), player.ToString());
 			p.NextLine();
 			
-			TokenGroup team = Roster.Players(true)[i].OwnedUnits;
-			
-			foreach (Token t in team){
+			foreach (Token t in player.OwnedUnits){
 				p.x2 = x3;
 				Rect box = new Rect(p.x2, p.y2, btnW, btnW);
-				if (GUI.Button(box, "")) {SelectInstance(t);}
+				if (GUI.Button(box, "")) {Instance = t;}
 				p.ResetX();
 				t.Draw(box);
 				
@@ -85,17 +103,26 @@ public class GUISelectors : MonoBehaviour {
 			}
 			p.ResetY();
 			x3 += btnW;
+
 		}
+
 		GUI.EndScrollView();
 	}
 	
 	static Cell cell = default(Cell);
-	public static void SelectCell (Cell newCell) {cell = newCell;}
-	public static Cell Cell () {return cell;}
-	
+
+	public static Cell Cell {
+		get {return cell;}
+		set {cell = value;}
+	}
+
 	//waiting
-	static bool waitForCell = false;
+	public static bool waitForCell = false;
+	public static bool WaitingForCell () {return waitForCell;}
+
 	static bool waitForInstance = false;
+	public static bool WaitingForInstance () {return waitForInstance;}
+
 	static Request request;
 	
 	public static void DoWithCell (Request r) {

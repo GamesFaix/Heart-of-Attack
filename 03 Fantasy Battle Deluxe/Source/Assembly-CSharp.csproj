@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{14210CF9-7E80-049D-5FB6-12AF215F886E}</ProjectGuid>
+	<ProjectGuid>{30F33DBC-819B-7EF3-0FC4-2BA94ACA7F53}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -81,11 +81,13 @@
      <Compile Include="Assets\Scripts\Console\GameLog.cs" />
      <Compile Include="Assets\Scripts\Console\InputBuffer.cs" />
      <Compile Include="Assets\Scripts\Console\NetworkConsole.cs" />
-     <Compile Include="Assets\Scripts\Console\RequestHandler.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Basic Attack.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - CreateDestroy.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Game.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Queue.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Roster.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Special.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Token Basic.cs" />
      <Compile Include="Assets\Scripts\Console\Requests.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\StyledText.cs" />

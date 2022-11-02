@@ -37,7 +37,12 @@ namespace HOA.Tokens {
 			if (t.Enter(c)) {
 				tokens.Add(t);
 				if (t is Unit) {TurnQueue.Add((Unit)t);}
-				t.Owner = s.Player;
+
+				if (!FactionRef.Neutral().Contains(t.Code)
+				    && !t.IsSpecial(SPECIAL.HOA)) {
+					t.Owner = s.Player;
+				}
+
 				if (log && s.Player != Roster.Neutral) {
 					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
 				}

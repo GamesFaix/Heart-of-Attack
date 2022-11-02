@@ -7,8 +7,8 @@ public static class GUIToolCreate {
 	static string printCommand = "";
 	
 	public static void Display (Panel p) {
-		TTYPE token = GUISelectors.Token();
-		Cell cell = GUISelectors.Cell();
+		TTYPE token = GUISelectors.Token;
+		Cell cell = GUISelectors.Cell;
 		
 		p.y2 += 5;
 		p.x2 += p.W*0.4f;
@@ -35,10 +35,10 @@ public static class GUIToolCreate {
 			printCommand += cell.ToString()+".";
 		}
 		
-		if (GUI.Button(p.LineBox, printCommand)
-			|| Input.GetKeyUp("space")){
+		if (GUI.Button(p.LineBox, printCommand) || Input.GetKeyUp("space")){
 			InputBuffer.Submit(new RCreate(Source.ActiveUnit, token, cell));
 			Reset();
+			GUISelectors.Reset();
 		}
 	}
 	

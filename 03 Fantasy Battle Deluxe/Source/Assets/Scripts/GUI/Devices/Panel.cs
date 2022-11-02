@@ -54,7 +54,7 @@ public class Panel {
 			return rect;
 		}
 	}
-	
+
 	public Rect Box (float n) {
 		Rect rect;
 		if (n <= 1) {rect = new Rect(x2,y2,w*n,dy);}

@@ -12,6 +12,11 @@ public class GUIInspector : MonoBehaviour {
 		t = token;
 		description = "";
 	}
+
+	public static Token Inspected {
+		get {return t;}
+		set {t = value;}
+	}
 	
 	Vector2 scrollPos = new Vector2(0,0);
 	float internalW = 100;
@@ -35,10 +40,13 @@ public class GUIInspector : MonoBehaviour {
 			scrollPos = GUI.BeginScrollView(p.TallBox(boxH), scrollPos, new Rect(p.x2, p.y2, internalW, internalH));
 				//NAME
 				p.x2 +=5;	
-				StyledText.Highlight(p.Box(250), t.FullName, p.s, t.Owner.Colors);
-				
+				StyledText.Highlight(p.Box(p.W*0.5f), t.FullName, p.s, t.Owner.Colors);
+				p.x2 -= p.W*0.5f;
+				if (GUI.Button (p.Box(p.W*0.5f), "", p.s)) {t.SpriteEffect(EFFECT.SHOW);}
+
+
 				if (t.Owner != default(Player)) {
-					StyledText.Highlight(p.Box(100), t.Owner.ToString(), p.s, t.Owner.Colors);
+					StyledText.Highlight(p.Box(p.W*0.5f), t.Owner.ToString(), p.s, t.Owner.Colors);
 				}
 			
 				string onDeathLabel;
@@ -66,6 +74,11 @@ public class GUIInspector : MonoBehaviour {
 				if (t.IsSpecial(SPECIAL.DEST)) {GUI.Box(p.Box(iconSize), Icons.DEST(), p.s); p.x2 += 5;}	
 				if (t.IsSpecial(SPECIAL.REM)) {GUI.Box(p.Box(iconSize), Icons.REM(), p.s); p.x2 += 5;}	
 				if (t.IsSpecial(SPECIAL.TRAM)) {GUI.Box(p.Box(iconSize), Icons.TRAM(), p.s); p.x2 += 5;}
+				
+				p.x2 = p.X + p.W*0.5f;	
+
+				GUI.Label (p.Box(p.W*0.5f), "Cell "+t.Cell.ToString(), p.s);
+				
 				p.NextLine();
 			
 				if (t.Notes() != "") {p.x2+=5; GUI.Label(p.LineBox, t.Notes(), p.s);}
@@ -138,9 +151,7 @@ public class GUIInspector : MonoBehaviour {
 						Vector2 mousePos = new Vector2(Input.mousePosition.x,Screen.height - Input.mousePosition.y + p.H - p.LineH); 
 					
 						if (GUI.Button(btnBox, a.Name)) {a.Perform();}
-						if (btnBox.Contains(mousePos)) {
-							description = a.ToString();
-						}
+						if (btnBox.Contains(mousePos+scrollPos)) {description = a.ToString();}
 						p.NextLine();
 						
 					}

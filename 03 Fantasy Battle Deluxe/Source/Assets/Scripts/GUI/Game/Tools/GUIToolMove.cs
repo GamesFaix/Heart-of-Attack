@@ -4,12 +4,7 @@ using HOA.Players;
 using HOA.Map;
 
 public static class GUIToolMove {
-	static string printCommand = "";
-	
 	public static void Display (Panel p) {
-		Token instance = GUISelectors.Instance();
-		Cell cell = GUISelectors.Cell();
-		
 		p.y2 += 5;
 		p.x2 += p.W*0.4f;
 		GUI.Label(p.Box(0.3f), "Move:");
@@ -25,19 +20,31 @@ public static class GUIToolMove {
 		
 		p.NextLine();		
 		p.y2 += 5;
-		
-		printCommand = "Move ";
+
+		Token instance = GUISelectors.Instance;
+		Cell cell = GUISelectors.Cell;
+
+		string btnLabel = "Move ";
 		if (instance != default(Token)) {
-			printCommand += instance.FullName+" to ";
+			btnLabel += instance.FullName+" to ";
+		
+			foreach (Cell c in Board.cells) {
+				if (instance.CanEnter(c)) {
+					c.Legal = true;
+				}
+			}
+			GUISelectors.waitForCell = true;
+		
+		
 		}
-		if (cell != default(Cell)) {
-			printCommand += cell.ToString();
-		}
+		if (cell != default(Cell)) {btnLabel += cell.ToString();}
 			
-		if (GUI.Button(p.LineBox, printCommand)
-			|| Input.GetKeyUp("space")){ 
-			InputBuffer.Submit(new RMove(Source.ActivePlayer, instance, cell));
-			GUISelectors.Reset();
+		if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){ 
+			if (instance != default(Token) && cell != default(Cell)) {
+				InputBuffer.Submit(new RMove(Source.ActivePlayer, instance, cell));
+				GUISelectors.Reset();
+				btnLabel = "Move ";
+			}
 		}
 	}
 }

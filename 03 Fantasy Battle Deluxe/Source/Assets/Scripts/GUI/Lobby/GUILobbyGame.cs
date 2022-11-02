@@ -14,13 +14,13 @@ public class GUILobbyGame : MonoBehaviour {
 		
 		if (!Roster.IsFull()) {
 			if (GUI.Button (p.LineBox, "Add player")) {
-				InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer, new Player(Roster.Count)));
+				InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer, new Player(Roster.Count())));
 			}
 		}
 		else {GUI.Label(p.LineBox, "Roster full.");}
 		p.y2+=5;
 		
-		for (int i=1; i<Roster.Count; i++) {
+		for (int i=1; i<Roster.Count(); i++) {
 			Player player = Roster.Players()[i];
 			string name = GUI.TextField(p.Box(0.4f), player.ToString());	
 			player.Rename(name);
@@ -41,7 +41,7 @@ public class GUILobbyGame : MonoBehaviour {
 		}
 		
 		bool ready = true;
-		for (int i=1; i<Roster.Count; i++) {
+		for (int i=1; i<Roster.Count(); i++) {
 			Player player = Roster.Index(i);
 			if (player.Faction == default(Faction)) {ready = false;}
 		}
@@ -49,7 +49,7 @@ public class GUILobbyGame : MonoBehaviour {
 		BoardSizer(new Panel(p.LineBox, p.LineH, p.s));
 		
 		p.y2 += 5;
-		if (Roster.Count > 2) {
+		if (Roster.Count() > 2) {
 		
 			if (ready) {
 				if (GUI.Button(p.LineBox, "Start game")

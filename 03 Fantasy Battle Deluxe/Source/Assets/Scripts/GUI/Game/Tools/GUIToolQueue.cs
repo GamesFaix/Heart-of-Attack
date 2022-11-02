@@ -14,8 +14,7 @@ public static class GUIToolQueue {
 		
 		float btnW = 0.25f;
 
-		if (GUI.Button(p.Box(btnW), "Advance")
-			|| (Input.GetKeyUp("a") && Input.GetKey("left ctrl"))) {
+		if (GUI.Button(p.Box(btnW), "Advance")) {
 			InputBuffer.Submit(new RQueueAdvance(Source.ActivePlayer));
 		}
 		if (GUI.Button(p.Box(btnW), "Shuffle")){
@@ -49,15 +48,19 @@ public static class GUIToolQueue {
 			float instanceH = (p.H-2*p.LineH) / p.H;
 			Panel subPanel = new Panel(p.TallBox(instanceH), p.LineH, p.s);
 			GUISelectors.InstanceGrid(subPanel);
-			Token instance = GUISelectors.Instance();
+
+			Token instance = GUISelectors.Instance;
 			
-			string printInst = "";
-			if (instance != default(Token)) {printInst = instance.FullName;}
-			
-			if (GUI.Button(p.LineBox, "Shift "+printInst+" "+magnitude)
-			|| Input.GetKeyUp("space")){
-				InputBuffer.Submit(new RQueueShift(Source.ActivePlayer, instance, magnitude));
-				GUISelectors.Reset();
+			string btnLabel = "Shift ";
+			if (instance != default(Token)) {btnLabel += instance.FullName;}
+			btnLabel += magnitude;
+
+			if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){
+				if (instance != default(Token)) {
+					InputBuffer.Submit(new RQueueShift(Source.ActivePlayer, instance, magnitude));
+					GUISelectors.Reset();
+					btnLabel = "Shift ";
+				}
 			}
 		}
 	}

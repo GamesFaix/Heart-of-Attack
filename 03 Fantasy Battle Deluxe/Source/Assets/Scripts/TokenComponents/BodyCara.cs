@@ -45,5 +45,9 @@ namespace HOA.Tokens.Components {
 			cell.Exit(parent);
 		}
 
+		public void DestroySensors () {
+			foreach (Sensor s in sensors) {s.Delete();}
+		}
+
 	}
 }

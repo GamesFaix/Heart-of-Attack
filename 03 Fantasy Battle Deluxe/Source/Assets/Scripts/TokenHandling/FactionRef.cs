@@ -31,6 +31,8 @@ namespace HOA.Tokens {
 				return playable;
 			}
 		}
+
+		public static Faction Neutral () {return factions[Count-1];}
 		
 		public static List<TTYPE> Kings {
 			get {

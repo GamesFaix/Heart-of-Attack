@@ -17,6 +17,11 @@ public abstract class Faction {
 	public TTYPE this[int i] {get { return (TTYPE)this.tokens[i];} }
 	public int Count {get {return tokens.Count;} }
 
+	public bool Contains (TTYPE t) {
+		if (tokens.Contains(t)) {return true;}
+		return false;
+	}
+
 	public MyEnumerator GetEnumerator() {return new MyEnumerator(tokens);}
 	public class MyEnumerator {
 		int n;

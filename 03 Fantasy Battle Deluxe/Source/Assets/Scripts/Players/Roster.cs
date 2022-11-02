@@ -56,7 +56,10 @@ namespace HOA.Players {
 			return false;
 		}
 	
-		public static int Count {get {return players.Count;} }
+		public static int Count (bool addNeutral=false) {
+			if (!addNeutral) {return players.Count;} 
+			return players.Count+1;
+		}
 		
 		public static int LargestTeamSize { 
 			get {
@@ -79,7 +82,8 @@ namespace HOA.Players {
 		public static List<Player> Players (bool addNeutral=false) {
 			if (!addNeutral) {return players;}
 			else {
-				List<Player> withNeutral = players;
+				List<Player> withNeutral = new List<Player>();
+				foreach (Player p in players) {withNeutral.Add(p);}
 				withNeutral.Add(neutral);
 				return withNeutral;
 			}

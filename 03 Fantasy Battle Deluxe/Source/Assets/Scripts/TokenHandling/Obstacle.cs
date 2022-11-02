@@ -35,6 +35,11 @@ namespace HOA.Tokens {
 		protected void BuildHeart () {
 			sprite = new HOASprite(this);
 			NewBody(new PLANE[]{PLANE.GND, PLANE.AIR}, SPECIAL.HOA);
+			Neutralize();
+		}
+
+		protected void Neutralize () {
+			Owner = Roster.Neutral;
 		}
 		
 	}

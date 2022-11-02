@@ -68,7 +68,10 @@ namespace HOA.Tokens.Components {
 
 		void HighlightLegal (Rect box) {
 			if (parent.Legal) {
+				Color c = GUI.color;
+				GUI.color = new Color (1,1,1,0.25f);
 				GUI.Box(box, ImageLoader.yellowBtn);
+				GUI.color = c;
 			}
 		}
 	

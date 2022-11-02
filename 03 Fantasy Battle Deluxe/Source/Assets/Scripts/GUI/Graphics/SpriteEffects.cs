@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-public enum EFFECT {NONE, BIRTH, DEATH, DMG, STATUP, STATDOWN, FIRE, EXP, LASER, COR, STUN}
+public enum EFFECT {NONE, SHOW, BIRTH, DEATH, DMG, STATUP, STATDOWN, FIRE, EXP, LASER, COR, STUN}
 
 public static class SpriteEffects {
-	
+
+	static Texture2D show;
 	static Texture2D birth;
 	static Texture2D death;
 	static Texture2D damage;
@@ -16,6 +17,7 @@ public static class SpriteEffects {
 	static Texture2D stun;
 
 	public static void Load() {
+		show = Resources.Load("Effects/show") as Texture2D;
 		birth = Resources.Load("Effects/birth") as Texture2D;
 		death = Resources.Load("Effects/death") as Texture2D;
 		damage = Resources.Load("Effects/damage") as Texture2D;
@@ -30,6 +32,7 @@ public static class SpriteEffects {
 
 	public static Texture2D Effect (EFFECT e) {
 		switch (e) {
+			case EFFECT.SHOW: return show;
 			case EFFECT.BIRTH: return birth;
 			case EFFECT.DEATH: return death;
 			case EFFECT.DMG: return damage;

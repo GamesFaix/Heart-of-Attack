@@ -48,15 +48,18 @@ public class GUIBoard : MonoBehaviour {
 					Rect cellRect = CellRect(board,x,y);
 					
 					if (cell.IsEmpty()) {
-						if (GUI.Button(cellRect, cell.ToString())
-						&& Input.GetKey("left shift")) {
-							GUISelectors.SelectCell(cell);	
+						if (GUI.Button(cellRect, cell.ToString()) && 
+						   Input.GetMouseButtonUp(0) && GUISelectors.WaitingForCell()){
+							GUISelectors.Cell = cell;	
 						}
 					}
 					else {DrawOccupants(cellRect, cell, p.s);}
 					
 					if (cell.Legal) {
+						Color c = GUI.color;
+						GUI.color = new Color (1,1,1,0.25f);
 						GUI.Box(cellRect, ImageLoader.yellowBtn, p.s);
+						GUI.color = c;
 					}
 				}
 			}
@@ -113,12 +116,14 @@ public class GUIBoard : MonoBehaviour {
 					tokenRect = TokenRect(cellRect, cell ,i);
 					t.Draw(tokenRect);
 					if (GUI.Button(tokenRect, "", s)){
-						if (Input.GetKey("left shift")) {
-							GUISelectors.SelectCell(cell);
+						if (Input.GetMouseButtonUp(0) && GUISelectors.WaitingForCell()) {
+							GUISelectors.Cell = cell;
 						}
-						else {
+						else if (Input.GetMouseButtonUp(0) && GUISelectors.WaitingForInstance()) {
+							GUISelectors.Instance = t;
+						}
+						else if (Input.GetMouseButtonUp(1)) {
 							GUIInspector.Inspect(t);
-							GUISelectors.SelectInstance(t);
 						}
 					}
 				}
@@ -127,7 +132,7 @@ public class GUIBoard : MonoBehaviour {
 				tokenRect = TokenRect(cellRect, cell, i);
 				if (GUI.Button(tokenRect, "", s)
 					&& Input.GetKey("left shift")) {
-						GUISelectors.SelectCell(cell);
+						GUISelectors.Cell = cell;
 				}
 			}
 		}

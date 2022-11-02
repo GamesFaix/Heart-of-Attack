@@ -16,7 +16,7 @@ public static class GUIToolStats {
 		
 		if (Input.GetKey("left ctrl") && Input.GetKey("f")) {
 			Unit u = TurnQueue.Top;
-			GUISelectors.SelectInstance(u);
+			GUISelectors.Instance = u;
 			u.Focus();		
 		}
 		
@@ -49,7 +49,7 @@ public static class GUIToolStats {
 		
 		Panel subPanel = new Panel(p.TallBox(0.5f), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
-		Token instance = GUISelectors.Instance();
+		Token instance = GUISelectors.Instance;
 		
 		string label = "";
 		if (instance != default(Token)) {label += instance.FullName;}

@@ -13,7 +13,7 @@ public static class InputBuffer {
 		requestQueue.Add(r);
 		//Debug.Log(r);
 		
-		RequestHandler.Submit(r);
+		r.Grant();
 	}
 
 

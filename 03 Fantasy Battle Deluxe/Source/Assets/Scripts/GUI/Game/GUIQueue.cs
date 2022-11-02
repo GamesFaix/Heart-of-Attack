@@ -13,7 +13,7 @@ public class GUIQueue : MonoBehaviour {
 		p.x2 += p.W*0.6f;
 		
 		
-		if (GUI.Button(p.Box(0.2f), "Advance") || Input.GetKeyUp("=")) {
+		if (GUI.Button(p.Box(0.2f), "Advance")) {
 			InputBuffer.Submit(new RQueueAdvance(Source.ActivePlayer));
 		}
 		
@@ -41,7 +41,10 @@ public class GUIQueue : MonoBehaviour {
 				Unit u = TurnQueue.Index(i);	
 				
 				p.x2 += 5;
-				if (GUI.Button(p.Box(250), "", p.s)) {GUIInspector.Inspect(u);}
+				if (GUI.Button(p.Box(250), "", p.s)) {
+					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspect(u);}
+					else if (Input.GetMouseButtonUp(0)) {u.SpriteEffect(EFFECT.SHOW);}
+				}
 				p.ResetX();
 				StyledText.Highlight(p.Box(250), u.ToString(), p.s, u.Owner.Colors);
 			

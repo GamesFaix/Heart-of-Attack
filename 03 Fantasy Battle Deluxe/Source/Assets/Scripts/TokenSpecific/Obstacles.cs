@@ -9,6 +9,7 @@ namespace HOA.Tokens {
 		public Mountain(Source s, bool template=false){
 			NewLabel(TTYPE.MNTN, s, false, template);
 			BuildTall();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -16,7 +17,8 @@ namespace HOA.Tokens {
 	public class Hill : Obstacle {
 		public Hill(Source s, bool template=false){
 			NewLabel(TTYPE.HILL, s, false, template);
-			BuildStandard();
+			BuildStandard();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -25,7 +27,8 @@ namespace HOA.Tokens {
 		public Rock(Source s, bool template=false){
 			NewLabel(TTYPE.ROCK, s, false, template);
 			BuildStandard();
-			AddDest();
+			AddDest();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -34,7 +37,8 @@ namespace HOA.Tokens {
 		public Tree(Source s, bool template=false){
 			NewLabel(TTYPE.TREE, s, false, template);
 			BuildStandard();
-			AddDest();
+			AddDest();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -43,7 +47,8 @@ namespace HOA.Tokens {
 		public Corpse(Source s, bool template=false){
 			NewLabel(TTYPE.CORP, s, false, template);
 			BuildStandard();
-			AddRem();
+			AddRem();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -51,7 +56,8 @@ namespace HOA.Tokens {
 	public class Water : Obstacle {
 		public Water(Source s, bool template=false){
 			NewLabel(TTYPE.WATR, s, false, template);
-			BuildSunken();
+			BuildSunken();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
@@ -59,7 +65,8 @@ namespace HOA.Tokens {
 	public class Lava : Obstacle {
 		public Lava(Source s, bool template=false){
 			NewLabel(TTYPE.LAVA, s, false, template);
-			BuildSunken();
+			BuildSunken();	
+			Neutralize();
 		}
 		public override string Notes () {return "";}
 	}
