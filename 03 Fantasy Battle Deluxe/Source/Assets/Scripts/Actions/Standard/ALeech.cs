@@ -1,0 +1,28 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using HOA.Tokens;
+using HOA.Map;
+
+namespace HOA.Actions {
+
+	public class ALeech : Action {
+		int damage;
+		
+		public ALeech (Price p, Unit u, Aim a, int d) {
+			price = p;
+			aim = a;
+			damage = d;
+			actor = u;
+			name = "Leech Life";
+			desc = "Do "+d+" damage to target unit. \nHeal HP equal to damage successfully dealt.";
+		}
+		
+		public override void Perform () {
+			if (Charge()) {
+				Legalizer.Find(actor, aim);
+				GUISelectors.DoWithInstance(new RLeech(new Source(actor), default(Token), damage));
+			}
+		}
+	}
+}

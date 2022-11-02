@@ -1,0 +1,30 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using HOA.Tokens;
+using HOA.Map;
+
+namespace HOA.Actions {
+
+	public class AGrenade : Action {
+		int range;
+		int damage;
+		
+		public AGrenade (Price p, Unit u, int r, int d) {
+			price = p;
+			actor = u;
+			aim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.ATTACK, r);
+			damage = d;
+			
+			name = "Grenade";
+			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
+		}
+		
+		public override void Perform () {
+			if (Charge()) {
+				Legalizer.Find(actor, aim);
+				GUISelectors.DoWithCell(new RExplosion(new Source(actor), default(Cell), damage));
+			}
+		}
+	}
+}
