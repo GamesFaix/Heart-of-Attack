@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Map;
 
-namespace HOA.Actions {
+namespace HOA {
 	
 	public class ALaser : Action {
 		

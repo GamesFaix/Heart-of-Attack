@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Players;
-using HOA.Actions;
+using HOA;
 
 public class GUIInspector : MonoBehaviour {
 

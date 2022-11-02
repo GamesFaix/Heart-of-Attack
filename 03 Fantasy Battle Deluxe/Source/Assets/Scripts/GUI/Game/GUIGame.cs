@@ -1,4 +1,5 @@
 using UnityEngine;
+using HOA;
 
 public class GUIGame : MonoBehaviour {
 	static GUIStyle s = new GUIStyle();

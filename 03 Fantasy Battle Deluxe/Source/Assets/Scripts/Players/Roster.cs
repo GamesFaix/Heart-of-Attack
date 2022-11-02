@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using HOA.Tokens;
 
-namespace HOA.Players {
+namespace HOA {
 
 	public static class Roster {
 		static Player neutral = Player.Neutral;

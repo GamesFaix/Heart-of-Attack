@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Players;
-using HOA.Map;
-using HOA.Actions;
 
-namespace HOA.Tokens {
+namespace HOA {
 
 	public class TokenGroup : Group<Token> {
 		public TokenGroup () {list = new List<Token>();}

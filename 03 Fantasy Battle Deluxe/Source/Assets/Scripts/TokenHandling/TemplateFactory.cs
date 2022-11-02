@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using HOA.Map;
-using HOA.Players;
 using UnityEngine;
 
-namespace HOA.Tokens {
+namespace HOA {
 	
 	public static class TemplateFactory {
 	
@@ -93,7 +91,7 @@ namespace HOA.Tokens {
 				case TTYPE.MNTN: return new Mountain(s,true);
 				case TTYPE.HILL: return new Hill(s,true);
 				case TTYPE.ROCK: return new Rock(s,true);
-				case TTYPE.TREE: return new Tokens.Tree(s,true);
+				case TTYPE.TREE: return new HOA.Tree(s,true);
 				case TTYPE.CORP: return new Corpse(s,true);
 				case TTYPE.WATR: return new Water(s,true);
 				case TTYPE.LAVA: return new Lava(s,true);

@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{58554B57-C8E7-3F8A-574A-2350381F6A27}</ProjectGuid>
+	<ProjectGuid>{52FA4BD0-0833-1C34-31A1-C3FE83D627C1}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,44 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Actions\Components\Aim.cs" />
-     <Compile Include="Assets\Scripts\Actions\Components\Price.cs" />
      <Compile Include="Assets\Scripts\Actions\General\Action.cs" />
+     <Compile Include="Assets\Scripts\Actions\General\Aim.cs" />
      <Compile Include="Assets\Scripts\Actions\General\Legalizer.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ABeesDeathSting.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ACaraDischarge.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ADeciFortify.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ADeciMortar.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ADreaTeleport.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AGargLand.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AGargRook.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AGargTailWhip.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AGrizHeal.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AKabuLaser.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AKabuTeleport.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AKataSpin.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMeinDetonate.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMetaConsume.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMonoFlame.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMonoReanimate.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMoveKata.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AMycoSeed.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ANecrTeleport.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ANecrTouch.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AOldtHour.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AOldtSecond.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\APanoCannon.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\APiecHeal.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\APrisRefract.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ARecyCannibal.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ARecyExplode.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AReprMine.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ARookVolley.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ASmasFlail.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\ASmasSlam.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AUltrCreateMeta.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AUltrThrow.cs" />
-     <Compile Include="Assets\Scripts\Actions\Specials\AsheArise.cs" />
+     <Compile Include="Assets\Scripts\Actions\General\Price.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AAttack.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AAttackFir.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACorrode.cs" />
@@ -109,7 +75,6 @@
      <Compile Include="Assets\Scripts\Console\Requests - Game.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Queue.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Roster.cs" />
-     <Compile Include="Assets\Scripts\Console\Requests - Special.cs" />
      <Compile Include="Assets\Scripts\Console\Requests - Token Basic.cs" />
      <Compile Include="Assets\Scripts\Console\Requests.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
@@ -171,17 +136,12 @@
      <Compile Include="Assets\Scripts\Players\Roster.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Arsenal.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Body.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\BodyCara.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\HOASprite.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Health.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\HealthCaraShield.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\HealthSpecial.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Label.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Sensor.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\SensorCaraShield.cs" />
+     <Compile Include="Assets\Scripts\TokenComponents\Sprite.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Wallet.cs" />
      <Compile Include="Assets\Scripts\TokenComponents\Watch.cs" />
-     <Compile Include="Assets\Scripts\TokenComponents\WatchSpecial.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Faction.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\FactionRef.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Factions.cs" />
@@ -192,16 +152,47 @@
      <Compile Include="Assets\Scripts\TokenHandling\TokenGroup.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\TokenRef.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Unit.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Chrono\Aper.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Chrono\Oldt.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Chrono\Piec.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Chrono\Repr.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Chrono\Revo.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\GEARP\Cara.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\GEARP\CaraShield.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\GEARP\Kabu.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\GEARP\Kata.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\GEARP\Mawt.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Grove\Griz.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Grove\Meta.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Grove\Talo.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Grove\Ultr.cs" />
      <Compile Include="Assets\Scripts\TokenSpecific\Hearts.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\New Rep\Deci.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\New Rep\Demo.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\New Rep\Mein.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\New Rep\Mine.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\New Rep\Pano.cs" />
      <Compile Include="Assets\Scripts\TokenSpecific\Obstacles.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsCH.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsFG.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsGR.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsNR.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsPS.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsPT.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsTR.cs" />
-     <Compile Include="Assets\Scripts\TokenSpecific\UnitsVD.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psilent\Aren.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psilent\Drea.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psilent\Prie.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psilent\Pris.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Bees.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Blac.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Lich.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Mart.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Myco.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Psycho\Webb.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Ashe.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Batt.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Conf.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Garg.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Rook.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Torridale\Smas.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Voidoid\Monolith.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Voidoid\Mout.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Voidoid\Necr.cs" />
+     <Compile Include="Assets\Scripts\TokenSpecific\Voidoid\Recy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

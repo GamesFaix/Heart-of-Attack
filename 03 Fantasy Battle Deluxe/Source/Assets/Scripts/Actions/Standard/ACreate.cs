@@ -1,7 +1,5 @@
-using HOA.Tokens;
-using HOA.Map;
 
-namespace HOA.Actions {
+namespace HOA {
 
 	public class ACreate : Action {
 
@@ -21,7 +19,7 @@ namespace HOA.Actions {
 			if (a != default(Aim)) {aim = a;}
 			
 			name = "Create "+chiTemplate.Name;
-			desc = "Create "+name+" in target cell.";
+			desc = "Create "+chiTemplate.Name+" in target cell.";
 		}
 		
 		public override void Perform () {

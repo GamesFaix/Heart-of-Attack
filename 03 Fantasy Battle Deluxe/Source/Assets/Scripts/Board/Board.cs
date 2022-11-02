@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
 using UnityEngine;
 
-namespace HOA.Map {
+namespace HOA {
 
 	public static class Board {
 		

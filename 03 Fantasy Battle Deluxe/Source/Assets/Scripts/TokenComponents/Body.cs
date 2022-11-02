@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Map;
 using UnityEngine;
 
-namespace HOA.Tokens.Components {
+namespace HOA {
 
 	public class Body{
 		protected Token parent;

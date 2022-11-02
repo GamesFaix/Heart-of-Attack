@@ -1,7 +1,6 @@
-using HOA.Tokens;
 using System.Collections;
 
-namespace HOA.Actions {
+namespace HOA {
 	public class AFocus : Action {
 
 		int magnitude;

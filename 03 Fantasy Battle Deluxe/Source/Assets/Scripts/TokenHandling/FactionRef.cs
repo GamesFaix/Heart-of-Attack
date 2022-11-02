@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace HOA.Tokens {
+namespace HOA {
 	
 	public static class FactionRef {
 	

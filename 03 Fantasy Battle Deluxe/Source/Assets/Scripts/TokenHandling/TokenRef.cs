@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace HOA.Tokens {
+namespace HOA {
 	public enum TTYPE {
 		TREE,
 		KATA, CARA, MAWT, KABU, HSIL,

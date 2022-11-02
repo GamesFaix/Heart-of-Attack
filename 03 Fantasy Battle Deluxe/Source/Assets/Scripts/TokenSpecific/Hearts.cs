@@ -1,7 +1,5 @@
-using HOA.Map;
-using HOA.Players;
 
-namespace HOA.Tokens {
+namespace HOA {
 	
 	public class SiliconHOA : Obstacle {
 		public SiliconHOA(Source s, bool template=false){

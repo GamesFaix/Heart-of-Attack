@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA;
 
 public class GUIQueue : MonoBehaviour {
 	

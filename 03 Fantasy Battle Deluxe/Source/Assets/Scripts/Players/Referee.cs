@@ -1,4 +1,4 @@
-namespace HOA.Players {
+namespace HOA {
 
 	public static class Referee {
 		static Player active = Roster.Neutral;

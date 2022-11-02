@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using HOA.Tokens;
-using HOA.Players;
+using HOA;
 
 public class Core : MonoBehaviour {
 	//public static NetworkConsole nc;

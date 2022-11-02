@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Tokens.Components;
 using UnityEngine;
 
-namespace HOA.Map {
+namespace HOA {
 	
 	public class Cell {
 		int x;

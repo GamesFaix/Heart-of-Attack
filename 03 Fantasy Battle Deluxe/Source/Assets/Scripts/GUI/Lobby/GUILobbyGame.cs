@@ -1,7 +1,5 @@
 using UnityEngine;
-using HOA.Tokens;
-using HOA.Map;
-using HOA.Players;
+using HOA;
 using System.Collections.Generic;
 
 

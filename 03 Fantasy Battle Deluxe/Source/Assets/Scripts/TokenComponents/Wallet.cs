@@ -1,7 +1,5 @@
-﻿using HOA.Players;
-using HOA.Actions;
-
-namespace HOA.Tokens.Components {
+﻿
+namespace HOA {
 	
 	public class Wallet {
 		protected int maxAp;

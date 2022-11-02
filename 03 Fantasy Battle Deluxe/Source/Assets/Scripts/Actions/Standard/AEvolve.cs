@@ -1,7 +1,5 @@
-using HOA.Tokens;
-using HOA.Map;
 
-namespace HOA.Actions {
+namespace HOA {
 
 	public class AEvolve : Action {
 

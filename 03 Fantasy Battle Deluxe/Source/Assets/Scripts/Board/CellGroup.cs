@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using HOA.Tokens;
 
-namespace HOA.Map {
+namespace HOA {
 
 	public class CellGroup : Group<Cell> {
 		public CellGroup () {list = new List<Cell>();}

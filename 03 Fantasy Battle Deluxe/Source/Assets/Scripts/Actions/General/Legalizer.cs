@@ -1,8 +1,6 @@
-using HOA.Tokens;
-using HOA.Map;
 using UnityEngine;
 
-namespace HOA.Actions {
+namespace HOA {
 	
 	public static class Legalizer {
 		

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Players;
 
-namespace HOA.Tokens.Components {
+namespace HOA {
 
 	public class Label {
 		TTYPE code;

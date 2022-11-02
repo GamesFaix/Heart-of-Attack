@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA;
 
 enum TOOLVIEW {NONE, TOKENS, STATS, QUEUE, RANDOM, GAME, NETWORK}
 

@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Map;
-using HOA.Tokens.Components;
-using HOA.Players;
-using HOA.Actions;
 
-namespace HOA.Tokens {
+namespace HOA {
 	public enum STAT {HP, MHP, DEF, IN, AP, FP, STUN, COR}
 
 	public abstract class Unit : Token{
@@ -22,7 +18,7 @@ namespace HOA.Tokens {
 		protected void NewArsenal () {arsenal = new Arsenal(this);}
 		
 		protected void BuildStandard () {
-			sprite = new HOASprite(this);
+			sprite = new HOA.Sprite(this);
 			OnDeath = TTYPE.CORP;
 			NewWallet();
 			NewArsenal();

@@ -1,25 +1,22 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using HOA.Map;
-using HOA.Tokens.Components;
-using HOA.Players;
 
-namespace HOA.Tokens {
+namespace HOA {
 
 	public abstract class Obstacle : Token{
 		
 		protected void BuildStandard () {
-			sprite = new HOASprite(this);
+			sprite = new HOA.Sprite(this);
 			NewBody(PLANE.GND);
 		}
 		
 		protected void BuildTall () {
-			sprite = new HOASprite(this);
+			sprite = new HOA.Sprite(this);
 			NewBody(new PLANE[] {PLANE.GND, PLANE.AIR});
 		}
 		
 		protected void BuildSunken () {
-			sprite = new HOASprite(this);
+			sprite = new HOA.Sprite(this);
 			NewBody(PLANE.SUNK);
 		}
 		
@@ -33,7 +30,7 @@ namespace HOA.Tokens {
 		}
 		
 		protected void BuildHeart () {
-			sprite = new HOASprite(this);
+			sprite = new HOA.Sprite(this);
 			NewBody(new PLANE[]{PLANE.GND, PLANE.AIR}, SPECIAL.HOA);
 			Neutralize();
 		}

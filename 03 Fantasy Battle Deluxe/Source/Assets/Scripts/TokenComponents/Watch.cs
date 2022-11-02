@@ -1,7 +1,6 @@
 ﻿using System;
-using HOA.Players;
 
-namespace HOA.Tokens.Components {
+namespace HOA {
 	
 	public class Watch{
 

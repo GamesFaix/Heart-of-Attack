@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using HOA.Tokens.Components;
-using HOA.Map;
 
-namespace HOA.Tokens {
+namespace HOA {
 
 	public class Mountain : Obstacle {
 		public Mountain(Source s, bool template=false){

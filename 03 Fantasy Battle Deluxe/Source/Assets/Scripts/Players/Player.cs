@@ -1,8 +1,7 @@
-using HOA.Tokens;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA.Players {
+namespace HOA {
 	
 	public class Player {
 	

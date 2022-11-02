@@ -1,6 +1,5 @@
-﻿using HOA.Map;
-
-namespace HOA.Tokens.Components {
+﻿
+namespace HOA {
 	
 	public abstract class Sensor {
 		protected Unit parent;

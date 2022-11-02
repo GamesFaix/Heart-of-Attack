@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace HOA.Map {
+namespace HOA {
 
 	public static class Direction {
 		

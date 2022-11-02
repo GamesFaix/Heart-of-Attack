@@ -1,6 +1,5 @@
 using UnityEngine;
-using HOA.Map;
-using HOA.Tokens;
+using HOA;
 
 public class GUIBoard : MonoBehaviour {
 	static float scale = 100;

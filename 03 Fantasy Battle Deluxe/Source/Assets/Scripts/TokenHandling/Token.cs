@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using HOA.Map;
-using HOA.Players;
-using HOA.Tokens.Components;
 
-namespace HOA.Tokens {
+namespace HOA {
 	public enum PLANE {SUNK, GND, AIR, ETH}
 	public enum SPECIAL {NONE, KING, TRAM, DEST, REM, HOA}
 	
@@ -19,7 +16,7 @@ namespace HOA.Tokens {
 		
 		protected Label label;
 		protected Body body;
-		protected HOASprite sprite;
+		protected HOA.Sprite sprite;
 			
 		protected void NewLabel (TTYPE code, Source s, bool unique=false, bool template=false) {label = new Label(this, code, s, unique, template);}
 		protected void NewBody (PLANE p, SPECIAL s=SPECIAL.NONE) {body = new Body(this, p, s);}

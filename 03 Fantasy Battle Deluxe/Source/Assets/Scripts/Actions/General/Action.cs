@@ -1,9 +1,8 @@
-using HOA.Tokens;
 using System.Collections.Generic;
 using System.Collections;
 using System;
 
-namespace HOA.Actions {
+namespace HOA {
 	
 	
 	public abstract class Action {

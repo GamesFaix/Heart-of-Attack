@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using HOA.Actions;
 using UnityEngine;
 
-namespace HOA.Tokens.Components {
+namespace HOA {
 	public class Arsenal : Group<Action> {
 		//Unit parent;
 		//List<Action> actions;
