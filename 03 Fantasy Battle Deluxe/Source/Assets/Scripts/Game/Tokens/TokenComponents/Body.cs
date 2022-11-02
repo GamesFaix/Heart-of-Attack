@@ -101,13 +101,15 @@ namespace HOA {
 		}
 		
 		protected bool CanTrample (Cell newCell) {
-			if (IsClass(EClass.TRAM) && newCell.Occupied(EPlane.GND)){
-				Token t = newCell.Occupant(EPlane.GND);
-				if (t.IsClass(EClass.DEST)) {
-					return true;
-				}
-			}
+			if (IsClass(EClass.TRAM) && newCell.Contains(EClass.DEST)) {return true;}
 			return false;
+		}
+		protected void Trample (Cell newCell) {
+			TokenGroup tokens = newCell.Occupants;
+			tokens = tokens.OnlyClass(EClass.DEST);
+			for (int i=tokens.Count-1; i>=0; i--) {
+				AEffects.Kill(new Source(parent), tokens[i]);
+			}
 		}
 
 		protected bool CanGetHeart (Cell newCell) {
@@ -117,17 +119,11 @@ namespace HOA {
 			return false;
 		}
 
-		protected void Trample (Cell newCell) {
-			if (CanTrample(newCell)) {
-				Token dest = newCell.Occupant(EPlane.GND);
-				InputBuffer.Submit(new RKill(Source.ActivePlayer, dest));
-			}
-		}
 
 		protected void GetHeart (Cell newCell) {
 			if (CanGetHeart(newCell)) {
 				Token heart = newCell.Occupant(EPlane.GND);
-				InputBuffer.Submit(new RGetHeart(Source.ActivePlayer, heart));
+				AEffects.GetHeart(Source.ActivePlayer, heart);
 			}
 		}
 		
@@ -135,7 +131,10 @@ namespace HOA {
 			cell.Exit(parent);
 		}
 		
-		public Cell Cell {get {return cell;} }
+		public Cell Cell {
+			get {return cell;} 
+			set {cell = value;}
+		}
 		
 		public TokenGroup Neighbors(bool cellMates = false) {
 			TokenGroup neighbors = cell.Neighbors().Occupants;
@@ -174,9 +173,15 @@ namespace HOA {
 		public bool Swap (Token other) {
 			if (CanSwap(other)) {
 				Cell oldCell = cell;
+				Exit();
+				cell = other.Cell;
 				other.Cell.Enter(parent);
 
+
+				other.Exit();
+				other.Body.Cell = oldCell;
 				oldCell.Enter(other);
+
 
 				return true;
 			}	

@@ -35,8 +35,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RReplace(new Source(actor), (Token)targets[0], EToken.LICH));
-
+			AEffects.Replace(new Source(actor), (Token)targets[0], EToken.LICH);
+			Targeter.Reset();
 		}
 	}
 }

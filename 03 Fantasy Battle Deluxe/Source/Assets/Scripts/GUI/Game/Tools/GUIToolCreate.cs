@@ -18,6 +18,13 @@ namespace HOA {
 			if (token != EToken.NONE) {
 				Targeter.Find(new ACreateManual(TurnQueue.Top, token));
 			}
+
+			if (Targeter.Pending() != default(Action)) {
+				if (GUI.Button(p.LineBox, Targeter.Pending().ToString())
+				    || Input.GetKeyUp ("space")) {
+					Targeter.Execute();
+				}
+			}
 		}
 	}
 }

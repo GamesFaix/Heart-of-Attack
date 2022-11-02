@@ -11,43 +11,38 @@ namespace HOA {
 		public static int Min {get {return min;} }
 		public static int Max {get {return max;} }
 		
-		public static Cell[,] cells = new Cell[1,1];
-		
+		static Cell[,] cells = new Cell[1,1];
+
 		public static bool ready = false;
 		
 		public static void New (int n){
 			ready = false;
 			
-			if (n <= min) {
-				GameLog.Debug("Board: New board must be larger than "+min+" cell(s).");
+			if (n < min || n > max) {
+				GameLog.Debug("Board: New board must be larger than "+min+" and less than "+max+"cell(s).");
 				return;
 			}
-			if (n > max) {
-				GameLog.Debug("Board: New board cannot be larger than "+max+"x"+max+" cells.");
-				return;
-			}
-			
+
 			cells = new Cell[n,n];
 			for (int x=1; x<=n; x++) {
 				for (int y=1; y<=n; y++) {
-	
 					cells[x-1,y-1] = new Cell(x,y);		
 				}
 			}
 			GameLog.Debug("Board: New ("+n+"x"+n+") board created.");
 			ready = true;
 		}
-		
+
+
+
+
 		public static int Size {get {return cells.GetLength(0);} }
 		
 		public static Cell Cell (int x, int y){
 			if ((x > 0) && (x <= Size) && (y > 0) && (y <= Size)) {
 				return cells[x-1,y-1];
 			}
-			else {
-				GameLog.Debug("Board: Cell # less than 1 or greater than size.");
-				return default(Cell);
-			}
+			return default(Cell);
 		}
 		
 		public static bool HasCell (int x, int y, out Cell cell) {
@@ -58,13 +53,7 @@ namespace HOA {
 			cell = default(Cell);
 			return false;
 		}
-		
-		public static List<Cell> Cells () {
-			List<Cell> list = new List<Cell>();
-			foreach (Cell c in cells) {list.Add(c);}
-			return list;
-		}
-		
+
 		public static Cell RandomCell {
 			get {
 				int randX, randY;
@@ -74,15 +63,24 @@ namespace HOA {
 				return cells[randX,randY];
 			}
 		}
-		
+
+		public static CellGroup Cells {
+			get {
+				CellGroup cellGroup = new CellGroup();
+				foreach (Cell c in cells) {cellGroup.Add(c);}
+				return cellGroup;
+			}
+		}
+
 		public static bool RandomLegalCell (Token t, out Cell outCell) {
-			List<EPlane> planes = t.Plane;
-			List<Cell> remainingCells = new List<Cell>();
-			foreach (Cell cell in cells) {remainingCells.Add(cell);}
-			
+			CellGroup remainingCells = Cells;
+			//Debug.Log("starting cellcount "+remainingCells.Count);
+
 			while (remainingCells.Count > 0){
-				Cell cell = Board.RandomCell;
-				if (cell.Occupied(planes)) {remainingCells.Remove(cell);}
+			//	Debug.Log("remaining cells "+remainingCells.Count);
+				Cell cell = remainingCells.Random();
+				if (!t.CanEnter(cell)) {
+					remainingCells.Remove(cell);}
 				else {
 					outCell = cell;
 					return true;
@@ -103,6 +101,8 @@ namespace HOA {
 				cell.Legalize(false);
 			}
 		}
+
+
 	}
 	
 }

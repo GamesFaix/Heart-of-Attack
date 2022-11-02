@@ -48,9 +48,10 @@ namespace HOA{
 			public override void Execute (List<ITargetable> targets) {
 				Charge();
 				for (int i=0; i<targets.Count; i++) {
-					InputBuffer.Submit(new RDamage (new Source(actor), (Unit)targets[i], damage));
+					AEffects.Damage (new Source(actor), (Unit)targets[i], damage);
 				}
 				actor.SetStat(new Source(actor), EStat.FP, 0);
+				Targeter.Reset();
 			}
 		} 
 	}

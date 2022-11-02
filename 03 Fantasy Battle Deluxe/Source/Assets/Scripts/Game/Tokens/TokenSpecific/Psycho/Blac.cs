@@ -13,7 +13,7 @@ namespace HOA{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
 			arsenal.Add(new ACorrode("Bite", Price.Cheap, this, Aim.Melee(), 15));
-			arsenal.Add(new ACreate(new Price(0,0), this, EToken.LICH));
+			arsenal.Add(new ABlacLich(this));
 			arsenal.Add(new ABlacWeb(this));
 			arsenal.Sort();
 		}		
@@ -42,17 +42,70 @@ namespace HOA{
 			Charge();
 			Cell c = (Cell)targets[0];
 
-			InputBuffer.Submit(new RCreate(new Source(actor), EToken.WEBB, c));
+			AEffects.Create(new Source(actor), EToken.WEBB, c);
 
 			TokenGroup occupants = c.Occupants.OnlyClass(EClass.UNIT);
 			foreach (Unit u in occupants) {
-				InputBuffer.Submit(new RDamage(new Source(actor), u, 12));
+				AEffects.Damage(new Source(actor), u, 12);
 			}
-			
+			Targeter.Reset();
 
 		}
 	}
 
+	public class ABlacLich : Action{
+		
+		public ABlacLich (Unit par) {
+			weight = 5;
+			actor = par;
+			childTemplate = TemplateFactory.Template(EToken.LICH);
+			price = Price.Cheap;
+			
+			AddAim(HOA.Aim.Create());
+
+			name = "Create "+childTemplate.Name+"s";
+			desc = "Create "+childTemplate.Name+" in up to two target cells.";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			AEffects.Create(new Source(actor), EToken.LICH, (Cell)targets[0]);
+
+			CellGroup cg = actor.Cell.Neighbors();
+			bool second = false;
+			foreach (Cell c in cg) {
+				if (childTemplate.CanEnter(c)) {second = true;}
+			}
+			if (second) {
+				Targeter.Find(new ABlacLich2(actor));
+			}
+			else {Targeter.Reset();}
+		}
+
+	}
+
+	public class ABlacLich2 : Action{
+		
+		public ABlacLich2 (Unit par) {
+			weight = 5;
+			actor = par;
+			childTemplate = TemplateFactory.Template(EToken.LICH);
+			price = Price.Free;
+			
+			AddAim(HOA.Aim.Create());
+
+			
+			name = "Create another "+childTemplate.Name;
+			desc = "Create "+childTemplate.Name+" in target cell.";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			AEffects.Create(new Source(actor), EToken.LICH, (Cell)targets[0]);
+			Targeter.Reset();
+		}
+		
+	}
 
 
 }

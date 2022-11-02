@@ -7,7 +7,8 @@ public class GUIBoard : MonoBehaviour {
 	static float maxScale;
 	
 	Vector2 scrollPos = new Vector2 (0,0);
-	
+
+
 	public static void ZoomOut () {zoomOut = true;}
 	
 	static bool zoomOut = false;
@@ -32,14 +33,15 @@ public class GUIBoard : MonoBehaviour {
 		
 		float internalSize = Board.Size*scale;
 		float externalH = (p.H-p.LineH) / p.H;
-		
-		scrollPos = GUI.BeginScrollView(p.TallBox(externalH), scrollPos, new Rect(p.X, p.y2, internalSize, internalSize));
+		float center = 0;
+		scrollPos = GUI.BeginScrollView(p.TallBox(externalH), scrollPos, new Rect(p.X+center, p.y2, internalSize, internalSize));
 		
 		if (Board.ready){
 			
 			Rect board = BoardRect(new Panel(p.TallBox(externalH), p.LineH, p.s));
-			board.x = (p.W-board.width)/2;
+			board.x += center;
 
+			center = (p.W-board.width)/2;
 
 			GUI.Box(board, "");
 			

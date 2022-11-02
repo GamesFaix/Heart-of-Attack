@@ -13,7 +13,7 @@ namespace HOA {
 		static int currentStep;
 
 		public static void Find (Action a) {
-			//Debug.Log(a.Name);
+			if (currentAction != default(Action)) {Reset();}
 			a.Adjust();
 
 			if (a.Legal()) {
@@ -21,6 +21,8 @@ namespace HOA {
 				ready = false;
 
 				currentAction = a;
+				//Debug.Log(a.Name);
+
 				targets = new List<ITargetable>();
 
 				steps = a.Aim.Count;
@@ -37,7 +39,10 @@ namespace HOA {
 			Token child = currentAction.ChildTemplate;
 
 			if (aim.AimType == EAim.SELF) {FinishStep();}
-			else {Legalizer.Find(actor, aim, child); }
+			else {
+				//Debug.Log(aim);
+				if (child!= default(Token)) {Debug.Log(child.ToString());}
+				Legalizer.Find(actor, aim, child); }
 		}
 
 		public static void Select (ITargetable t) {
@@ -62,7 +67,7 @@ namespace HOA {
 
 		public static void Execute () {
 			currentAction.Execute(targets);
-			Cancel();
+
 		}
 
 		public static Action Pending () {
@@ -82,7 +87,7 @@ namespace HOA {
 
 		}
 
-		public static void Cancel () {
+		public static void Reset () {
 			currentAction.UnAdjust();
 			currentAction = default(Action);
 			targets = default(List<ITargetable>);

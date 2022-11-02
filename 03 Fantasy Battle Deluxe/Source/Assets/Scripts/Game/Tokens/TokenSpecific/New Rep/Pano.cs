@@ -23,7 +23,7 @@ namespace HOA{
 			parent = u; max = n; Fill(); def = d;
 		}
 		public override int DEF {
-			get {return def + Mathf.Min(2, parent.FP);}
+			get {return def + Mathf.Min(4, parent.FP);}
 		}
 	}
 
@@ -54,7 +54,8 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RDamage(new Source(actor), (Unit)targets[0], damage));
+			AEffects.Damage(new Source(actor), (Unit)targets[0], damage);
+			Targeter.Reset();
 		}
 	}
 	public class APanoPierce : Action {
@@ -65,7 +66,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 4, 3));
+			AddAim(new Aim(EAim.ARC, EClass.UNIT, 3, 2));
 			damage = d;
 			
 			name = "Armor Pierce";
@@ -83,8 +84,8 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RDamagePierce(new Source(actor), (Unit)targets[0], damage));
-			
+			AEffects.Pierce(new Source(actor), (Unit)targets[0], damage);
+			Targeter.Reset();
 		}
 	}
 }

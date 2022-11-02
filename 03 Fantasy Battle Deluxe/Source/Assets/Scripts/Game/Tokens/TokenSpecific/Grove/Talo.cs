@@ -35,34 +35,39 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			InputBuffer.Submit(new RDamage (new Source(actor), u, damage));
+			AEffects.Damage (new Source(actor), u, damage);
 			if ((u.Arsenal()[0]) is AMove) {
 				AMove move = (AMove)u.Arsenal()[0];
-				u.timers.Add(new TFreeze(u, actor, move, 2));
-
 				Aim oldAim = move.Aim[0];
 				Aim newAim = new Aim(oldAim.AimType, oldAim.TargetClass, oldAim.Purpose, oldAim.Range-2);
 
-				u.Arsenal().Add(new AMove(u, newAim));
 				u.Arsenal().Remove(move);
+				u.Arsenal().Add(new AMove(u, newAim));
 				u.Arsenal().Sort();
-			}
 
-			foreach (Unit neighbor in u.Neighbors()) {
-				if (neighbor != actor
-				&& (neighbor.Arsenal()[0]) is AMove) {
-					AMove move = (AMove)neighbor.Arsenal()[0];
-					neighbor.timers.Add(new TFreeze(neighbor, actor, move, 1));
-					
+				u.timers.Add(new TFreeze(u, actor, move, 2));
+			}				
+
+			TokenGroup neighborUnits = u.Neighbors().OnlyClass(EClass.UNIT);
+
+			foreach (Token t in neighborUnits) {
+				u = (Unit)t;
+				if (u != actor
+				&& (u.Arsenal()[0]) is AMove) {
+					AMove move = (AMove)u.Arsenal()[0];
 					Aim oldAim = move.Aim[0];
 					Aim newAim = new Aim(oldAim.AimType, oldAim.TargetClass, oldAim.Purpose, oldAim.Range-1);
-					
-					neighbor.Arsenal().Add(new AMove(neighbor, newAim));
-					neighbor.Arsenal().Remove(move);
-					neighbor.Arsenal().Sort();
-					neighbor.SpriteEffect(EEffect.STATDOWN);
+
+					u.Arsenal().Remove(move);
+					u.Arsenal().Add(new AMove(u, newAim));
+					u.Arsenal().Sort();
+
+					u.timers.Add(new TFreeze(u, actor, move, 1));
+
+					u.SpriteEffect(EEffect.STATDOWN);
 				}
 			}
+			Targeter.Reset();
 		}
 	}
 	public class TFreeze : Timer {

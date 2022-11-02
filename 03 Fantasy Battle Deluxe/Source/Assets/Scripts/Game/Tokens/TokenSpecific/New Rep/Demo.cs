@@ -11,7 +11,7 @@ namespace HOA{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AGrenade("Grenade", Price.Cheap, this, 3, 10));
+			arsenal.Add(new AGrenade("Throw", new Price(1,1), this, 3, 10));
 			arsenal.Add(new ADemoSticky(this));
 			arsenal.Sort();
 		}
@@ -32,11 +32,11 @@ namespace HOA{
 		public ADemoSticky (Unit u) {
 			weight = 4;
 			actor = u;
-			price = new Price(1,1);
+			price = new Price(1,0);
 			AddAim(HOA.Aim.Melee());
 			int damage = 10;
 
-			name = "Sticky Grenade";
+			name = "Plant";
 			desc = "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
@@ -44,6 +44,7 @@ namespace HOA{
 			Charge();
 			Unit u = (Unit)targets[0];
 			u.timers.Add(new TStickyGrenade(u,actor));
+			Targeter.Reset();
 		}
 	}
 
@@ -56,13 +57,13 @@ namespace HOA{
 			source = s;
 			turns = 1;
 
-			name = "Sticky Grenade";
+			name = "Active Grenade";
 			desc = "At the end of "+parent.ToString()+" next turn, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 
 		}
 		
 		public override void Activate () {
-			InputBuffer.Submit(new RExplosion(new Source(source), parent.Cell, 10));
+			AEffects.Explosion(new Source(source), parent.Cell, 10);
 		}
 	}
 

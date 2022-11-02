@@ -15,6 +15,7 @@ namespace HOA {
 
 		public override void Execute (List<ITargetable> targets) {
 			TurnQueue.Advance();
+			Targeter.Reset();
 		}
 	}
 }

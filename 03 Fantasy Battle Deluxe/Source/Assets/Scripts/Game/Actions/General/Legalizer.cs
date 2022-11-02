@@ -209,7 +209,7 @@ namespace HOA {
 			else {
 				if (a.Purpose == EPurpose.ATTACK) {ArcCellAttack(t,a);}
 				if (a.Purpose == EPurpose.CREATE) {ArcCellCreate(t,a,other);}
-				if (a.Purpose == EPurpose.MOVE) {ArcCellMove(t,a);}
+				if (a.Purpose == EPurpose.MOVE) {ArcCellMove(t,a,other);}
 			}
 			
 		}
@@ -247,7 +247,7 @@ namespace HOA {
 			}
 		}
 				
-		static void ArcCellMove (Token actor, Aim a) {
+		static void ArcCellMove (Token actor, Aim a, Token other) {
 			int r = a.Range;
 			
 			Cell start = actor.Cell;
@@ -260,9 +260,17 @@ namespace HOA {
 				for (int y=top; y<=bottom; y++) {
 					Cell c;
 					if (Board.HasCell(x, y, out c)) {
-						if (actor.CanEnter(c)) {
-							c.Legalize();
-						}	
+						if (other == default(Token)) {
+							if (actor.CanEnter(c)) {
+								c.Legalize();
+							}	
+						}
+						else {
+							if (other.CanEnter(c)) {
+								c.Legalize();
+							}
+
+						}
 					}
 				}
 			}
@@ -354,15 +362,16 @@ namespace HOA {
 
 		static void FreeCellCreate (Token actor, Aim a, Token other) {
 			//Debug.Log("legalizer.FreeCellCreate");
-			foreach (Cell c in Board.cells) {
-				if (other.CanEnter(c)) {
+			//Debug.Log("free create "+other);
+			foreach (Cell c in Board.Cells) {
+				if (other.CanEnter(c) && !c.IsLegal()) {
 				//	Debug.Log("legalizing "+c);
 					c.Legalize();}
 			}
 		}
 		static void FreeCellMove (Token actor, Aim a, Token other) {
 			//Debug.Log("legalizer.FreeCellCreate");
-			foreach (Cell c in Board.cells) {
+			foreach (Cell c in Board.Cells) {
 				if (other.CanEnter(c)) {
 					//	Debug.Log("legalizing "+c);
 					c.Legalize();}

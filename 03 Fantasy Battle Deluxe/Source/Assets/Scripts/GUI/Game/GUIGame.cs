@@ -39,7 +39,7 @@ public class GUIGame : MonoBehaviour {
 			showTools = true;	
 		}
 		if (GUI.Button(new Rect(sW-(barW*1/4), 0, barW/4, lineH), "Quit")) {
-			InputBuffer.Submit(new RQuit(Source.ActivePlayer));	
+			Game.Quit();	
 		}
 		
 		float inspH = sH-lineH;

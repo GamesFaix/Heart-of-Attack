@@ -12,18 +12,18 @@ public class GUILobbyGame : MonoBehaviour {
 		
 		if (!Roster.IsFull()) {
 			if (GUI.Button (p.LineBox, "Add player")) {
-				InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer, new Player(Roster.Count())));
+				Roster.Add(new Player(Roster.Count()));
 			}
 		}
 		else {GUI.Label(p.LineBox, "Roster full.");}
 		p.y2+=5;
 		
-		for (int i=1; i<Roster.Count(); i++) {
+		for (int i=0; i<Roster.Count(); i++) {
 			Player player = Roster.Players()[i];
 			string name = GUI.TextField(p.Box(0.4f), player.ToString());	
 			player.Rename(name);
 			if (GUI.Button(p.Box(0.2f), "Delete")) {
-				InputBuffer.Submit(new RRosterRemove(Source.ActivePlayer, player));
+				Roster.Remove(player);
 			}
 			string printFaction;
 			if (player.Faction == default(Faction)) {printFaction = "Select faction";}
@@ -52,7 +52,7 @@ public class GUILobbyGame : MonoBehaviour {
 			if (ready) {
 				if (GUI.Button(p.LineBox, "Start game")
 				|| Input.GetKeyUp("space")) {
-					InputBuffer.Submit(new RStart(Source.ActivePlayer, Mathf.RoundToInt(boardSize)));
+					Game.Start(Mathf.RoundToInt(boardSize));
 				}
 			}
 			else {
@@ -61,7 +61,7 @@ public class GUILobbyGame : MonoBehaviour {
 				p.x2 -= 5;
 				if (GUI.Button(p.Box(0.4f), "Force random")
 				|| Input.GetKeyUp("space")) {
-					InputBuffer.Submit(new RRosterRandom(Source.ActivePlayer));
+					Roster.ForceRandomFactions();
 				}
 			}
 		}
@@ -83,7 +83,7 @@ public class GUILobbyGame : MonoBehaviour {
 			for (int i=0; i<4; i++){
 				if (i < FactionRef.Free.Count){
 					if (GUI.Button(p.Box(0.25f), FactionRef.FreeNames[i])) {
-						InputBuffer.Submit(new RRosterAssign(Source.ActivePlayer, selectee, FactionRef.Free[i]));
+						Roster.AssignFaction(selectee, FactionRef.Free[i]);
 						selectee = default(Player);
 					}
 				}
@@ -92,7 +92,7 @@ public class GUILobbyGame : MonoBehaviour {
 			for (int i=4; i<8; i++){
 				if (i < FactionRef.Free.Count){
 					if (GUI.Button(p.Box(0.25f), FactionRef.FreeNames[i])) {
-						InputBuffer.Submit(new RRosterAssign(Source.ActivePlayer, selectee, FactionRef.Free[i]));
+						Roster.AssignFaction(selectee, FactionRef.Free[i]);
 						selectee = default(Player);
 					}
 				}

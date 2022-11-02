@@ -347,6 +347,7 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			if (GUI.Button(p.Box(btnW), "End Turn")) {
 				Targeter.Find(new AEnd(u));
+				GUIMaster.PlaySound(EGUISound.CLICK);
 			}
 			p.NextLine();
 		}
@@ -356,7 +357,10 @@ public class GUIInspector : MonoBehaviour {
 
 			box = p.Box(btnW);
 			
-			if (GUI.Button(box, a.Name)) {Targeter.Find(a);}
+			if (GUI.Button(box, a.Name)) {
+				GUIMaster.PlaySound(EGUISound.CLICK);
+				Targeter.Find(a);
+			}
 			if (box.Contains(MousePos())) {inspectedAction = a;}
 			p.NextLine();
 			
@@ -374,11 +378,17 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			if (GUI.Button(p.Box(btnW), "Execute") || Input.GetKeyUp("space")) {
 
-				if (Targeter.Ready) {Targeter.Execute();}
+				if (Targeter.Ready) {
+					Targeter.Execute();
+					GUIMaster.PlaySound(EGUISound.CLICK);
+				}
 				else {GameLog.Out("Please finish selecting targets.");}
 			}
 
-			if (GUI.Button(p.Box(btnW), "Cancel") || Input.GetKeyUp("escape")) {Targeter.Cancel();}
+			if (GUI.Button(p.Box(btnW), "Cancel") || Input.GetKeyUp("escape")) {
+				Targeter.Reset();
+				GUIMaster.PlaySound(EGUISound.CLICK);
+			}
 		}
 	}
 
@@ -395,7 +405,7 @@ public class GUIInspector : MonoBehaviour {
 
 
 			float descH = (p.H-(p.LineH*2))/p.H;
-			Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 
 			GUI.Label(p.TallBox(descH), a.Desc());			
 		}

@@ -55,6 +55,17 @@ namespace HOA {
 			return false;
 		}
 
+		public bool Contains (EClass c, out Token occupant){
+			occupant = default(Token);
+			foreach (Token t in Occupants) {
+				if (t.IsClass(c)) {
+					occupant = t;
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public bool Contains (EPlane p) {
 			foreach (Token t in Occupants) {
 				if (t.IsPlane(p)) {return true;}
@@ -84,7 +95,10 @@ namespace HOA {
 				foreach (EPlane p in planes) {
 					tokens[(int)p] = t;
 				}
-				foreach (Sensor s in sensors) {s.OtherEnter(t);}
+			for (int i=sensors.Count-1; i>=0; i--) {
+				Sensor s = sensors[i];
+				s.OtherEnter(t);
+			}
 			//}
 			//else {GameLog.Debug("Cell: Already contains token in that plane.");}
 		}

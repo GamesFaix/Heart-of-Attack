@@ -13,8 +13,8 @@ namespace HOA{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
-			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 20));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 20));
+			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 16));
 			arsenal.Add(new AUltrBlast(this));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.GRIZ));
 			arsenal.Add(new ACreate(new Price(1,1), this, EToken.TALO));
@@ -42,8 +42,9 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RKill (new Source(actor), (Token)targets[0]));
-			InputBuffer.Submit(new RDamage(new Source(actor), (Unit)targets[1], damage));
+			AEffects.Kill (new Source(actor), (Token)targets[0]);
+			AEffects.Damage(new Source(actor), (Unit)targets[1], damage);
+			Targeter.Reset();
 		}
 	}
 
@@ -68,8 +69,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RReplace(new Source(actor), (Token)targets[0], child));
-
+			AEffects.Replace(new Source(actor), (Token)targets[0], child);
+			Targeter.Reset();
 		}
 	}
 
@@ -91,11 +92,11 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			InputBuffer.Submit(new RDamage (new Source(actor), u, damage));
+			AEffects.Damage (new Source(actor), u, damage);
 
 			u.AddStat (new Source(actor), EStat.IN, -2);
 			u.timers.Add(new TBlast(u, actor));
-
+			Targeter.Reset();
 		}
 	}
 	public class TBlast : Timer {

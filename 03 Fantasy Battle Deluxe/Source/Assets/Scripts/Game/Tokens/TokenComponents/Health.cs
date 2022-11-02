@@ -21,7 +21,7 @@ namespace HOA {
 			get {return hp;} 
 			set {
 				hp = Clamp(value);
-				if (Empty()) {InputBuffer.Submit(new RKill (new Source(parent), parent));}
+				if (Empty()) {parent.Die(new Source(parent));}
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace HOA {
 			get {return max;} 
 			set {
 				max = Clamp(value);
-				if (Empty()) {InputBuffer.Submit(new RKill (new Source(parent), parent));}
+				if (Empty()) {parent.Die(new Source(parent));}
 			}
 		}
 		public virtual int DEF {
@@ -53,7 +53,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. "+HPString);}
 			}	
 			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+				parent.Die(s);
 			}
 			return hp;
 		}
@@ -67,7 +67,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. "+HPString);}
 			}
 			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+				parent.Die(s);
 			}
 			return max;	
 		}
@@ -85,7 +85,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. "+HPString);}
 			}	
 			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+				parent.Die(s);
 			}
 			return hp;
 		}
@@ -101,7 +101,7 @@ namespace HOA {
 				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. "+HPString);}
 			}
 			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+				parent.Die(s);
 			}
 			return max;
 
@@ -130,7 +130,7 @@ namespace HOA {
 				else {GameLog.Debug("Units cannot take negative damage.");}
 			}			
 			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+				parent.Die(s);
 			}
 			return hp;
 		}

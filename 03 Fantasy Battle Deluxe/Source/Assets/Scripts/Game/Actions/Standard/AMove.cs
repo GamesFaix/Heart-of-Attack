@@ -19,7 +19,8 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RMove(new Source(actor), actor, (Cell)targets[0]));
+			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			Targeter.Reset();
 		}
 	}
 }

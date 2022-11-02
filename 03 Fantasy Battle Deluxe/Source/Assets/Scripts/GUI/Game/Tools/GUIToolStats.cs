@@ -44,7 +44,6 @@ namespace HOA {
 			Panel subPanel = new Panel(p.TallBox(0.5f), p.LineH, p.s);
 			GUISelectors.InstanceGrid(subPanel);
 
-			GUISelectors.WaitForInstance = true;
 			Token instance = GUISelectors.Instance;
 			
 			string label = "";
@@ -52,9 +51,9 @@ namespace HOA {
 			label += " "+statLabels[statBtn]+" "+signLabels[signBtn]+" "+magnitude;
 		
 			if (GUI.Button(p.LineBox, label) || Input.GetKeyUp("space")){
-				if (signBtn == 0) {InputBuffer.Submit(new RSetStat(Source.ActivePlayer, instance, stat, magnitude));}
-				if (signBtn == 1) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer, instance, stat, magnitude));}
-				if (signBtn == 2) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer, instance, stat, 0-magnitude));}
+				if (signBtn == 0) {AEffects.SetStat(Source.ActivePlayer, (Unit)instance, stat, magnitude);}
+				if (signBtn == 1) {AEffects.AddStat(Source.ActivePlayer, (Unit)instance, stat, magnitude);}
+				if (signBtn == 2) {AEffects.AddStat(Source.ActivePlayer, (Unit)instance, stat, 0-magnitude);}
 				GUISelectors.Reset();
 			}
 			

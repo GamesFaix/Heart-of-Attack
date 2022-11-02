@@ -10,8 +10,6 @@ namespace HOA{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 15));
-			arsenal.Add(new AGrenade("Grenade", new Price(1,1), this, 2, 10));
 			arsenal.Add(new AReprMine(Price.Cheap, this));
 			arsenal.Add(new AReprSlam(this));
 			arsenal.Add(new AReprBomb(this));
@@ -35,12 +33,17 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Token t = (Token)targets[0];
+			Cell c = t.Cell;
 			t.Die(new Source(actor));
+			if (actor.CanEnter(c)) {
+				AEffects.Move(new Source(actor), actor, c);
+			}
 
 			if (actor.IN < 7) {
 				actor.AddStat(new Source(actor), EStat.IN, 1);
 				actor.SpriteEffect(EEffect.STATUP);
 			}
+			Targeter.Reset();
 		}
 	}
 
@@ -62,13 +65,15 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			InputBuffer.Submit(new RDamage (new Source(actor), u, damage));
+			actor.Swap(u);
+
+			AEffects.Damage (new Source(actor), u, damage);
 			
 			u.AddStat (new Source(actor), EStat.IN, -2);
 			u.timers.Add(new TSlam(u, actor));
 
-			actor.Swap(u);
-			
+
+			Targeter.Reset();
 		}
 	}
 	public class TSlam : Timer {
@@ -108,7 +113,7 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Cell c = (Cell)targets[0];
-			InputBuffer.Submit(new RExplosion (new Source(actor), c, damage));
+			AEffects.Explosion (new Source(actor), c, damage);
 
 			TokenGroup affected = c.Occupants.OnlyClass(EClass.UNIT);
 			foreach (Unit u in affected) {
@@ -120,6 +125,7 @@ namespace HOA{
 				u.AddStat (new Source(actor), EStat.IN, -1);
 				u.timers.Add(new TBomb(u, actor, 1));
 			}
+			Targeter.Reset();
 		}
 	}
 

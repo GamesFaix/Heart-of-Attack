@@ -16,10 +16,11 @@ namespace HOA{
 			Aim attackAim = new Aim (EAim.ARC, EClass.UNIT, 3);
 			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.REVO));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.PIEC));
-			arsenal.Add(new ACreate(new Price(1,2), this, EToken.REPR));
-			arsenal.Add(new AOldtSecond(this));
+			arsenal.Add(new ACreate(new Price(2,0), this, EToken.PIEC));
+			arsenal.Add(new ACreate(new Price(3,0), this, EToken.REPR));
 			arsenal.Add(new AOldtHour(this));
+			arsenal.Add(new AOldMinute(this));
+			arsenal.Add(new AOldtSecond(this));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "Initiative +1 per Focus (up to 8).";}
@@ -40,7 +41,7 @@ namespace HOA{
 		}
 	}
 
-	public class AOldtHour : Action {
+	/*public class AOldtHour : Action {
 		
 		public AOldtHour (Unit u) {
 			weight = 4;
@@ -57,8 +58,53 @@ namespace HOA{
 			TokenGroup team = actor.Owner.OwnedUnits;
 			team.Remove(actor);
 			foreach (Token t in team) {
-				InputBuffer.Submit(new RQueueShift(new Source(actor), t, 1));
+				if (t is Unit) {
+					Unit u = (Unit)t;
+					AEffects.Shift(new Source(actor), u, 1);
+				}
 			}
+		}
+	}*/
+
+	public class AOldtHour : Action {
+		
+		public AOldtHour (Unit u) {
+			weight = 4;
+			actor = u;
+			price = new Price(0,2);
+			AddAim(new Aim(EAim.FREE, EClass.UNIT));
+
+			name = "Hour Saviour";
+			desc = "Target Unit shifts to the bottom of the Queue";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			Unit u = (Unit)targets[0];
+			TurnQueue.Remove(u);
+			TurnQueue.Add(u);
+
+			u.SpriteEffect(EEffect.STATDOWN);
+			Targeter.Reset();
+		}
+	}
+
+	public class AOldMinute : Action {
+		
+		public AOldMinute (Unit u) {
+			weight = 4;
+			actor = u;
+			price = new Price(0,2);
+			AddAim(new Aim(EAim.GLOBAL, EClass.UNIT));
+			
+			name = "Minute Waltz";
+			desc = "Shuffle the Queue.";
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			TurnQueue.Shuffle(new Source(actor));
+			Targeter.Reset();
 		}
 	}
 
@@ -67,7 +113,7 @@ namespace HOA{
 		public AOldtSecond (Unit u) {
 			weight = 4;
 			actor = u;
-			price = new Price(1,1);
+			price = new Price(0,2);
 			AddAim(new Aim(EAim.FREE, EClass.UNIT));
 			aim[0].IncludeSelf = false;
 			
@@ -81,6 +127,7 @@ namespace HOA{
 			int magnitude = TurnQueue.IndexOf(u) - 1;
 			TurnQueue.MoveUp(u, magnitude);
 			u.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 }

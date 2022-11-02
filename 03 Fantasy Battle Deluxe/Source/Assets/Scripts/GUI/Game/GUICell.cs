@@ -10,6 +10,7 @@ namespace HOA {
 			if (Input.GetKey("left shift") || Input.GetKey("right shift")) {
 				if (GUI.Button(cellRect, "", GUIMaster.S)) {
 			    	GUIInspector.Inspected = cell;
+					GUIMaster.PlaySound(EGUISound.INSPECT);
 			
 				}
 			}
@@ -22,6 +23,7 @@ namespace HOA {
 				if (GUI.Button(cellRect, ImageLoader.yellowBtn, GUIMaster.S)
 				    && Input.GetMouseButtonUp(0)) {
 					Targeter.Select(cell);
+					GUIMaster.PlaySound(EGUISound.TARGET);
 				}
 				GUI.color = c;
 			}
@@ -29,8 +31,8 @@ namespace HOA {
 		}
 
 		static Texture2D CellTex (Cell c) {
-			if ( (c.X + c.Y) %2 == 0) {return ImageLoader.cells[0];}
-			else {return ImageLoader.cells[1];}
+			if ( (c.X + c.Y) %2 == 0) {return Map.CellTex(0);}
+			else {return Map.CellTex(1);}
 		}
 
 		static void DrawOccupants (Rect cellRect, Cell cell) {
@@ -45,16 +47,23 @@ namespace HOA {
 
 
 				if (GUI.Button(tokenRect, "", GUIMaster.S)){
-					if (Input.GetMouseButtonUp(0) && t.IsLegal()){Targeter.Select(t);}
+					if (Input.GetMouseButtonUp(0) && t.IsLegal()){
+						Targeter.Select(t);
+						GUIMaster.PlaySound(EGUISound.TARGET);
+					}
 					else if (Input.GetMouseButtonUp(1)) {
 					//	if (Input.GetKey("left shift") || Input.GetKey("right shift")) {
 					//		GUIInspector.Inspected = cell;
 					//	}
 						//else {
 							GUIInspector.Inspected = t;
+						GUIMaster.PlaySound(EGUISound.INSPECT);
 						//}
 					}
-					else if (Input.GetMouseButtonUp(0) && cell.IsLegal()) {Targeter.Select(cell);} 
+					else if (Input.GetMouseButtonUp(0) && cell.IsLegal()) {
+						Targeter.Select(cell);
+						GUIMaster.PlaySound(EGUISound.TARGET);
+					} 
 				}
 			}
 		}

@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{2FA97B70-40CD-0F15-9209-A73FF71B4D07}</ProjectGuid>
+	<ProjectGuid>{6ED2CAA1-664B-1F19-4568-694037E42B70}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -92,6 +92,7 @@
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\AEffects.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Action.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Aim.cs" />
      <Compile Include="Assets\Scripts\Game\Actions\General\Legalizer.cs" />
@@ -116,24 +117,20 @@
      <Compile Include="Assets\Scripts\Game\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Game\Board\CellGroup.cs" />
      <Compile Include="Assets\Scripts\Game\Board\Direction.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\GameLog.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\InputBuffer.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\NetworkConsole.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - Basic Attack.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - CreateDestroy.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - Game.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - Queue.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - Roster.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests - Token Basic.cs" />
-     <Compile Include="Assets\Scripts\Game\Console\Requests.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\Map.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\DiceCoin.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\Enums.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\Game.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\GameLog.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\ITargetable.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\QueueStunner.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\RandomSync.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\Source.cs" />
      <Compile Include="Assets\Scripts\Game\Misc\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Faction.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\FactionRef.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Factions.cs" />
      <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Game\Players\Referee.cs" />
      <Compile Include="Assets\Scripts\Game\Players\Roster.cs" />
@@ -146,9 +143,6 @@
      <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Timer.cs" />
      <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Wallet.cs" />
      <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Watch.cs" />
-     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Faction.cs" />
-     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\FactionRef.cs" />
-     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Factions.cs" />
      <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Obstacle.cs" />
      <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\TemplateFactory.cs" />
      <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Token.cs" />
@@ -202,6 +196,7 @@
      <Compile Include="Assets\Scripts\Generic\Group.cs" />
      <Compile Include="Assets\Scripts\Generic\Queue.cs" />
      <Compile Include="Assets\Scripts\Generic\ReDictionary.cs" />
+     <Compile Include="Assets\Scripts\Sound\SoundLoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

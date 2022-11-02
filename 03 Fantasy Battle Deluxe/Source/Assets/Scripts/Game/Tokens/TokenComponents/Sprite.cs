@@ -14,13 +14,61 @@ namespace HOA {
 			parent = t;	
 			thumb = Thumbs.CodeToThumb(parent.Code);
 		}
-		
+
+		Rect currentBox;
+		Rect endBox;
+
 		public void Draw (Rect box) {
-			GUI.Box(box, thumb);
-			LabelInstance(box);
-			Effects(box);
-			HighlightLegal(box);
+			if (!moving) {currentBox = box;}
+			else {
+				currentBox = MovingBox();
+
+			}
+
+
+			if (currentBox == endBox) {moving = false;}
+
+			GUI.Box(currentBox, thumb);
+			LabelInstance(currentBox);
+			Effects(currentBox);
+			HighlightLegal(currentBox);
 		}
+
+		float moveStartTime = 0;
+		float MoveElapsedTime {get {return Time.time - moveStartTime;} }
+		static float moveTotalTime = 22000;
+		
+		bool moving = false;
+		Vector2 distance;
+		
+		public void Move (Cell newCell) {
+			moving = true;
+			moveStartTime = Time.time;
+			Cell startCell = parent.Cell;
+
+			distance = new Vector2(newCell.X-startCell.X, newCell.Y-startCell.Y);
+			
+			
+		}
+		
+		Rect MovingBox (Rect box) {
+			float x = box.x + (MoveElapsedTime/moveTotalTime)*distance.x;
+			float y = box.y + (MoveElapsedTime/moveTotalTime)*distance.y;
+			
+			return new Rect (x,y,box.width,box.height);
+			
+		}
+
+
+
+
+
+
+
+
+
+
+
 
 		void LabelInstance (Rect box) {
 			if (!parent.Unique && parent is Unit) {
@@ -29,6 +77,8 @@ namespace HOA {
 		}
 	
 		float effectedTime = 0;
+		float EffectElapsedTime () {return Time.time - effectedTime;}
+		static float fadeDuration = 1.5f;
 		EEffect currentEffect = EEffect.NONE;
 		Texture2D effectTex;
 
@@ -38,17 +88,14 @@ namespace HOA {
 			effectTex = SpriteEffects.Effect(e);
 		}
 
-		float ElapsedTime () {return Time.time - effectedTime;}
-		static float fadeDuration = 1.5f;
-
 		void Effects (Rect box) {
-			if (ElapsedTime() < fadeDuration 
+			if (EffectElapsedTime() < fadeDuration 
 			&& currentEffect != EEffect.NONE) {
 				Color oldColor = GUI.color;
 				float alpha;
 
-				if (ElapsedTime() < (fadeDuration/2)) {alpha = (ElapsedTime()/fadeDuration)*2;}
-				else {alpha = (1 - (ElapsedTime()/fadeDuration))*2;}
+				if (EffectElapsedTime() < (fadeDuration/2)) {alpha = (EffectElapsedTime()/fadeDuration)*2;}
+				else {alpha = (1 - (EffectElapsedTime()/fadeDuration))*2;}
 
 				GUI.color = new Color (1,1,1,alpha);
 				GUI.Box (box, effectTex, spriteLabel);
@@ -61,9 +108,6 @@ namespace HOA {
 				currentEffect = EEffect.NONE;
 			}
 		}
-
-
-
 
 		void HighlightLegal (Rect box) {
 			if (parent.IsLegal()) {

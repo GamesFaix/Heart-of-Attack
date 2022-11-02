@@ -56,7 +56,7 @@ namespace HOA{
 				}
 			}
 			
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.DEF, 2));
+			AEffects.AddStat(new Source(actor), actor, EStat.DEF, 2);
 			actor.SetPlane(EPlane.GND);
 			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
@@ -68,6 +68,7 @@ namespace HOA{
 			actor.Arsenal().Sort();
 			
 			actor.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 	public class AGargFly : Action {
@@ -88,7 +89,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.DEF, -2));
+			AEffects.AddStat(new Source(actor), actor, EStat.DEF, -2);
 			actor.SetPlane(EPlane.AIR);
 			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
@@ -100,6 +101,7 @@ namespace HOA{
 			actor.Arsenal().Sort();
 			
 			actor.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 	
@@ -124,9 +126,9 @@ namespace HOA{
 			neighbors = neighbors.OnlyClass(EClass.UNIT);
 			foreach (Token t in neighbors) {
 				Unit u = (Unit)t;
-				InputBuffer.Submit(new RDamage(new Source(actor), u, damage));
+				AEffects.Damage(new Source(actor), u, damage);
 			}
-
+			Targeter.Reset();
 		}
 	}
 
@@ -152,6 +154,7 @@ namespace HOA{
 				Charge();
 				TokenFactory.Add(EToken.ROOK, new Source(actor), c);
 			}
+			Targeter.Reset();
 		}
 	}
 
@@ -173,12 +176,13 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
-			InputBuffer.Submit(new RDamage (new Source(actor), u, damage));
+			AEffects.Damage (new Source(actor), u, damage);
 			if ((u.Arsenal()[0]) is AMove) {
 				AMove move = (AMove)u.Arsenal()[0];
 				u.timers.Add(new TPetrify(u, actor, move));
 				u.Arsenal().Remove(move);
 			}
+			Targeter.Reset();
 		}
 	}
 	public class TPetrify : Timer {

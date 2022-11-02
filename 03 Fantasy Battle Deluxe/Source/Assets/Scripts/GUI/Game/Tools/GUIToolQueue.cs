@@ -15,10 +15,10 @@ namespace HOA {
 			float btnW = 0.25f;
 
 			if (GUI.Button(p.Box(btnW), "Advance")) {
-				InputBuffer.Submit(new RQueueAdvance(Source.ActivePlayer));
+				AEffects.Advance(Source.ActivePlayer);
 			}
 			if (GUI.Button(p.Box(btnW), "Shuffle")){
-				InputBuffer.Submit(new RQueueShuffle(Source.ActivePlayer));
+				AEffects.Shuffle(Source.ActivePlayer);
 			}
 			if (GUI.Button(p.Box(btnW), "Shift")){viewShift = !viewShift;}
 
@@ -57,7 +57,7 @@ namespace HOA {
 
 				if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){
 					if (instance != default(Token)) {
-						InputBuffer.Submit(new RQueueShift(Source.ActivePlayer, instance, magnitude));
+						AEffects.Shift(Source.ActivePlayer, (Unit)instance, magnitude);
 						GUISelectors.Reset();
 						btnLabel = "Shift ";
 					}

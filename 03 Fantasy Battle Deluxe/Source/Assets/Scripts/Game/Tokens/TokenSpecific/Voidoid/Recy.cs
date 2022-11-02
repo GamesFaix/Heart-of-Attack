@@ -26,7 +26,7 @@ namespace HOA{
 		
 		public ARecyCannibal (Unit par) {
 			weight = 4;
-			price = new Price(1,1);
+			price = new Price(1,0);
 			actor = par;
 			AddAim(new Aim (EAim.NEIGHBOR, EClass.REM));
 			
@@ -41,6 +41,7 @@ namespace HOA{
 			t.Die(new Source(actor));
 			actor.AddStat(new Source(actor), EStat.MHP, 10);
 			actor.AddStat(new Source(actor), EStat.HP, 10);
+			Targeter.Reset();
 		}
 	}
 
@@ -61,12 +62,12 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TokenGroup victims = actor.Neighbors(true);
+			TokenGroup victims = actor.Neighbors(true).OnlyClass(EClass.UNIT);
 			foreach (Token t in victims) {
-				InputBuffer.Submit(new RCorrode(new Source(actor), t, damage));	
+				AEffects.Corrode(new Source(actor), (Unit)t, damage);	
 			}
 			actor.Die(new Source(actor));
-
+			Targeter.Reset();
 		}
 	}
 }

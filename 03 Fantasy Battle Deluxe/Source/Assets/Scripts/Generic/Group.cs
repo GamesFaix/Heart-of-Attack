@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Group<t> {
 
@@ -24,7 +25,9 @@ public class Group<t> {
 	public t this[int i] {get { return (t)this.list[i];} }
 	
 	public t Random () {
-		int rand = RandomSync.Range(0, Count);	
+		int rand = UnityEngine.Random.Range(0, Count-1);
+	//	Debug.Log("random: "+rand);
+	//	Debug.Log("indexof: "+list[rand]);
 		return list[rand];
 	}
 

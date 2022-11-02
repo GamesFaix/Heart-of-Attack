@@ -7,19 +7,20 @@ namespace HOA {
 
 		int damage;
 		
-		public ALeech (Price p, Unit u, Aim a, int d) {
+		public ALeech (string n, Price p, Unit u, Aim a, int d) {
 			weight = 3;
 			price = p;
 			AddAim(a);
 			damage = d;
 			actor = u;
-			name = "Leech Life";
+			name = n;
 			desc = "Do "+d+" damage to target unit. \nGain health equal to damage successfully dealt.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RLeech(new Source(actor), (Unit)targets[0], damage));
+			AEffects.Leech(new Source(actor), (Unit)targets[0], damage);
+			Targeter.Reset();
 		}
 	}
 }

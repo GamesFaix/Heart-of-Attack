@@ -50,6 +50,7 @@ namespace HOA{
 			Token newToken;
 			TokenFactory.Add(EToken.CONF, new Source(actor), cell, out newToken, false);
 			((Unit)newToken).SetStat(new Source(actor), EStat.HP, hp);
+			Targeter.Reset();
 		}
 	}
 }

@@ -120,9 +120,9 @@ namespace HOA {
 			foreach (Token t in neighbors) {cellMates.Add(t);}
 			cellMates = cellMates.OnlyClass(EClass.UNIT);
 			foreach (Token t in cellMates) {
-				InputBuffer.Submit(new RShock(new Source(actor), t, damage, stun));
+				AEffects.Shock(new Source(actor), (Unit)t, damage, stun);
 			}
-
+			Targeter.Reset();
 		}
 	}
 }

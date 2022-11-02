@@ -11,19 +11,8 @@ namespace HOA {
 		static int max = 8;
 		
 		public static void Reset () {
-			New(8);
-		}
-		
-		public static void New (int n=8) {
 			FactionRef.ReleaseAll();
 			players = new List<Player>();
-
-			if (n > 1 && n <= 8) {
-				max = n;
-
-				GameLog.Debug("Roster: New "+(max)+"-player roster created.");
-			}
-			else {GameLog.Debug("Roster: Must have 2 to 8 players.");}
 		}
 		
 		public static void Add (Player player) {
@@ -94,7 +83,7 @@ namespace HOA {
 		public static Player Neutral {get {return neutral;} }
 
 		public static void AssignFaction (Player p, Faction f) {
-		//	Debug.Log("assigning faction "+f.ToString()+" to "+p.ToString());
+			//Debug.Log("assigning faction "+f.ToString()+" to "+p.ToString());
 			p.Faction = f;
 			FactionRef.Take(f);
 			//Debug.Log(p.ToString()+"'s faction is now "+p.Faction.ToString());

@@ -15,7 +15,7 @@ public class GUILog : MonoBehaviour {
 	}
 
 	//Control Buttons
-	int view = 1;
+	//int view = 1;
 	ELog showLog = ELog.OUT;
 	/*
 	void ControlButtons(Panel p){
@@ -68,7 +68,6 @@ public class GUILog : MonoBehaviour {
 
 		input = GUI.TextField(r, input, 100);
 		if(EnterKeyPressed()){
-			InputBuffer.DirectConsoleInput(input);
 			input="";
 			ScrollToBottom();
 		}

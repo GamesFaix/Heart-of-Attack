@@ -9,9 +9,8 @@ namespace HOA {
 			GUI.Label(p.Box(0.3f), "Kill:");
 			p.NextLine();
 		
-			Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
+			Panel subPanel = new Panel(p.TallBox(20), p.LineH, p.s);
 			GUISelectors.InstanceGrid(subPanel);
-			GUISelectors.WaitForInstance = true;
 
 			Token instance = GUISelectors.Instance;
 			string btnLabel = "Kill ";
@@ -20,7 +19,7 @@ namespace HOA {
 			p.y2 += 5;
 			if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){ 
 				if (instance != default(Token)) {
-					InputBuffer.Submit(new RKill(Source.ActivePlayer, instance));
+					AEffects.Kill(Source.ActivePlayer, instance);
 					GUISelectors.Reset();
 					btnLabel = "Kill ";
 				}

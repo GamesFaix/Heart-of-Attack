@@ -26,7 +26,7 @@ namespace HOA{
 			actor = par;
 			price = Price.Cheap;
 			AddAim(HOA.Aim.Melee());
-			damage = 12;
+			damage = 16;
 			
 			name = "Touch of Death";
 			desc = "Do "+damage+" damage to target unit.\nIf target has less than 10 health after damage is dealt, destroy target.\nIf target is destroyed and is not an Attack King, it leaves no remains and you may place a Corpse in any cell.";
@@ -42,34 +42,36 @@ namespace HOA{
 			if (oldHP - dmg < 10) {dmg = oldHP;}
 			if (dmg >= oldHP) {
 				u.Die(new Source(actor), false, true);
-				Reset();
-				Targeter.Find(new ANecrCorpseSpawn(actor));
+				Targeter.Find(new ANecrCorpse(actor));
+
 			}
 			else {
 				u.Damage(new Source(actor), damage);
 				u.SpriteEffect(EEffect.DMG);
+				Targeter.Reset();
 			}
 		}
 	}
 
-	public class ANecrCorpseSpawn : Action {
-		public ANecrCorpseSpawn (Unit u) {
-			actor = u;
-			AddAim (new Aim(EAim.FREE, EClass.CELL, EPurpose.CREATE));
-			price = new Price(0,0);
-			name = "Exhume";
-			desc = "Create Corpse in any cell.";
+	public class ANecrCorpse : Action {
 
+		public ANecrCorpse (Unit par) {
+			weight = 5;
+			actor = par;
 			childTemplate = TemplateFactory.Template(EToken.CORP);
+			price = Price.Free;
+			
+			AddAim(new Aim(EAim.FREE, EClass.CELL, EPurpose.CREATE));
+			
+			name = "Plant corpse";
+			desc = "Create "+childTemplate.Name+" in target cell.";
 		}
-
+		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RCreate (new Source(actor), EToken.CORP, (Cell)targets[0]));
-
+			AEffects.Create(new Source(actor), EToken.CORP, (Cell)targets[0]);
+			Targeter.Reset();
 		}
-
-
 	}
 
 	public class ANecrTeleport : Action {
@@ -89,8 +91,9 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RMove(new Source(actor), (Token)targets[0], (Cell)targets[1]));
-			
+			AEffects.Move(new Source(actor), (Token)targets[0], (Cell)targets[1]);
+			Targeter.Reset();
 		}
 	}
+
 }

@@ -19,7 +19,7 @@ namespace HOA {
 			
 			p.x2 += 5;
 			if (GUI.Button(p.Box(0.5f), actionLabel)) {
-				InputBuffer.Submit(new RRandom(new Source(Referee.ActivePlayer), d));
+				DiceCoin.Throw(Source.ActivePlayer,d);
 			}
 			
 			

@@ -80,6 +80,7 @@ namespace HOA {
 			int oldCor=cor;
 			parent.AddStat(new Source(), EStat.HP, 0-cor, false);
 			cor = (int)Math.Floor(cor*0.5f);
+			parent.SpriteEffect(EEffect.COR);
 			if (log) {GameLog.Out(parent+" takes "+oldCor+" corrision damage. HP:"+parent.HPString+" COR:"+cor);}
 			return cor;
 		}

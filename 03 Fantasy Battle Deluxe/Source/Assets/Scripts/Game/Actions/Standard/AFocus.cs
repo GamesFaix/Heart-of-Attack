@@ -20,8 +20,9 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.FP, magnitude));
+			AEffects.AddStat(new Source(actor), actor, EStat.FP, magnitude);
 			actor.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 }

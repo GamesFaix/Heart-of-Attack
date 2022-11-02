@@ -9,20 +9,55 @@ namespace HOA{
 			AddKing();
 			OnDeath = EToken.HSTE;
 			
-			NewHealth(85,3);
+			health = new HealthPano(this, 85);
 			NewWatch(2);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(2)));
-			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 18));
-			Aim fireAim = new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2);
-			arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
-			arsenal.Add(new ADeciFortify(this));
-			arsenal.Add(new ACreate(Price.Cheap, this, EToken.DEMO));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.MEIN));
-			arsenal.Add(new ACreate(new Price(2,2), this, EToken.PANO));
+			arsenal.Add(new ADeciMove(this));
+
+
+			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 15));
+			arsenal.Add(new APanoPierce(new Price(1,1), this, 15));
+			arsenal.Add(new ADeciMortar(new Price(1,2), this, 2, 3, 18));
+			//Aim fireAim = new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2);
+			//arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
+			//arsenal.Add(new ADeciFortify(this));
+
+			arsenal.Add(new ACreate(new Price(1,1), this, EToken.DEMO));
+			arsenal.Add(new ACreate(new Price(2,1), this, EToken.MEIN));
+			//arsenal.Add(new ACreate(new Price(2,2), this, EToken.PANO));
 			arsenal.Sort();
 		}		
-		public override string Notes () {return "";}
+		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
+	}
+
+	public class ADeciMove : Action {
+		
+		public ADeciMove (Unit u) {
+			weight = 1;
+			price = new Price(1,0);
+			actor = u;
+			AddAim(HOA.Aim.MovePath(3));
+			
+			name = "Move";
+			desc = "Move "+actor+" to target cell.  \nRange -1 per focus.";
+			
+		}
+		
+		public override void Adjust () {
+			int bonus = actor.FP;
+			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Purpose, aim[0].Range-bonus);
+		}
+		
+		public override void UnAdjust () {
+			aim[0] = HOA.Aim.MovePath(3);
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			
+			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			Targeter.Reset();
+		}
 	}
 
 	public class ADeciFortify : Action {
@@ -40,18 +75,18 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-				InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.MHP, 10));
-				InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.HP, 10));
-				InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.DEF, 1));
-				foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
-				foreach (Action a in actor.Arsenal()) {if (a is AAttack) {actor.Arsenal().Remove(a);} }
-				foreach (Action a in actor.Arsenal()) {	if (a is ADeciFortify) {actor.Arsenal().Remove(a);} }
-				actor.Arsenal().Add(new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(4), 22));
-				actor.Arsenal().Add(new ADeciMortar(new Price(1,2), actor, 3, 5, 14));
-				actor.Arsenal().Add(new ADeciMobilize(actor));
-				actor.Arsenal().Sort();
-				actor.SpriteEffect(EEffect.STATUP);
-
+			AEffects.AddStat(new Source(actor), actor, EStat.MHP, 10);
+			AEffects.AddStat(new Source(actor), actor, EStat.HP, 10);
+			AEffects.AddStat(new Source(actor), actor, EStat.DEF, 1);
+			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
+			foreach (Action a in actor.Arsenal()) {if (a is AAttack) {actor.Arsenal().Remove(a);} }
+			foreach (Action a in actor.Arsenal()) {	if (a is ADeciFortify) {actor.Arsenal().Remove(a);} }
+			actor.Arsenal().Add(new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(4), 22));
+			actor.Arsenal().Add(new ADeciMortar(new Price(1,2), actor, 3, 5, 14));
+			actor.Arsenal().Add(new ADeciMobilize(actor));
+			actor.Arsenal().Sort();
+			actor.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 	public class ADeciMobilize : Action {
@@ -68,9 +103,9 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.MHP, -10));
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.HP, -10));
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Token)actor, EStat.DEF, -1));
+			AEffects.AddStat(new Source(actor), actor, EStat.MHP, -10);
+			AEffects.AddStat(new Source(actor), actor, EStat.HP, -10);
+			AEffects.AddStat(new Source(actor), actor, EStat.DEF, -1);
 			foreach (Action a in actor.Arsenal()) {	if (a is AAttack) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) { if (a is ADeciMortar) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is ADeciMobilize) {actor.Arsenal().Remove(a);} }
@@ -80,7 +115,7 @@ namespace HOA{
 			actor.Arsenal().Sort();
 			
 			actor.SpriteEffect(EEffect.STATUP);
-
+			Targeter.Reset();
 		}
 	}
 	public class ADeciMortar : Action {
@@ -95,13 +130,22 @@ namespace HOA{
 			damage = d;
 			
 			name = "Mortar";
-			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
+			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.\nRange +1 per Focus (up to 3)";
+		}
+
+		public override void Adjust () {
+			int bonus = Mathf.Min(actor.FP, 3);
+			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus, aim[0].MinRange);
 		}
 		
+		public override void UnAdjust () {
+			aim[0] = new Aim(EAim.ARC, EClass.UNIT, 3, 2);
+		}
+
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RExplosion(new Source(actor), (Cell)targets[0], damage));
-
+			AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);
+			Targeter.Reset();
 		}
 	}
 }

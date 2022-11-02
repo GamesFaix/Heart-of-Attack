@@ -20,7 +20,8 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RDonate(new Source(actor), (Unit)targets[0], damage));
+			AEffects.Donate(new Source(actor), (Unit)targets[0], damage);
+			Targeter.Reset();
 		}
 	}
 }

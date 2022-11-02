@@ -11,6 +11,17 @@ namespace HOA {
 			Neutralize();
 		}
 		public override string Notes () {return "Ground and Air units may not move through "+FullName+".\nUnits sharing "+FullName+"'s Cell have a Move Range of 1.";}
+	
+		public override void Die (Source s, bool corpse=true, bool log=true) {
+			BodyWeb bw = (BodyWeb)body;
+			bw.DestroySensors();
+			
+			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
+			TokenFactory.Remove(this);
+			Exit();
+			if (log) {GameLog.Out(s.Token+" destroyed "+this+".");}
+		}
+	
 	}
 	
 	public class BodyWeb : Body{

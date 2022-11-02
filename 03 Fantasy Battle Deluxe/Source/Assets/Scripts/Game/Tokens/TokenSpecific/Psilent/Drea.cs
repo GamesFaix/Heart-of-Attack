@@ -30,7 +30,7 @@ namespace HOA{
 			actor = u;
 			price = new Price(1,1);
 			AddAim(new Aim(EAim.ARC, EClass.UNIT, 5));
-			//aim.EnemyOnly = true;
+			aim[0].EnemyOnly = true;
 			aim[0].NoKings = true;
 			AddAim(new Aim(EAim.ARC, EClass.CELL, EPurpose.MOVE, 5));
 			
@@ -40,8 +40,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RMove(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
-
+			AEffects.Move(new Source(actor), (Unit)targets[0], (Cell)targets[1]);
+			Targeter.Reset();
 		}
 	}
 }

@@ -8,6 +8,11 @@ namespace HOA {
 		public TokenGroup () {list = new List<Token>();}
 		public TokenGroup (Token t) {list = new List<Token>{t};}
 		public TokenGroup (List<Token> t) {list = t;}
+		public TokenGroup (TokenGroup tg) {
+			list = new List<Token>();
+			foreach (Token t in tg) {list.Add(t);}
+		}
+
 
 		//filters
 		public TokenGroup OnlyOwner(Player p){

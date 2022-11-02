@@ -16,8 +16,10 @@ namespace HOA{
 //			Cell oldCell = Cell;
 			Exit();
 			if (log && !IsClass(EClass.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
-			InputBuffer.Submit(new RExplosion (new Source(this), Cell, 12));
-			
+			AEffects.Explosion (new Source(this), Cell, 12);
+
+			BodyMine bodyMine = (BodyMine)body;
+			bodyMine.DestroySensors();
 		}
 	}
 
@@ -62,7 +64,10 @@ namespace HOA{
 		}
 		
 		public void DestroySensors () {
-			foreach (Sensor s in sensors) {s.Delete();}
+			for (int i=sensors.Count-1; i>=0; i--) {
+				Sensor s = sensors[i];
+				s.Delete();
+			}
 		}
 		
 	}

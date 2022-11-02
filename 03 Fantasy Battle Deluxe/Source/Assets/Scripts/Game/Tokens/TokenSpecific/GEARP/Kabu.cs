@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 namespace HOA {
@@ -32,7 +32,7 @@ namespace HOA {
 		public AKabuLaser (Unit u) {
 			weight = 4;
 			actor = u;
-			price = new Price(1,2);
+			price = new Price(2,1);
 			AddAim(HOA.Aim.Shoot(20));
 			damage = 16;
 			
@@ -43,8 +43,8 @@ namespace HOA {
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			Unit u = (Unit)targets[0];
 			int dmg = damage;
+			Unit u = (Unit)targets[0];
 			Cell cell = u.Cell;
 			int[] direction = Direction.FromCells(cell, actor.Cell);
 			bool stop = false;
@@ -53,7 +53,16 @@ namespace HOA {
 			
 			while (dmg > 0 && !stop) {
 				affected = cell.Occupants;
-				if (affected.OnlyClass(EClass.OB).Count > 0) {stop = true; Debug.Log("obstacle hit");}
+
+				TokenGroup blockers = new TokenGroup (affected);
+				blockers = blockers.OnlyClass(EClass.OB);
+				blockers = blockers.RemovePlane(EPlane.SUNK);
+				
+				if (blockers.Count > 0) {
+					stop = true; 
+					Debug.Log("obstacle hit");
+				}
+
 				foreach (Token t in affected.OnlyClass(EClass.UNIT)) {
 					((Unit)t).Damage(new Source(actor), dmg);
 					t.SpriteEffect(EEffect.LASER);
@@ -65,6 +74,7 @@ namespace HOA {
 				
 				if (!Board.HasCell(nextX, nextY, out cell)) {stop = true;}
 			}
+			Targeter.Reset();
 		}
 	}
 
@@ -84,8 +94,8 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RMove(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
-
+			AEffects.Move(new Source(actor), (Unit)targets[0], (Cell)targets[1]);
+			Targeter.Reset();
 		}
 	}
 }

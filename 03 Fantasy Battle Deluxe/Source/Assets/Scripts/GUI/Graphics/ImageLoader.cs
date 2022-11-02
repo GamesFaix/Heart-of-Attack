@@ -16,9 +16,16 @@ namespace HOA {
 			yellowBtn = Resources.Load("yellowSquare") as Texture2D;
 			redBtn = Resources.Load("redBtn") as Texture2D;
 
-			cells = new Texture2D[2] {
+			cells = new Texture2D[8] {
 				Resources.Load("Textures/blackCell") as Texture2D,
-				Resources.Load("Textures/whiteCell") as Texture2D
+				Resources.Load("Textures/whiteCell") as Texture2D,
+				Resources.Load("Textures/obsidian") as Texture2D,
+				Resources.Load("Textures/basalt") as Texture2D,
+				Resources.Load("Textures/dirt") as Texture2D,
+				Resources.Load("Textures/sand") as Texture2D,
+				Resources.Load("Textures/grass") as Texture2D,
+				Resources.Load("Textures/grass2") as Texture2D
+
 
 			};
 

@@ -43,7 +43,8 @@ namespace HOA {
 		public Texture2D Thumb {get {return sprite.Thumb;} }
 		public void Draw (Rect rect) {sprite.Draw(rect);}
 		public void SpriteEffect (EEffect e) {sprite.Effect(e);}
-		
+		public void SpriteMove (Cell c) {sprite.Move(c);}
+
 		//plane
 		public List<EPlane> Plane {get {return body.Plane;} }
 		public void SetPlane (EPlane p) {body.SetPlane(p);}
@@ -72,15 +73,25 @@ namespace HOA {
 		
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
-			if (this == TurnQueue.Top) {TurnQueue.Advance();}
-			if (this is Unit) {TurnQueue.Remove((Unit)this);}
+
+			//Debug.Log(Name+" is dying");
+			bool top = false;
+			if (this == TurnQueue.Top) {top = true;}
+			if (this is Unit) {
+				TurnQueue.Remove((Unit)this);
+				//Debug.Log("Removing "+Name+" from queue");
+			}
+			if (top) {TurnQueue.PrepareNewTop(TurnQueue.Top);} 
+
 			TokenFactory.Remove(this);
 			Cell oldCell = Cell;
 			Exit();
 			if (corpse) {CreateRemains(oldCell);}
 			if (IsClass(EClass.KING)) {Owner.Kill();}
-			if (log && !IsClass(EClass.HEART)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
-			
+			if (log && !IsClass(EClass.HEART)) {
+				if (s.Token != default(Token)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
+				else {GameLog.Out(this+" has been killed.");}
+			}
 		}
 		
 		protected void CreateRemains (Cell oldCell) {
@@ -88,6 +99,10 @@ namespace HOA {
 				Token remains = default(Token);
 				if (TokenFactory.Add(OnDeath, new Source(this), oldCell, out remains, false)) {
 					GameLog.Out(this+" left "+remains);
+				}
+				if (remains.IsClass(EClass.HEART)) {
+					remains.Owner = Owner;
+
 				}
 			}
 		}

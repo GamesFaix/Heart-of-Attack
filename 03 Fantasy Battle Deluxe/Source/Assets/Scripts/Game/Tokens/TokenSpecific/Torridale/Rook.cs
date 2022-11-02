@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace HOA{
 	public class Rook : Unit {
@@ -9,8 +10,10 @@ namespace HOA{
 			
 			NewHealth(20,3);
 			NewWatch(3);
-			
-			arsenal.Add(new ARookVolley(Price.Cheap, this, Aim.Arc(3), 12));
+
+			Aim aim = new Aim(EAim.ARC, EClass.UNIT, EPurpose.ATTACK, 2, 2);
+			arsenal.Add(new ARookVolley(Price.Cheap, this, aim, 12));
+			arsenal.Add(new ARookMove(this));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -28,30 +31,58 @@ namespace HOA{
 			damage = d;
 			
 			name = "Volley";
-			desc = "Do "+d+" damage to target unit.\nMay only be used if neighboring or sharing cell with non-Rook teammate.";
+			desc = "Do "+d+" damage to target unit.\nMay only be used if neighboring or sharing cell with non-Rook teammate.\nRange +1 per focus (up to 3).";
 		}
-		
-		public override void Execute (List<ITargetable> targets) {
-			Charge();
-			if (NeighborTeammate()) {
-			
-					Legalizer.Find(actor, aim[0]);
-					GUISelectors.DoWithInstance(new RDamage(new Source(actor), default(Token), damage));
 
-			}
-			else {GameLog.Out(actor+" must neighbor a teammate to Volley.");}
+		public override void Adjust () {
+			int bonus = Mathf.Min(actor.FP, 3);
+			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
 		}
 		
-		bool NeighborTeammate () {
+		public override void UnAdjust () {
+			aim[0] = new Aim(EAim.ARC, EClass.UNIT, EPurpose.ATTACK, 2, 2);
+		}
+
+		public override bool Restrict () {
 			TokenGroup neighbors = actor.Neighbors(true);
 			for (int i=neighbors.Count-1; i>=0; i--) {
 				Token t = neighbors[i];
 				if (t.Owner == actor.Owner 
 				    && t.Code != EToken.ROOK) {
-					return true;
+					return false;
 				}
 			}
-			return false;
+			return true;
+		}
+
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+
+			AEffects.Damage(new Source(actor), (Unit)targets[0], damage);
+			Targeter.Reset();
+		}
+
+	}
+
+	public class ARookMove : Action {
+		
+		Cell target;
+		
+		public ARookMove (Unit u) {
+			weight = 1;
+			AddAim(HOA.Aim.MovePath(2));
+			actor = u;
+			price = new Price(0,2);
+
+			name = "Move";
+			desc = "Move "+actor+" to target cell.";
+			
+		}
+		
+		public override void Execute (List<ITargetable> targets) {
+			Charge();
+			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			Targeter.Reset();
 		}
 	}
 }

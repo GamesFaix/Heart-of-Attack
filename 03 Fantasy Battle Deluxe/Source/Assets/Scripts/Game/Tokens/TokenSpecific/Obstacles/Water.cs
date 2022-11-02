@@ -118,7 +118,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			InputBuffer.Submit(new RDamage(new Source(source), parent, 5));
+			AEffects.Damage(new Source(source), parent, 5);
 			turns++;
 		}
 	}

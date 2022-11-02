@@ -9,14 +9,21 @@ namespace HOA {
 		string ip;
 		bool alive;
 		Faction faction;
+
+		public bool Alive {
+			get {return alive;}
+		}
 		
 		public Player (int n, bool a=true) {
 			name = defaultNames[n];
+			//Debug.Log(name+" created");
 			alive = a;
 		}
 		
 		public Player (string newName, bool a=true) {
 			name = newName;
+			
+		//	Debug.Log(name+" created");
 			alive = a;		
 		}
 		
@@ -42,11 +49,17 @@ namespace HOA {
 		}
 		
 		public Faction Faction {
-			get {return faction;}
+			get {
+	//			Debug.Log("faction: "+faction);
+				return faction;
+			}
 			set {faction = value;}
 		}
 
-		public EToken King {get {return faction.King;} }
+		public EToken King {get {
+				//Debug.Log(name +" king get");
+				return Faction.King;
+			} }
 		public Color[] Colors {get {return faction.Colors;} }
 		
 		static List<string> defaultNames = new List<string> {

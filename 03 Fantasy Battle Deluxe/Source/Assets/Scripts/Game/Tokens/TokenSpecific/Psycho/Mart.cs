@@ -49,9 +49,10 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			InputBuffer.Submit(new RMove(new Source(actor), actor, (Cell)targets[0]));
+			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
 			
 			UnAdjust();
+			Targeter.Reset();
 		}
 	}
 	public class AMartGrow : Action {
@@ -86,6 +87,7 @@ namespace HOA{
 			actor.Swap(t);
 
 			UnAdjust();
+			Targeter.Reset();
 		}
 	}
 
@@ -95,10 +97,10 @@ namespace HOA{
 
 		public AMartWhip (Unit u) {
 			weight = 4;
-			price = new Price(0,2);
+			price = new Price(1,1);
 			actor = u;
 			
-			AddAim(new Aim(EAim.LINE, EClass.UNIT, 4));
+			AddAim(new Aim(EAim.LINE, EClass.UNIT, EPurpose.ATTACK, 2));
 			damage = 18;
 
 			name = "Vine Whip";
@@ -113,15 +115,22 @@ namespace HOA{
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.UNIT, 1);
+			aim[0] = new Aim(EAim.PATH, EClass.UNIT, 2);
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			InputBuffer.Submit(new RDamage(new Source(actor), (Unit)targets[0], damage));
+			Unit u = (Unit)targets[0];
+			Cell c = u.Cell;
+			AEffects.Damage(new Source(actor), u, damage);
+			Token dest;
+			if (c.Contains(EClass.DEST, out dest)) {
+				actor.Body.Swap(dest);
+			}
 
 			UnAdjust();
+			Targeter.Reset();
 		}
 	}
 }

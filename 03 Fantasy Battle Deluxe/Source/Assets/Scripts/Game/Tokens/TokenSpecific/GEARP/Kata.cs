@@ -45,8 +45,8 @@ namespace HOA {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
 
-			InputBuffer.Submit(new RMove(new Source(actor), actor, (Cell)targets[0]));
-
+			AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
+			Targeter.Reset();
 		}
 	}
 
@@ -85,6 +85,7 @@ namespace HOA {
 				//end
 				
 			}
+			Targeter.Reset();
 		}
 	}
 }

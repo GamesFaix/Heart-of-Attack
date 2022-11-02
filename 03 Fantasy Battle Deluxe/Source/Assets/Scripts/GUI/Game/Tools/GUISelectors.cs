@@ -13,9 +13,6 @@ namespace HOA {
 			cell = default(Cell);
 			Board.ClearLegal();
 			TokenFactory.ClearLegal();
-			waitForCell = false;
-			waitForInstance = false;
-			request = default(Request);
 		}
 		
 		static float btnW = 400/9;
@@ -108,31 +105,7 @@ namespace HOA {
 			set {cell = value;}
 		}
 
-		//waiting
-		static bool waitForCell = false;
-		public static bool WaitForCell {
-			get {return waitForCell;}
-			set {waitForCell = value;}
-		}
 
-		static bool waitForInstance = false;
-		public static bool WaitForInstance {
-			get {return waitForInstance;}
-			set {waitForInstance = value;}
-		}
-
-		static Request request;
-		
-		public static void DoWithCell (Request r) {
-			request = r;
-			waitForCell = true;	
-		}
-
-		public static void DoWithInstance (Request r) {
-			request = r;
-			waitForInstance = true;
-		}
-		
 		static bool LegalCellSelection () {
 			if (cell != default(Cell) && cell.IsLegal()) {
 				return true;
@@ -147,24 +120,6 @@ namespace HOA {
 			return false;
 		}
 		
-		public void Update () {
-			if (waitForCell && LegalCellSelection()) {
-				if (request is RCellSelect) {
-					RCellSelect r2 = (RCellSelect)request;
-					r2.cell = cell;
-					InputBuffer.Submit(r2);
-				//	Reset();
-				}
-			}
-			
-			if (waitForInstance && LegalInstanceSelection()) {
-				if (request is RInstanceSelect) {
-					RInstanceSelect r2 = (RInstanceSelect)request;
-					r2.instance = instance;
-					InputBuffer.Submit(r2);
-				//	Reset();
-				}
-			}
-		}
+
 	}
 }

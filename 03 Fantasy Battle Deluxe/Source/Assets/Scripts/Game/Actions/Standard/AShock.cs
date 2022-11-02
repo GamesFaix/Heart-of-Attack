@@ -21,7 +21,8 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RShock(new Source(actor), (Unit)targets[0], damage, stun));
+			AEffects.Shock(new Source(actor), (Unit)targets[0], damage, stun);
+			Targeter.Reset();
 		}
 	}
 }

@@ -86,7 +86,7 @@ namespace HOA {
 			if (t is Unit && t.IsPlane(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
-				InputBuffer.Submit(new RDamage(new Source(parent), u, 7));
+				AEffects.Damage(new Source(parent), u, 7);
 			}
 		}
 		public override void OtherExit (Token t) {
@@ -118,7 +118,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			InputBuffer.Submit(new RDamage(new Source(source), parent, 7));
+			AEffects.Damage(new Source(source), parent, 7);
 			turns++;
 		}
 	}

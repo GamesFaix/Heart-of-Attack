@@ -24,7 +24,8 @@ namespace HOA {
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RCreate(new Source(actor), child, (Cell)targets[0]));
+			AEffects.Create(new Source(actor), child, (Cell)targets[0]);
+			Targeter.Reset();
 		}
 	}
 }

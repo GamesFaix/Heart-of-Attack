@@ -37,6 +37,7 @@ namespace HOA{
 			t.Die(new Source(actor));
 			actor.AddStat(new Source(actor), EStat.HP, 12);
 			actor.SpriteEffect(EEffect.STATUP);
+			Targeter.Reset();
 		}
 	}
 }

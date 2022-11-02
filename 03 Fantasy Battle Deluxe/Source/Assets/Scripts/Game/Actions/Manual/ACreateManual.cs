@@ -17,13 +17,14 @@ namespace HOA {
 			
 			AddAim(new Aim(EAim.FREE, EClass.CELL, EPurpose.CREATE));
 			
-			name = "Create "+childTemplate.Name;
-			desc = "Create "+childTemplate.Name+" in target cell.";
+			name = "Manual Create "+childTemplate.Name;
+			desc = "Create "+childTemplate.Name+" in any cell.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RCreate(new Source(actor), child, (Cell)targets[0]));
+			AEffects.Create(new Source(actor), child, (Cell)targets[0]);
+			Targeter.Reset();
 		}
 	}
 }

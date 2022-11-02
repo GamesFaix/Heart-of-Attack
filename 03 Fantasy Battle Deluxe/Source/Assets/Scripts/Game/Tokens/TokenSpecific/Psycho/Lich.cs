@@ -11,10 +11,10 @@ namespace HOA{
 			NewWatch(5);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(0)));
-			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 5));
+			arsenal.Add(new ALeech("Feed",Price.Cheap, this, Aim.Melee(), 5));
 			arsenal.Add(new AEvolve(Price.Cheap, this, EToken.BEES));
 			arsenal.Add(new AEvolve(new Price(1,2), this, EToken.MYCO));
-			arsenal.Add(new AEvolve(new Price(2,3), this, EToken.MART));
+			arsenal.Add(new AEvolve(new Price(1,3), this, EToken.MART));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -40,7 +40,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RReplace(new Source(actor), actor, child));
+			AEffects.Replace(new Source(actor), actor, child);
+			Targeter.Reset();
 		}
 	}
 }

@@ -10,8 +10,8 @@ namespace HOA{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 7));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.TREE));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 9));
+			arsenal.Add(new ACreate(new Price(0,1), this, EToken.TREE));
 			arsenal.Add(new AGrizHeal(new Price(1,1), this, 10));
 			arsenal.Sort();
 			
@@ -38,8 +38,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude));
-
+			AEffects.AddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude);
+			Targeter.Reset();
 		}
 	}
 }

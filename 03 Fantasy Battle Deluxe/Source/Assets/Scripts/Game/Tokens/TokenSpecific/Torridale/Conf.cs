@@ -7,10 +7,10 @@ namespace HOA{
 			BuildAir();
 			OnDeath = EToken.ASHE;
 			
-			NewHealth(40);
+			NewHealth(30);
 			NewWatch(4);
 			
-			arsenal.Add(new AMove(this, Aim.MovePath(6)));
+			arsenal.Add(new AMove(this, Aim.MoveLine(6)));
 			arsenal.Add(new AAttack("Melee", new Price(0,1), this, Aim.Melee(), 12));
 			Aim fireAim = new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 3);
 			arsenal.Add(new AAttackFir("Firebreathing", new Price(2,0), this, fireAim, 10));

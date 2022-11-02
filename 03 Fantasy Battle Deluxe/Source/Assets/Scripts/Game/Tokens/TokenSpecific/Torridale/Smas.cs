@@ -48,8 +48,9 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
-			InputBuffer.Submit(new RDamage(new Source(actor), (Unit)targets[0], damage));
+			AEffects.Damage(new Source(actor), (Unit)targets[0], damage);
 			UnAdjust();
+			Targeter.Reset();
 		}
 	}
 
@@ -92,6 +93,7 @@ namespace HOA{
 				u2.SpriteEffect(EEffect.DMG);
 			}
 			UnAdjust();
+			Targeter.Reset();
 		}
 	}
 }

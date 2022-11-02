@@ -36,8 +36,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RAddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude));
-
+			AEffects.AddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude);
+			Targeter.Reset();
 		}
 	}
 }

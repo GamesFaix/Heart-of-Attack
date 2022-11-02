@@ -31,7 +31,7 @@ namespace HOA {
 		
 		protected void BuildHeart () {
 			sprite = new HOA.Sprite(this);
-			NewBody(new List<EPlane> {EPlane.GND, EPlane.AIR}, EClass.HEART);
+			NewBody(new List<EPlane> {EPlane.GND, EPlane.AIR}, new List<EClass> {EClass.HEART, EClass.OB});
 			Neutralize();
 		}
 

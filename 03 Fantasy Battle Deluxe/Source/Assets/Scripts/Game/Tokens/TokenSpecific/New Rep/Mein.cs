@@ -40,7 +40,7 @@ namespace HOA{
 			}
 			
 			foreach (Token t in mines) {t.Die(new Source(actor));}
-
+			Targeter.Reset();
 		}
 	}
 }

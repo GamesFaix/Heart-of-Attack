@@ -18,14 +18,16 @@ namespace HOA{
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
 			arsenal.Add(new ARage(Price.Cheap, this, Aim.Melee(), 20));
 			
-			arsenal.Add(new AMonoFlame(this));
+			//arsenal.Add(new AMonoFlame(this));
 			arsenal.Add(new AMonoField(this));
 			arsenal.Add(new AMonoAltar(this));
 
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.RECY));
-			arsenal.Add(new AMonoReanimate(Price.Cheap, this));
-			arsenal.Add(new ACreate(new Price(1,2), this, EToken.NECR));
-			arsenal.Add(new ACreate(new Price(1,2), this, EToken.MOUT));
+			arsenal.Add(new ACreate(new Price(1,0), this, EToken.RECY));
+			arsenal.Add(new AMonoReanimate(new Price(1,0), this));
+			arsenal.Add(new ACreate(new Price(2,1), this, EToken.NECR));
+
+			Aim aim = new Aim(EAim.ARC, EClass.CELL, EPurpose.CREATE, 3,3);
+			arsenal.Add(new ACreate(new Price(1,2), this, EToken.MOUT, aim));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -36,7 +38,7 @@ namespace HOA{
 		
 		public AMonoFlame (Unit u) {
 			weight = 4;
-			price = new Price(2,2);
+			price = new Price(1,2);
 			actor = u;
 			
 			AddAim(new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2));
@@ -62,7 +64,7 @@ namespace HOA{
 					
 					if (!affected.Contains(next)) {		
 						next.SpriteEffect(EEffect.FIRE);
-						InputBuffer.Submit(new RDamageDest(new Source(actor), next, dmg));
+						AEffects.DamageDest(new Source(actor), next, dmg);
 						
 						foreach (Token t in next.Neighbors(true)) {
 							nextRad.Add(t);
@@ -73,7 +75,7 @@ namespace HOA{
 				thisRad = nextRad;
 				nextRad = new TokenGroup();
 				dmg = (int)Mathf.Floor(dmg * 0.5f);
-				
+				Targeter.Reset();
 			}
 
 		}
@@ -89,13 +91,14 @@ namespace HOA{
 
 			Token childTemplate = TemplateFactory.Template(EToken.RECY);
 			
-			name = "Reanimate "+childTemplate.Name;
+			name = "Recycle";
 			desc = "Replace target remains with "+name+".";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RReplace(new Source(actor), (Token)targets[0], EToken.RECY));
+			AEffects.Replace(new Source(actor), (Token)targets[0], EToken.RECY);
+			Targeter.Reset();
 		}
 	}
 
@@ -106,7 +109,7 @@ namespace HOA{
 		
 		public AMonoField (Unit u) {
 			weight = 4;
-			price = new Price(2,2);
+			price = new Price(1,2);
 			actor = u;
 			AddAim(HOA.Aim.Self);
 			damage = 5;
@@ -124,8 +127,9 @@ namespace HOA{
 			affected.Remove(actor);
 
 			foreach (Unit u in affected) {
-				InputBuffer.Submit(new RLeech(new Source(actor), u, damage));
+				AEffects.Leech(new Source(actor), u, damage);
 			}
+			Targeter.Reset();
 		}
 
 		CellGroup Zone (Token actor, int range) {
@@ -151,7 +155,7 @@ namespace HOA{
 		
 		public AMonoAltar (Unit par) {
 			weight = 4;
-			price = new Price(1,1);
+			price = new Price(1,0);
 			actor = par;
 
 			Aim newAim = new Aim (EAim.NEIGHBOR, EClass.UNIT);
@@ -164,11 +168,11 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			InputBuffer.Submit(new RKill(new Source(actor), (Token)targets[0]));
+			AEffects.Kill(new Source(actor), (Token)targets[0]);
 
 			actor.AddStat (new Source(actor), EStat.IN, 4);
 			actor.timers.Add(new TAltar(actor));
-			
+			Targeter.Reset();
 		}
 	}
 	public class TAltar : Timer {
