@@ -25,10 +25,10 @@ namespace HOA.Actions {
 		
 		public override void Perform () {
 			if (Charge()) {
-				TokenGroup cellMates = actor.Cell().Occupants();
-				TokenGroup neighbors = actor.Cell().Neighbors().Occupants();
+				TokenGroup cellMates = actor.Cell.Occupants;
+				TokenGroup neighbors = actor.Cell.Neighbors().Occupants;
 				foreach (Token t in neighbors) {cellMates.Add(t);}
-				TokenGroup targets = cellMates.FilterUnit();
+				TokenGroup targets = cellMates.FilterUnit;
 				foreach (Token t in targets) {
 					InputBuffer.Submit(new RShock(new Source(actor), t, damage, stun));
 				}

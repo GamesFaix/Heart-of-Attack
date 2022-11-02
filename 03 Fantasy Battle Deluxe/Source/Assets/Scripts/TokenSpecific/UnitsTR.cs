@@ -28,7 +28,7 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new ASmasFlail(Price.Cheap(), this, Aim.Melee(), 8));
+			arsenal.Add(new ASmasFlail(Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new ASmasSlam(new Price(1,1), this, Aim.Melee(), 8));
 		}		
 		
@@ -39,7 +39,7 @@ namespace HOA.Tokens{
 		public Conflagragon(Source s, bool template=false){
 			NewLabel(TTYPE.CONF, s, false, template);
 			BuildAir();
-			SetOnDeath(TTYPE.ASHE,false);
+			OnDeath = TTYPE.ASHE;
 			
 			NewHealth(40);
 			NewWatch(4);
@@ -78,7 +78,7 @@ namespace HOA.Tokens{
 			NewWatch(1);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 16));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 16));
 			
 			Aim attackAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, 3);
 			arsenal.Add(new AAttack(new Price(1,1), this, attackAim, 12));
@@ -94,14 +94,14 @@ namespace HOA.Tokens{
 			NewLabel(TTYPE.GARG, s, true, template);
 			BuildAir();
 			AddKing();
-			SetOnDeath(TTYPE.HSTO, false);
+			OnDeath = TTYPE.HSTO;
 
 			NewHealth(75);
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 18));
-			arsenal.Add(new ACreate(Price.Cheap(), this, TTYPE.SMAS));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 18));
+			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.SMAS));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.CONF));
 			arsenal.Add(new ACreate(new Price(2,2), this, TTYPE.BATT));
 		}		

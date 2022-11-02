@@ -1,17 +1,11 @@
 namespace HOA.Players {
 
 	public static class Referee {
+		static Player active = Roster.Neutral;
 		
-		
-		static Player active = Roster.Neutral();
-		
-		public static Player ActivePlayer () {
-			return active;
+		public static Player ActivePlayer {
+			get {return active;}
+			set {active = value;}
 		}
-		
-		public static void SetActive (Player p) {
-			active = p;		
-		}
-		
 	}
 }

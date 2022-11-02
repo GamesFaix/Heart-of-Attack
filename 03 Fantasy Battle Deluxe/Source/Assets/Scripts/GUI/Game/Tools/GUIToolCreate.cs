@@ -11,14 +11,14 @@ public static class GUIToolCreate {
 		Cell cell = GUISelectors.Cell();
 		
 		p.y2 += 5;
-		p.x2 += p.W()*0.4f;
+		p.x2 += p.W*0.4f;
 		GUI.Label(p.Box(0.3f), "Create:");
 		p.NextLine();
 	
-		Panel subPanel = new Panel(p.TallBox(6), p.LineH(), p.s);
+		Panel subPanel = new Panel(p.TallBox(6), p.LineH, p.s);
 		GUISelectors.TokenGrid(subPanel); 
 	
-		p.x2 += p.W()*0.25f;
+		p.x2 += p.W*0.25f;
 		p.y2 += 5;
 		GUI.Label(p.Box(0.5f), "(Shift+Click cell to select)");
 		
@@ -35,9 +35,9 @@ public static class GUIToolCreate {
 			printCommand += cell.ToString()+".";
 		}
 		
-		if (GUI.Button(p.LineBox(), printCommand)
+		if (GUI.Button(p.LineBox, printCommand)
 			|| Input.GetKeyUp("space")){
-			InputBuffer.Submit(new RCreate(Source.ActiveUnit(), token, cell));
+			InputBuffer.Submit(new RCreate(Source.ActiveUnit, token, cell));
 			Reset();
 		}
 	}

@@ -23,9 +23,9 @@ namespace HOA.Actions {
 		
 		public override void Perform () {
 			if (Charge()) {
-				int bonus = Mathf.Min(actor.FP(), 3);
+				int bonus = Mathf.Min(actor.FP, 3);
 				actor.SetStat(new Source(actor), STAT.FP, 0, false);
-				aim = new Aim (aim.AimType(), aim.Target(), aim.TTar(), aim.Range()+bonus);
+				aim = new Aim (aim.AimType, aim.Target, aim.TTar, aim.Range+bonus);
 				Legalizer.Find(actor, aim);
 				GUISelectors.DoWithInstance(new RDamage(new Source(actor), default(Token), damage));
 			}

@@ -8,8 +8,8 @@ namespace HOA.Tokens.Components {
 		public HealthCara (Unit u, int n=0, int d=0){
 			parent = u; max = n; Fill(); def = d;
 		}
-		public override int DEF(){
-			return Mathf.Min(def+parent.FP(), 5);
+		public override int DEF {
+			get {return Mathf.Min(def+parent.FP, 5);}
 		}
 	}
 	
@@ -17,8 +17,8 @@ namespace HOA.Tokens.Components {
 		public HealthDemo (Unit u, int n=0, int d=0){
 			parent = u; max = n; Fill(); def = d;
 		}
-		public override int DEF(){
-			return def + Mathf.Min(4, parent.FP());
+		public override int DEF {
+			get {return def + Mathf.Min(4, parent.FP);}
 		}
 	}
 	
@@ -26,8 +26,8 @@ namespace HOA.Tokens.Components {
 		public HealthPano (Unit u, int n=0, int d=0){
 			parent = u; max = n; Fill(); def = d;
 		}
-		public override int DEF(){
-			return def + Mathf.Min(2, parent.FP());
+		public override int DEF {
+			get {return def + Mathf.Min(2, parent.FP);}
 		}
 	}
 }

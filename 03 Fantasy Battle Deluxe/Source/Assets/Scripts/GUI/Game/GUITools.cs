@@ -12,7 +12,7 @@ public class GUITools : MonoBehaviour {
 
 	public void Display (Panel p){
 		
-		float btnW = p.W() / toolLabels.Length;
+		float btnW = p.W / toolLabels.Length;
 		
 		for (int i=0; i<toolLabels.Length; i++) {
 			if (GUI.Button(p.Box(btnW), toolLabels[i])) {
@@ -35,8 +35,8 @@ public class GUITools : MonoBehaviour {
 		}
 		
 		
-		float panelH = (p.H()-p.LineH())/p.H();
-		Panel subPanel = new Panel (p.TallBox(panelH), p.LineH(), p.s);
+		float panelH = (p.H-p.LineH)/p.H;
+		Panel subPanel = new Panel (p.TallBox(panelH), p.LineH, p.s);
 		
 		
 		switch(toolView){

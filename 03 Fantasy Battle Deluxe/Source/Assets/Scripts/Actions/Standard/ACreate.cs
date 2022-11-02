@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			aim = new Aim(AIMTYPE.NEIGHBOR, TARGET.CELL, CTAR.CREATE);
 			if (a != default(Aim)) {aim = a;}
 			
-			name = chiTemplate.Name();
+			name = chiTemplate.Name;
 			desc = "Create "+name+" in target cell.";
 		}
 		

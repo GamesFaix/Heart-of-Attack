@@ -25,14 +25,14 @@ public static class RequestHandler {
 		}
 		else if (r is RReplace) { 
 			RReplace r2 = (RReplace)r;
-			Cell cell = r2.instance.Cell();
+			Cell cell = r2.instance.Cell;
 			r2.instance.Die(r2.source, false, false);
 			TokenFactory.Add(r2.token, r2.source, cell, false);
 		}
 		else if (r is RAsheArise) { 
 			RAsheArise r2 = (RAsheArise)r;
-			Cell cell = r2.instance.Cell();
-			int hp = ((Unit)r2.instance).HP();
+			Cell cell = r2.instance.Cell;
+			int hp = ((Unit)r2.instance).HP;
 			r2.instance.Die(r2.source, false, false);
 			Token newToken;
 			TokenFactory.Add(r2.token, r2.source, cell, out newToken, false);
@@ -67,7 +67,7 @@ public static class RequestHandler {
 				Unit u = (Unit)r2.instance;
 				u.Damage(r2.source, r2.magnitude);
 				u.SpriteEffect(EFFECT.DMG);
-				Unit actor = (Unit)r2.source.Token();
+				Unit actor = (Unit)r2.source.Token;
 				actor.Damage(r2.source, (int)Mathf.Floor(r2.magnitude*0.5f));
 				actor.SpriteEffect(EFFECT.DMG);
 			}
@@ -90,7 +90,7 @@ public static class RequestHandler {
 				u.Damage(r2.source, r2.magnitude);
 				u.AddStat(r2.source, STAT.COR, cor);
 				u.SpriteEffect(EFFECT.COR);
-				Unit actor = (Unit)r2.source.Token();
+				Unit actor = (Unit)r2.source.Token;
 				actor.Die(r2.source);
 			}
 		}
@@ -100,11 +100,11 @@ public static class RequestHandler {
 			if (r2.instance is Unit) {
 				Source s = r2.source;
 				Unit u = (Unit)r2.instance;
-				int oldHP = u.HP();
+				int oldHP = u.HP;
 				u.Damage(s, r2.magnitude);
 				u.SpriteEffect(EFFECT.DMG);
-				int dmg = oldHP - u.HP();
-				Unit actor = (Unit)(s.Token());
+				int dmg = oldHP - u.HP;
+				Unit actor = (Unit)(s.Token);
 				actor.AddStat(s, STAT.HP, dmg);
 				actor.SpriteEffect(EFFECT.STATUP);
 			}
@@ -114,11 +114,11 @@ public static class RequestHandler {
 			if (r2.instance is Unit) {
 				Source s = r2.source;
 				Unit u = (Unit)r2.instance;
-				int oldHP = u.HP();
+				int oldHP = u.HP;
 				u.AddStat(s, STAT.HP, r2.magnitude);
 				u.SpriteEffect(EFFECT.STATUP);
-				int diff = u.HP() - oldHP;
-				Unit actor = (Unit)(s.Token());
+				int diff = u.HP - oldHP;
+				Unit actor = (Unit)(s.Token);
 				actor.Damage(s, diff);
 				actor.SpriteEffect(EFFECT.STATDOWN);
 			}
@@ -138,7 +138,7 @@ public static class RequestHandler {
 					Cell next = thisRad[j];
 					
 					if (!affected.Contains(next)) {
-						foreach (Token t in next.Occupants()) {
+						foreach (Token t in next.Occupants) {
 							t.SpriteEffect(EFFECT.EXP);
 							InputBuffer.Submit(new RDamageDest(r2.source, t, dmg));
 						}
@@ -157,7 +157,7 @@ public static class RequestHandler {
 			RDamageFir r2 = (RDamageFir)r;
 			
 			TokenGroup neighbors = r2.instance.Neighbors(true);
-			neighbors.Remove(r2.source.Token());
+			neighbors.Remove(r2.source.Token);
 
 			r2.instance.SpriteEffect(EFFECT.FIRE);
 			InputBuffer.Submit(new RDamageDest(r2.source, r2.instance, r2.magnitude));
@@ -171,7 +171,7 @@ public static class RequestHandler {
 		else if (r is RDamageFirMax) {
 			RDamageFirMax r2 = (RDamageFirMax)r;
 			
-			TokenGroup affected = new TokenGroup(r2.source.Token());
+			TokenGroup affected = new TokenGroup(r2.source.Token);
 			TokenGroup thisRad = new TokenGroup(r2.instance);
 			TokenGroup nextRad = new TokenGroup();
 			
@@ -227,19 +227,19 @@ public static class RequestHandler {
 				u.Damage(r2.source, r2.damage);
 				
 				int newDmg = (int)Mathf.Floor(r2.damage*0.5f);
-				TokenGroup cellMates = u.CellMates();
-				if (cellMates.FilterUnit().Count == 1) {
-					Unit next = (Unit)cellMates.FilterUnit()[0];
+				TokenGroup cellMates = u.CellMates;
+				if (cellMates.FilterUnit.Count == 1) {
+					Unit next = (Unit)cellMates.FilterUnit[0];
 					next.Damage(r2.source, newDmg);
 					//select direction
 					
 				}
-				else if (cellMates.FilterUnit().Count > 1) {
+				else if (cellMates.FilterUnit.Count > 1) {
 					
 					
 				}
 				
-				else if (cellMates.FilterObstacle().Count > 0) {
+				else if (cellMates.FilterObstacle.Count > 0) {
 					//end
 					
 				}
@@ -255,7 +255,7 @@ public static class RequestHandler {
 				Unit u = (Unit)r2.instance;
 				u.Damage(r2.source, r2.magnitude);
 				u.SpriteEffect(EFFECT.DMG);
-				TokenGroup neighbors = u.Neighbors(true).FilterUnit();
+				TokenGroup neighbors = u.Neighbors(true).FilterUnit;
 				foreach (Unit u2 in neighbors) {
 					u2.Damage(r2.source, r2.magnitude);
 					u2.SpriteEffect(EFFECT.DMG);
@@ -268,16 +268,15 @@ public static class RequestHandler {
 		//game
 		else if (r is RStart) { 
 			RStart r2 = (RStart)r;
-			if (Roster.Count() > 2) {
+			if (Roster.Count > 2) {
 				TokenFactory.Reset();
 				GameLog.Reset();
 				TurnQueue.Reset();
 				Board.New(r2.boardSize);	
 				GUIBoard.ZoomOut();
-				for (int i=1; i<Roster.Count(); i++) {
-					Player p = Roster.Player(i);
-					Cell cell = Board.RandomCell();
-					TokenFactory.Add(p.King(), new Source(p), cell, false);
+				foreach (Player p in Roster.Players()){
+					Cell cell = Board.RandomCell;
+					TokenFactory.Add(p.King, new Source(p), cell, false);
 				}
 				TurnQueue.Shuffle(new Source(),false);
 				TurnQueue.Advance(false);
@@ -319,11 +318,7 @@ public static class RequestHandler {
 			RCapture r2 = (RCapture)r;
 			r2.captor.Capture(r2.captive);
 		}
-		else if (r is RSetOwner) {
-			RSetOwner r2 = (RSetOwner)r;
-			r2.instance.SetOwner(r2.player);
-		}
-		
+
 		//queue
 		else if (r is RQueueAdvance)  { 
 			TurnQueue.Advance(); 

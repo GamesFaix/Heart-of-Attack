@@ -12,9 +12,9 @@ namespace HOA.Actions {
 			other = o;
 		}
 		
-		public int AP () {return ap;}
-		public int FP () {return fp;}
-		public bool Other () {return other;}
+		public int AP {get {return ap;} }
+		public int FP {get {return fp;} }
+		public bool Other {get {return other;} }
 		
 		public override string ToString () {
 			string s = "("+ap+"AP / "+fp+"FP)";
@@ -22,7 +22,7 @@ namespace HOA.Actions {
 			return s;
 		}
 		
-		public static Price Cheap () {return new Price(1,0);}
+		public static Price Cheap {get {return new Price(1,0);} }
 	
 	
 	}

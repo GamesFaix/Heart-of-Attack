@@ -30,32 +30,37 @@ namespace HOA.Players {
 		
 		public override string ToString() {return name;}
 		
-		public TokenGroup OwnedUnits (){
-			TokenGroup owned = new TokenGroup();
-			foreach (Token t in TokenFactory.Tokens()){
-				if (t.Owner() == this){
-					owned.Add(t);
-				}
-			}
-			return owned;
-		}
-		
-		public void Capture(Player captive){
-			foreach (Token t in captive.OwnedUnits()){
-				t.SetOwner(this);
+		public TokenGroup OwnedUnits {
+			get {
+				TokenGroup owned = new TokenGroup();
+				foreach (Token t in TokenFactory.Tokens) {if (t.Owner == this){owned.Add(t);} }
+				return owned;
 			}
 		}
 		
-		public void SetFaction(Faction f) {faction = f;}
-		public Faction Faction() {return faction;}
-		public TTYPE King () {return faction.King();}
-		public Color[] Colors () {return faction.Colors();}	
+		public void Capture (Player captive) {
+			foreach (Token t in captive.OwnedUnits) {t.Owner = this;}
+		}
+		
+		public Faction Faction {
+			get {return faction;}
+			set {faction = value;}
+		}
+
+		public TTYPE King {get {return faction.King;} }
+		public Color[] Colors {get {return faction.Colors;} }
 		
 		static List<string> defaultNames = new List<string> {
 			"DINGUS", "CROMDOR", "ELVIS", "LOSER", 
 			"BUTTERS", "ATHEISMO", "B4PH0M3T", "SKIPPERT"
-		};
-		
-	}
+		};	
 
+		public static Player Neutral {
+			get {
+				Player neutral = new Player ("Neutral");
+				neutral.Faction = FactionRef.Index(FactionRef.Count-1);
+				return neutral;
+			}
+		}
+	}
 }

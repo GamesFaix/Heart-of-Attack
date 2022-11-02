@@ -2,58 +2,34 @@ using HOA.Tokens;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Faction {
-	string name;
-	TTYPE king;
-	List<TTYPE> tokens;
-	TTYPE heart;
-	Color color1;
-	Color color2;
-	
-	
-	public Faction (string newName, TTYPE newKing, List<TTYPE> newTokens, TTYPE newHeart, Color newColor1, Color newColor2) {
-		name = newName;
-		king = newKing;
-		heart = newHeart;
-		
-		tokens = new List<TTYPE>{king};
-		Add(newTokens);
-		Add(heart);
-		
-		color1 = newColor1;
-		color2 = newColor2;
-	}
-	
+public abstract class Faction {
+	protected string name;
+	protected List<TTYPE> tokens;
+	protected TTYPE king;
+	protected TTYPE heart;
+	protected Color color1;
+	protected Color color2;
+	protected bool playable;
+
 	public override string ToString () {return name;}
-	
-	public void Add (TTYPE token) {tokens.Add(token);}
-	public void Add (List<TTYPE> newTokens) {
-		foreach (TTYPE t in newTokens) {tokens.Add(t);}
-	}
-	public void SetKing (TTYPE token) {
-		if (!tokens.Contains(token)) {tokens.Add(token);}
-		king = token;
-	}
-	public void SetHeart (TTYPE token) {
-		if (!tokens.Contains(token)) {tokens.Add(token);}
-		heart = token;
-	}
-	
+
 	public List<TTYPE> Tokens () {return tokens;}
-	
-	public TTYPE Member (int n) {
-		if (n>=0 && n<tokens.Count) {return tokens[n];}
-		GameLog.Debug("Faction: Attempt to access invalid token.");
-		return TTYPE.NONE;
+	public TTYPE this[int i] {get { return (TTYPE)this.tokens[i];} }
+	public int Count {get {return tokens.Count;} }
+
+	public MyEnumerator GetEnumerator() {return new MyEnumerator(tokens);}
+	public class MyEnumerator {
+		int n;
+		List<TTYPE> bufferGroup;
+		public MyEnumerator(List<TTYPE> inputGroup) {bufferGroup = inputGroup; n = -1;}
+		public bool MoveNext() {n++; return (n < bufferGroup.Count);}
+		public TTYPE Current {get {return bufferGroup[n];} }
 	}
+
+	public TTYPE King {get {return king;} }
+	public TTYPE Heart {get {return heart;} }
 	
-	public int Size () {return tokens.Count;}
-	
-	public TTYPE King () {return king;}
-	public TTYPE Heart () {return heart;}
-	
-	public Color[] Colors () {
-		return new Color[2] {color1, color2};
-	}
-	
+	public Color[] Colors {get {return new Color[2] {color1, color2}; } }
+
+	public bool Playable {get {return playable;} }
 }

@@ -33,50 +33,56 @@ namespace HOA.Actions {
 			minRange = rMin;
 		}
 		
-		public AIMTYPE AimType () {return aimType;}
-		public TARGET Target () {return target;}
-		public TTAR TTar () {return ttar;}
-		public CTAR CTar () {return ctar;}
-		public int Range () {return range;}
-		public int MinRange () {return minRange;}
+		public AIMTYPE AimType {get {return aimType;} }
+		public TARGET Target {get {return target;} }
+		public TTAR TTar {get {return ttar;} }
+		public CTAR CTar {get {return ctar;} }
+		public int Range {get {return range;} }
+		public int MinRange {get {return minRange;} }
 		
 		public override string ToString () {
 			string s = "[";
-			if (AimTypeString() != "") {s += AimTypeString();}
-			if (RangeString() != "") {s += " "+RangeString();}
-			if (TargetString() != "") {s += " "+TargetString();}
+			if (AimTypeString != "") {s += AimTypeString;}
+			if (RangeString != "") {s += " "+RangeString;}
+			if (TargetString != "") {s += " "+TargetString;}
 			s += "]";
 			return s;
 		}
-		string AimTypeString () {
-			switch (aimType) {
-				case AIMTYPE.CELLMATE: return "Cellmate";
-				case AIMTYPE.NEIGHBOR: return "Neighbor";
-				case AIMTYPE.PATH: return "Path";
-				case AIMTYPE.LINE: return "Line";
-				case AIMTYPE.ARC: return "Arc";
-				case AIMTYPE.FREE: return "Free";
-				case AIMTYPE.SELF: return "Self";
-				case AIMTYPE.GLOBAL: return "Global";
-				default: return "Other";
+		string AimTypeString {
+			get {
+				switch (aimType) {
+					case AIMTYPE.CELLMATE: return "Cellmate";
+					case AIMTYPE.NEIGHBOR: return "Neighbor";
+					case AIMTYPE.PATH: return "Path";
+					case AIMTYPE.LINE: return "Line";
+					case AIMTYPE.ARC: return "Arc";
+					case AIMTYPE.FREE: return "Free";
+					case AIMTYPE.SELF: return "Self";
+					case AIMTYPE.GLOBAL: return "Global";
+					default: return "Other";
+				}
 			}
 		}
-		string RangeString () {
-			if (aimType == AIMTYPE.PATH || aimType == AIMTYPE.LINE) {return range+"";}	
-			else if (aimType == AIMTYPE.ARC) {
-				if (minRange > 0) {return minRange+"-"+range;}
-				return range+"";
+		string RangeString {
+			get {
+				if (aimType == AIMTYPE.PATH || aimType == AIMTYPE.LINE) {return range+"";}	
+				else if (aimType == AIMTYPE.ARC) {
+					if (minRange > 0) {return minRange+"-"+range;}
+					return range+"";
+				}
+				return "";
 			}
-			return "";
 		}
-		string TargetString () {	
-			if (target == TARGET.CELL) {return "Cell";}
-			if (ttar == TTAR.UNIT) {return "Unit";}
-			if (ttar == TTAR.UNITDEST) {return "Unit or Destructible";}
-			if (ttar == TTAR.DEST) {return "Destructible (non-Remains)";}
-			if (ttar == TTAR.DESTREM) {return "Destructible";}
-			if (ttar == TTAR.REM) {return "Remains";}
-			return "";
+		string TargetString {
+			get {
+				if (target == TARGET.CELL) {return "Cell";}
+				if (ttar == TTAR.UNIT) {return "Unit";}
+				if (ttar == TTAR.UNITDEST) {return "Unit or Destructible";}
+				if (ttar == TTAR.DEST) {return "Destructible (non-Remains)";}
+				if (ttar == TTAR.DESTREM) {return "Destructible";}
+				if (ttar == TTAR.REM) {return "Remains";}
+				return "";
+			}
 		}
 		
 		public static Aim MovePath (int r) {

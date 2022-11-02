@@ -53,7 +53,7 @@ namespace HOA.Tokens{
 			sprite = new HOASprite(this);
 			BuildTall();
 			AddKing();
-			SetOnDeath(TTYPE.HBLO,false);
+			OnDeath = TTYPE.HBLO;
 			
 			NewHealth(100);
 			NewWatch(2);
@@ -61,13 +61,13 @@ namespace HOA.Tokens{
 			NewArsenal();
 			arsenal.Add(new AFocus(this));
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new ARage(Price.Cheap(), this, Aim.Melee(), 20));
+			arsenal.Add(new ARage(Price.Cheap, this, Aim.Melee(), 20));
 			
 			Aim fireAim = new Aim (AIMTYPE.LINE, TARGET.TOKEN, TTAR.UNITDEST, 2);
 			arsenal.Add(new AMonoFlame(new Price(2,2), this, fireAim, 20));
 			
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.RECY));
-			arsenal.Add(new AMonoReanimate(Price.Cheap(), this, TTYPE.RECY));
+			arsenal.Add(new AMonoReanimate(Price.Cheap, this, TTYPE.RECY));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.NECR));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.MOUT));
 		}		

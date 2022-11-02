@@ -12,7 +12,7 @@ public class GUILobbyNetwork : MonoBehaviour {
 	}
 	
 	public void Display (Panel p) {
-		GUI.Box(p.FullBox(),"");
+		GUI.Box(p.FullBox,"");
 		
 		float btnW = 0.5f;
 		//network stuff
@@ -21,7 +21,7 @@ public class GUILobbyNetwork : MonoBehaviour {
 		if (GUI.Button(p.Box(btnW), "Join:")) {nc.Join(server);}
 
 		p.NextLine();
-		p.x2 += p.W()/2;
+		p.x2 += p.W/2;
 		server = GUI.TextField(p.Box(btnW), server, 15);
 
 		p.NextLine();

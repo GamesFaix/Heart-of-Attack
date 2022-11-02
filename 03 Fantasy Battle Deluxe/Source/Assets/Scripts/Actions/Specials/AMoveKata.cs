@@ -20,10 +20,10 @@ namespace HOA.Actions {
 		
 		public override void Perform () {
 			if (Charge()) {
-				int bonus = Mathf.Min(actor.FP()*2, 6);
+				int bonus = Mathf.Min(actor.FP*2, 6);
 				actor.SetStat(new Source(actor), STAT.FP, 0, false);
 				
-				aim = new Aim (aim.AimType(), aim.Target(), aim.CTar(), aim.Range()+bonus);
+				aim = new Aim (aim.AimType, aim.Target, aim.CTar, aim.Range+bonus);
 				Legalizer.Find(actor, aim);
 				GUISelectors.DoWithCell(new RMove(new Source(actor), actor, default(Cell)));
 			}

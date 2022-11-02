@@ -16,10 +16,10 @@ namespace HOA.Tokens.Components {
 
 		public override void Enter (Cell c) {
 			cell = c;
-			TokenGroup cellUnits = cell.Occupants().FilterUnit();
+			TokenGroup cellUnits = cell.Occupants.FilterUnit;
 			foreach (Unit u in cellUnits) {
-				if (u.Code() != TTYPE.CARA 
-					&& u.Owner() == parent.Owner()) {
+				if (u.Code != TTYPE.CARA 
+					&& u.Owner == parent.Owner) {
 					HealthCaraShield shield = new HealthCaraShield(this, u);
 					u.health = shield;
 					shields.Add(u, shield);
@@ -35,8 +35,8 @@ namespace HOA.Tokens.Components {
 		
 		public override void OtherEnter (Token t) {
 			if (t is Unit 
-				&& t.Code() != TTYPE.CARA
-				&& t.Owner() == parent.Owner()) {
+				&& t.Code != TTYPE.CARA
+				&& t.Owner == parent.Owner) {
 				Unit u = (Unit)t;
 				HealthCaraShield shield = new HealthCaraShield(this, u);
 				u.health = shield;

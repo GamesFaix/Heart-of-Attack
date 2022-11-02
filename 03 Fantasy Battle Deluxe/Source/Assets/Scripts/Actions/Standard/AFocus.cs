@@ -8,7 +8,7 @@ namespace HOA.Actions {
 		
 		public AFocus (Unit u, int n=1) {
 			actor = u;
-			price = Price.Cheap();
+			price = Price.Cheap;
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, CTAR.NA);
 			
 			name = "Focus";

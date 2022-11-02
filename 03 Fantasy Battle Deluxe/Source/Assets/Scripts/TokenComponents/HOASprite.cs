@@ -9,11 +9,11 @@ namespace HOA.Tokens.Components {
 		Token parent;
 
 		Texture2D thumb;
-		public Texture2D Thumb () {return thumb;}
+		public Texture2D Thumb {get {return thumb;} }
 		
 		public HOASprite (Token t){
 			parent = t;	
-			thumb = Thumbs.CodeToThumb(parent.Code());
+			thumb = Thumbs.CodeToThumb(parent.Code);
 		}
 		
 		public void Draw (Rect box) {
@@ -24,8 +24,8 @@ namespace HOA.Tokens.Components {
 		}
 
 		void LabelInstance (Rect box) {
-			if (!parent.Unique() && parent is Unit) {
-				StyledText.Highlight(box, ""+parent.Instance(), spriteLabel, parent.Owner().Colors());
+			if (!parent.Unique && parent is Unit) {
+				StyledText.Highlight(box, ""+parent.Instance, spriteLabel, parent.Owner.Colors);
 			}
 		}
 	
@@ -67,7 +67,7 @@ namespace HOA.Tokens.Components {
 
 
 		void HighlightLegal (Rect box) {
-			if (parent.IsLegal()) {
+			if (parent.Legal) {
 				GUI.Box(box, ImageLoader.yellowBtn);
 			}
 		}

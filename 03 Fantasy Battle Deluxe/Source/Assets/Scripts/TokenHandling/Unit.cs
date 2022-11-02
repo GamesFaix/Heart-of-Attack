@@ -23,13 +23,13 @@ namespace HOA.Tokens {
 		
 		protected void BuildStandard () {
 			sprite = new HOASprite(this);
-			SetOnDeath(TTYPE.CORP, false);
+			OnDeath = TTYPE.CORP;
 			NewWallet();
 			NewArsenal();
 			arsenal.Add(new AFocus(this));
 		}
 		protected void AddCorpseless () {
-			SetOnDeath(TTYPE.NONE);
+			OnDeath = TTYPE.NONE;
 		}
 		protected void BuildGround () {
 			NewBody(PLANE.GND);
@@ -63,21 +63,21 @@ namespace HOA.Tokens {
 		public int SetStat (Source s, STAT stat, int n, bool log=true) {
 			switch (stat) {
 				case STAT.HP:
-					return health.SetHP(s, n, log);
+					return health.HP = n;
 				case STAT.MHP:
-					return health.SetMaxHP(s, n, log);
+					return health.MaxHP = n;
 				case STAT.DEF:
-					return health.SetDEF(s, n, log);
+					return health.DEF = n;
 				case STAT.IN:
-					return watch.SetIN(s, n, log);
+					return watch.IN = n;
 				case STAT.AP:
-					return wallet.SetAP(s, n, log);
+					return wallet.AP = n;
 				case STAT.FP:
-					return wallet.SetFP(s, n, log);
+					return wallet.FP = n;
 				case STAT.STUN:
-					return watch.SetSTUN(s, n, log);
+					return watch.STUN = n;
 				case STAT.COR:
-					return watch.SetCOR(s, n, log);
+					return watch.COR = n;
 				default:
 					return -1;
 			}
@@ -110,41 +110,58 @@ namespace HOA.Tokens {
 		public int Damage(Source s, int n, bool log=true) {return health.Damage(s, n, log);}
 		public void FillHealth() {health.Fill();}
 		//hp
-		public int HP() {return health.HP();}
-		public int MaxHP() {return health.MaxHP();}
+		public int HP {get {return health.HP;} }
+		public int MaxHP {get {return health.MaxHP;} }
 		public int MultHP(Source s, float f, bool log=true) {return health.MultHP(s, f, log);}
 		public int MultMaxHP(Source s, float f, bool log=true) {return health.MultMaxHP(s, f, log);}
-		public string HPString() {return health.HPString();}
+		public string HPString {get {return health.HPString;} }
 		//def
-		public int DEF() {return health.DEF();}
-		public string DEFString() {return health.DEFString();}
+		public int DEF {get {return health.DEF;} }
+		public string DEFString {get {return health.DEFString;} }
 		
 		//wallet
 		public bool CanAfford (Price p) {return wallet.CanAfford(p);}
 		public void Charge (Price p) {wallet.Charge(p);}
 		public void Refund (Price p) {wallet.Refund(p);}
 		//ap
-		public int AP() {return wallet.AP();}
-		public int MaxAP() {return wallet.MaxAP();}
-		public int SetMaxAP(Source s, int n, bool log=true) {return wallet.SetMaxAP(s, n,log);}
+		public int AP {
+			get {return wallet.AP;}
+			set {wallet.AP = value;}
+		}
+		public int MaxAP {
+			get {return wallet.MaxAP;}
+			set {wallet.MaxAP = value;}
+		}
 		public void FillAP(bool log=true){wallet.FillAP(log);}
-		public string APString(){return wallet.APString();}
+		public string APString {get {return wallet.APString;} }
 		//fp
-		public int FP() {return wallet.FP();}
-		public string FPString(){return wallet.FPString();}
+		public int FP {
+			get {return wallet.FP;} 
+			set {wallet.FP = value;}
+		}
+		public string FPString {get {return wallet.FPString;} }
 				
 		//in
-		public int IN() {return watch.IN();}
+		public int IN { 
+			get {return watch.IN;}
+			set {watch.IN = value;}
+		}
 		//skip
 		public bool IsSkipped() {return watch.IsSkipped();}
 		public void Skip (bool log=true) {watch.Skip(log);}
 		public void ClearSkip (bool log=true) {watch.ClearSkip(log);}
 		//stun
-		public int Stunned() {return watch.Stunned();}
+		public int STUN {
+			get {return watch.STUN;}
+			set {watch.STUN = value;}
+		}
 		public bool IsStunned() {return watch.IsStunned();}
 		//corrosion
 		public bool IsCOR() {return watch.IsCOR();}
-		public int COR() {return watch.COR();}
+		public int COR {
+			get {return watch.COR;}
+			set {watch.COR = value;}
+		}
 		public int DecayCOR(bool log=true) {return watch.DecayCOR(log);}
 		
 		//arsenal

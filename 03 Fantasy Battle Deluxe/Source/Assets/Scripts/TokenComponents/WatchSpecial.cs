@@ -13,8 +13,9 @@ namespace HOA.Tokens.Components {
 			cor = 0;
 		}
 		
-		public override int IN () {
-			return init + (Mathf.Min(5, parent.FP()));
+		public override int IN {
+			get {return init + (Mathf.Min(5, parent.FP));}
+			set {init = value;}
 		}
 	}
 }

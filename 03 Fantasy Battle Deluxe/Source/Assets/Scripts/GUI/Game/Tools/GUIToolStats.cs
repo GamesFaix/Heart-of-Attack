@@ -20,14 +20,14 @@ public static class GUIToolStats {
 			u.Focus();		
 		}
 		
-		GUI.Box(p.FullBox(),"");
+		GUI.Box(p.FullBox,"");
 		
 		p.y2 += 5;
-		p.x2 += p.W()*0.35f;
+		p.x2 += p.W*0.35f;
 		GUI.Label(p.Box(0.4f), "Select property:");
 		p.NextLine();
 		
-		statBtn = GUI.SelectionGrid(p.LineBox(), statBtn, statLabels, 8);
+		statBtn = GUI.SelectionGrid(p.LineBox, statBtn, statLabels, 8);
 		STAT stat = (STAT)statBtn;
 		
 		p.y2 += 5;
@@ -43,22 +43,22 @@ public static class GUIToolStats {
 		p.NextLine();
 		
 		p.y2 += 5;
-		p.x2 += p.W()*0.4f;
+		p.x2 += p.W*0.4f;
 		GUI.Label(p.Box(0.4f), "Select unit:");
 		p.NextLine();
 		
-		Panel subPanel = new Panel(p.TallBox(0.5f), p.LineH(), p.s);
+		Panel subPanel = new Panel(p.TallBox(0.5f), p.LineH, p.s);
 		GUISelectors.InstanceGrid(subPanel);
 		Token instance = GUISelectors.Instance();
 		
 		string label = "";
-		if (instance != default(Token)) {label += instance.FullName();}
+		if (instance != default(Token)) {label += instance.FullName;}
 		label += " "+statLabels[statBtn]+" "+signLabels[signBtn]+" "+magnitude;
 	
-		if (GUI.Button(p.LineBox(), label) || Input.GetKeyUp("space")){
-			if (signBtn == 0) {InputBuffer.Submit(new RSetStat(Source.ActivePlayer(), instance, stat, magnitude));}
-			if (signBtn == 1) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer(), instance, stat, magnitude));}
-			if (signBtn == 2) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer(), instance, stat, 0-magnitude));}
+		if (GUI.Button(p.LineBox, label) || Input.GetKeyUp("space")){
+			if (signBtn == 0) {InputBuffer.Submit(new RSetStat(Source.ActivePlayer, instance, stat, magnitude));}
+			if (signBtn == 1) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer, instance, stat, magnitude));}
+			if (signBtn == 2) {InputBuffer.Submit(new RAddStat(Source.ActivePlayer, instance, stat, 0-magnitude));}
 			GUISelectors.Reset();
 		}
 		

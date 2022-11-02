@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 			
-			name = "Reanimate "+chiTemplate.Name();
+			name = "Reanimate "+chiTemplate.Name;
 			desc = "Replace target remains with "+name+".";
 		}
 		

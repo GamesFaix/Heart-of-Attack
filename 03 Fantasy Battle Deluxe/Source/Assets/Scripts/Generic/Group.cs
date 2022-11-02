@@ -2,15 +2,17 @@
 
 public class Group<t> {
 
-	List<t> list;
-	//constructors
+	protected List<t> list;
+
 	public Group () {list = new List<t>();}
 	public Group (t item) {list = new List<t>{item};}
 	public Group (List<t> items) {list = items;}
 	
-	//list stuff
 	public void Add (t item) {if (!Contains(item)) {list.Add(item);} }
+	public void Add (Group<t> group) {foreach (t item in group) {Add(item);} }
+
 	public void Remove (t item) {if (Contains(item)) {list.Remove(item);} }
+	public void Remove (Group<t> group) {foreach (t item in group) {Remove(item);} }
 
 	public bool Contains (t item) {
 		if (list.Contains(item)) {return true;}

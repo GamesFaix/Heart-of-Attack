@@ -24,10 +24,10 @@ public class Core : MonoBehaviour {
 	
 	void DebugShortcut () {
 		for (int i=0; i<8; i++) {
-			InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer(), new Player(i)));
+			InputBuffer.Submit(new RRosterAdd(Source.ActivePlayer, new Player(i)));
 		}
-		InputBuffer.Submit(new RRosterRandom(Source.ActivePlayer()));
-		InputBuffer.Submit(new RStart(Source.ActivePlayer(), 12));
+		InputBuffer.Submit(new RRosterRandom(Source.ActivePlayer));
+		InputBuffer.Submit(new RStart(Source.ActivePlayer, 12));
 		
 		
 	}

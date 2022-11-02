@@ -9,8 +9,8 @@ namespace HOA.Map {
 		
 		static int min = 2;
 		static int max = 20;
-		public static int Min () {return min;}
-		public static int Max () {return max;}
+		public static int Min {get {return min;} }
+		public static int Max {get {return max;} }
 		
 		public static Cell[,] cells = new Cell[1,1];
 		
@@ -39,10 +39,10 @@ namespace HOA.Map {
 			ready = true;
 		}
 		
-		public static int Size () {return cells.GetLength(0);}
+		public static int Size {get {return cells.GetLength(0);} }
 		
 		public static Cell Cell (int x, int y){
-			if ((x > 0) && (x <= Size()) && (y > 0) && (y <= Size())) {
+			if ((x > 0) && (x <= Size) && (y > 0) && (y <= Size)) {
 				return cells[x-1,y-1];
 			}
 			else {
@@ -66,20 +66,23 @@ namespace HOA.Map {
 			return list;
 		}
 		
-		public static Cell RandomCell () {
-			int randX, randY;
-			randX = RandomSync.Range(0, Size()-1);
-			randY = RandomSync.Range(0, Size()-1);
-			return cells[randX,randY];
+		public static Cell RandomCell {
+			get {
+				int randX, randY;
+				int max = Size - 1;
+				randX = RandomSync.Range(0, max);
+				randY = RandomSync.Range(0, max);
+				return cells[randX,randY];
+			}
 		}
 		
 		public static bool RandomLegalCell (Token t, out Cell outCell) {
-			List<PLANE> planes = t.Plane();
+			List<PLANE> planes = t.Plane;
 			List<Cell> remainingCells = new List<Cell>();
 			foreach (Cell cell in cells) {remainingCells.Add(cell);}
 			
 			while (remainingCells.Count > 0){
-				Cell cell = Board.RandomCell();
+				Cell cell = Board.RandomCell;
 				if (cell.Occupied(planes)) {remainingCells.Remove(cell);}
 				else {
 					outCell = cell;
@@ -98,7 +101,7 @@ namespace HOA.Map {
 		
 		public static void ClearLegal () {
 			foreach (Cell cell in cells) {
-				cell.Legalize(false);
+				cell.Legal = false;
 			}
 		}
 	}

@@ -14,7 +14,7 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new ALeech(Price.Cheap(), this, Aim.Melee(), 7));
+			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 7));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.TREE));
 			
 		}		
@@ -29,7 +29,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(6)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 10));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 10));
 		}		
 		public override string Notes () {return "";}
 	}
@@ -37,13 +37,13 @@ namespace HOA.Tokens{
 		public Metaterrainean(Source s, bool template=false){
 			NewLabel(TTYPE.META, s, false, template);
 			BuildTrample();
-			SetOnDeath(TTYPE.ROCK, false);
+			OnDeath = TTYPE.ROCK;
 			
 			NewHealth(50);
 			NewWatch(1);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 20));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 20));
 		}		
 		public override string Notes () {return "";}
 	}
@@ -52,14 +52,14 @@ namespace HOA.Tokens{
 			NewLabel(TTYPE.ULTR, s, true, template);
 			BuildTrample();
 			AddKing();
-			SetOnDeath(TTYPE.HFIR, false);
+			OnDeath = TTYPE.HFIR;
 			
 			NewHealth(80);
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 16));
-			arsenal.Add(new ACreate(Price.Cheap(), this, TTYPE.GRIZ));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 16));
+			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.GRIZ));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.TALO));
 			arsenal.Add(new AUltrCreateMeta(new Price(1,2), this, TTYPE.META));
 		}		

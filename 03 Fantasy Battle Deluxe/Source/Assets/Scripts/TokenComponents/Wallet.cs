@@ -13,29 +13,27 @@ namespace HOA.Tokens.Components {
 		
 		public Wallet (Unit p, int n=2) {
 			parent = p;
-			SetMaxAP(new Source(),n,false);
-			SetAP(new Source(),0,false);
-			SetFP(new Source(),0,false);
+			MaxAP = n;
+			AP = 0;
+			FP = 0;
 		}
 
-		public int AP () {return ap;}
-		public int MaxAP () {return maxAp;}
-		public int FP () {return fp;}
-
-		public string APString () {return "("+ap+"/"+maxAp+")";}
-		public string FPString () {return "("+fp+")";}
-
-
-		public int SetAP (Source s, int n, bool log=true) {
-			ap = Clamp(n); 
-			if (log) {GameLog.Out(s+" set "+parent+"'s AP to "+ap+".");}
-			return ap;
+		public int AP {
+			get {return ap;} 
+			set {ap = Clamp(value);}
 		}
-		public int SetMaxAP (Source s, int n, bool log=true) {
-			maxAp = Clamp(n);
-			if (log) {GameLog.Out(s+" set "+parent+"'s max AP to "+maxAp+".");}
-			return maxAp;
+		public int MaxAP {
+			get {return maxAp;} 
+			set {maxAp = Clamp(value);}
 		}
+		public int FP {
+			get {return fp;} 
+			set {fp = Clamp(value);}
+		}
+
+		public string APString {get {return "("+ap+"/"+maxAp+")";} }
+		public string FPString {get {return "("+fp+")";} }
+
 		public int AddAP (Source s, int n, bool log=true) {
 			ap = Clamp(ap+n);
 			string sign ="+"+n;
@@ -48,11 +46,6 @@ namespace HOA.Tokens.Components {
 			if (log) {GameLog.Out(parent+" AP filled.");}
 		}
 
-		public virtual int SetFP (Source s, int n, bool log=true) {
-			fp = Clamp(n);
-			if (log) {GameLog.Out(s+" set "+parent+"'s FP to "+fp+".");}
-			return fp;
-		}
 		public virtual int AddFP (Source s, int n, bool log=true) {
 			fp = Clamp(fp+n);
 			string sign ="+"+n;
@@ -67,22 +60,22 @@ namespace HOA.Tokens.Components {
 		}
 		
 		public bool CanAfford (Price price) {
-			if (ap >= price.AP()
-			&& fp >= price.FP() 
-			&& !price.Other()) {
+			if (ap >= price.AP
+			&& fp >= price.FP
+			&& !price.Other) {
 				return true;
 			}
 			return false;
 		}
 		
 		public void Charge (Price price) {
-			AddAP (new Source(parent), 0-price.AP(), false);
-			AddFP (new Source(parent), 0-price.FP(), false);
+			AddAP (new Source(parent), 0-price.AP, false);
+			AddFP (new Source(parent), 0-price.FP, false);
 		}
 		
 		public void Refund (Price price) {
-			AddAP (new Source(parent), price.AP(), false);
-			AddFP (new Source(parent), price.FP(), false);
+			AddAP (new Source(parent), price.AP, false);
+			AddFP (new Source(parent), price.FP, false);
 		}
 	}
 }

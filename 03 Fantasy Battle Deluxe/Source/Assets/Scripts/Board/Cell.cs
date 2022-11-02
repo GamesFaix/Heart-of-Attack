@@ -16,26 +16,27 @@ namespace HOA.Map {
 		}
 		
 		public override string ToString() {return "("+x+","+y+")";}
-		public int X() {return x;}
-		public int Y() {return y;}
-		
-		
+		public int X {get {return x;} }
+		public int Y {get {return y;} }
+
 		Token[] tokens = new Token[Enum.GetNames(typeof(PLANE)).Length];
 		
 		public Token Occupant (PLANE p) {return tokens[(int)p];}
-		public TokenGroup Occupants () {
-			TokenGroup tg = new TokenGroup();
-			for (int i=0; i<tokens.Length; i++) {
-				if (tokens[i] != default(Token)
-				&& !tg.Contains(tokens[i])) {	
-					tg.Add(tokens[i]);
+		public TokenGroup Occupants {
+			get {
+				TokenGroup tg = new TokenGroup();
+				for (int i=0; i<tokens.Length; i++) {
+					if (tokens[i] != default(Token)
+					&& !tg.Contains(tokens[i])) {	
+						tg.Add(tokens[i]);
+					}
 				}
+				return tg;
 			}
-			return tg;
 		}
-		public int TokenCount () {return Occupants().Count;}
+		public int TokenCount {get {return Occupants.Count;} }
 		public bool IsEmpty () {
-			if (TokenCount() < 1) {return true;}
+			if (TokenCount < 1) {return true;}
 			return false;
 		}
 		
@@ -52,7 +53,7 @@ namespace HOA.Map {
 		
 		
 		public void Enter (Token t) {
-			List<PLANE> planes = t.Plane();
+			List<PLANE> planes = t.Plane;
 			if (!Occupied(planes)) {
 				foreach (PLANE p in planes) {
 					tokens[(int)p] = t;
@@ -73,9 +74,11 @@ namespace HOA.Map {
 		}
 		
 		bool legal = false;
-		public bool IsLegal () {return legal;}
-		public void Legalize (bool b=true) {legal = b;}
-		
+		public bool Legal {
+			get {return legal;}
+			set {legal = value;}
+		}
+
 		//Sensors
 		List<Sensor> sensors = new List<Sensor>();
 	

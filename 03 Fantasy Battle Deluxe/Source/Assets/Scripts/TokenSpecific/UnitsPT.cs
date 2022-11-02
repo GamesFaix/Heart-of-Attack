@@ -15,8 +15,8 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(0)));
-			arsenal.Add(new ALeech(Price.Cheap(), this, Aim.Melee(), 5));
-			arsenal.Add(new AEvolve(Price.Cheap(), this, TTYPE.BEES));
+			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 5));
+			arsenal.Add(new AEvolve(Price.Cheap, this, TTYPE.BEES));
 			arsenal.Add(new AEvolve(new Price(1,2), this, TTYPE.MYCO));
 			arsenal.Add(new AEvolve(new Price(2,3), this, TTYPE.MART));
 		}		
@@ -33,7 +33,7 @@ namespace HOA.Tokens{
 			AddStat(new Source(this), STAT.COR, 12, false);
 			
 			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
-			arsenal.Add(new ACorrode(Price.Cheap(), this, Aim.Melee(), 8));
+			arsenal.Add(new ACorrode(Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new ABeesDeathSting(new Price(1,1), this, Aim.Melee(), 15));
 			
 		}		
@@ -74,13 +74,13 @@ namespace HOA.Tokens{
 			NewLabel(TTYPE.BLAC, s, true, template);
 			BuildGround();
 			AddKing();
-			SetOnDeath(TTYPE.HSLK,false);
+			OnDeath = TTYPE.HSLK;
 			
 			NewHealth(75);
 			NewWatch(3); 
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new ACorrode(Price.Cheap(), this, Aim.Melee(), 15));
+			arsenal.Add(new ACorrode(Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Add(new ACreate(new Price(0,0), this, TTYPE.LICH));
 			Aim webAim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.CREATE, 3);
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.WEBB, webAim));

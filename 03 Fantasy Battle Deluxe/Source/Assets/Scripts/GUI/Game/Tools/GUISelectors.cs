@@ -26,22 +26,22 @@ public class GUISelectors : MonoBehaviour {
 	static Vector2 tokenScroll = new Vector2 (0,0);
 	
 	public static void TokenGrid (Panel p){
-		GUI.Box (p.FullBox(), "");
+		GUI.Box (p.FullBox, "");
 		
-		float internalW = btnW * FactionRef.Count();
-		float internalH = btnW * FactionRef.LargestSize();
+		float internalW = btnW * FactionRef.Count;
+		float internalH = btnW * FactionRef.LargestSize;
 		float x3 = p.x2;
 		
-		tokenScroll = GUI.BeginScrollView (p.FullBox(), tokenScroll, new Rect(p.X(), p.Y(), internalW, internalH));
+		tokenScroll = GUI.BeginScrollView (p.FullBox, tokenScroll, new Rect(p.X, p.Y, internalW, internalH));
 		
-		for (int i=0; i<FactionRef.Count(); i++){
-			Faction faction = FactionRef.Faction(i);
+		for (int i=0; i<FactionRef.Count; i++){
+			Faction faction = FactionRef.Index(i);
 			
-			for (int j=0; j<faction.Size(); j++){
+			for (int j=0; j<faction.Count; j++){
 				p.x2 = x3;
 				Rect box = new Rect(p.x2, p.y2, btnW, btnW);
-				if (GUI.Button(box, Thumbs.CodeToThumb(faction.Member(j)))){
-					token = faction.Member(j);
+				if (GUI.Button(box, Thumbs.CodeToThumb(faction[j]))){
+					token = faction[j];
 				}
 				p.y2 += btnW;
 			}
@@ -58,21 +58,21 @@ public class GUISelectors : MonoBehaviour {
 	public static void SelectInstance (Token t) {instance = t;}
 	
 	public static void InstanceGrid (Panel p){
-		GUI.Box (p.FullBox(), "");
+		GUI.Box (p.FullBox, "");
 		
-		int playerCount = Roster.Count();
+		int playerCount = Roster.Count;
 		float internalW = btnW * playerCount;
-		float internalH = btnW * Roster.LargestTeamSize();
+		float internalH = btnW * Roster.LargestTeamSize;
 		float x3 = p.x2;
 		
-		instanceScroll = GUI.BeginScrollView (p.FullBox(), instanceScroll, new Rect(p.X(), p.Y(), internalW, internalH));
+		instanceScroll = GUI.BeginScrollView (p.FullBox, instanceScroll, new Rect(p.X, p.Y, internalW, internalH));
 		
 		for (int i=0; i<playerCount; i++){
 			p.x2 = x3+10;
 			GUI.Label(p.Box(btnW), Roster.Players(true)[i].ToString());
 			p.NextLine();
 			
-			TokenGroup team = Roster.Players(true)[i].OwnedUnits();
+			TokenGroup team = Roster.Players(true)[i].OwnedUnits;
 			
 			foreach (Token t in team){
 				p.x2 = x3;
@@ -109,14 +109,14 @@ public class GUISelectors : MonoBehaviour {
 	}
 	
 	static bool LegalCellSelection () {
-		if (cell != default(Cell) && cell.IsLegal()) {
+		if (cell != default(Cell) && cell.Legal) {
 			return true;
 		}
 		return false;
 	}
 	
 	static bool LegalInstanceSelection () {
-		if (instance !=default(Token) && instance.IsLegal()) {
+		if (instance !=default(Token) && instance.Legal) {
 			return true;	
 		}
 		return false;

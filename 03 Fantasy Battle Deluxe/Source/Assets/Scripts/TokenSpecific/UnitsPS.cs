@@ -14,7 +14,7 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 8));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 8));
 		}		
 		public override string Notes () {return "";}
 	}
@@ -41,7 +41,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap(), this, Aim.Melee(), 15));
+			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 15));
 		}		
 		public override string Notes () {return "";}
 	}
@@ -51,14 +51,14 @@ namespace HOA.Tokens{
 			NewLabel(TTYPE.DREA, s, true, template);
 			BuildAir();
 			AddKing();
-			SetOnDeath(TTYPE.HGLA,false);
+			OnDeath = TTYPE.HGLA;
 			
 			NewHealth(75,2);
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
 			
-			arsenal.Add(new ACreate(Price.Cheap(), this, TTYPE.PRIS));
+			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.PRIS));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.AREN));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.PRIE));
 		}		

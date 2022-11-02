@@ -16,12 +16,12 @@ public class Source {
 	}
 	
 	public Source (Token t) {
-		player = t.Owner();
+		player = t.Owner;
 		token = t;
 	}
 	
-	public Player Player () {return player;}
-	public Token Token () {return token;}
+	public Player Player {get {return player;} }
+	public Token Token {get {return token;} }
 	
 	public override string ToString() {
 		if (token != default(Token)) {return token.ToString();}
@@ -29,12 +29,12 @@ public class Source {
 		return "ERROR";
 	}
 	
-	public static Source ActivePlayer () {
-		return new Source(Referee.ActivePlayer());
+	public static Source ActivePlayer {
+		get {return new Source(Referee.ActivePlayer);}
 	}
 			
-	public static Source ActiveUnit () {
-		return new Source((Token)TurnQueue.Top);
+	public static Source ActiveUnit {
+		get {return new Source((Token)TurnQueue.Top);}
 	}
 	
 }

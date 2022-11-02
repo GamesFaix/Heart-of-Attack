@@ -16,7 +16,7 @@ namespace HOA.Actions {
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 
-			name = chiTemplate.Name();
+			name = chiTemplate.Name;
 			desc = "Transform "+actor+" into a "+name+".\nNew "+name+" starts with "+actor+"'s HP.";
 		}
 		

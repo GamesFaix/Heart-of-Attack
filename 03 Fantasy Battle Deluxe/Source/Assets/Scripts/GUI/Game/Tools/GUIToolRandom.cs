@@ -7,9 +7,9 @@ public static class GUIToolRandom {
 	static int randBtn = 0;
 
 	public static void Display (Panel p) {
-		GUI.Box(p.FullBox(),"");
+		GUI.Box(p.FullBox,"");
 		
-		randBtn = GUI.Toolbar(p.LineBox(), randBtn, randLabels);
+		randBtn = GUI.Toolbar(p.LineBox, randBtn, randLabels);
 		DICE d = (DICE)randBtn;
 		
 		p.y2 += 5;
@@ -19,12 +19,12 @@ public static class GUIToolRandom {
 		p.x2 += 5;
 		if (GUI.Button(p.Box(0.5f), actionLabel)
 		|| Input.GetKey("right shift")) {
-			InputBuffer.Submit(new RRandom(new Source(Referee.ActivePlayer()), d));
+			InputBuffer.Submit(new RRandom(new Source(Referee.ActivePlayer), d));
 		}
 		
 		
 		p.y2 += 5;
 		p.x2 += 20;
-		GUI.Label(p.Box(0.5f), DiceCoin.PrintResult());	
+		GUI.Label(p.Box(0.5f), DiceCoin.PrintResult);	
 	}
 }

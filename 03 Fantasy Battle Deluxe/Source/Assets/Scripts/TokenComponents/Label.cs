@@ -12,14 +12,11 @@ namespace HOA.Tokens.Components {
 		char instance;
 		string fullName;
 		Player owner;
-		Token parent;
-		
-		
-		Color[] Colors () {return owner.Colors();}
-		
+		//Token parent;
+
 		public Label (Token t, TTYPE c, Source s, bool uni=false, bool temp=false){
-			parent = t;
-			owner = s.Player();
+		//	parent = t;
+			owner = s.Player;
 			code = c;
 			name = TokenRef.CodeToString(code);
 			unique = uni;
@@ -39,25 +36,23 @@ namespace HOA.Tokens.Components {
 			}
 		}
 		
-		public char Instance() {return instance;}
-		public string Name() {return name;}
-		public string FullName() {return fullName;}
-		public TTYPE Code() {return code;}
-		public string CodeInst() {return code.ToString()+" "+instance;}
-		public bool Unique () {return unique;}
+		public char Instance {get {return instance;} }
+		public string Name {get {return name;} }
+		public string FullName {get {return fullName;} }
+		public TTYPE Code {get {return code;} }
+		public string CodeInst {get {return code.ToString()+" "+instance;} }
+		public bool Unique {get {return unique;} }
 		
-		public Player Owner(){return owner;}
-		public void SetOwner(Player p, bool log=true){
-			owner = p;
-			if (log){GameLog.Out(p+" has taken possession of "+parent+".");}
+		public Player Owner {
+			get {return owner;} 
+			set {owner = value;}
 		}
-
 
 		char NextAvailableInstance(){
 			List<Token> likeTokens = new List<Token>();
 			
-			foreach (Token t in TokenFactory.Tokens()){
-				if(t.Name() == name) {likeTokens.Add(t);}				
+			foreach (Token t in TokenFactory.Tokens){
+				if(t.Name == name) {likeTokens.Add(t);}				
 			}		
 			
 			bool[] letterTaken = new bool[10] {
@@ -65,16 +60,16 @@ namespace HOA.Tokens.Components {
 				false, false, false, false, false};
 			
 			foreach (Token t in likeTokens){
-				if (t.Instance() == 'A'){letterTaken[0] = true;}
-				if (t.Instance() == 'B'){letterTaken[1] = true;}	
-				if (t.Instance() == 'C'){letterTaken[2] = true;}
-				if (t.Instance() == 'D'){letterTaken[3] = true;}
-				if (t.Instance() == 'E'){letterTaken[4] = true;}
-				if (t.Instance() == 'F'){letterTaken[5] = true;}
-				if (t.Instance() == 'G'){letterTaken[6] = true;}
-				if (t.Instance() == 'H'){letterTaken[7] = true;}
-				if (t.Instance() == 'I'){letterTaken[8] = true;}
-				if (t.Instance() == 'J'){letterTaken[9] = true;}
+				if (t.Instance == 'A'){letterTaken[0] = true;}
+				if (t.Instance == 'B'){letterTaken[1] = true;}	
+				if (t.Instance == 'C'){letterTaken[2] = true;}
+				if (t.Instance == 'D'){letterTaken[3] = true;}
+				if (t.Instance == 'E'){letterTaken[4] = true;}
+				if (t.Instance == 'F'){letterTaken[5] = true;}
+				if (t.Instance == 'G'){letterTaken[6] = true;}
+				if (t.Instance == 'H'){letterTaken[7] = true;}
+				if (t.Instance == 'I'){letterTaken[8] = true;}
+				if (t.Instance == 'J'){letterTaken[9] = true;}
 			}
 			if (letterTaken[0] == false){return 'A';}
 			if (letterTaken[1] == false){return 'B';}

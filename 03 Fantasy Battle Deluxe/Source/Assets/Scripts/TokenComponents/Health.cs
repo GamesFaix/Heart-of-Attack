@@ -18,41 +18,31 @@ namespace HOA.Tokens.Components {
 			def = d;
 		}
 
-		public virtual int HP(){return hp;}
-		public virtual int MaxHP(){return max;}
-		public virtual int DEF(){return def;}
-
-		public virtual string HPString(){return "("+hp+"/"+max+")";}
-		public virtual string DEFString(){return "("+def+")";}
-
-		public virtual void Fill(){hp=max;}
-
-		public virtual int SetHP (Source s, int n, bool log=true){
-			hp = Clamp(n);
-			int reduction;
-			bool full = Full(out reduction);
-			if (log) { 
-				if (full) {GameLog.Out(s.ToString()+" set "+parent+"'s HP to max. "+HPString());}
-				else {GameLog.Out(s.ToString()+" set "+parent+"'s HP to "+HPString()+".");}
-			}		
-			if (Empty()) {
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
+		public virtual int HP {
+			get {return hp;} 
+			set {
+				hp = Clamp(value);
+				if (Empty()) {InputBuffer.Submit(new RKill (new Source(parent), parent));}
 			}
-			return hp;
 		}
-		public virtual int SetMaxHP (Source s, int n, bool log=true){
-			max = Clamp(n);
-			int reduce = 0;
-			bool full = Full(out reduce);
-			if (log) { 
-				if (full) {GameLog.Out(s.ToString()+" set "+parent+"'s max HP below HP. -"+reduce+"HP. "+HPString());}
-				else {GameLog.Out(s.ToString()+" set "+parent+"'s max HP to "+HPString()+".");}
+
+		public virtual int MaxHP {
+			get {return max;} 
+			set {
+				max = Clamp(value);
+				if (Empty()) {InputBuffer.Submit(new RKill (new Source(parent), parent));}
 			}
-			if (Empty()) {	
-				InputBuffer.Submit(new RKill (new Source(parent), parent));
-			}
-			return max;
 		}
+		public virtual int DEF {
+			get {return def;} 
+			set {def = Clamp(value);}
+		}
+
+		public virtual string HPString {get {return "("+hp+"/"+max+")";} }
+		public virtual string DEFString {get {return "("+def+")";} }
+
+		public virtual void Fill () {hp=max;}
+
 		public virtual int AddHP (Source s, int n, bool log=true){
 			hp = Clamp(hp+n);
 			string sign = Sign(n);
@@ -60,8 +50,8 @@ namespace HOA.Tokens.Components {
 			bool full = Full(out reduction);
 
 			if (log) {
-				if (full) {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. HP full. "+HPString());}
-				else {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. "+HPString());}
+				if (full) {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. HP full. "+HPString);}
+				else {GameLog.Out(s.ToString()+":  "+parent+" "+sign+n+"HP. "+HPString);}
 			}	
 			if (Empty()) {
 				InputBuffer.Submit(new RKill (new Source(parent), parent));
@@ -74,8 +64,8 @@ namespace HOA.Tokens.Components {
 			int reduction;
 			bool full = Full(out reduction);
 			if (log) {
-				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. HP full. "+HPString());}
-				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. "+HPString());}
+				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. HP full. "+HPString);}
+				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+" max HP. "+HPString);}
 			}
 			if (Empty()) {
 				InputBuffer.Submit(new RKill (new Source(parent), parent));
@@ -92,8 +82,8 @@ namespace HOA.Tokens.Components {
 			bool full = Full(out reduction);
 			
 			if (log) {
-				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. HP full. "+HPString());}
-				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. "+HPString());}
+				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. HP full. "+HPString);}
+				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+"HP. "+HPString);}
 			}	
 			if (Empty()) {
 				InputBuffer.Submit(new RKill (new Source(parent), parent));
@@ -108,8 +98,8 @@ namespace HOA.Tokens.Components {
 			int reduction;
 			bool full = Full(out reduction);
 			if (log) {
-				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. HP full. "+HPString());}
-				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. "+HPString());}
+				if (full) {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. HP full. "+HPString);}
+				else {GameLog.Out(s.ToString()+": "+parent+" "+sign+change+" max HP. "+HPString);}
 			}
 			if (Empty()) {
 				InputBuffer.Submit(new RKill (new Source(parent), parent));
@@ -118,16 +108,10 @@ namespace HOA.Tokens.Components {
 
 		}
 
-
-		public virtual int SetDEF (Source s, int n, bool log=true){
-			def = Clamp(n);
-			if (log) {GameLog.Out(s.ToString()+" set "+parent+"'s DEF to "+DEFString()+".");}
-			return def;
-		}
 		public virtual int AddDEF (Source s, int n, bool log=true){
 			def = Clamp(def+n);
 			string sign = Sign(n);
-			if (log) {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+"DEF. DEF="+DEFString());}
+			if (log) {GameLog.Out(s.ToString()+": "+parent+" "+sign+n+"DEF. DEF="+DEFString);}
 			return def;
 		}
 
@@ -140,8 +124,8 @@ namespace HOA.Tokens.Components {
 					int dmg = n-def;
 					hp -= dmg;
 					if (log) {
-						if (def==0) {GameLog.Out(s.ToString()+" did "+dmg+" damage to "+parent+". "+HPString());}
-						if (def>0) {GameLog.Out(s.ToString()+" did "+dmg+" damage to "+parent+". "+parent+" defended against "+def+" damage. "+HPString());}
+						if (def==0) {GameLog.Out(s.ToString()+" did "+dmg+" damage to "+parent+". "+HPString);}
+						if (def>0) {GameLog.Out(s.ToString()+" did "+dmg+" damage to "+parent+". "+parent+" defended against "+def+" damage. "+HPString);}
 					}
 				}
 				else {GameLog.Debug("Units cannot take negative damage.");}

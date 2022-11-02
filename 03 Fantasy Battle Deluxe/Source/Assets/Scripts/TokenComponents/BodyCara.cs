@@ -12,7 +12,7 @@ namespace HOA.Tokens.Components {
 			parent = t;
 			SetPlane(PLANE.GND, false);
 			SetSpecial(SPECIAL.NONE, false);
-			SetOnDeath(TTYPE.CORP, false);
+			OnDeath = TTYPE.CORP;
 			sensors = new List<Sensor>();
 		}
 		

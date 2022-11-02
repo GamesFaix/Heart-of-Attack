@@ -3,21 +3,21 @@
 public class GUILog : MonoBehaviour {
 	
 	public void Display (Panel p){
-		GUI.Box(p.FullBox(), " ");
+		GUI.Box(p.FullBox, " ");
 		p.x2 += 5;
 		
 		GUI.Label(p.Box(0.2f), "LOG");
 		
-		Panel controlPanel = new Panel(p.Box(0.8f), p.LineH(), p.s);
+		Panel controlPanel = new Panel(p.Box(0.8f), p.LineH, p.s);
 		ControlButtons(controlPanel);
 		
 		p.NextLine();		
 		
-		float historySize = (p.H()-2*p.LineH()) / p.H();
-		Panel historyPanel = new Panel(p.TallBox(historySize), p.LineH(), p.s);
+		float historySize = (p.H-2*p.LineH) / p.H;
+		Panel historyPanel = new Panel(p.TallBox(historySize), p.LineH, p.s);
 		CommandHistory(historyPanel);
 		
-		CommandField(p.LineBox());
+		CommandField(p.LineBox);
 
 	}
 
@@ -27,7 +27,7 @@ public class GUILog : MonoBehaviour {
 	
 	void ControlButtons(Panel p){
 		string[] views = new string[3]{"Input","Output","Debug"};
-		view = GUI.Toolbar(p.LineBox(), view, views);
+		view = GUI.Toolbar(p.LineBox, view, views);
 		switch (view){
 		case 0:
 			showLog = LogIO.IN;
@@ -52,10 +52,10 @@ public class GUILog : MonoBehaviour {
 	
 	//Command History
 	void CommandHistory(Panel p){
-		GUI.Box(p.FullBox(),"");
+		GUI.Box(p.FullBox,"");
 
-		internalH = p.LineH() * GameLog.Count(showLog);
-		historyScroll = GUI.BeginScrollView(p.FullBox(), historyScroll, new Rect(p.X(),p.Y(),internalW,internalH));
+		internalH = p.LineH * GameLog.Count(showLog);
+		historyScroll = GUI.BeginScrollView(p.FullBox, historyScroll, new Rect(p.X,p.Y,internalW,internalH));
 		
 		for (int i=0; i<GameLog.Count(showLog); i++){
 			entry = GameLog.Index(i, showLog);

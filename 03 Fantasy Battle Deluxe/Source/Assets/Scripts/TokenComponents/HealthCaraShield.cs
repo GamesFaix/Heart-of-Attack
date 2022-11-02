@@ -40,26 +40,29 @@ namespace HOA.Tokens.Components {
 			}
 		}
 		
-		public override int DEF(){
-			int d = original.DEF() + sensor.Parent().DEF();
-			if (parent.Code() == TTYPE.CARA) {d = Mathf.Min(d, 5);}
-			return d;
+		public override int DEF {
+			get {
+				int d = original.DEF + sensor.Parent.DEF;
+				if (parent.Code == TTYPE.CARA) {d = Mathf.Min(d, 5);}
+				return d;
+			}
+			set {original.DEF = value;}
 		}
 		
-		public override int HP(){return original.HP();}
-		public override int MaxHP(){return original.MaxHP();}
+		public override int HP {
+			get {return original.HP;} 
+			set {original.HP = value;}
+		}
+		public override int MaxHP {
+			get {return original.MaxHP;} 
+			set {original.MaxHP = value;}
+		}
 
-		public override string HPString(){return original.HPString();}
-		public override string DEFString(){return "("+DEF()+")";}
+		public override string HPString {get {return original.HPString;} }
+		public override string DEFString {get {return "("+DEF+")";} }
 
 		public override void Fill(){original.Fill();}
 
-		public override int SetHP (Source s, int n, bool log=true){
-			return original.SetHP(s,n,log);
-		}
-		public override int SetMaxHP (Source s, int n, bool log=true){
-			return original.SetMaxHP(s, n, log);
-		}
 		public override int AddHP (Source s, int n, bool log=true){
 			return original.AddHP(s,n,log);
 		}
@@ -73,9 +76,7 @@ namespace HOA.Tokens.Components {
 		public override int MultMaxHP (Source s, float f, bool log=true){
 			return original.MultMaxHP (s, f, log);
 		}
-		public override int SetDEF (Source s, int n, bool log=true){
-			return original.SetDEF(s, n, log);
-		}
+
 		public override int AddDEF (Source s, int n, bool log=true){
 			return original.AddDEF(s, n, log);
 		}

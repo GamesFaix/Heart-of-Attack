@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{849F6ED2-CAF8-867E-8895-3C1D78A9927C}</ProjectGuid>
+	<ProjectGuid>{14210CF9-7E80-049D-5FB6-12AF215F886E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_GAMECENTER;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -82,6 +82,10 @@
      <Compile Include="Assets\Scripts\Console\InputBuffer.cs" />
      <Compile Include="Assets\Scripts\Console\NetworkConsole.cs" />
      <Compile Include="Assets\Scripts\Console\RequestHandler.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - CreateDestroy.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Game.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Queue.cs" />
+     <Compile Include="Assets\Scripts\Console\Requests - Roster.cs" />
      <Compile Include="Assets\Scripts\Console\Requests.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\StyledText.cs" />
@@ -108,9 +112,11 @@
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
      <Compile Include="Assets\Scripts\Generic\Group.cs" />
+     <Compile Include="Assets\Scripts\Generic\Queue.cs" />
      <Compile Include="Assets\Scripts\Generic\ReDictionary.cs" />
      <Compile Include="Assets\Scripts\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Misc\DiceCoin.cs" />
+     <Compile Include="Assets\Scripts\Misc\QueueStunner.cs" />
      <Compile Include="Assets\Scripts\Misc\RandomSync.cs" />
      <Compile Include="Assets\Scripts\Misc\Source.cs" />
      <Compile Include="Assets\Scripts\Misc\TurnQueue.cs" />
@@ -132,6 +138,7 @@
      <Compile Include="Assets\Scripts\TokenComponents\WatchSpecial.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Faction.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\FactionRef.cs" />
+     <Compile Include="Assets\Scripts\TokenHandling\Factions.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Obstacle.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\TemplateFactory.cs" />
      <Compile Include="Assets\Scripts\TokenHandling\Token.cs" />

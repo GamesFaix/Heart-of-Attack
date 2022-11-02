@@ -9,14 +9,16 @@ namespace HOA.Tokens {
 	public static class TokenFactory {
 		static List<Token> tokens = new List<Token>();
 		
-		public static TokenGroup Tokens () {
-			TokenGroup tg = new TokenGroup();
-			foreach (Token t in tokens) {tg.Add(t);}
-			return tg;		
+		public static TokenGroup Tokens {
+			get {
+				TokenGroup tg = new TokenGroup();
+				foreach (Token t in tokens) {tg.Add(t);}
+				return tg;		
+			}
 		}
 		
 		public static void ClearLegal () {
-			foreach (Token t in tokens) {t.Legalize(false);}
+			foreach (Token t in tokens) {t.Legal = false;}
 		}
 		
 		public static void Remove (Token token) {
@@ -35,8 +37,8 @@ namespace HOA.Tokens {
 			if (t.Enter(c)) {
 				tokens.Add(t);
 				if (t is Unit) {TurnQueue.Add((Unit)t);}
-				t.SetOwner(s.Player(), false);
-				if (log && s.Player() != Roster.Neutral()) {
+				t.Owner = s.Player;
+				if (log && s.Player != Roster.Neutral) {
 					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
 				}
 				return true;
@@ -52,8 +54,8 @@ namespace HOA.Tokens {
 			if (t.Enter(c)) {
 				tokens.Add(t);
 				if (t is Unit) {TurnQueue.Add((Unit)t);}
-				t.SetOwner(s.Player(), false);
-				if (log && s.Player() != Roster.Neutral()) {
+				t.Owner = s.Player;
+				if (log && s.Player != Roster.Neutral) {
 					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
 				}
 				return true;
@@ -127,11 +129,8 @@ namespace HOA.Tokens {
 				case TTYPE.CORP: return new Corpse(s);
 				case TTYPE.WATR: return new Water(s);
 				case TTYPE.LAVA: return new Lava(s);
-	
 				
-				
-				
-			default: return default(Token);
+				default: return default(Token);
 			}
 		}
 	}

@@ -23,8 +23,8 @@ namespace HOA.Map {
 		}
 		
 		public static int[] FromCells (Cell c1, Cell c2) {
-			int x = c2.X() - c1.X();
-			int y = c2.Y() - c1.Y();
+			int x = c2.X - c1.X;
+			int y = c2.Y - c1.Y;
 			return new int[2] {x,y};
 		}
 		

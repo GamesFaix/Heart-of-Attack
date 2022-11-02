@@ -22,7 +22,7 @@ public class GUIInspector : MonoBehaviour {
 				
 	public void Display(Panel p){
 
-		GUI.Box(p.FullBox(), "");
+		GUI.Box(p.FullBox, "");
 		
 		p.x2 += 5;
 		GUI.Label(p.Box(0.3f), "INSPECTOR");
@@ -30,19 +30,19 @@ public class GUIInspector : MonoBehaviour {
 		p.NextLine();
 
 		if (t != null) {
-			float boxH = (p.H()-p.LineH()) / p.H();
+			float boxH = (p.H-p.LineH) / p.H;
 			
 			scrollPos = GUI.BeginScrollView(p.TallBox(boxH), scrollPos, new Rect(p.x2, p.y2, internalW, internalH));
 				//NAME
 				p.x2 +=5;	
-				StyledText.Highlight(p.Box(250), t.FullName(), p.s, t.Owner().Colors());
+				StyledText.Highlight(p.Box(250), t.FullName, p.s, t.Owner.Colors);
 				
-				if (t.Owner() != default(Player)) {
-					StyledText.Highlight(p.Box(100), t.Owner().ToString(), p.s, t.Owner().Colors());
+				if (t.Owner != default(Player)) {
+					StyledText.Highlight(p.Box(100), t.Owner.ToString(), p.s, t.Owner.Colors);
 				}
 			
 				string onDeathLabel;
-				if (t.OnDeath() != TTYPE.NONE) {onDeathLabel = TokenRef.CodeToString(t.OnDeath());}
+				if (t.OnDeath != TTYPE.NONE) {onDeathLabel = TokenRef.CodeToString(t.OnDeath);}
 				else {onDeathLabel = "None";}
 					
 				p.ResetX();
@@ -68,7 +68,7 @@ public class GUIInspector : MonoBehaviour {
 				if (t.IsSpecial(SPECIAL.TRAM)) {GUI.Box(p.Box(iconSize), Icons.TRAM(), p.s); p.x2 += 5;}
 				p.NextLine();
 			
-				if (t.Notes() != "") {p.x2+=5; GUI.Label(p.LineBox(), t.Notes(), p.s);}
+				if (t.Notes() != "") {p.x2+=5; GUI.Label(p.LineBox, t.Notes(), p.s);}
 				
 				if (t is Unit){
 					Unit u = (Unit)t;
@@ -76,19 +76,19 @@ public class GUIInspector : MonoBehaviour {
 					p.x2 += 5;
 					GUI.Box(p.Box(iconSize), Icons.HP(), p.s);
 					p.x2 += 5;
-					GUI.Label(p.Box(90), u.HPString(), p.s);	
+					GUI.Label(p.Box(90), u.HPString, p.s);	
 				 
-					if (u.DEF() > 0) {
+					if (u.DEF > 0) {
 						GUI.Box(p.Box(iconSize), Icons.DEF(), p.s);
 						p.x2 += 5;
-						GUI.Label(p.Box(30), u.DEF()+"", p.s);
+						GUI.Label(p.Box(30), u.DEF+"", p.s);
 						p.x2 += 5;
 					}
 					
-					if (u.COR() > 0 ) {
+					if (u.COR > 0 ) {
 						GUI.Box(p.Box(iconSize), Icons.COR(), p.s);
 						p.x2 += 5;
-						GUI.Label(p.Box(30), u.COR()+"", p.s);
+						GUI.Label(p.Box(30), u.COR+"", p.s);
 						p.x2 += 5;
 					}
 					p.NextLine();
@@ -97,13 +97,13 @@ public class GUIInspector : MonoBehaviour {
 					p.x2 += 5;
 					GUI.Box(p.Box(iconSize), Icons.IN(), p.s);
 					p.x2 += 5;
-					GUI.Label(p.Box(30), u.IN()+"", p.s);
+					GUI.Label(p.Box(30), u.IN+"", p.s);
 					
 					if (u.IsStunned()) {
 						p.x2 += 5;
 						GUI.Box(p.Box(iconSize), Icons.STUN(), p.s);
 						p.x2 += 5;
-						GUI.Label(p.Box(30), u.Stunned()+"", p.s);
+						GUI.Label(p.Box(30), u.STUN+"", p.s);
 					}
 					else if (u.IsSkipped()){
 						p.x2 += 5;
@@ -116,12 +116,12 @@ public class GUIInspector : MonoBehaviour {
 					p.x2 += 5;
 					GUI.Box(p.Box(iconSize), Icons.AP(), p.s);
 					p.x2 += 5;	
-					GUI.Label(p.Box(30), u.AP()+"", p.s);
+					GUI.Label(p.Box(30), u.AP+"", p.s);
 					
 					p.x2 += 5;	
 					GUI.Box(p.Box(iconSize), Icons.FP(), p.s);
 					p.x2 += 5;
-					GUI.Label(p.Box(100), u.FP()+"", p.s);
+					GUI.Label(p.Box(100), u.FP+"", p.s);
 					if (p.x2 > internalW) {internalW = p.x2;}
 				
 					p.NextLine();				
@@ -135,9 +135,9 @@ public class GUIInspector : MonoBehaviour {
 						p.x2 += 5;
 						
 						Rect btnBox = p.Box(btnW);
-						Vector2 mousePos = new Vector2(Input.mousePosition.x,Screen.height - Input.mousePosition.y + p.H() - p.LineH()); 
+						Vector2 mousePos = new Vector2(Input.mousePosition.x,Screen.height - Input.mousePosition.y + p.H - p.LineH); 
 					
-						if (GUI.Button(btnBox, a.Name())) {a.Perform();}
+						if (GUI.Button(btnBox, a.Name)) {a.Perform();}
 						if (btnBox.Contains(mousePos)) {
 							description = a.ToString();
 						}
@@ -146,7 +146,7 @@ public class GUIInspector : MonoBehaviour {
 					}
 					//p.y2 = y3;
 					//p.x2 = x3;
-					Rect rect = new Rect (x3+btnW+10, y3, p.W()-btnW-25, p.LineH()*5);
+					Rect rect = new Rect (x3+btnW+10, y3, p.W-btnW-25, p.LineH*5);
 				
 					GUI.Box (rect, "");
 					rect.x+=5; rect.width-=5;

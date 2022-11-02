@@ -21,20 +21,20 @@ public class Panel {
 		s = style;
 	}
 	
-	public float X() {return x;}
-	public float Y() {return y;}
-	public float H() {return h;}
-	public float W() {return w;}
-	public float LineH() {return dy;}
+	public float X {get {return x;} }
+	public float Y {get {return y;} }
+	public float H {get {return h;} }
+	public float W {get {return w;} }
+	public float LineH {get {return dy;} }
 	public void ResetY() {y2 = y;}
 	public void ResetX() {x2 = x;}
 
 	public void NextLine () {y2 += dy; x2 = x;}
 	public void PrevLine () {y2 -= dy; x2 = x;}
 	
-	public int Lines () {return (int)Mathf.Ceil(h/dy)-1;}
+	public int Lines {get {return (int)Mathf.Ceil(h/dy)-1;} }
 	
-	public Rect FullBox () {return new Rect (x,y,w,h);}
+	public Rect FullBox {get {return new Rect (x,y,w,h);} }
 	
 	public Rect TallBox (float n) {
 		Rect rect;
@@ -46,11 +46,13 @@ public class Panel {
 		return rect;		
 	}
 	
-	public Rect LineBox () {
-		Rect rect = new Rect(x,y2,w,dy);
-		y2 += dy;
-		x2 = x;
-		return rect;
+	public Rect LineBox {
+		get {
+			Rect rect = new Rect(x,y2,w,dy);
+			y2 += dy;
+			x2 = x;
+			return rect;
+		}
 	}
 	
 	public Rect Box (float n) {
@@ -62,8 +64,6 @@ public class Panel {
 		return rect;
 	}
 	
-	public Rect ScrollBox () {
-		return new Rect(x+w-15, y, 30, h);	
-	}
+	public Rect ScrollBox {get {return new Rect(x+w-15, y, 30, h);} }
 	
 }

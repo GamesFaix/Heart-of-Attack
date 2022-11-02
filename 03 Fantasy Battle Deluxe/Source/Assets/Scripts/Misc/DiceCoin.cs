@@ -27,27 +27,29 @@ public static class DiceCoin{
 		lastDice = d;
 		lastSource = s;
 		result = RandomSync.Range(1,max);
-		GameLog.Out(PrintResult());
+		GameLog.Out(PrintResult);
 		return result;
 	}
 	
-	public static string PrintResult () {
-		if (lastSource.Player() != Roster.Neutral()) {
-			string printString = lastSource.ToString();
-			
-			if (lastDice == DICE.COIN) {
-				printString += " flipped ";
-				if (result == 1) {printString += "heads.";}
-				else {printString += "tails.";}
+	public static string PrintResult {
+		get {
+			if (lastSource.Player != Roster.Neutral) {
+				string printString = lastSource.ToString();
+				
+				if (lastDice == DICE.COIN) {
+					printString += " flipped ";
+					if (result == 1) {printString += "heads.";}
+					else {printString += "tails.";}
+				}
+				else {
+					printString += " rolled "+result+" on a "+lastDice.ToString();
+				}	
+				return printString;	
 			}
-			else {
-				printString += " rolled "+result+" on a "+lastDice.ToString();
-			}	
-			return printString;	
+			return "";
 		}
-		return "";
 	}
 	
-	public static int LastResult() {return result;}
+	public static int LastResult {get {return result;} }
 	
 }

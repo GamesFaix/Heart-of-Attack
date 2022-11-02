@@ -2,31 +2,14 @@ using System.Collections.Generic;
 using HOA.Actions;
 
 namespace HOA.Tokens.Components {
-	public class Arsenal {
-		
-		//Unit parent;
-		
+	public class Arsenal : Group<Action> {
+
 		List<Action> actions;
 		
 		public Arsenal (Unit unit) {
-			//parent = unit;
 			actions = new List<Action>();	
 		}
-		
-		public bool Contains (Action a) {
-			if (actions.Contains(a)) {return true;}
-			return false;
-		}
-		public void Add (Action a) {if (!Contains(a)) {actions.Add(a);}}		
-		public void Remove (Action a) {if (Contains(a)) {actions.Remove(a);}}
-	
-		public int Count () {return actions.Count;}
-		
-		public Action Action (int i) {
-			if (i < Count()) {return actions[i];}
-			else {return default(Action);}
-		}
-		
+
 		public bool HasMove (out AMove move) {
 			move = default(AMove);
 			foreach (Action a in actions) {
@@ -56,26 +39,5 @@ namespace HOA.Tokens.Components {
 		public void Reset () {
 			foreach (Action a in actions) {a.Reset();}
 		}
-		
-		public MyEnumerator GetEnumerator() {return new MyEnumerator(this);}
-	
-		public class MyEnumerator {
-			int n;
-			Arsenal buffer;
-	
-			public MyEnumerator(Arsenal input) {
-				buffer = input; 
-				n = -1;
-			}
-	
-			public bool MoveNext() {
-				n++;
-				return (n < buffer.Count());
-			}
-			public Action Current {
-				get {return buffer.Action(n);} 
-			}
-		}
-		
 	}
 }

@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 			
-			name = chiTemplate.Name();
+			name = chiTemplate.Name;
 			desc = "Replace target non-remains destructible with "+name+".";
 		}
 		

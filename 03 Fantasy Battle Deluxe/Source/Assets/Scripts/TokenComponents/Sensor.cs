@@ -6,8 +6,8 @@ namespace HOA.Tokens.Components {
 		protected Unit parent;
 		protected Cell cell;
 
-		public Cell Cell () {return cell;}
-		public Unit Parent () {return parent;}
+		public Cell Cell {get {return cell;} }
+		public Unit Parent {get {return parent;} }
 		
 		public abstract void Enter (Cell c);
 		public abstract void Exit ();

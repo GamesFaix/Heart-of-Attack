@@ -23,35 +23,34 @@ namespace HOA.Tokens.Components {
 			parent = t;
 			SetPlane(p, false);
 			SetSpecial(s, false);
-			SetOnDeath(TTYPE.NONE, false);
+			OnDeath = TTYPE.NONE;
 		}
 
 		public Body(Token t, PLANE p, SPECIAL[] s){
 			parent = t;
 			SetPlane(p, false);
 			SetSpecial(s, false);			
-			SetOnDeath(TTYPE.NONE, false);
+			OnDeath = TTYPE.NONE;
 		}
 
 		public Body(Token t, PLANE[] p, SPECIAL s=SPECIAL.NONE){
 			parent = t;
 			SetPlane(p, false);
 			SetSpecial(s, false);
-			SetOnDeath(TTYPE.NONE, false);
+			OnDeath = TTYPE.NONE;
 		}
 
 		public Body(Token t, PLANE[] p, SPECIAL[] s){
 			parent = t;
 			SetPlane(p, false);
 			SetSpecial(s, false);
-			SetOnDeath(TTYPE.NONE, false);
+			OnDeath = TTYPE.NONE;
 		}
 
-		public void SetOnDeath(TTYPE code, bool log=true){
-			deathCode = code;
-			if (log) {GameLog.Out(parent+" death token set to "+deathCode+".");}
+		public TTYPE OnDeath {
+			get {return deathCode;}
+			set {deathCode = value;}
 		}
-		public TTYPE OnDeath(){return deathCode;}
 
 		public void SetPlane (PLANE p, bool log=true){
 			for (int i=0; i<planes; i++) {plane[i] = false;}
@@ -64,7 +63,7 @@ namespace HOA.Tokens.Components {
 				GameLog.Debug("Attempt to assign invalid plane.");
 				break;
 			}
-			if (log) {GameLog.Out(parent+" plane set to "+PlaneString()+".");}
+			if (log) {GameLog.Out(parent+" plane set to "+PlaneString+".");}
 		}
 		public void SetPlane (PLANE[] ps, bool log=true){
 			for (int i=0; i<planes; i++) {plane[i] = false;}
@@ -79,16 +78,18 @@ namespace HOA.Tokens.Components {
 					break;
 				}
 			}
-			if (log) {GameLog.Out(parent+" plane set to "+PlaneString()+".");}
+			if (log) {GameLog.Out(parent+" plane set to "+PlaneString+".");}
 
 		}
-		public List<PLANE> Plane(){
-			List<PLANE> ps = new List<PLANE>();
-			if (plane[0]){ps.Add(PLANE.SUNK);}
-			if (plane[1]){ps.Add(PLANE.GND);}
-			if (plane[2]){ps.Add(PLANE.AIR);}
-			if (plane[3]){ps.Add(PLANE.ETH);}
-			return ps;
+		public List<PLANE> Plane {
+			get {
+				List<PLANE> ps = new List<PLANE>();
+				if (plane[0]){ps.Add(PLANE.SUNK);}
+				if (plane[1]){ps.Add(PLANE.GND);}
+				if (plane[2]){ps.Add(PLANE.AIR);}
+				if (plane[3]){ps.Add(PLANE.ETH);}
+				return ps;
+			}
 		}
 		public void SetSpecial (SPECIAL tc, bool log=true){
 			for (int i=0; i<specials; i++) {special[i] = false;}
@@ -101,7 +102,7 @@ namespace HOA.Tokens.Components {
 			default:
 				break;
 			}
-			if (log) {GameLog.Out(parent+" specials set to "+SpecialString()+".");}
+			if (log) {GameLog.Out(parent+" specials set to "+SpecialString+".");}
 
 		}
 
@@ -118,7 +119,7 @@ namespace HOA.Tokens.Components {
 					break;
 				}
 			}
-			if (log) {GameLog.Out(parent+" specials set to "+SpecialString()+".");}
+			if (log) {GameLog.Out(parent+" specials set to "+SpecialString+".");}
 		}
 		public List<SPECIAL> Special(){
 			List<SPECIAL> ss = new List<SPECIAL>();
@@ -164,28 +165,32 @@ namespace HOA.Tokens.Components {
 			return false;
 		}
 
-		public string PlaneString(){
-			string str = "";
-			foreach (PLANE p in Plane()){
-				if (p == PLANE.SUNK){str += "Sunken, ";}
-				if (p == PLANE.GND) {str += "Ground, ";}
-				if (p == PLANE.AIR) {str += "Air, ";}
-				if (p == PLANE.ETH) {str += "Ethereal, ";}
+		public string PlaneString {
+			get {
+				string str = "";
+				foreach (PLANE p in Plane){
+					if (p == PLANE.SUNK){str += "Sunken, ";}
+					if (p == PLANE.GND) {str += "Ground, ";}
+					if (p == PLANE.AIR) {str += "Air, ";}
+					if (p == PLANE.ETH) {str += "Ethereal, ";}
+				}
+				char[] trim = new char[2]{' ',','};
+				return str.Trim(trim);
 			}
-			char[] trim = new char[2]{' ',','};
-			return str.Trim(trim);
 		}
-		public string SpecialString(){
-			string str = "";
-			foreach (SPECIAL s in Special()){
-				if (s == SPECIAL.KING){str += "Attack King, ";}
-				if (s == SPECIAL.TRAM){str += "Trample, ";}
-				if (s == SPECIAL.DEST){str += "Destructible, ";}
-				if (s == SPECIAL.REM) {str += "Remains, ";}
-				if (s == SPECIAL.HOA) {str += "Heart of Attack, ";}
+		public string SpecialString {
+			get {
+				string str = "";
+				foreach (SPECIAL s in Special()){
+					if (s == SPECIAL.KING){str += "Attack King, ";}
+					if (s == SPECIAL.TRAM){str += "Trample, ";}
+					if (s == SPECIAL.DEST){str += "Destructible, ";}
+					if (s == SPECIAL.REM) {str += "Remains, ";}
+					if (s == SPECIAL.HOA) {str += "Heart of Attack, ";}
+				}
+				char[] trim = new char[2]{' ',','};
+				return str.Trim(trim);
 			}
-			char[] trim = new char[2]{' ',','};
-			return str.Trim(trim);
 		}
 		
 		public virtual bool Enter (Cell newCell) {
@@ -204,7 +209,7 @@ namespace HOA.Tokens.Components {
 		}
 		
 		public bool CanEnter (Cell newCell) {
-			if (!newCell.Occupied(Plane())) {return true;}
+			if (!newCell.Occupied(Plane)) {return true;}
 			
 			if (CanTrample (newCell)) {return true;}
 			
@@ -224,7 +229,7 @@ namespace HOA.Tokens.Components {
 		protected void Trample (Cell newCell) {
 			if (CanTrample(newCell)) {
 				Token t = newCell.Occupant(PLANE.GND);
-				InputBuffer.Submit(new RKill(Source.ActivePlayer(), t));
+				InputBuffer.Submit(new RKill(Source.ActivePlayer, t));
 			}
 		}
 		
@@ -232,21 +237,22 @@ namespace HOA.Tokens.Components {
 			cell.Exit(parent);
 		}
 		
-		public Cell Cell () {return cell;}
+		public Cell Cell {get {return cell;} }
 		
 		public TokenGroup Neighbors(bool cellMates = false) {
-			TokenGroup neighbors = cell.Neighbors().Occupants();
+			TokenGroup neighbors = cell.Neighbors().Occupants;
 			if (cellMates) {
-				foreach (Token t in CellMates()) {neighbors.Add(t);}
+				foreach (Token t in CellMates) {neighbors.Add(t);}
 			}
 			return neighbors;
 		}
 		
-		public TokenGroup CellMates() {
-			TokenGroup cellMates = cell.Occupants();
-			cellMates.Remove(parent);
-			return cellMates;
+		public TokenGroup CellMates {
+			get {
+				TokenGroup cellMates = cell.Occupants;
+				cellMates.Remove(parent);
+				return cellMates;
+			}
 		}
-
 	}
 }

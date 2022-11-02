@@ -17,8 +17,8 @@ namespace HOA.Tokens {
 	
 	public static class TokenRef {
 		
-		public static Dictionary<TTYPE,string>.ValueCollection Names() {return codeNames.Values;}
-		public static Dictionary<TTYPE,string>.KeyCollection Codes() {return codeNames.Keys;}
+		public static Dictionary<TTYPE,string>.ValueCollection Names {get {return codeNames.Values;} }
+		public static Dictionary<TTYPE,string>.KeyCollection Codes {get {return codeNames.Keys;} }
 		public static string CodeToString (TTYPE code) {return codeNames[code];}
 	
 		static Dictionary<TTYPE,string> codeNames = new Dictionary<TTYPE,string> {

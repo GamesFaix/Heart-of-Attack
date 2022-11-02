@@ -12,14 +12,13 @@ namespace HOA.Actions {
 		protected string desc;
 		
 		protected Aim aim;
-		public Aim Aim () {return aim;}
+		public Aim Aim {get {return aim;}}
 		
 		protected Price price = new Price(1,0);
 		
-		public string Name () {return name;}
+		public string Name {get {return name;} }
 		public override string ToString () {return price.ToString()+"\t"+"\t"+"\t"+aim.ToString()+"\n"+desc;}
 	
-		
 		protected bool used = false;
 		public void Reset () {used = false;}
 		
