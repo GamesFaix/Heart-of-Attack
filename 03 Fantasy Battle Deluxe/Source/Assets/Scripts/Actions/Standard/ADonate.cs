@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			damage = d;
 			actor = u;
 			name = "Donate Life";
-			desc = "Heal target unit "+d+" HP. \n"+actor+" takes damage equal to HP successfully gained.";
+			desc = "Target unit gains "+d+" health. \n"+actor+" takes damage equal to health successfully gained.";
 		}
 		
 		public override void Perform () {

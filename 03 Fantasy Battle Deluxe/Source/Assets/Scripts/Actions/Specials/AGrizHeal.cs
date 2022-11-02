@@ -20,7 +20,7 @@ namespace HOA.Actions {
 			magnitude = n;
 
 			name = "Heal";
-			desc = "Target teammate: +"+magnitude+" HP.\n(Cannot target self.)";
+			desc = "Target teammate gains "+magnitude+" health.\n(Cannot target self.)";
 		}
 		
 		public override void Perform () {

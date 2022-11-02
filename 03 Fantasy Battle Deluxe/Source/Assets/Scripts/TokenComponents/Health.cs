@@ -38,7 +38,7 @@ namespace HOA.Tokens.Components {
 			set {def = Clamp(value);}
 		}
 
-		public virtual string HPString {get {return "("+hp+"/"+max+")";} }
+		public virtual string HPString {get {return hp+"/"+max;} }
 		public virtual string DEFString {get {return "("+def+")";} }
 
 		public virtual void Fill () {hp=max;}

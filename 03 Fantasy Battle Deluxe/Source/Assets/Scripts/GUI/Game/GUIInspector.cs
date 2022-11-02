@@ -6,7 +6,7 @@ using HOA.Actions;
 
 public class GUIInspector : MonoBehaviour {
 
-	Panel panel;
+	static Panel panel;
 	
 	static Token t = default(Token);
 
@@ -14,18 +14,21 @@ public class GUIInspector : MonoBehaviour {
 		get {return t;}
 		set {
 			t = value;
-			description = "";
+			inspectedAction = default(Action);
 		}
 	}
 	
-	Vector2 scrollPos = new Vector2(0,0);
+	static Vector2 scrollPos = new Vector2(0,0);
 	float internalW = 100;
 	float iconSize = 30;
 	float internalH = 0;
 			
-	static string description =  "";
-				
+	static Action inspectedAction =  default(Action);
+	static TIP tip;			
+	public static TIP Tip {set {tip = value;}}
+
 	public void Display(Panel p){
+		tip = TIP.NONE;
 		panel = p;
 
 		GUI.Box(p.FullBox, "");
@@ -45,18 +48,21 @@ public class GUIInspector : MonoBehaviour {
 			Tokens(new Panel(p.TallBox(3), p.LineH, p.s), p, out tokenH);
 
 			if (t.Notes() != "") {
-				p.NudgeX();
 				p.NudgeY();
-				GUI.Label(p.Box(0.9f), t.Notes());
+				GUI.Label(p.TallBox(1.5f), t.Notes());
 				p.NudgeY(false);
-				p.NextLine();
 			}
 			float unitH = 0;
 			if (t is Unit) {Units (new Panel(p.TallBox(12), p.LineH, p.s), p, out unitH);}
 			GUI.Label(p.LineBox, "");
 			internalH = tokenH+unitH;
+
+			if (ShiftKey() && tip != TIP.NONE) {GUIToolTips.Tip(MousePos(), tip);}
 			GUI.EndScrollView();
 		}
+
+
+
 	}
 
 	void Tokens (Panel p, Panel super, out float h) {
@@ -68,14 +74,16 @@ public class GUIInspector : MonoBehaviour {
 		
 		p.NudgeX();
 		if (t.Owner != default(Player)) {Owner (new Panel (p.Box(100), p.LineH, p.s), super);}
-		p.x2 = p.X + p.W*0.5f;
-		Cell(new Panel (p.Box(100), p.LineH, p.s), super);
 		p.NextLine();
 		
 		p.NudgeX();	
 		Plane(new Panel (p.Box(iconSize*3), p.LineH, p.s), super);
 		p.NudgeX(); p.NudgeX();
 		Special(new Panel (p.Box(iconSize*3), p.LineH, p.s), super);
+		p.NudgeX(); p.NudgeX();
+		Cell(new Panel (p.Box(iconSize*3), p.LineH, p.s), super);
+
+
 		p.NextLine();
 		h=p.y2-yStart;
 	}
@@ -86,10 +94,12 @@ public class GUIInspector : MonoBehaviour {
 		if (ShiftMouseOver(p.FullBox)) {ToolTip("Name");}
 	}
 	void OnDeath (Panel p, Panel super) {
-		GUI.Box(p.Box(20), Icons.REM(), p.s);
+		GUI.Box(p.Box(20), Icons.ONDEATH(), p.s);
 		p.NudgeX();
 		GUI.Label(p.Box(1),TokenRef.CodeToString(t.OnDeath));
-		if (ShiftMouseOver(p.FullBox)) {ToolTip("Remains left on token death");}
+		if (ShiftMouseOver(p.FullBox)) {
+			tip = TIP.ONDEATH;
+		}
 	}
 
 	void Owner (Panel p, Panel super) {
@@ -97,8 +107,14 @@ public class GUIInspector : MonoBehaviour {
 		if (ShiftMouseOver(p.FullBox)) {ToolTip("Owner");}
 	}
 	void Cell (Panel p, Panel super) {
-		GUI.Label (p.FullBox, t.Cell.ToString(), p.s);
-		if (ShiftMouseOver(p.FullBox)) {ToolTip("Cell");}
+		GUI.Box(p.FullBox, "");
+		GUI.Box(p.Box(iconSize), Icons.CELL(), p.s);
+		p.NudgeY(); p.NudgeX();
+		GUI.Label (p.Box(iconSize*2), t.Cell.ToString(), p.s);
+		p.NudgeY(false);
+		if (ShiftMouseOver(p.FullBox)) {
+			tip = TIP.CELL;
+		}
 	}
 
 	void Plane (Panel p, Panel super) {
@@ -108,22 +124,22 @@ public class GUIInspector : MonoBehaviour {
 
 		if (t.IsPlane(PLANE.SUNK)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.SUNK(), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Plane(PLANE.SUNK), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Sunken";}
 		}	
 		if (t.IsPlane(PLANE.GND)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.GND(), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Plane(PLANE.GND), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Ground";}
 		}	
 		if (t.IsPlane(PLANE.AIR)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.AIR(), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Plane(PLANE.AIR), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Air";}
 		}	
 		if (t.IsPlane(PLANE.ETH)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.ETH(), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Plane(PLANE.ETH), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Ethereal";}
 		}	
 		if (str != "" && ShiftMouseOver(p.FullBox)) {ToolTip(str);}
@@ -135,28 +151,38 @@ public class GUIInspector : MonoBehaviour {
 
 		if (t.IsSpecial(SPECIAL.KING)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.KING(), p.s); p.NudgeX();
-			if (ShiftMouseOver(box)) {str = "Attack King";}
+			GUI.Box(box, Icons.Special(SPECIAL.KING), p.s); p.NudgeX();
+			if (ShiftMouseOver(box)) {
+				tip = TIP.KING;
+			}
 		}	
 		if (t.IsSpecial(SPECIAL.HOA)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.HEART(), p.s); p.NudgeX();
-			if (ShiftMouseOver(box)){str = "Heart of Attack";}
+			GUI.Box(box, Icons.Special(SPECIAL.HOA), p.s); p.NudgeX();
+			if (ShiftMouseOver(box)){
+				tip = TIP.HEART;
+			}
 		}
 		if (t.IsSpecial(SPECIAL.DEST)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.DEST(), p.s); p.NudgeX();
-			if (ShiftMouseOver(box)) {str = "Destructible";}
+			GUI.Box(box, Icons.Special(SPECIAL.DEST), p.s); p.NudgeX();
+			if (ShiftMouseOver(box)) {
+				tip = TIP.DEST;
+			}
 		}
 		if (t.IsSpecial(SPECIAL.REM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.REM(), p.s); p.NudgeX();
-			if (ShiftMouseOver(box)) {str = "Remains";}
+			GUI.Box(box, Icons.Special(SPECIAL.REM), p.s); p.NudgeX();
+			if (ShiftMouseOver(box)) {
+				tip = TIP.REM;
+			}
 		}
 		if (t.IsSpecial(SPECIAL.TRAM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.TRAM(), p.s); p.NudgeX();
-			if (ShiftMouseOver(box)) {str = "Trample";}
+			GUI.Box(box, Icons.Special(SPECIAL.TRAM), p.s); p.NudgeX();
+			if (ShiftMouseOver(box)) {
+				tip = TIP.TRAM;
+			}
 		}
 
 		if (str != "" && ShiftMouseOver(p.FullBox)) {ToolTip(str);}
@@ -182,10 +208,12 @@ public class GUIInspector : MonoBehaviour {
 		string str = "";
 	
 		Rect hpBox = p.Box(iconSize + 90 +5); 
-		if (ShiftMouseOver(hpBox)) {str = "Hit Points";}
+		if (ShiftMouseOver(hpBox)) {
+			tip = TIP.HP;
+		}
 		p.ResetX();
 		Rect box = p.Box(iconSize);
-		GUI.Box(box, Icons.HP(), p.s);
+		GUI.Box(box, Icons.Stat(STAT.HP), p.s);
 		p.NudgeX();
 		p.NudgeY();
 		box = p.Box(90);
@@ -196,10 +224,12 @@ public class GUIInspector : MonoBehaviour {
 		if (u.DEF > 0) {
 			float x3 = p.x2;
 			Rect defBox = p.Box(iconSize*2 +5);
-			if (ShiftMouseOver(defBox)) {str = "Defense";}
+			if (ShiftMouseOver(defBox)) {
+				tip = TIP.DEF;
+			}
 			p.x2 = x3;
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.DEF(), p.s);
+			GUI.Box(box, Icons.Stat(STAT.DEF), p.s);
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(iconSize);
@@ -214,7 +244,7 @@ public class GUIInspector : MonoBehaviour {
 			if (ShiftMouseOver(corBox)) {str = "Corrosion";}
 			p.x2 = x3;
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.COR(), p.s);
+			GUI.Box(box, Icons.Stat(STAT.COR), p.s);
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(iconSize);
@@ -231,10 +261,12 @@ public class GUIInspector : MonoBehaviour {
 
 		float x3 = p.x2;
 		Rect inBox = p.Box(iconSize*2 + 5);
-		if (ShiftMouseOver(inBox)) {str = "Initiative";}
+		if (ShiftMouseOver(inBox)) {
+			tip = TIP.IN;
+		}
 		p.x2 = x3;
 		Rect box = p.Box(iconSize);
-		GUI.Box(box, Icons.IN(), p.s);
+		GUI.Box(box, Icons.Stat(STAT.IN), p.s);
 		p.NudgeX();
 		p.NudgeY();
 		box = p.Box(iconSize);
@@ -248,7 +280,7 @@ public class GUIInspector : MonoBehaviour {
 			p.x2 = x3;
 			p.NudgeX();
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.STUN(), p.s);
+			GUI.Box(box, Icons.Stat(STAT.STUN), p.s);
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(iconSize);
@@ -270,10 +302,12 @@ public class GUIInspector : MonoBehaviour {
 
 		float x3 = p.x2;
 		Rect apBox = p.Box(iconSize*2 +5);
-		if (ShiftMouseOver(apBox)) {str = "Action points";}
+		if (ShiftMouseOver(apBox)) {
+			tip = TIP.AP;
+		}
 		p.x2 = x3;
 		Rect box = p.Box(iconSize);
-		GUI.Box(box, Icons.AP(), p.s);
+		GUI.Box(box, Icons.Stat(STAT.AP), p.s);
 		p.NudgeX();
 		p.NudgeY();
 		box = p.Box(iconSize);
@@ -282,11 +316,13 @@ public class GUIInspector : MonoBehaviour {
 
 		x3 = p.x2;
 		Rect fpBox = p.Box(iconSize*2 + 5);
-		if (ShiftMouseOver(fpBox)) {str = "Focus points";}
+		if (ShiftMouseOver(fpBox)) {
+			tip = TIP.FP;
+		}
 		p.x2 = x3;
 		p.NudgeX();	
 		box = p.Box(iconSize);
-		GUI.Box(box, Icons.FP(), p.s);
+		GUI.Box(box, Icons.Stat(STAT.FP), p.s);
 		p.NudgeX();
 		p.NudgeY();
 		box = p.Box(iconSize);
@@ -298,7 +334,7 @@ public class GUIInspector : MonoBehaviour {
 	void Arsenal (Panel p, Panel super) {
 		Unit u = (Unit)t;
 
-		float btnW = 100;
+		float btnW = 150;
 
 		Rect box;
 		foreach (Action a in u.Arsenal()) {
@@ -307,27 +343,44 @@ public class GUIInspector : MonoBehaviour {
 			box = p.Box(btnW);
 			
 			if (GUI.Button(box, a.Name)) {a.Perform();}
-			if (box.Contains(MousePos())) {description = a.ToString();}
+			if (box.Contains(MousePos())) {inspectedAction = a;}
 			p.NextLine();
 			
 		}
-		box = new Rect (p.X+btnW+10, p.Y, p.W-btnW-25, p.LineH*5);
+		Action(new Panel(new Rect (p.X+btnW+10, p.Y, p.W-btnW-25, p.LineH*9), p.LineH, p.s));
 		
-		GUI.Box (box, "");
-		box.x+=5; box.width-=5;
-		GUI.Label(box, description);			
+
+	}
+
+	void Action (Panel p) {
+		GUI.Box (p.FullBox, "");
+		if (inspectedAction != default(Action)) {
+			Action a = inspectedAction;
+			GUI.Label(p.LineBox, a.Name, p.s);
+
+			a.DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+
+			a.DrawAim(new Panel(p.LineBox, p.LineH, p.s));
+
+
+
+			float descH = (p.H-(p.LineH*2))/p.H;
+			Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
+
+			GUI.Label(p.TallBox(descH), a.Desc());			
+		}
 	}
 
 
 
 
-	bool ShiftMouseOver(Rect box) {
+	public static bool ShiftMouseOver(Rect box) {
 		if (box.Contains(MousePos()) && ShiftKey()) {return true;}
 		return false;
 
 	}
 
-	Vector2 MousePos () {
+	static Vector2 MousePos () {
 		return new Vector2 (
 			Input.mousePosition.x, 
 			(-Input.mousePosition.y) + Screen.height + panel.H - panel.LineH + scrollPos.y);
@@ -339,7 +392,7 @@ public class GUIInspector : MonoBehaviour {
 		GUI.Box(box, text);
 	}
 
-	bool ShiftKey () {
+	static bool ShiftKey () {
 		if (Input.GetKey("left shift") || Input.GetKey("right shift")) {return true;}
 		return false;
 	}

@@ -15,7 +15,7 @@ namespace HOA.Actions {
 			aim = new Aim(AIMTYPE.NEIGHBOR, TARGET.TOKEN, TTAR.DEST);
 
 			name = "Consume Terrain";
-			desc = "Destroy neighboring non-Remains destructible.\nHP +12";
+			desc = "Destroy neighboring non-Remains destructible.\n"+actor+" gains 12 health.";
 		}
 		
 		public override void Perform () {

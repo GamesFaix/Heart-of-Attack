@@ -19,7 +19,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Slam";
-			desc = "Do "+d+" damage to target unit and each of its neighbors and cellmates.  \n+1 Range per FP, up to 3.  \nRemove all FP.";
+			desc = "Do "+d+" damage to target unit and each of its neighbors and cellmates.  \nRange +1 per focus (up to +3).  \n"+actor+" loses all focus.";
 			
 		}
 		

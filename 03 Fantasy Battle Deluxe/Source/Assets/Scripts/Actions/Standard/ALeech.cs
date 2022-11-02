@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			damage = d;
 			actor = u;
 			name = "Leech Life";
-			desc = "Do "+d+" damage to target unit. \nHeal HP equal to damage successfully dealt.";
+			desc = "Do "+d+" damage to target unit. \nGain health equal to damage successfully dealt.";
 		}
 		
 		public override void Perform () {

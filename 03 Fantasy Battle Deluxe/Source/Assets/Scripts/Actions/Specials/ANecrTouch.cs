@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Touch of Death";
-			desc = "Do "+d+" damage to target unit.\nIf target has less than 10 HP after damage, destroy target.\nIf target is destroyed and not an Attack King, it leaves no remains and you may place a Corpse in any cell.";
+			desc = "Do "+d+" damage to target unit.\nIf target has less than 10 health after damage is dealt, destroy target.\nIf target is destroyed and is not an Attack King, it leaves no remains and you may place a Corpse in any cell.";
 		}
 		
 		public override void Perform () {

@@ -9,7 +9,7 @@ namespace HOA.Actions {
 	public class ACorrode : Action {
 		int damage;
 		
-		public ACorrode (Price p, Unit u, Aim a, int d) {
+		public ACorrode (string n, Price p, Unit u, Aim a, int d) {
 			weight = 3;
 			
 			price = p;
@@ -17,8 +17,8 @@ namespace HOA.Actions {
 			damage = d;
 			int cor = (int)Mathf.Floor(d*0.5f);
 			actor = u;
-			name = "Corrode";
-			desc = "Do "+d+" damage to target unit. \nTarget takes "+cor+" corrosion counters.";
+			name = n;
+			desc = "Do "+d+" damage to target unit. \nTarget recieves "+cor+" corrosion counters.\n(If a unit has corrosion counters, at the beginning of its turn it takes damage equal to the number of counters, then removes half the counters (rounded up).)";
 		}
 		
 		public override void Perform () {

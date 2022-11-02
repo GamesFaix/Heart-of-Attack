@@ -11,7 +11,7 @@ namespace HOA.Actions {
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, CTAR.NA);
 			
 			name = "Land";
-			desc = "Becomes trampling ground unit. \nMove range: 3 \nDefense +2\nForget 'Create Rook' \nLearn 'Tail Whip'";
+			desc = "Becomes trampling ground unit. \nMove range -2 \nDefense +2\nForget 'Create Rook' \nLearn 'Tail Whip'";
 		}
 
 		public override void Perform () {
@@ -45,7 +45,7 @@ namespace HOA.Actions {
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, CTAR.NA);
 			
 			name = "Take Flight";
-			desc = "Becomes air unit. \nMove range: 5\nDefense -2\nForget 'Tail Whip'\nLearn 'Create Rook'";
+			desc = "Becomes air unit. \nMove range +2\nDefense -2\nForget 'Tail Whip'\nLearn 'Create Rook'";
 		}
 
 		public override void Perform () {

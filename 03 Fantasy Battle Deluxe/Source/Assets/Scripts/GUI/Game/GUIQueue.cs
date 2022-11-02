@@ -53,12 +53,12 @@ public class GUIQueue : MonoBehaviour {
 				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
 
 			////watch
-				GUI.Box(p.Box(iconSize), Icons.IN(), p.s);
+				GUI.Box(p.Box(iconSize), Icons.Stat(STAT.IN), p.s);
 				p.x2 += 5;
 				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
 				
 				if (u.IsStunned()) {
-					GUI.Box(p.Box(iconSize), Icons.STUN(), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stat(STAT.STUN), p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
 				}
@@ -70,7 +70,7 @@ public class GUIQueue : MonoBehaviour {
 			////wallet
 				p.NudgeX();		
 				if (u.FP > 0) {
-					GUI.Box(p.Box(iconSize), Icons.FP(), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stat(STAT.FP), p.s);
 					p.NudgeX();
 					GUI.Label(p.Box(iconSize), u.FP+"", p.s);
 				}
@@ -79,18 +79,18 @@ public class GUIQueue : MonoBehaviour {
 
 			////health
 				//p.NudgeX();
-				GUI.Box(p.Box(iconSize), Icons.HP(), p.s);
+				GUI.Box(p.Box(iconSize), Icons.Stat(STAT.HP), p.s);
 				p.NudgeX();
 				GUI.Label (p.Box(iconSize*3), u.HPString, p.s);
 				
 				if (u.DEF > 0) {
-					GUI.Box(p.Box(iconSize), Icons.DEF(), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stat(STAT.DEF), p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
 				}
 				
 				if (u.COR > 0) {
-					GUI.Box(p.Box(iconSize), Icons.COR(), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stat(STAT.COR), p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.COR+"", p.s);
 				}

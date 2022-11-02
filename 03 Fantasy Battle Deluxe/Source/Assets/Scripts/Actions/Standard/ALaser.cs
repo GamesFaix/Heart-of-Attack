@@ -10,14 +10,14 @@ namespace HOA.Actions {
 		
 		int damage;
 		
-		public ALaser (Price p, Unit u, Aim a, int d) {
+		public ALaser (string n, Price p, Unit u, Aim a, int d) {
 			weight = 3;
 			actor = u;
 			price = p;
 			aim = a;
 			damage = d;
 			
-			name = "Laser";
+			name = n;
 			desc = "Do "+d+" damage to all units in target cell.\nIf there are no obstacles in target cell, do reduce damage 50% (rounded up) and damage all units in the next occupied cell in the same direction.  Repeat until damage is 1 or an obstacle is hit.";
 		}
 		

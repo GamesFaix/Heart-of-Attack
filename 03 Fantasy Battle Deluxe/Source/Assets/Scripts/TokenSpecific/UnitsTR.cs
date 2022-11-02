@@ -11,7 +11,7 @@ namespace HOA.Tokens{
 			BuildGround();
 			OnDeath = TTYPE.ROCK;
 			
-			NewHealth(30,5);
+			NewHealth(20,3);
 			NewWatch(3);
 
 			arsenal.Add(new ARookVolley(Price.Cheap, this, Aim.Arc(3), 12));
@@ -47,9 +47,9 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(6)));
-			arsenal.Add(new AAttack(new Price(0,1), this, Aim.Melee(), 12));
+			arsenal.Add(new AAttack("Melee", new Price(0,1), this, Aim.Melee(), 12));
 			Aim fireAim = new Aim (AIMTYPE.LINE, TARGET.TOKEN, TTAR.UNITDEST, 3);
-			arsenal.Add(new AAttackFir(new Price(2,0), this, fireAim, 10));
+			arsenal.Add(new AAttackFir("Firebreathing", new Price(2,0), this, fireAim, 10));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -63,7 +63,7 @@ namespace HOA.Tokens{
 			AddCorpseless();
 			
 			NewHealth(15);
-			NewWatch(2);
+			NewWatch(5);
 			
 	//		arsenal.Add(new AMove(this, AIM.PATH, 0));
 			
@@ -82,13 +82,13 @@ namespace HOA.Tokens{
 			NewWatch(1);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 16));
+			arsenal.Add(new AAttack("Ram", Price.Cheap, this, Aim.Melee(), 16));
 			
 			Aim attackAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, 3);
-			arsenal.Add(new AAttack(new Price(1,1), this, attackAim, 12));
+			arsenal.Add(new AAttack("Fling", new Price(1,1), this, attackAim, 12));
 			
 			Aim fireAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNITDEST, 3);
-			arsenal.Add(new AAttackFir(new Price(1,2), this, fireAim, 16));	
+			arsenal.Add(new AAttackFir("Cocktail", new Price(1,2), this, fireAim, 16));	
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -105,7 +105,7 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 18));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 18));
 			arsenal.Add(new AGargLand(this));
 			arsenal.Add(new AGargRook(new Price(1,1), this));
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.SMAS));

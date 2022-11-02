@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Volley";
-			desc = "Do "+d+" damage to a single unit.\nMay only be used if neighboring or sharing cell with non-Rook teammate.";
+			desc = "Do "+d+" damage to target unit.\nMay only be used if neighboring or sharing cell with non-Rook teammate.";
 		}
 		
 		public override void Perform () {

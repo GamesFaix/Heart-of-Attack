@@ -13,7 +13,7 @@ namespace HOA.Actions {
 			template = TemplateFactory.Template(TTYPE.ROOK);
 			price = p;
 			
-			aim = new Aim(AIMTYPE.CELLMATE, TARGET.CELL, CTAR.CREATE);
+			aim = new Aim(AIMTYPE.SELF, TARGET.CELL, CTAR.CREATE);
 
 			name = template.Name;
 			desc = "Create "+name+" in "+actor+"'s cell.";

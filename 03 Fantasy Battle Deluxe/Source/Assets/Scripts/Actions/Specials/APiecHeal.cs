@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			magnitude = n;
 			
 			name = "Heal";
-			desc = "Target unit: +"+magnitude+" HP.\n(Can target self.)";
+			desc = "Target unit gains "+magnitude+" health.\n(Can target self.)";
 		}
 		
 		public override void Perform () {

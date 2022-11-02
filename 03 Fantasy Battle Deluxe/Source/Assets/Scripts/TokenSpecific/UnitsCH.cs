@@ -14,6 +14,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
+			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 6));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -28,7 +29,7 @@ namespace HOA.Tokens{
 			NewWatch(1); 
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 10));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 10));
 			Aim aperAim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.CREATE, 2);
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.APER, aperAim));
 			arsenal.Add(new APiecHeal(new Price(0,2), this, 10));
@@ -47,6 +48,8 @@ namespace HOA.Tokens{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 15));
+			arsenal.Add(new AGrenade("Grenade", new Price(1,1), this, 2, 10));
 			arsenal.Add(new AReprMine(Price.Cheap, this));
 			arsenal.Sort();
 		}		
@@ -65,7 +68,7 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			Aim attackAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, 3);
-			arsenal.Add(new AAttack(Price.Cheap, this, attackAim, 15));
+			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.REVO));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.PIEC));
 			arsenal.Add(new ACreate(new Price(1,2), this, TTYPE.REPR));
@@ -73,7 +76,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new AOldtHour(new Price(1,1), this));
 			arsenal.Sort();
 		}		
-		public override string Notes () {return "+1 IN per FP, up to 5";}
+		public override string Notes () {return "Initiative +1 per Focus (up to 8).";}
 	}
 	
 	public class Aperture : Obstacle {

@@ -4,8 +4,14 @@ public class GUIMaster : MonoBehaviour {
 
 	public static GUIGame game;
 	public static GUILobby lobby;
+	static GUIStyle s;
+	public static GUIStyle S {get {return s;} }
 
 	void Awake() {
+		s = new GUIStyle();
+		s.normal.textColor = Color.white;
+		s.fontSize = 20;
+
 		game = gameObject.AddComponent("GUIGame") as GUIGame;
 		lobby = gameObject.AddComponent("GUILobby") as GUILobby;
 	}

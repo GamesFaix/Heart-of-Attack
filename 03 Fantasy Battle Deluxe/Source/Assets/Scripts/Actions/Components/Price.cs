@@ -1,3 +1,5 @@
+using UnityEngine;
+using HOA.Tokens;
 
 namespace HOA.Actions {
 
@@ -24,6 +26,24 @@ namespace HOA.Actions {
 			return s;
 		}
 		
+		public void Draw (Panel p) {
+			float iconSize = p.LineH;
+		
+			Rect box = p.Box(iconSize);
+			GUI.Box(box, Icons.Stat(STAT.AP), p.s);
+			box = p.Box(iconSize);
+			GUI.Label(box, ap+"", p.s);
+			p.NudgeX();
+
+			box = p.Box(iconSize);
+			GUI.Box(box, Icons.Stat(STAT.FP), p.s);
+			box = p.Box(iconSize);
+			GUI.Label(box, fp+"", p.s);
+		}
+
+
+
+
 		public static Price Cheap {get {return new Price(1,0);} }
 	
 	

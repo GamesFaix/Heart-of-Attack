@@ -11,14 +11,14 @@ namespace HOA.Actions {
 		int range;
 		int damage;
 		
-		public AGrenade (Price p, Unit u, int r, int d) {
+		public AGrenade (string n, Price p, Unit u, int r, int d) {
 			weight = 3;
 			price = p;
 			actor = u;
 			aim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.ATTACK, r);
 			damage = d;
 			
-			name = "Grenade";
+			name = n;
 			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		

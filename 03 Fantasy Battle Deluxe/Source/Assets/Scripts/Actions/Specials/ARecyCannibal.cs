@@ -14,7 +14,7 @@ namespace HOA.Actions {
 			aim = new Aim (AIMTYPE.NEIGHBOR, TARGET.TOKEN, TTAR.REM);
 
 			name = "Cannibalize";
-			desc = "Destroy target remains.\nHP +10/10";
+			desc = "Destroy target remains.\nHealth +10/10";
 		}
 		
 		public override void Perform () {

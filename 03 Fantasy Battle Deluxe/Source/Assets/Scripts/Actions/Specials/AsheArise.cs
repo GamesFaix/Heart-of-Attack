@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			chiTemplate = TemplateFactory.Template(child);
 
 			name = chiTemplate.Name;
-			desc = "Transform "+actor+" into a "+name+".\nNew "+name+" starts with "+actor+"'s HP.";
+			desc = "Transform "+actor+" into a "+name+".\n(New "+name+" starts with "+actor+"'s health.)";
 		}
 		
 		public override void Perform () {

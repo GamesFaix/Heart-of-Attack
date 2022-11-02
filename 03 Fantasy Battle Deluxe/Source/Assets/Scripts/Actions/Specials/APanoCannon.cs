@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Cannon";
-			desc = "Do "+d+" damage to target unit.  \nMax range +1 per FP, up to 3.";
+			desc = "Do "+d+" damage to target unit.  \nMax range +1 per focus (up to +3).";
 			
 		}
 		
@@ -44,7 +44,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Armor Pierce";
-			desc = "Do "+d+" damage to target unit (ignore defense).  \nMax range +1 per FP, up to 3.";
+			desc = "Do "+d+" damage to target unit (ignore defense).  \nMax range +1 per focus (up to +3).";
 		}
 		
 		public override void Perform () {

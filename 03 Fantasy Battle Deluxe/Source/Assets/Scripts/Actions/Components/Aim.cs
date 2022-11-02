@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HOA.Actions {
 	public enum AIMTYPE {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
 	public enum TARGET {TOKEN, CELL, SELF, NONE}
@@ -83,6 +85,7 @@ namespace HOA.Actions {
 				}
 			}
 		}
+
 		string RangeString {
 			get {
 				if (aimType == AIMTYPE.PATH || aimType == AIMTYPE.LINE) {return range+"";}	
@@ -104,7 +107,39 @@ namespace HOA.Actions {
 				return "";
 			}
 		}
-		
+		Texture2D[] TargetIcon {
+			get {
+				if (target == TARGET.CELL) {
+					return new Texture2D[] {Icons.CELL()};
+				}
+				if (ttar != TTAR.NA) {return Icons.TTar(ttar);}
+				return default(Texture2D[]);
+			}
+		}
+
+
+		public void Draw (Panel p) {
+			float iconSize = p.LineH;
+
+			Rect iconBox = p.Box(iconSize);
+			if (Icons.AimType(aimType) != default(Texture2D)) {
+				GUI.Box(iconBox, Icons.AimType(AimType), p.s);
+				if (GUIInspector.ShiftMouseOver(iconBox)) {
+					GUIInspector.Tip = GUIToolTips.AimType(aimType);
+				}
+			}
+			if (RangeString != "") {
+				GUI.Label(p.Box(iconSize), RangeString, p.s);
+			}
+			p.NudgeX();
+			if (TargetIcon != default(Texture2D[])) {
+				foreach (Texture2D tex in TargetIcon) {
+					GUI.Box(p.Box(iconSize), tex, p.s);
+				}
+			}
+		}
+
+
 		public static Aim MovePath (int r) {
 			return new Aim (AIMTYPE.PATH, TARGET.CELL, CTAR.MOVE, r);	
 		}

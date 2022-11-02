@@ -1,11 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 18\Assets\Scripts\Actions\Components\Aim.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Actions\Specials\AGargTailWhip.cs">
     <Files>
-      <File FileName="..\queue 18\Assets\Scripts\GUI\Game\GUIInspector.cs" Line="347" Column="2" />
-      <File FileName="..\queue 18\Assets\Scripts\Actions\Components\Price.cs" Line="33" Column="24" />
-      <File FileName="..\queue 18\Assets\Scripts\Actions\General\Action.cs" Line="3" Column="26" />
-      <File FileName="..\queue 18\Assets\Scripts\Actions\Components\Aim.cs" Line="169" Column="3" />
+      <File FileName="Assets\Scripts\Console\Requests - Basic Attack.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Console\Requests - Special.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TokenHandling\Token.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Standard\AAttack.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Console\Requests - CreateDestroy.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\General\Legalizer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TokenSpecific\UnitsPT.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TokenComponents\Body.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Specials\ARecyCannibal.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Specials\AMonoReanimate.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TokenSpecific\UnitsVD.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Specials\ARecyExplode.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TokenSpecific\UnitsTR.cs" Line="12" Column="24" />
+      <File FileName="Assets\Scripts\Actions\Specials\AGargTailWhip.cs" Line="30" Column="57" />
+      <File FileName="Assets\Scripts\Actions\Specials\ASmasSlam.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Specials\AGargLand.cs" Line="33" Column="69" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

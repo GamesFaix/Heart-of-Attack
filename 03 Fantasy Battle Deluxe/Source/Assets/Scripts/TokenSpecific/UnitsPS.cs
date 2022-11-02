@@ -14,7 +14,7 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 8));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new APrisRefract(new Price(1,1), this, Aim.Shoot(3), 12));
 			arsenal.Sort();
 		}		
@@ -58,7 +58,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 15));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}

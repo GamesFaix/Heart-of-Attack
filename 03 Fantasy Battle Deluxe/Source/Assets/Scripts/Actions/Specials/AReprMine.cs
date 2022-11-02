@@ -15,7 +15,7 @@ namespace HOA.Actions {
 			aim = new Aim(AIMTYPE.NEIGHBOR, TARGET.TOKEN, TTAR.DESTREM);
 			
 			name = "Time Mine";
-			desc = "Destroy neighboring destructible.\nIf IN is less than 6, IN +1.";
+			desc = "Destroy neighboring destructible.\nIf initative is less than 6, initiative +1.";
 		}
 		
 		public override void Perform () {

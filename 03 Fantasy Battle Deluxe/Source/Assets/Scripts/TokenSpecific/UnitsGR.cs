@@ -14,7 +14,7 @@ namespace HOA.Tokens {
 			NewWatch(5);	
 			
 			arsenal.Add(new AMoveKata(Price.Cheap, this, Aim.MovePath(4)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 8));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Sort();
 		}
 		public override string Notes () {return "";}
@@ -37,7 +37,7 @@ namespace HOA.Tokens {
 			arsenal.Add(new ACaraDischarge(new Price(1,2), this, 10, 5));
 			arsenal.Sort();
 		}
-		public override string Notes () {return "+1 DEF per FP. DEF can never exceed 5.";}
+		public override string Notes () {return "Defense +1 per Focus. Defense can never exceed 5.  \nAll non-Carapace neighboring teammates add Carapace's Defense.";}
 
 		public override void Die (Source s, bool corpse=true, bool log=true) {
 			BodyCara bc = (BodyCara)body;
@@ -63,7 +63,7 @@ namespace HOA.Tokens {
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MoveLine(4)));
-			arsenal.Add(new ALaser(Price.Cheap, this, Aim.Shoot(3), 16));
+			arsenal.Add(new ALaser("Laser shot", Price.Cheap, this, Aim.Shoot(3), 16));
 			arsenal.Sort();
 		}
 		public override string Notes () {return "";}
@@ -80,7 +80,7 @@ namespace HOA.Tokens {
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Melee(), 12));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.KATA));
 			arsenal.Add(new ACreate(new Price(0,2), this, TTYPE.CARA));
 			arsenal.Add(new ACreate(new Price(2,2), this, TTYPE.MAWT));

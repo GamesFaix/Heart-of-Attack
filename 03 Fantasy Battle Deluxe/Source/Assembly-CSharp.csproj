@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{D5A17DC4-6B6F-0709-72DE-CCC976D2A375}</ProjectGuid>
+	<ProjectGuid>{58554B57-C8E7-3F8A-574A-2350381F6A27}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -121,6 +121,26 @@
      <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIQueue.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUITools.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipAP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipArc.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipCell.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipDEF.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipDest.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFree.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipGlobal.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipHP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipHeart.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipIN.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipKing.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipLine.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipNeighbor.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipOnDeath.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipPath.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipRem.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipSelf.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipTram.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipUnit.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUISelectors.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolCreate.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolKill.cs" />
@@ -129,6 +149,7 @@
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolRandom.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolReplace.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolStats.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolTips.cs" />
      <Compile Include="Assets\Scripts\GUI\Graphics\Icons.cs" />
      <Compile Include="Assets\Scripts\GUI\Graphics\ImageLoader.cs" />
      <Compile Include="Assets\Scripts\GUI\Graphics\SpriteEffects.cs" />

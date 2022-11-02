@@ -10,13 +10,13 @@ namespace HOA.Actions {
 
 		int damage;
 		
-		public AAttackFir (Price p, Unit u, Aim a, int d) {
+		public AAttackFir (string n, Price p, Unit u, Aim a, int d) {
 			weight = 3;
 			price = p;
 			aim = a;
 			damage = d;
 			actor = u;
-			name = "Burn";
+			name = n;
 			desc = "Do "+d+" damage to target unit. \nTarget's neighbors and cellmates take 50% damage (rounded down).  \nDestroy all destructible tokens that would take damage.";
 		}
 		

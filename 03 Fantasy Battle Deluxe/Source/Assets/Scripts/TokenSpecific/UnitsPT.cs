@@ -12,7 +12,7 @@ namespace HOA.Tokens{
 			AddCorpseless();
 			
 			NewHealth(15);
-			NewWatch(3);
+			NewWatch(5);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(0)));
 			arsenal.Add(new ALeech(Price.Cheap, this, Aim.Melee(), 5));
@@ -34,7 +34,7 @@ namespace HOA.Tokens{
 			AddStat(new Source(this), STAT.COR, 12, false);
 			
 			arsenal.Add(new AMove(this, Aim.MoveLine(5)));
-			arsenal.Add(new ACorrode(Price.Cheap, this, Aim.Melee(), 8));
+			arsenal.Add(new ACorrode("Sting", Price.Cheap, this, Aim.Melee(), 8));
 			arsenal.Add(new ABeesDeathSting(new Price(1,1), this, Aim.Melee(), 15));
 			arsenal.Sort();
 			
@@ -52,8 +52,8 @@ namespace HOA.Tokens{
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			Aim corrAim = new Aim (AIMTYPE.ARC, TARGET.TOKEN, TTAR.UNIT, 2);
-			arsenal.Add(new ACorrode(new Price(1,0), this, corrAim, 12));
-			arsenal.Add(new ADonate(new Price(1,1), this, Aim.Melee(), 6));
+			arsenal.Add(new ACorrode("Spore cloud", new Price(1,0), this, corrAim, 12));
+			arsenal.Add(new ADonate(new Price(1,0), this, Aim.Melee(), 6));
 			arsenal.Add(new AMycoSeed(new Price(1,1), this));
 			arsenal.Sort();
 		}		
@@ -85,7 +85,7 @@ namespace HOA.Tokens{
 			NewWatch(3); 
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new ACorrode(Price.Cheap, this, Aim.Melee(), 15));
+			arsenal.Add(new ACorrode("Bite", Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Add(new ACreate(new Price(0,0), this, TTYPE.LICH));
 			Aim webAim = new Aim (AIMTYPE.ARC, TARGET.CELL, CTAR.CREATE, 3);
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.WEBB, webAim));

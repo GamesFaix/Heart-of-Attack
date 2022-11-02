@@ -1,67 +1,69 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using HOA.Tokens;
+using HOA.Actions;
 
 public static class Icons {
-	
-	static Texture2D hp;
-	static Texture2D def;
-	static Texture2D init;
-	static Texture2D cor;
-	static Texture2D stun;
-	static Texture2D skip;
-	static Texture2D ap;
-	static Texture2D fp;
-	
-	static Texture2D air;
-	static Texture2D eth;
-	static Texture2D gnd;
-	static Texture2D dest;
-	static Texture2D rem;
-	static Texture2D tram;
-	static Texture2D sunk;
-	static Texture2D king;
-	static Texture2D heart;
-	
+
+	static Dictionary<STAT, Texture2D> stats;
+	static Dictionary<PLANE, Texture2D> planes;
+	static Dictionary<SPECIAL, Texture2D> specials;
+	static Dictionary<AIMTYPE, Texture2D> aimTypes;
+	static Dictionary<TTAR, Texture2D[]> tTars;
+
+	static Texture2D skip, cell, unit, onDeath;
+
 	public static void Load() {
-		hp = Resources.Load("Icons/HP") as Texture2D;
-		def = Resources.Load("Icons/DEF") as Texture2D;
-		init = Resources.Load("Icons/IN") as Texture2D;
-		cor = Resources.Load("Icons/COR") as Texture2D;
-		stun = Resources.Load("Icons/STUN") as Texture2D;
+		stats = new Dictionary<STAT, Texture2D>();
+		AddStat (STAT.HP, "HP");  AddStat (STAT.DEF, "DEF"); AddStat (STAT.IN, "IN"); AddStat (STAT.COR, "COR");
+		AddStat (STAT.STUN, "STUN"); AddStat (STAT.AP, "AP"); AddStat (STAT.FP, "FP");
+
+		planes = new Dictionary<PLANE, Texture2D>();
+		AddPlane (PLANE.GND, "GND"); AddPlane (PLANE.AIR, "AIR"); AddPlane (PLANE.ETH, "ETH"); AddPlane (PLANE.SUNK, "SUNK");
+
+		specials = new Dictionary<SPECIAL, Texture2D>();
+		AddSpecial (SPECIAL.DEST, "DEST"); AddSpecial (SPECIAL.REM, "REM"); AddSpecial (SPECIAL.KING, "KING"); 
+		AddSpecial (SPECIAL.HOA, "HEART"); AddSpecial (SPECIAL.TRAM, "TRAM");
+
+		aimTypes = new Dictionary<AIMTYPE, Texture2D>();
+		AddAimType (AIMTYPE.NEIGHBOR, "NEIGHBOR"); AddAimType (AIMTYPE.PATH, "PATH"); AddAimType (AIMTYPE.LINE, "LINE");
+		AddAimType (AIMTYPE.ARC, "ARC"); AddAimType (AIMTYPE.FREE, "FREE"); AddAimType (AIMTYPE.GLOBAL, "GLB"); AddAimType (AIMTYPE.SELF, "SELF");
+
 		skip = Resources.Load("Icons/SKIP") as Texture2D;
-		ap = Resources.Load("Icons/AP") as Texture2D;
-		fp = Resources.Load("Icons/FP") as Texture2D;
-		
-		air = Resources.Load("Icons/AIR") as Texture2D;
-		eth = Resources.Load("Icons/ETH") as Texture2D;
-		gnd = Resources.Load("Icons/GND") as Texture2D;
-		dest = Resources.Load("Icons/DEST") as Texture2D;
-		rem = Resources.Load("Icons/REM") as Texture2D;
-		sunk = Resources.Load("Icons/SUNK") as Texture2D;
-		tram = Resources.Load("Icons/TRAM") as Texture2D;
-		king = Resources.Load("Icons/KING") as Texture2D;
-		heart = Resources.Load("Icons/HEART") as Texture2D;
-		
+		cell = Resources.Load("Icons/CELL") as Texture2D;
+		onDeath = Resources.Load("Icons/ONDEATH") as Texture2D;
+
+		tTars = new Dictionary<TTAR, Texture2D[]>();
+		AddTTar (TTAR.UNIT, new string[]{"UNIT"});
+		AddTTar (TTAR.DEST, new string[]{"DEST", "NOREM"});
+		AddTTar (TTAR.REM, new string[]{"REM"});
+		AddTTar (TTAR.UNITDEST, new string[]{"UNIT", "DEST"});
+		AddTTar (TTAR.DESTREM, new string[]{"UNIT"});
 	}
-	
-	public static Texture2D HP() {return hp;}
-	public static Texture2D DEF() {return def;}
-	public static Texture2D IN() {return init;}
-	public static Texture2D AP() {return ap;}
-	public static Texture2D FP() {return fp;}
-	public static Texture2D COR() {return cor;}
-	public static Texture2D STUN() {return stun;}
+
+	static Texture2D LoadFile (string name) {return (Resources.Load("Icons/"+name) as Texture2D);}
+
+	static void AddStat (STAT s, string fileName) {stats.Add(s, LoadFile(fileName));}
+	static void AddPlane (PLANE p, string fileName) {planes.Add(p, LoadFile(fileName));}
+	static void AddSpecial (SPECIAL s, string fileName) {specials.Add(s, LoadFile(fileName));}
+	static void AddAimType (AIMTYPE a, string fileName) {aimTypes.Add(a, LoadFile(fileName));}
+
+	static void AddTTar (TTAR t, string[] fileNames) {
+		int count = fileNames.Length;
+		Texture2D[] texs = new Texture2D[count];
+
+		for (int i=0; i<count; i++) {texs[i] = LoadFile(fileNames[i]);}
+		tTars.Add(t, texs);
+	}
+
+	public static Texture2D Stat(STAT s) {return stats[s];}
+	public static Texture2D Plane(PLANE p) {return planes[p];}
+	public static Texture2D Special(SPECIAL s) {return specials[s];}
+	public static Texture2D AimType(AIMTYPE a) {return aimTypes[a];}
+	public static Texture2D[] TTar(TTAR t) {return tTars[t];}
+
 	public static Texture2D SKIP() {return skip;}
-	public static Texture2D AIR() {return air;}
-	public static Texture2D GND() {return gnd;}
-	public static Texture2D ETH() {return eth;}
-	public static Texture2D SUNK() {return sunk;}
-	public static Texture2D DEST() {return dest;}
-	public static Texture2D TRAM() {return tram;}
-	public static Texture2D REM() {return rem;}
-	public static Texture2D KING() {return king;}
-	public static Texture2D HEART() {return heart;}
-
-
-
+	public static Texture2D CELL() {return cell;}
+	public static Texture2D ONDEATH() {return onDeath;}
 }

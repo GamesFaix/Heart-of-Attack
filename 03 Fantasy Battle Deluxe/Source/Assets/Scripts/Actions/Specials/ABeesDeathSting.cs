@@ -18,8 +18,7 @@ namespace HOA.Actions {
 			damage = d;
 			int cor = (int)Mathf.Floor(d*0.5f);
 			name = "Fatal Blow";
-			desc = "Do "+d+" damage to target unit. \nTarget takes "+cor+" corrosion counters. \nDestroy "+actor+".";
-			
+			desc = "Destroy "+actor+".\nDo "+d+" damage to target unit. \nTarget takes "+cor+" corrosion counters. \n(If a unit has corrosion counters, at the beginning of its turn it takes damage equal to the number of counters, then removes half the counters (rounded up).)";
 		}
 		
 		public override void Perform () {

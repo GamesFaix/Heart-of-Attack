@@ -15,10 +15,10 @@ namespace HOA.Tokens{
 			NewWatch(3);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(3)));
-			arsenal.Add(new AGrenade(Price.Cheap, this, 3, 10));
+			arsenal.Add(new AGrenade("Grenade", Price.Cheap, this, 3, 10));
 			arsenal.Sort();
 		}
-		public override string Notes () {return "+1 DEF per FP, up to 4";}
+		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
 	}
 	
 	public class MeinSchutz : Unit {
@@ -30,7 +30,7 @@ namespace HOA.Tokens{
 			NewWatch(4);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(5)));
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Shoot(2), 12));
+			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 12));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.MINE));
 			arsenal.Add(new AMeinDetonate(new Price(1,1), this));
 			arsenal.Sort();
@@ -55,7 +55,7 @@ namespace HOA.Tokens{
 			arsenal.Add(new APanoPierce(new Price(1,2), this, aim, 20));
 			arsenal.Sort();
 		}		
-		public override string Notes () {return "+1 DEF per FP, up to 2";}
+		public override string Notes () {return "Defense +1 per Focus (up to 2).";}
 	}		
 	
 	public class Decimatrix : Unit {
@@ -69,11 +69,9 @@ namespace HOA.Tokens{
 			NewWatch(2);
 			
 			arsenal.Add(new AMove(this, Aim.MovePath(2)));
-
-			
-			arsenal.Add(new AAttack(Price.Cheap, this, Aim.Shoot(3), 18));
+			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 18));
 			Aim fireAim = new Aim (AIMTYPE.LINE, TARGET.TOKEN, TTAR.UNITDEST, 2);
-			arsenal.Add(new AAttackFir(new Price(1,1), this, fireAim, 12));
+			arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
 			arsenal.Add(new ADeciFortify(this));
 			arsenal.Add(new ACreate(Price.Cheap, this, TTYPE.DEMO));
 			arsenal.Add(new ACreate(new Price(1,1), this, TTYPE.MEIN));

@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			chiTemplate = TemplateFactory.Template(child);
 
 			name = chiTemplate.Name;
-			desc = "Transform "+actor+" into a "+name+".  \nNew "+name+" is added to the end of the Queue.";
+			desc = "Transform "+actor+" into a "+name+".  \n(New "+name+" is added to the end of the Queue and does not retain any of "+actor+"'s attributes.)";
 		}
 		
 		public override void Perform () {

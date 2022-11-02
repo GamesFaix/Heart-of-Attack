@@ -13,7 +13,7 @@ namespace HOA.Actions {
 			aim = new Aim (AIMTYPE.SELF, TARGET.SELF, CTAR.NA);
 			
 			name = "Focus";
-			desc = "+1 FP";
+			desc = "Focus +1";
 			magnitude = n;
 			
 		}

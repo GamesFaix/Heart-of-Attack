@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			damage = d;
 			
 			name = "Flail";
-			desc = "Do "+d+" damage to target unit.  \nRange +1 per FP, up to 3.  \nRemove all FP.";
+			desc = "Do "+d+" damage to target unit.  \nRange +1 per focus (Up to +3).  \n"+actor+" loses all focus.";
 			
 		}
 		

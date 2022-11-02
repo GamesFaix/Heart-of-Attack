@@ -19,7 +19,7 @@ namespace HOA.Actions {
 			damage = dmg;
 
 			name = "Throw Terrain";
-			desc = "Destroy neighboring non-Remains destructible.\n"+aim2.ToString()+"\nDo "+damage+" damage to target unit.";
+			desc = "Destroy target non-Remains destructible.\n"+aim2.ToString()+"\nDo "+damage+" damage to target unit.";
 		}
 		
 		public override void Perform () {

@@ -15,7 +15,7 @@ namespace HOA.Actions {
 			aim = a;
 			
 			name = "Move";
-			desc = "Move "+actor+" to target cell.  \nRange +2 per FP, upto 6 cells.  \nRemove all FP.";
+			desc = "Move "+actor+" to target cell.  \nRange +2 per focus (up to +6).  \n"+actor+" loses all focus.";
 			
 		}
 		

@@ -10,15 +10,15 @@ namespace HOA.Actions {
 
 		int damage;
 		
-		public AAttack (Price p, Unit u, Aim a, int d) {
+		public AAttack (string n, Price p, Unit u, Aim a, int d) {
 			weight = 3;
 			actor = u;
 			price = p;
 			aim = a;
 			damage = d;
 			
-			name = "Attack";
-			desc = "Do "+d+" damage to a single unit.";
+			name = n;
+			desc = "Do "+d+" damage to target unit.";
 		}
 		
 		public override void Perform () {

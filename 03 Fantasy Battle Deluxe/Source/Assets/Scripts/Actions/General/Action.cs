@@ -19,8 +19,10 @@ namespace HOA.Actions {
 		protected Price price = new Price(1,0);
 		
 		public string Name {get {return name;} }
-		public override string ToString () {return price.ToString()+"\t"+"\t"+"\t"+aim.ToString()+"\n"+desc;}
-	
+		public string Desc () {return desc;}
+		public void DrawPrice (Panel p) {price.Draw(p);}
+		public void DrawAim (Panel p) {aim.Draw(p);}
+
 		protected bool used = false;
 		public void Reset () {used = false;}
 		
