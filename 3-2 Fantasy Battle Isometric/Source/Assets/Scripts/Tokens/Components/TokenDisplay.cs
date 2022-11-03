@@ -22,8 +22,8 @@ namespace HOA {
 			targetPos.y += Token.SpriteScale.z*4;
 			
 			if (Token is ArenaNonSensus) {
-				targetPos.x += (float)(Board.CellSize/2);
-				targetPos.z += (float)(Board.CellSize/2);
+				targetPos.x += (float)(BoardPhysical.CellSize/2);
+				targetPos.z += (float)(BoardPhysical.CellSize/2);
 				targetPos.y -= 20;
 			}
 			if (Token.Plane.Is(EPlane.AIR) || Token.Plane.Is(EPlane.ETH)) {

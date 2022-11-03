@@ -3,33 +3,31 @@
 namespace HOA { 
 
 	public class Zone {
-		public Cell[,] cells;
-		int size;
+		public Matrix<Cell> cells;
+		public static Size2 size = new Size2(3,3);
 
-		public Zone (int size, Cell start) {
-			this.size = size;
-			cells = new Cell[size,size];
-
-			for (int i=0; i<size; i++) {
-				for (int j=0; j<size; j++) {
-					cells[i,j] = Board.Cell(start.X+i, start.Y+j);
-				}
+		public Zone (Index2 zoneIndex) {
+			cells = new Matrix<Cell>(size);
+			foreach (Index2 localIndex in size) {
+				Index2 globalIndex = (size*zoneIndex) + localIndex;
+				cells[localIndex] = new Cell(globalIndex);
 			}
 		}
 
-		public Cell RandomCell() {
-			int randomX = Random.Range(0,size-1);
-			int randomY = Random.Range(0,size-1);
-			return cells[randomX, randomY];
+		public Cell this[byte x, byte y] {
+			get {return cells[x,y];}
+			set {cells[x,y] = value;}
 		}
+
+		public Cell this[Index2 index] {
+			get {return cells[index];}
+			set {cells[index] = value;}
+		}
+
 
 		CellGroup ToCellGroup () {
 			CellGroup group = new CellGroup();
-			for (int i=0; i<size; i++) {
-				for (int j=0; j<size; j++) {
-					group.Add(cells[i,j]);
-				}
-			}
+			foreach (Index2 index in size) {group.Add(cells[index]);}
 			return group;
 		}
 

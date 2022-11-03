@@ -82,7 +82,7 @@ namespace HOA {
 				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(cell);}
 				return true;
 			}	
-			if (newCell == TemplateFactory.c) {
+			if (newCell == Game.Board.TemplateCell) {
 				cell = newCell;
 				return true;	
 			}

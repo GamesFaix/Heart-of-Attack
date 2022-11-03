@@ -57,7 +57,7 @@ namespace HOA{
 				
 				return true;
 			}	
-			if (newCell == TemplateFactory.c) {
+			if (newCell == Game.Board.TemplateCell) {
 				cell = newCell;
 				return true;	
 			}

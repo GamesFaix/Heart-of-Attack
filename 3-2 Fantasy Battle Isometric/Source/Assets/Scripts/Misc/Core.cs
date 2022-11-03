@@ -46,7 +46,7 @@ public class Core : MonoBehaviour {
 			Roster.Add(new Player(i));
 		}
 		Roster.ForceRandomFactions();
-		Game.Start();
+		Game.Start(new index2(4,4));
 		
 		
 	}

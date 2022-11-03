@@ -7,7 +7,6 @@ namespace HOA {
 	public static class TemplateFactory {
 	
 		static Dictionary<EToken, Token> templates = new Dictionary<EToken, Token>();
-		public static Cell c = new Cell (-1,-1);
 		public static Player p = new Player ("TEMPLATE", false);
 		static Source s = new Source(p);	
 		

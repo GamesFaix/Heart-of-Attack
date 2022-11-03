@@ -5,15 +5,15 @@ using UnityEngine;
 namespace HOA {
 	
 	public class Cell : Target {
-		int x, y;
-		public int X {get {return x;} }
-		public int Y {get {return y;} }
-		public override string ToString() {return "("+x+","+y+")";}
+		public Index2 Index {get; private set;}
+		public int X {get {return Index.x;} }
+		public int Y {get {return Index.y;} }
 
-		public Cell (int xx, int yy) {
-			x = xx;
-			y = yy;
-			if (x>0) {CellDisplay.Attach(this);}
+		public override string ToString() {return "("+X+","+Y+")";}
+
+		public Cell (Index2 index) {
+			Index = index;
+			if (X>=0 && Y>=0) {CellDisplay.Attach(this);}
 		}
 
 		public Vector3 Location {get {return Display.gameObject.transform.position;} }
@@ -134,10 +134,13 @@ namespace HOA {
 			CellGroup neighbors = new CellGroup();
 			
 			for (int i=0; i<8; i++) {
-				int[] dir = Direction.FromInt(i);
+				int2 dir = Direction.FromInt(i);
 				Cell c;
-				if (Board.HasCell(x+dir[0], y+dir[1], out c)) {
-					neighbors.Add(c);
+				checked {
+					Index2 index = (Index2)(Index + dir);
+					if (Game.Board.HasCell(index, out c)) {
+						neighbors.Add(c);
+					}
 				}
 			}
 			if (self) {neighbors.Add(this);}

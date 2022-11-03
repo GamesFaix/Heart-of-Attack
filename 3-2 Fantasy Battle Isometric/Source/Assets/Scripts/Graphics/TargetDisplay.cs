@@ -50,10 +50,13 @@ namespace HOA {
 			else if (t is Token) {c = ((Token)t).Body.Cell;}
 			else {throw new Exception ("TargetDisplay: Can only determine prefab position for Cell or Token.");}
 
-			Vector3 pos = new Vector3 (0,0,0);
-			pos.x = (c.X-1)*Board.CellSize;
-			pos.z = (c.Y-1)*Board.CellSize;
-			return pos;
+			return CellPos(c.Index);
+		}
+
+		static Vector3 CellPos (Index2 index) {
+			float x = index.x * BoardPhysical.CellSize;
+			float z = index.y * BoardPhysical.CellSize;
+			return new Vector3 (x,0,z);
 		}
 
 		public static void Attach (Target t) {
@@ -67,7 +70,7 @@ namespace HOA {
 				   "Cell "+((Cell)t).ToString():
 				   ((Token)t).ToString());
 				go.transform.localScale = (t is Cell ?
-				   new Vector3 ((float)Board.CellSize/10, 1, (float)Board.CellSize/10):
+				   new Vector3 ((float)BoardPhysical.CellSize/10, 1, (float)BoardPhysical.CellSize/10):
 				   ((Token)t).SpriteScale);
 			}
 			catch {

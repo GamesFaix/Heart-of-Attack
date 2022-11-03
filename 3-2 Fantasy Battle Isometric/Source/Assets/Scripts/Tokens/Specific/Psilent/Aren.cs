@@ -83,9 +83,9 @@ namespace HOA{
 			block = new CellGroup(bottomLeft);
 
 			Cell c;
-			if (Board.HasCell(bottomLeft.X+1, bottomLeft.Y, out c)) {block.Add(c);}
-			if (Board.HasCell(bottomLeft.X, bottomLeft.Y+1, out c)) {block.Add(c);}
-			if (Board.HasCell(bottomLeft.X+1, bottomLeft.Y+1, out c)) {block.Add(c);}
+			if (Game.Board.HasCell(bottomLeft.X+1, bottomLeft.Y, out c)) {block.Add(c);}
+			if (Game.Board.HasCell(bottomLeft.X, bottomLeft.Y+1, out c)) {block.Add(c);}
+			if (Game.Board.HasCell(bottomLeft.X+1, bottomLeft.Y+1, out c)) {block.Add(c);}
 
 			if (block.Count == 4) {return true;}
 			return false;
@@ -125,7 +125,7 @@ namespace HOA{
 				}
 				return true;
 			}	
-			if (newCell == TemplateFactory.c) {
+			if (newCell == Game.Board.TemplateCell) {
 				cell = newCell;
 				return true;	
 			}

@@ -16,7 +16,7 @@ namespace HOA {
 		}
 		
 		public static void Add (Player player) {
-			if (!IsFull()) {
+			if (players.Count < 8) {
 				if (!Names.Contains(player.ToString())) {
 					players.Add(player);
 					GameLog.Debug("Roster: Added "+player.ToString());
@@ -35,11 +35,11 @@ namespace HOA {
 			else {GameLog.Debug("Roster: Does not contain player, cannot remove.");}
 		}
 		
-		public static bool IsFull () {
+	/*	public static bool IsFull () {
 			if (players.Count >= MapFactory.MaxPlayers()) {return true;}
 			return false;
 		}
-		
+	*/	
 		public static bool Contains (Player p) {
 			if (players.Contains(p)) {return true;}
 			return false;
