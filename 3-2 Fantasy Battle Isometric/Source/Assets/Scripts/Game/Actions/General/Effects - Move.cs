@@ -13,7 +13,7 @@ namespace HOA {
 		}
 		public override void Process() {
 			Cell oldCell = target.Cell;
-			target.SpriteMove(cell);
+		//	target.SpriteMove(cell);
 			target.Enter(cell);
 			Cell newCell = target.Cell;
 			if (target.IsPlane(EPlane.GND)) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
@@ -97,8 +97,8 @@ namespace HOA {
 			source = s; target = t; other = t2;
 		}
 		public override void Process() {
-			target.SpriteMove(other.Cell);
-			other.SpriteMove(target.Cell);
+		//	target.SpriteMove(other.Cell);
+		//	other.SpriteMove(target.Cell);
 			target.Swap(other);
 			GameLog.Out (target+" swapped places with "+other+".");
 		}

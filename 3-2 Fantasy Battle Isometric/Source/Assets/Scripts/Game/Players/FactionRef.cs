@@ -48,7 +48,6 @@ namespace HOA {
 		public static void Take (Faction f) {taken.Add(f);}
 		public static void Release (Faction f) {taken.Remove(f);}
 		public static void ReleaseAll () {
-			Debug.Log("releasting all factions");
 			taken = new List<Faction>();}
 
 		public static List<Faction> Free {

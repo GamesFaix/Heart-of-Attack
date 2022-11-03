@@ -6,7 +6,7 @@ namespace HOA {
 	public class Water : Obstacle {
 		public Water(Source s, bool template=false){
 			NewLabel(EToken.WATR, s, false, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			body = new BodyWater(this);	
 			Neutralize();
 		}

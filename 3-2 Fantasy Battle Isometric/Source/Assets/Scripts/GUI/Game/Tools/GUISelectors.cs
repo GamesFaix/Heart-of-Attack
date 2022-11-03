@@ -87,7 +87,7 @@ namespace HOA {
 						//Debug.Log("instance selected");
 					}
 					p.ResetX();
-					GUI.Box(box, t.Thumb, p.s);
+					GUI.Box(box, t.Sprite, p.s);
 //					t.Draw(box);
 					
 					p.y2 += btnW;

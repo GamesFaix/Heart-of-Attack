@@ -5,7 +5,7 @@ namespace HOA{
 	public class Monolith : Unit {
 		public Monolith(Source s, bool template=false){
 			NewLabel(EToken.MONO, s, true, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			BuildTall();
 			AddKing();
 			OnDeath = EToken.HBLO;

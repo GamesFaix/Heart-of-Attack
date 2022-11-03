@@ -6,7 +6,7 @@ namespace HOA {
 	public class Lava : Obstacle {
 		public Lava(Source s, bool template=false){
 			NewLabel(EToken.LAVA, s, false, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			body = new BodyLava(this);	
 			Neutralize();
 		}

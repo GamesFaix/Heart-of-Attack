@@ -19,6 +19,19 @@ namespace HOA {
 				default: break;
 			}
 		}
+
+		public static void FindArenMove (Token actor, Aim a) {
+			CellGroup block = ((ArenaNonSensus)actor).Cells;
+
+			CellGroup neighbors = new CellGroup();
+			foreach (Cell c in block) {neighbors.Add(c.Neighbors());}
+
+			foreach (Cell c in neighbors) {
+				if (actor.CanEnter(c)) {
+					c.Legalize();
+				}
+			}
+		}
 		
 		//cellmate
 		static void FindCellmate (Cell start, Token actor, Aim a, Token other) {}
@@ -34,7 +47,7 @@ namespace HOA {
 		}
 
 		static void NeighborTokens (Cell start, Token actor, Aim a) {
-			TokenGroup targets = start.Neighbors().Occupants;
+			TokenGroup targets = start.Neighbors(true).Occupants;
 			targets.Add(start.Occupants);
 			targets = targets.OnlyClass(a.TargetClass);
 			targets = Restrict(targets, actor, a);
@@ -42,7 +55,7 @@ namespace HOA {
 		}
 		
 		static void NeighborCellCreate (Cell start, Token other) {
-			CellGroup neighbors = start.Neighbors();
+			CellGroup neighbors = start.Neighbors(true);
 			foreach (Cell c in neighbors) {
 				if (other.CanEnter(c)) {
 					c.Legalize();

@@ -74,12 +74,73 @@ namespace HOA {
 			return false;
 		}
 
+		public Cell Cell {
+			get {return cell;} 
+			set {cell = value;}
+		}
+		
+		public virtual TokenGroup Neighbors(bool cellMates = false) {
+			TokenGroup neighbors = cell.Neighbors().Occupants;
+			if (cellMates) {
+				foreach (Token t in CellMates) {neighbors.Add(t);}
+			}
+			return neighbors;
+		}
+		
+		public virtual TokenGroup CellMates {
+			get {
+				TokenGroup cellMates = cell.Occupants;
+				cellMates.Remove(parent);
+				return cellMates;
+			}
+		}
+
+		public virtual bool CanEnter (Cell newCell) {
+			if (!newCell.Occupied(Plane) || CanTrample(newCell)) {return true;}
+			return false;
+		}
+		
+		bool CanTakePlaceOf (Token t) {
+			Cell otherCell = t.Cell;
+			Token blocker;
+			
+			foreach (EPlane p in Plane) {
+				if (otherCell.Contains(p, out blocker)) {
+					if (blocker != t) {return false;}
+				}
+			}
+			return true;
+		}
+
+		public bool CanSwap (Token other) {
+			if (CanTakePlaceOf(other) && other.Body.CanTakePlaceOf(parent)) {return true;}
+			return false;
+		}
+
+		public bool CanTrample (Cell newCell) {
+			if (IsClass(EClass.TRAM)) {
+				foreach (Token t in newCell.Occupants) {
+					if (t.IsClass(EClass.DEST) && CanTakePlaceOf(t)) {
+						return true;
+					}
+				}
+			}
+			if (IsClass(EClass.KING)) {
+				foreach (Token t in newCell.Occupants) {
+					if (t.IsClass(EClass.HEART) && CanTakePlaceOf(t)) {
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		}
+
 		public virtual bool Enter (Cell newCell) {
 			if (CanEnter(newCell)) {
 				if (cell != default(Cell)) {Exit();}
 				cell = newCell;
-				if (CanTrample(newCell)) {Trample(newCell);}
-				if (CanGetHeart(newCell)) {GetHeart(newCell);}
+				Trample(newCell);
 				newCell.Enter(parent);
 				return true;
 			}	
@@ -89,96 +150,6 @@ namespace HOA {
 			}
 			return false;
 		}
-		
-		public bool CanEnter (Cell newCell) {
-			if (!newCell.Occupied(Plane)) {return true;}
-			
-			if (CanTrample (newCell)) {return true;}
-
-			if (CanGetHeart (newCell)) {return true;}
-			
-			return false;
-		}
-		
-		public bool CanTrample (Cell newCell) {
-			if (IsClass(EClass.TRAM)) {
-				foreach (EPlane p in Plane) {
-					Token dest;
-					if (newCell.Contains(p, out dest)) {
-						if (!dest.IsClass(EClass.DEST)) {
-							return false;
-						}
-					}
-				}
-				return true;
-			}
-			return false;
-		}
-		protected void Trample (Cell newCell) {
-			TokenGroup tokens = newCell.Occupants;
-			tokens = tokens.OnlyClass(EClass.DEST);
-			for (int i=tokens.Count-1; i>=0; i--) {
-				EffectQueue.Add(new EDestruct(new Source(parent), tokens[i]));
-			}
-		}
-
-		public bool CanGetHeart (Cell newCell) {
-			if (IsClass(EClass.KING) && newCell.Contains(EClass.HEART)){
-				return true;
-			}
-			return false;
-		}
-
-
-		protected void GetHeart (Cell newCell) {
-			if (CanGetHeart(newCell)) {
-				Token heart = newCell.Occupant(EPlane.GND);
-				EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart));
-			}
-		}
-		
-		public virtual void Exit () {
-			cell.Exit(parent);
-		}
-		
-		public Cell Cell {
-			get {return cell;} 
-			set {cell = value;}
-		}
-		
-		public TokenGroup Neighbors(bool cellMates = false) {
-			TokenGroup neighbors = cell.Neighbors().Occupants;
-			if (cellMates) {
-				foreach (Token t in CellMates) {neighbors.Add(t);}
-			}
-			return neighbors;
-		}
-		
-		public TokenGroup CellMates {
-			get {
-				TokenGroup cellMates = cell.Occupants;
-				cellMates.Remove(parent);
-				return cellMates;
-			}
-		}
-
-		public bool CanSwap (Token other) {
-			Cell cell = parent.Cell;
-			Cell otherCell = other.Cell;
-			Token blocker;
-
-			foreach (EPlane p in Plane) {
-				if (otherCell.Contains(p, out blocker)) {
-					if (blocker != other) {return false;}
-				}
-			}
-			foreach (EPlane p in other.Plane) {
-				if (cell.Contains(p, out blocker)) {
-					if (blocker != parent) {return false;}
-				}
-			}
-			return true;
-		}
 
 		public bool Swap (Token other) {
 			if (CanSwap(other)) {
@@ -186,19 +157,35 @@ namespace HOA {
 				Exit();
 				cell = other.Cell;
 				other.Cell.Enter(parent);
-
-
+				
 				other.Exit();
 				other.Body.Cell = oldCell;
 				oldCell.Enter(other);
-
-
+				
 				return true;
 			}	
 			return false;
 		}
 
+		protected void Trample (Cell newCell) {
+			TokenGroup tokens = newCell.Occupants;
 
-
+			if (IsClass(EClass.TRAM)) {
+				TokenGroup dest = tokens.OnlyClass(EClass.DEST);
+				for (int i=dest.Count-1; i>=0; i--) {
+					EffectQueue.Add(new EDestruct(new Source(parent), dest[i]));
+				}
+			}
+			if (IsClass(EClass.KING)) {
+				TokenGroup heart = tokens.OnlyClass(EClass.HEART);
+				if (heart.Count>0) {
+					EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart[0]));
+				}
+			}
+		}
+		
+		public virtual void Exit () {
+			cell.Exit(parent);
+		}
 	}
 }

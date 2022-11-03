@@ -10,8 +10,7 @@ namespace HOA {
 				TurnQueue.Reset();
 				//Board.New(boardSize);
 				Map.Map3();
-				CellObjectFactory.Generate();
-				GUIBoard.ZoomOut();
+				//GUIBoard.ZoomOut();
 				SpawnKings();
 				EffectQueue.Add(new EShuffle(new Source()));
 				EffectQueue.Add(new EInitialize(new Source()));
@@ -50,7 +49,6 @@ namespace HOA {
 			Board.Reset();
 			Roster.Reset();
 			GUIMaster.Toggle();
-			CellObjectFactory.Reset();
 		}
 	}
 }

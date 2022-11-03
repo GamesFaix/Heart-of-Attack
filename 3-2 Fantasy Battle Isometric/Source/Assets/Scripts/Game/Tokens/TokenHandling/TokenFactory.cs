@@ -6,6 +6,11 @@ namespace HOA {
 	
 	public static class TokenFactory {
 
+		static GameObject tokenPF = Resources.Load("Prefabs/TokenPrefab") as GameObject;
+		static GameObject effectPF = Resources.Load("Prefabs/EffectPrefab") as GameObject;
+		static GameObject spritePF = Resources.Load("Prefabs/SpritePrefab") as GameObject;
+		static Texture2D legalHighlight = Resources.Load("Textures/legal") as Texture2D;
+
 		static List<Token> tokens = new List<Token>();
 		
 		public static TokenGroup Tokens {
@@ -16,41 +21,29 @@ namespace HOA {
 			}
 		}
 		
-		public static void ClearLegal () {
-			foreach (Token t in tokens) {t.Legalize(false);}
-		}
-		
-		public static void Remove (Token token) {
-			if (tokens.Contains(token)) {tokens.Remove(token);}
-		}
-		
-		public static void Reset() {
-			for (int i=tokens.Count-1; i>=0; i--) {
-				tokens[i].Die(new Source(), false, false);
-			}
-			tokens = new List<Token>();}
-		
 		public static bool Contains (Token token) {
 			if (tokens.Contains(token)) {return true;}
 			else {return false;}
 		}
-	
+
+		public static void Remove (Token token) {
+			if (tokens.Contains(token)) {tokens.Remove(token);}
+		}
+
 		public static bool Add(EToken code, Source s, Cell c, out Token t, bool log=true) {
 			t = MakeToken(code, s);
-			if (t.Enter(c)) {
+			if (t.CanEnter(c)) {
 				tokens.Add(t);
 				if (t is Unit) {TurnQueue.Add((Unit)t);}
 
-				if (!FactionRef.Neutral().Contains(t.Code)
-				    && !t.IsClass(EClass.HEART)) {
-					t.Owner = s.Player;
-				}
+				InheritOwnership (t, s);
 
 				if (log && s.Player != Roster.Neutral) {
 					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
 				}
-
-				t.AttachPrefab();
+				t.Enter(c);
+				AttachPrefab (t);
+				if (t.IsPlane(EPlane.SUNK)) {c.EnterSunken(t);}
 
 				return true;
 			}
@@ -61,23 +54,10 @@ namespace HOA {
 		}
 		
 		public static bool Add(EToken code, Source s, Cell c, bool log=true) {
-			Token t = MakeToken(code, s);
-			if (t.Enter(c)) {
-				tokens.Add(t);
-				if (t is Unit) {TurnQueue.Add((Unit)t);}
-				t.Owner = s.Player;
-				if (log && s.Player != Roster.Neutral) {
-					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
-				}
-				t.AttachPrefab();
-				return true;
-			}
-			else {
-				GameLog.Debug("TokenFactory: Token cannot be created in that cell.");
-				return false;
-			}	
+			Token t;
+			return Add(code, s, c, out t, log);
 		}
-		
+
 		static Token MakeToken (EToken code, Source s){
 			switch(code){
 				case EToken.KATA: return new Katandroid(s);
@@ -144,6 +124,68 @@ namespace HOA {
 				
 				default: return default(Token);
 			}
+		}
+		
+		static void InheritOwnership (Token t, Source s) {
+			if (!FactionRef.Neutral().Contains(t.Code)
+			    && !t.IsClass(EClass.HEART)) {
+				t.Owner = s.Player;
+			}
+		}
+
+		static void AttachPrefab (Token t) {
+			GameObject prefab = GameObject.Instantiate (tokenPF, t.Cell.Location, Quaternion.identity) as GameObject;
+			TokenDisplay td = prefab.GetComponent("TokenDisplay") as TokenDisplay;
+			AttachPlanes (td);
+			td.Token = t;
+			t.Display = td;
+			td.gameObject.transform.eulerAngles = new Vector3 (45, 225, 0);
+			td.Sprite = Thumbs.CodeToThumb(t.Code);
+			td.MoveTo(t.Cell);
+			if (t.IsPlane(EPlane.SUNK)) {t.Display.HideSprite();}
+			
+			prefab.transform.localScale = t.SpriteScale;
+		}
+
+		static void AttachPlanes (TokenDisplay td) {
+			GameObject t = td.gameObject;
+
+			GameObject plane = GameObject.Instantiate(effectPF, t.transform.position, Quaternion.identity) as GameObject;
+			plane.transform.localScale = new Vector3 (2,1,2);
+			plane.transform.parent = t.transform;
+			Vector3 pos = t.transform.position;
+			pos.y += 0.01f;
+			plane.transform.position = pos;
+			td.EffectPlane = plane;
+
+			plane = GameObject.Instantiate(spritePF, t.transform.position, Quaternion.identity) as GameObject;
+			plane.transform.localScale = new Vector3 (2.5f, 1, 2.5f);
+			//spritePrefab.transform.position = new Vector3 (5,0,5);
+			plane.transform.parent = t.transform;
+			td.SpritePlane = plane;
+
+			plane = GameObject.Instantiate(spritePF, t.transform.position, Quaternion.identity) as GameObject;
+			plane.transform.localScale = new Vector3 (2.5f,1,2.5f);
+			plane.transform.parent = t.transform;
+			plane.renderer.material.SetTexture("_MainTex", legalHighlight);
+			pos = t.transform.position;
+			pos.y += 0.01f;
+			plane.transform.position = pos;
+			td.LegalPlane = plane;
+
+			td.HideEffects();
+			td.SetLegal(false);
+		}
+
+		public static void ClearLegal () {
+			foreach (Token t in tokens) {t.Legalize(false);}
+		}
+
+		public static void Reset() {
+			for (int i=tokens.Count-1; i>=0; i--) {
+				tokens[i].Die(new Source(), false, false);
+			}
+			tokens = new List<Token>();
 		}
 	}
 }

@@ -6,17 +6,17 @@ namespace HOA {
 	public abstract class Obstacle : Token{
 		
 		protected void BuildStandard () {
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			NewBody(EPlane.GND, EClass.OB);
 		}
 		
 		protected void BuildTall () {
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			NewBody(new List<EPlane> {EPlane.GND, EPlane.AIR}, EClass.OB);
 		}
 		
 		protected void BuildSunken () {
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			NewBody(EPlane.SUNK, EClass.OB);
 		}
 		
@@ -30,7 +30,7 @@ namespace HOA {
 		}
 		
 		protected void BuildHeart () {
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			NewBody(new List<EPlane> {EPlane.GND, EPlane.AIR}, new List<EClass> {EClass.HEART, EClass.OB});
 			Neutralize();
 		}

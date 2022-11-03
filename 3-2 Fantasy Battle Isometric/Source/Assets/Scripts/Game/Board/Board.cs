@@ -13,6 +13,17 @@ namespace HOA {
 		
 		static Cell[,] cells = new Cell[1,1];
 
+		public static CellGroup Cells {
+			get {
+				CellGroup cellGroup = new CellGroup();
+				foreach (Cell c in cells) {cellGroup.Add(c);}
+				return cellGroup;
+			}
+		}
+
+		static int cellSize = 25;
+		public static int CellSize {get {return cellSize;} }
+
 		public static bool ready = false;
 		
 		public static void New (int n){
@@ -23,18 +34,21 @@ namespace HOA {
 				return;
 			}
 
+			BorderFactory.Generate(n);
+			CellFactory.CreateParent();
+
 			cells = new Cell[n,n];
 			for (int x=1; x<=n; x++) {
 				for (int y=1; y<=n; y++) {
 					cells[x-1,y-1] = new Cell(x,y);		
 				}
 			}
+
+			CellFactory.AttachPrefabs();
+
 			GameLog.Debug("Board: New ("+n+"x"+n+") board created.");
 			ready = true;
 		}
-
-
-
 
 		public static int Size {get {return cells.GetLength(0);} }
 		
@@ -64,14 +78,6 @@ namespace HOA {
 			}
 		}
 
-		public static CellGroup Cells {
-			get {
-				CellGroup cellGroup = new CellGroup();
-				foreach (Cell c in cells) {cellGroup.Add(c);}
-				return cellGroup;
-			}
-		}
-
 		public static bool RandomLegalCell (Token t, out Cell outCell) {
 			CellGroup remainingCells = Cells;
 			//Debug.Log("starting cellcount "+remainingCells.Count);
@@ -93,7 +99,8 @@ namespace HOA {
 		public static void Reset () {
 			cells = new Cell[1,1];
 			ready = false;
-	//		if (cells != default(Cell[,])) {foreach (Cell c in cells) {c.Clear();}}
+			CellFactory.Reset();
+			BorderFactory.Reset();
 		}
 		
 		public static void ClearLegal () {
@@ -101,8 +108,5 @@ namespace HOA {
 				cell.Legalize(false);
 			}
 		}
-
-
 	}
-	
 }

@@ -5,23 +5,6 @@ namespace HOA {
 
 	public abstract class Token : ITargetable{
 
-		protected GameObject prefab;
-		public void AttachPrefab () {
-			GameObject tokenPF = Resources.Load("Prefabs/TokenPrefab") as GameObject;
-			prefab = GameObject.Instantiate (tokenPF, Cell.Position, Quaternion.identity) as GameObject;
-			TokenDisplay td = prefab.GetComponent("TokenDisplay") as TokenDisplay;
-			td.Token = this;
-			td.Orient();
-			td.NormalTex = Thumb;
-			td.MoveTo(Cell);
-			if (IsPlane(EPlane.SUNK)) {
-				Display.HideSprite();
-			}
-
-			prefab.transform.localScale = scale;
-
-		}
-
 		Vector3 scale = new Vector3 (2.5f, 1, 2.5f);
 		public Vector3 SpriteScale {
 			get {return scale;}
@@ -32,7 +15,7 @@ namespace HOA {
 		protected void ScaleLarge () {SpriteScale = new Vector3 (2.5f, 1, 2.5f);}
 		protected void ScaleJumbo () {SpriteScale = new Vector3 (3f, 1, 3f);}
 		protected void ScaleTall () {SpriteScale = new Vector3 (3f, 1, 4.5f);}
-
+		protected void ScaleQuad () {SpriteScale = new Vector3 (5f, 1, 5f);}
 
 		protected bool isTemplate = false;
 		public void BuildTemplate () {isTemplate = true;}
@@ -44,7 +27,7 @@ namespace HOA {
 		
 		protected Label label;
 		protected Body body;
-		protected HOA.Sprite sprite;
+	//	protected HOA.Sprite sprite;
 			
 		protected void NewLabel (EToken code, Source s, bool unique=false, bool template=false) {label = new Label(this, code, s, unique, template);}
 		protected void NewBody (EPlane p, EClass s) {body = new Body(this, p, s);}
@@ -69,13 +52,24 @@ namespace HOA {
 			set {label.Owner = value;}
 		}
 		//graphics
-		public Texture2D Thumb {get {return sprite.Thumb;} }
-		public void Draw (Rect box) {sprite.Draw(box);}
-		public void SpriteEffect (EEffect e) {
-			sprite.Effect(e);
-			Display.Effect(e);
+		TokenDisplay display = default(TokenDisplay);
+		public TokenDisplay Display {
+			get {return display;}
+			set {display = value;}
 		}
-		public void SpriteMove (Cell c) {sprite.Move(c);}
+		public Texture2D Sprite {
+			get {
+				if (Display != default(TokenDisplay)) {
+					return Display.Sprite;
+				} 
+				return default(Texture2D);
+			}
+		}
+		public void SpriteEffect (EEffect e) {
+			if (Display != default(TokenDisplay)) {
+				Display.Effect(e);
+			}
+		}
 
 		//plane
 		public List<EPlane> Plane {get {return body.Plane;} }
@@ -100,7 +94,6 @@ namespace HOA {
 		public Cell Cell {get {return body.Cell;} }
 		public bool CanEnter (Cell cell) {return body.CanEnter(cell);}
 		public bool CanTrample (Cell cell) {return body.CanTrample(cell);}
-		public bool CanGetHeart (Cell cell) {return body.CanGetHeart(cell);}
 		public bool Enter (Cell cell) {
 			bool e = body.Enter(cell);
 			if (e && Display != null) {Display.MoveTo(cell);}
@@ -112,7 +105,7 @@ namespace HOA {
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 
-			GameObject.Destroy(prefab);
+			GameObject.Destroy(Display.gameObject);
 
 			//Debug.Log(Name+" is dying");
 			bool top = false;
@@ -160,15 +153,7 @@ namespace HOA {
 		}
 
 		public List<Timer> timers = new List<Timer>();
-		
-		public TokenDisplay Display {
-			get {
-				if (prefab != null) {
-					return prefab.GetComponent("TokenDisplay") as TokenDisplay;
-				}
-				else {return default(TokenDisplay);}
-			}
-		}
+
 
 	}
 }

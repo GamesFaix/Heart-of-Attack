@@ -17,7 +17,7 @@ namespace HOA {
 		protected void NewArsenal () {arsenal = new Arsenal(this);}
 		
 		protected void BuildStandard () {
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			OnDeath = EToken.CORP;
 			NewWallet();
 			NewArsenal();

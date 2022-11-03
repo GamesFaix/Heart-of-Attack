@@ -9,7 +9,7 @@ namespace HOA {
 
 		public Web(Source s, bool template=false){
 			NewLabel(EToken.WEBB, s, false, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			body = new BodyWeb(this);	
 			Neutralize();
 			affected = new Dictionary<Unit, Action>();

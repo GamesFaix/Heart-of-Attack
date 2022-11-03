@@ -70,6 +70,9 @@ namespace HOA {
 			//Debug.Log(start);
 
 			if (aim.AimType == EAim.SELF) {FinishStep();}
+			else if (currentAction is AMoveAren) {
+				Legalizer.FindArenMove (actor, aim);
+			}
 			else {
 				//Debug.Log(aim);
 				//if (child!= default(Token)) {Debug.Log(child.ToString());}

@@ -12,7 +12,7 @@ namespace HOA{
 			
 			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new ASmasFlail(Price.Cheap, this));
-			arsenal.Add(new ASmasSlam(new Price(1,1), this));
+			arsenal.Add(new ASmasSlam(new Price(2,0), this));
 			arsenal.Sort();
 		}		
 		

@@ -5,13 +5,13 @@ namespace HOA{
 	public class Mine : Obstacle {
 		public Mine(Source s, bool template=false){
 			NewLabel(EToken.MINE, s, false, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			body = new BodyMine(this);
 		}
 		public override string Notes () {return "If any Token enters Mine's Cell or a neighboring Cell, destroy Mine.\nWhen Mine is destroyed, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";}
 		
 		public override void Die (Source s, bool corpse = false, bool log=true) {
-			GameObject.Destroy(prefab);
+			GameObject.Destroy(Display.gameObject);
 			Debug.Log(this+" dying");
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			TokenFactory.Remove(this);

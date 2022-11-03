@@ -15,11 +15,5 @@ public class SkyboxControl : MonoBehaviour {
 		m.SetTexture("_UpTex", tex);
 		m.SetTexture("_BackTex", tex);
 		m.SetTexture("_FrontTex", tex);
-
-
-
-
 	}
-
-
 }

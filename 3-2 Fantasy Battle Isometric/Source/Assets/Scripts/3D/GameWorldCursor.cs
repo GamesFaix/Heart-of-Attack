@@ -22,8 +22,8 @@ namespace HOA {
 					if (go.GetComponent("CellDisplay")){	
 						CellDisplay cd = go.GetComponent("CellDisplay") as CellDisplay;
 						//Debug.Log(cd.Cell);
-						if (cd.Cell.IsLegal()) {
-							Targeter.Select(cd.Cell);
+						if (cd.Parent.IsLegal()) {
+							Targeter.Select(cd.Parent);
 							GUIMaster.PlaySound(EGUISound.TARGET);
 						}
 					}
@@ -50,7 +50,7 @@ namespace HOA {
 						if (cellGO.GetComponent("CellDisplay")){	
 							CellDisplay cd = cellGO.GetComponent("CellDisplay") as CellDisplay;
 							//Debug.Log(cd.Cell);
-							GUIInspector.Inspected = cd.Cell;
+							GUIInspector.Inspected = cd.Parent;
 							GUIMaster.PlaySound(EGUISound.INSPECT);
 						}
 					}
@@ -73,7 +73,7 @@ namespace HOA {
 						if (go.GetComponent("CellDisplay")){	
 							CellDisplay cd = go.GetComponent("CellDisplay") as CellDisplay;
 							Token t;
-							if (cd.Cell.Contains(EPlane.SUNK, out t)) {
+							if (cd.Parent.Contains(EPlane.SUNK, out t)) {
 								GUIInspector.Inspected = t;
 								GUIMaster.PlaySound(EGUISound.INSPECT);
 							}

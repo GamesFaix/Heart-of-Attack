@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{834C7EF2-029E-BFC6-F90D-26F4C524966F}") = "queue 25 isometric", "Assembly-CSharp.csproj", "{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}"
+Project("{C6A47263-C9FF-D208-B760-5E80E5F54E07}") = "queue 26", "Assembly-CSharp.csproj", "{3D166331-9C0B-EAE5-1593-29E93EB4FC78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D166331-9C0B-EAE5-1593-29E93EB4FC78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D166331-9C0B-EAE5-1593-29E93EB4FC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D166331-9C0B-EAE5-1593-29E93EB4FC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D166331-9C0B-EAE5-1593-29E93EB4FC78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-															GlobalSection(MonoDevelopProperties) = preSolution
+												GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

@@ -61,7 +61,7 @@ namespace HOA {
 	
 			{EToken.RECY, "Recyclops"},	
 			{EToken.NECR, "Necrochancellor"},
-			{EToken.MOUT, "Mouth of the Underworld"},
+			{EToken.MOUT, "Gatecreeper"},
 			{EToken.MONO, "Monolith"},
 			{EToken.HBLO, "Blood Heart of Attack"},
 			

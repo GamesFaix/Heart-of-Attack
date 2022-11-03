@@ -5,62 +5,25 @@ using UnityEngine;
 namespace HOA {
 	
 	public class Cell : ITargetable {
-		int x;
-		int y;
-		GameObject prefab;
-		public GameObject Prefab {
-			get {return prefab;}
-		}
-
-		public CellDisplay Display {
-			get {
-				return prefab.GetComponent("CellDisplay") as CellDisplay;
-			}
-		}
-		static Texture2D whiteCell = Resources.Load("Textures/mc grass") as Texture2D;
-		static Texture2D blackCell = Resources.Load("Textures/mc dirt") as Texture2D;
+		int x, y;
+		public int X {get {return x;} }
+		public int Y {get {return y;} }
+		public override string ToString() {return "("+x+","+y+")";}
 
 		public Cell (int xx, int yy) {
 			x = xx;
 			y = yy;
-			sprite = new CellSprite(this);
-			AttachPrefab();
 		}
 
-		void AttachPrefab () {
-			GameObject cellPF = Resources.Load("Prefabs/CellPrefab") as GameObject;
-			prefab = GameObject.Instantiate (cellPF, Position, Quaternion.identity) as GameObject;
-			prefab.transform.localScale = new Vector3 ((float)size/10,0,(float)size/10);
-			//prefab.transform.parent = CellObjectFactory.parentCell.transform;
-			prefab.name = "Cell ("+x+","+y+")";
-
-			CellDisplay cd = prefab.GetComponent("CellDisplay") as CellDisplay;
-			cd.Cell = this;
-			if (Even) {cd.NormalTex = blackCell;}
-			else {cd.NormalTex = whiteCell;}
-			if (x < 0) {prefab.renderer.enabled = false;}
+		CellDisplay display;
+		public CellDisplay Display {
+			get {return display;}
+			set {display = value;}
 		}
 
-		bool Even {
-			get {
-				if ((x+y)%2 == 0) {return true;}
-				return false;
-			}
-		}
+		public Vector3 Location {get {return display.gameObject.transform.position;} }
 
-		static float size = 25;
-		public Vector3 Position {
-			get {
-				Vector3 pos = new Vector3(0,0,0);
-				pos.x = (x-1)*size;
-				pos.z = (y-1)*size;
-				return pos;
-			}
-		}
-
-		public override string ToString() {return "("+x+","+y+")";}
-		public int X {get {return x;} }
-		public int Y {get {return y;} }
+		public void SpriteEffect (EEffect e) {Display.Effect(e);}
 
 		Token[] tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		
@@ -141,14 +104,13 @@ namespace HOA {
 			}
 			if (t.IsPlane(EPlane.SUNK)) {EnterSunken(t);}
 
-
 			for (int i=sensors.Count-1; i>=0; i--) {
 				Sensor s = sensors[i];
 				s.OtherEnter(t);
 			}
 		}
 
-		void EnterSunken (Token t) {Display.EnterSunken(t);}
+		public void EnterSunken (Token t) {Display.EnterSunken(t);}
 
 		public void Exit (Token t) {
 			for (int i=0; i<=3; i++){
@@ -162,19 +124,9 @@ namespace HOA {
 
 		void ExitSunken () {Display.ExitSunken();}
 
-
-
-
-
-
-
-
 		public void Clear () {
 			tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		}
-
-
-
 
 		//Sensors
 		List<Sensor> sensors = new List<Sensor>();
@@ -223,9 +175,7 @@ namespace HOA {
 			foreach (EPlane p in t.Plane) {
 				if (Stop(p)) {return true;}
 			}
-			if (t.CanTrample(this) || t.CanGetHeart(this)) {
-				return true;
-			}
+			if (t.CanTrample(this)) {return true;}
 			return false;
 		}
 
@@ -235,9 +185,5 @@ namespace HOA {
 			if (p == EPlane.AIR) {stop[2] = s;}
 			if (p == EPlane.ETH) {stop[3] = s;}
 		}
-
-		CellSprite sprite;
-		public CellSprite Sprite { get {return sprite;} }
-		public void SpriteEffect (EEffect e) {sprite.Effect(e);}
 	}
 }

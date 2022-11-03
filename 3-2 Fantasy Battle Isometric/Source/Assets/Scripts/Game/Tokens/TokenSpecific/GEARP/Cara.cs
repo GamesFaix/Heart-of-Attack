@@ -6,7 +6,7 @@ namespace HOA {
 	public class CarapaceInvader : Unit {
 		public CarapaceInvader(Source s, bool template=false){
 			NewLabel(EToken.CARA, s, false, template);
-			sprite = new HOA.Sprite(this);
+			//sprite = new HOA.Sprite(this);
 			body = new BodyCara(this);
 			ScaleMedium();
 			NewWallet();
@@ -26,7 +26,7 @@ namespace HOA {
 		public override void Die (Source s, bool corpse=true, bool log=true) {
 			BodyCara bc = (BodyCara)body;
 			bc.DestroySensors();
-			GameObject.Destroy(prefab);
+			GameObject.Destroy(Display.gameObject);
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			if (this == TurnQueue.Top) {TurnQueue.Advance();}
 			TurnQueue.Remove((Unit)this);
