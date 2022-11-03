@@ -32,29 +32,4 @@ namespace HOA{
 
 		public override string Notes () {return "";}
 	}	
-
-
-	
-	public class AGargTailWhip : Task {
-		int damage = 10;
-
-		public override string Desc {get {return "Do "+damage+" damage to all neighboring units.";} }
-
-		public AGargTailWhip (Unit u) {
-			Name = "Tail Whip";
-			Weight = 4;
-			Price = new Price(1,1);
-			Parent = u;
-			NewAim(HOA.Aim.Self());
-		}
-		
-		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup neighbors = Parent.Body.Neighbors(false);
-			neighbors = neighbors.OnlyType(EType.UNIT);
-			foreach (Token t in neighbors) {
-				Unit u = (Unit)t;
-				EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
-			}
-		}
-	}
 }

@@ -17,6 +17,11 @@ namespace HOA {
 		public Matrix (Int2 size) {
 			Size = size;
 			array = new T[Size.x, Size.y];
+			for (int j=0; j<Size.y; j++) {
+				for (int i=0; i<Size.x; i++) {
+					array[i,j] = default(T);
+				}
+			}
 		}
 
 		public Matrix (Int2 size, IList<T> list) {
@@ -110,6 +115,21 @@ namespace HOA {
 
 		protected void InvalidArgumentCount () {throw new Exception("Matrix"+Size+" requires 0 or "+Count+" entries for construction.");}
 
+		public Int2 IndexOf (T item) {
+			foreach (Int2 index in Size) {
+				if (this[index].Equals(item)) {return index;}
+			}
+			Debug.Log("Matrix.IndexOf: Item not in matrix.");
+			return new Int2 (0,0);
+		}
 
+		public bool Contains (T item) {
+			foreach (Int2 index in Size) {
+				if (this[index] != null) {
+					if (this[index].Equals(item)) {return true;}
+				}
+			}
+			return false;
+		}
 	}
 }

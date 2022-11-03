@@ -10,7 +10,7 @@ namespace HOA {
 		SELF, NEIGHBOR, PATH, LINE, ARC, FREE, 
 		UNIT, OB,
 		PLANE, DAMAGE, TIMER, SENSOR,
-		STUN, SKIP, FIRE, EXP, COR
+		STUN, SKIP, FIR, EXP, COR
 	}
 
 	public abstract class Tip {
@@ -96,6 +96,9 @@ namespace HOA {
 			case ETip.DAMAGE: return new TipDamage();
 			case ETip.TIMER: return new TipTimer();
 			case ETip.SENSOR: return new TipSensor();
+			case ETip.FIR: return new TipFIR();
+			case ETip.EXP: return new TipEXP();
+			case ETip.COR: return new TipCOR();
 			default: return null;
 			}
 		}

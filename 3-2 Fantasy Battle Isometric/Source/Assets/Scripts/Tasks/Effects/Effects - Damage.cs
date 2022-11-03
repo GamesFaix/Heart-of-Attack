@@ -51,8 +51,9 @@ namespace HOA {
 			
 			int currentDmg = dmg;
 			
-			
-			while (currentDmg > 0) {
+
+			int i=0;
+			while (currentDmg > 0 && i<=2) {
 				EffectGroup group = new EffectGroup();
 				for (int j=0; j<thisRad.Count; j++) {
 					Cell next = thisRad[j];
@@ -72,6 +73,7 @@ namespace HOA {
 				nextRad = new CellGroup();
 				currentDmg = (int)Mathf.Floor(currentDmg * 0.5f);
 				list.Add(group);
+				i++;
 			}
 		}
 	}
@@ -236,6 +238,25 @@ namespace HOA {
 				Int2 nextIndex = cell.Index - direction;
 
 				if (!Game.Board.HasCell(nextIndex, out cell)) {stop = true;}
+			}
+		}
+	}
+
+	public class ELaser2 : Effect {
+		public override string ToString () {return "Effect - Laser2";}
+		Unit target; int dmg;
+		
+		public ELaser2 (Source s, Unit u, int n) {
+			source = s; target = u; dmg = n;
+		}
+		public override void Process() {
+			if (target.Damage(source, dmg)) {
+				target.Display.Effect(EEffect.LASER);
+				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
+			}
+			else {
+				target.Display.Effect(EEffect.MISS);
+				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
 			}
 		}
 	}

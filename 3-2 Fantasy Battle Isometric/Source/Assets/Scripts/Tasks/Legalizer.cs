@@ -18,6 +18,7 @@ namespace HOA {
 				case ETraj.CELLMATE: Debug.Log("Cellmate targeting no longer active."); break;
 				case ETraj.PATH: Path(start, Parent,a); break;//Debug.Log("Path aim no longer active."); break;
 				case ETraj.GLOBAL: Debug.Log("Global aim no longer active."); break;
+				case ETraj.RADIAL: Radial(start, Parent, a); break;
 				default: break;
 			}
 		}
@@ -161,6 +162,26 @@ namespace HOA {
 				}
 			}
 			else {legal.Add(square.Occupants.Restrict(Parent, a));}
+			legal.Legalize();
+		}
+
+		static void Radial (Cell firstCell, Token Parent, Aim a) {
+
+			Cell center = Parent.Body.Cell;
+			NeighborMatrix neighbors = new NeighborMatrix(center);
+
+			Cell nextClockwise;
+			Cell nextCounter;
+
+			TargetGroup legal = new TargetGroup();
+
+			if (neighbors.CellClockwise(firstCell, out nextClockwise)) {
+				legal.Add(nextClockwise);
+			}
+			if (neighbors.CellCounter(firstCell, out nextCounter)) {
+				legal.Add(nextCounter);
+			}
+
 			legal.Legalize();
 		}
 		

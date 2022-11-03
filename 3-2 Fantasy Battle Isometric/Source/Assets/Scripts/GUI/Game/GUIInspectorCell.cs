@@ -22,9 +22,7 @@ namespace HOA {
 				GUI.Box(box, Icons.Plane((EPlane)i), p.s);
 				if (c.Contains((EPlane)i, out t)) {
 					p.NudgeX();
-					p.NudgeY();
 					t.DisplayThumbName(new Panel(p.Box(0.5f), p.LineH, p.s));
-					p.NudgeY(false);
 				}
 				p.NextLine();
 			}

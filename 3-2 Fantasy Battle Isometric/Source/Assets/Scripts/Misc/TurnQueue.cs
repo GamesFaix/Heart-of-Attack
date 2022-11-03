@@ -13,7 +13,10 @@ namespace HOA {
 			return false;
 		}
 
-		public static void Add (Unit u) {units.Add(u);}
+		public static void Add (Unit u) {
+			units.Add(u);
+			Skip(u);
+		}
 		public static void Remove (Unit u) {
 			units.Remove(u);
 			//Debug.Log("TUrnQueue removed "+u);
@@ -37,9 +40,7 @@ namespace HOA {
 			if (log) {GameLog.Out(s+" shuffled the Queue.");}
 		}
 
-		public static void Initialize () {
-			PrepareNewTop(Top);
-		}
+		public static void Initialize () {PrepareNewTop(Top);}
 
 		public static void Advance(bool log=true){
 			QueueStunner.Find(units);
@@ -56,7 +57,7 @@ namespace HOA {
 
 			if (oldTop.HP > 0) {
 				units.Add(oldTop);
-				Skip(oldTop, oldBtm);
+				Skip(oldTop);
 			}
 
 			QueueStunner.Hold(units);
@@ -103,18 +104,22 @@ namespace HOA {
 
 		}
 
-		static void Skip (Unit oldTop, Unit oldBtm) {
-			if (oldBtm.IN < oldTop.IN){
-				int difference = oldTop.IN - oldBtm.IN;
-				for (byte i=0; i<difference; i++){
-					int index = units.IndexOf(oldTop)-1;
-					if (units[index]==Top){break;}
-					if (units[index].IN < oldTop.IN
-					    && !units[index].IsSkipped()){
-						units[index].Skip();
+		static void Skip (Unit oldTop) {
+			int i = oldTop.IN;
+
+			while (i > 1) {
+				int index = units.IndexOf(oldTop);
+				if (index > 1) {
+					Unit other = units[index-1];
+					int oldTopRandom = Random.Range(1,i);
+					int otherRandom = Random.Range(1,other.IN);
+					if (oldTopRandom >= otherRandom) {
 						MoveUp(oldTop,1,false);
-					}	
+						i--;
+					}
+					else {i = 0;}
 				}
+				else {i = 0;}
 			}
 		}
 

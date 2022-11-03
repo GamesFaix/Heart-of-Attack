@@ -56,6 +56,7 @@ namespace HOA {
 			}
 		}
 
+		public static Special Cell {get {return new Special(EType.CELL);} }
 		public static Special Unit {get {return new Special(EType.UNIT);} }
 		public static Special UnitDest {get {return new Special(new List<EType> {EType.UNIT, EType.DEST, EType.REM});} }
 		public static Special Dest {get {return new Special(EType.DEST);} }

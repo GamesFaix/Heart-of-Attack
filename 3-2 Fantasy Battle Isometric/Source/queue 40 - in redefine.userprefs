@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tasks\Legalizer.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Collections\Matrix.cs" Line="127" Column="4" />
+      <File FileName="Assets\Scripts\Tasks\Legalizer.cs" Line="185" Column="4" />
+      <File FileName="Assets\Scripts\Tasks\Targeter.cs" Line="52" Column="45" />
+      <File FileName="Assets\Scripts\Tasks\Effects\Effects - Damage.cs" Line="250" Column="36" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6DA00672-4C71-0D2A-CB07-A8B97FCBF3EC}</ProjectGuid>
+	<ProjectGuid>{D38422E7-535C-32AE-A6D4-0852B71E6DD6}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -78,6 +78,7 @@
      <Compile Include="Assets\Scripts\Collections\Groups\TargetGroup.cs" />
      <Compile Include="Assets\Scripts\Collections\Groups\TokenGroup.cs" />
      <Compile Include="Assets\Scripts\Collections\Matrix.cs" />
+     <Compile Include="Assets\Scripts\Collections\NeighborMatrix.cs" />
      <Compile Include="Assets\Scripts\Collections\Probability\Distribution.cs" />
      <Compile Include="Assets\Scripts\Collections\Probability\Possibility.cs" />
      <Compile Include="Assets\Scripts\Collections\Queue.cs" />
@@ -117,6 +118,9 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipPlane.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipSensor.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipCOR.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipEXP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFIR.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipArc.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipFree.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipLine.cs" />
@@ -180,6 +184,7 @@
      <Compile Include="Assets\Scripts\Tasks\Special\ATime.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\ATimers.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\Corrosive.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Special\Explosive.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\Fire.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\Heals.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\Lasers.cs" />
@@ -187,6 +192,7 @@
      <Compile Include="Assets\Scripts\Tasks\Special\Morphs.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\MultiTarget.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\PathAttacks.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Special\Radial.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\Replace.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\ScalingRange.cs" />
      <Compile Include="Assets\Scripts\Tasks\Special\SpecialCreates.cs" />

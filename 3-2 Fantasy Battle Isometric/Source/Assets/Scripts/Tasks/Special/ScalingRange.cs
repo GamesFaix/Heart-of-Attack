@@ -34,6 +34,22 @@ namespace HOA {
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
 		}
+
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+			
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.DAMAGE);}
+			GUI.Box(box,Icons.DMG(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			p.NextLine();
+			GUI.Label(p.Box(0.9f), "Max Range +1 per Focus (up to +3).");
+		}
 	}
 	public class APanoPierce : Task {
 		
@@ -97,6 +113,22 @@ namespace HOA {
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new EExplosion(new Source(Parent), (Cell)targets[0], damage));
 		}
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+			
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.EXP);}
+			GUI.Box(box,Icons.EXP(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			
+			p.NextLine();
+			GUI.Label(p.LineBox, "Max Range +1 per Focus (up to +3).");
+		}
 	}
 
 	public class ARookVolley : Task {
@@ -141,14 +173,20 @@ namespace HOA {
 		}
 
 		public override void Draw (Panel p) {
+
 			GUI.Label(p.LineBox, Name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
-
 			DrawAim(0, p.LinePanel);
-			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+		
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.DAMAGE);}
+			GUI.Box(box,Icons.DMG(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			p.NextLine();
+			GUI.Label(p.Box(0.9f), "Range +1 per Focus (up to +3).");
 		}
 	}
 }

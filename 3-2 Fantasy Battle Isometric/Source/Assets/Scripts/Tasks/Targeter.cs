@@ -67,6 +67,10 @@ namespace HOA {
 			}
 
 			if (Pending is AMoveAren) {Legalizer.FindArenMove (Parent, aim);}
+			else if (aim.Trajectory == ETraj.RADIAL) {
+				Token target1 = (Token)targets[step-1];
+				Legalizer.Find(Parent, aim, target1.Body.Cell);
+			}
 			else {Legalizer.Find(Parent, aim, start, child);}
 		}
 

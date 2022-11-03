@@ -11,7 +11,7 @@ namespace HOA {
 		static Dictionary<EType, Texture2D> types;
 		static Dictionary<ETraj, Texture2D> trajectories;
 
-		static Texture2D skip, onDeath, timer, sensor;
+		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
 
 		public static void Load() {
 			stats = new Dictionary<EStat, Texture2D>();
@@ -46,11 +46,16 @@ namespace HOA {
 			AddTraj (ETraj.FREE, "FREE"); 
 			AddTraj (ETraj.GLOBAL, "GLB"); 
 			AddTraj (ETraj.SELF, "SELF");
+			AddTraj (ETraj.RADIAL, "RAD");
 
 			skip = LoadFile("Stats/SKIP");
 			onDeath = LoadFile("ONDEATH");
 			timer = LoadFile("TIMER");
 			sensor = LoadFile("SENSOR");
+			cor = LoadFile("Effects/COR");
+			fir = LoadFile("Effects/FIR");
+			exp = LoadFile("Effects/EXP");
+			dmg = LoadFile("Effects/DMG");
 		}
 
 		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Icons/"+name) as Texture2D);}
@@ -69,5 +74,10 @@ namespace HOA {
 		public static Texture2D ONDEATH() {return onDeath;}
 		public static Texture2D TIMER() {return timer;}
 		public static Texture2D SENSOR() {return sensor;}
+		
+		public static Texture2D COR() {return cor;}
+		public static Texture2D FIR() {return fir;}
+		public static Texture2D EXP() {return exp;}
+		public static Texture2D DMG() {return dmg;}
 	}
 }

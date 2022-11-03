@@ -109,7 +109,7 @@ namespace HOA {
 			
 			Parent.Arsenal.Replace("Move", new AMovePath(Parent, 3));
 			Parent.Arsenal.Replace("Land", new AGargFly(Parent));
-			Parent.Arsenal.Replace("Create Rook", new AGargTailWhip(Parent));
+			Parent.Arsenal.Replace("Build Rook", new AGargTailWhip(Parent));
 			Parent.Arsenal.Sort();
 			
 			Parent.Display.Effect(EEffect.STATUP);

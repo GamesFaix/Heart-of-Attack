@@ -108,7 +108,7 @@ namespace HOA {
 		public static Stat FP (Unit parent) {return new Stat (parent, "Focus", EStat.FP, ETip.FP, 0,0);}
 		public static Stat FPaddsIN (Unit parent) {return new FPaddsIN (parent);}
 		public static Stat FPaddsDEF (Unit parent, byte cap) {return new FPaddsDEF (parent, cap);}
-		public static Stat IN (Unit parent, byte normal) {return new Stat (parent, "Initiative", EStat.IN, ETip.IN, normal);}
+		public static Stat IN (Unit parent, byte normal) {return new Stat (parent, "Initiative", EStat.IN, ETip.IN, normal, 1);}
 		public static Stat STUN (Unit parent) {return new Stat (parent, "Stun", EStat.STUN, ETip.NONE, 0,0,255,true);}
 
 	}

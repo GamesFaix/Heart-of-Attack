@@ -23,6 +23,21 @@ namespace HOA {
 			Unit target = (Unit)targets[0];
 			target.timers.Add(new TStickyGrenade(target, Parent));
 		}
+
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+
+			GUI.Label(p.LineBox,"Attach timer to target:");
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.EXP);}
+			GUI.Box(box,Icons.EXP(),p.s);
+			p.NudgeX();
+			GUI.Label(p.Box(0.9f),damage.ToString()+" at end of target's next turn.");
+		}
 	}
 
 	public class AMonoAltar : Task {
@@ -134,6 +149,35 @@ namespace HOA {
 				u.timers.Add(new TBomb(u, Parent, 1));
 			}
 			EffectQueue.Add(nextEffects);
+		}
+
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+			
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.EXP);}
+			GUI.Box(box,Icons.EXP(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			
+			p.NextLine();
+			box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.IN);}
+			GUI.Box(box,Icons.Stat(EStat.IN));
+			p.NudgeX();
+			GUI.Label(p.Box(0.9f), "-2: Units in target Cell");
+
+			p.NextLine();
+			box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.IN);}
+			GUI.Box(box,Icons.Stat(EStat.IN));
+			p.NudgeX();
+			GUI.Label(p.Box(0.9f), "-1: Units in target Cell's neighbors");
+
 		}
 	}
 

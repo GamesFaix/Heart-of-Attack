@@ -26,6 +26,20 @@ namespace HOA {
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new ECorrode(new Source(Parent), (Unit)targets[0], damage));
 		}
+
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+			
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
+			GUI.Box(box,Icons.COR(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+		}
 	}
 
 	public class ABeesFatalBlow : Task {
@@ -53,6 +67,22 @@ namespace HOA {
 			EffectQueue.Add(new ECorrode (new Source(Parent), u, damage));
 			
 			EffectQueue.Add(new EKill (new Source(Parent), Parent));
+		}
+
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
+			GUI.Box(box,Icons.COR(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			p.NextLine();
+			GUI.Label(p.LineBox, "Destroy "+Parent.ToString()+".");
 		}
 	}
 
@@ -86,6 +116,22 @@ namespace HOA {
 				nextEffects.Add(new ECorrode(new Source(Parent), (Unit)t, damage));	
 			}
 			EffectQueue.Add(nextEffects);
+		}
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			DrawAim(0, p.LinePanel);
+
+			GUI.Label(p.LineBox, "All neighbors: ");
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
+			GUI.Box(box,Icons.COR(),p.s);
+			p.NudgeX();
+			GUI.Box(p.Box(30),damage.ToString(), p.s);
+			p.NextLine();
+			GUI.Label(p.LineBox, "Destroy "+Parent.ToString()+".");
 		}
 	}
 

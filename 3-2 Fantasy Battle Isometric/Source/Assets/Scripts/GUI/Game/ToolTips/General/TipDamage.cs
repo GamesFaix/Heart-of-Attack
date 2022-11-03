@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipDamage () {
 			Name = "Damage";
-			Icon = null;
+			Icon = Icons.DMG();
 			ETip = ETip.DAMAGE;
 		}
 		

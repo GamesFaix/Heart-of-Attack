@@ -4,7 +4,6 @@
 			ID = new ID(this, EToken.ASHE, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.DEST);
-			Special.Add(EType.REM);
 			OnDeath = EToken.NONE;
 			ScaleSmall();
 			NewHealth(15);

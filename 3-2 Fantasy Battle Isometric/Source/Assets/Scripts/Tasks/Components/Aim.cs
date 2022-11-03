@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 namespace HOA {
-	public enum ETraj {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
+	public enum ETraj {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, RADIAL, OTHER}
 	public enum EPurp {MOVE, CREATE, ATTACK, OTHER}
 
 	public class Aim {
