@@ -26,7 +26,7 @@ namespace HOA.Tokens {
 				new Actions.Dislocate(this),
 
 				new Actions.Create(this, Price.Cheap, EToken.PRIS),
-				new Actions.Create(this, new Price(1,1), EToken.AREN),
+				new Actions.CreateAREN(this),
 				new Actions.Create(this, new Price(1,2), EToken.PRIE)
 			});
 			Arsenal.Sort();

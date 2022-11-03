@@ -78,6 +78,15 @@ namespace HOA {
 			return filtered;
 		}
 
+		public TokenGroup OnlyToken (EToken code) {
+			TokenGroup filtered = new TokenGroup();
+			foreach (Token t in list) {
+				if (t.ID.Code == code) {filtered.Add(t);}
+			}
+			return filtered;
+		}
+
+
 		public static TokenGroup operator / (TokenGroup g, Player p) {return g.RemoveOwner(p);}
 		public static TokenGroup operator % (TokenGroup g, Player p) {return g.OnlyOwner(p);}
 		public static TokenGroup operator / (TokenGroup g, EPlane p) {return g.RemovePlane(p);}

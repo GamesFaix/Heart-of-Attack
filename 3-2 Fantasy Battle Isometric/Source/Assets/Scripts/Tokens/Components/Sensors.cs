@@ -445,7 +445,7 @@ namespace HOA {
 				Unit u = list[i];
 				Task move = u.Arsenal.Move;
 				if (move != null) {
-					move.Aim[0].Range = web.Affected[u];
+					move.Aims[0].Range = web.Affected[u];
 					web.Affected.Remove(u);
 				}
 			}
@@ -459,7 +459,7 @@ namespace HOA {
 			Unit u = (Unit)t;
 			Task move = u.Arsenal.Move;
 			if (move != default(Task)) {
-				move.Aim[0].Range = web.Affected[u];
+				move.Aims[0].Range = web.Affected[u];
 				web.Affected.Remove(u);
 			}
 		}

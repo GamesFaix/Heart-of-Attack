@@ -16,7 +16,7 @@ namespace HOA.Actions {
 
 			Weight = 5;
 			Price = p;
-			Aim = new List<Aim>{HOA.Aim.CreateArc(range, minRange)};
+			NewAim(Aim.CreateArc(minRange, range));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

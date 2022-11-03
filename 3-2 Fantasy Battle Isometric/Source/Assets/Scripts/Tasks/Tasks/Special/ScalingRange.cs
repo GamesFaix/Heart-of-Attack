@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 
 namespace HOA.Actions { 
 
@@ -16,18 +16,12 @@ namespace HOA.Actions {
 			Price = p;
 			Parent = u;
 			
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2));
+			NewAim(Aim.AttackArc(Special.Unit, 2, 3));
 			this.damage = damage;
 		}
 		
-		public override void Adjust () {
-			int bonus = Mathf.Min(Parent.FP, 3);
-			Aim[0] = new Aim (Aim[0].Trajectory, Aim[0].Special, Aim[0].Range+bonus, Aim[0].MinRange);
-		}
-		
-		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2);
-		}
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range -= Mathf.Min(Parent.FP, 3);}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[0], damage));
@@ -63,19 +57,13 @@ namespace HOA.Actions {
 			Price = p;
 			Parent = u;
 			
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2));
+			NewAim(Aim.AttackArc(Special.Unit, 2, 3));
 			this.damage = damage;
 		}
 		
-		public override void Adjust () {
-			int bonus = Mathf.Min(Parent.FP, 3);
-			Aim[0] = new Aim (Aim[0].Trajectory, Aim[0].Special, Aim[0].Range+bonus, Aim[0].MinRange);
-		}
-		
-		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, 4, 3);
-		}
-		
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range -= Mathf.Min(Parent.FP, 3);}
+
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new Effects.Pierce (new Source(Parent), (Unit)targets[0], damage));
 		}
@@ -96,18 +84,12 @@ namespace HOA.Actions {
 			Weight = 4;
 			Price = new Price(2,1);
 			Parent = parent;
-			NewAim(new Aim (ETraj.ARC, ESpecial.CELL, EPurp.ATTACK, 3, 2));
+			NewAim(Aim.AttackArc(Special.Cell, 2, 3));
 		}
 		
-		public override void Adjust () {
-			int bonus = Mathf.Min(Parent.FP, 3);
-			Aim[0] = new Aim (Aim[0].Trajectory, Aim[0].Special, Aim[0].Range+bonus, Aim[0].MinRange);
-		}
-		
-		public override void UnAdjust () {
-			Aim[0] = new Aim(Aim[0].Trajectory, Aim[0].Special, 3, 2);
-		}
-		
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range -= Mathf.Min(Parent.FP, 3);}
+
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new Effects.Explosion(new Source(Parent), (Cell)targets[0], damage));
 		}
@@ -142,18 +124,12 @@ namespace HOA.Actions {
 			Weight = 3;
 			Parent = u;
 			Price = Price.Cheap;
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, EPurp.ATTACK, 2, 2));
+			NewAim(Aim.AttackArc(Special.Unit, 2, 2));
 		}
 		
-		public override void Adjust () {
-			int bonus = Mathf.Min(Parent.FP, 3);
-			Aim[0] = new Aim (Aim[0].Trajectory, Aim[0].Special, Aim[0].Range+bonus);
-		}
-		
-		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, EPurp.ATTACK, 2, 2);
-		}
-		
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range -= Mathf.Min(Parent.FP, 3);}
+
 		public override bool Restrict () {
 			TokenGroup neighbors = Parent.Body.Neighbors(true);
 			for (int i=neighbors.Count-1; i>=0; i--) {

@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -48,7 +48,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -79,7 +79,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		public override bool Restrict () {
@@ -129,7 +129,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 			
 		}
 		public override bool Restrict () {

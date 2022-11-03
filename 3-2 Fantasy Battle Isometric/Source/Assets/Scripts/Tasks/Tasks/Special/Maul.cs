@@ -11,7 +11,7 @@
 			Weight = 3;
 			Parent = u;
 			Price = new Price(0,1);
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

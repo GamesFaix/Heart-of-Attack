@@ -17,7 +17,7 @@ namespace HOA.Actions {
 			Weight = 3;
 			Price = new Price(1,1);
 			Parent = parent;
-			NewAim(new Aim (ETraj.ARC, ESpecial.CELL, EPurp.ATTACK, range));
+			NewAim(Aim.AttackArc(Special.Cell, 0, range));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -49,16 +49,11 @@ namespace HOA.Actions {
 			
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(new Aim(ETraj.GLOBAL, ESpecial.DEST));
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup mines = Parent.Owner.OwnedUnits;
-			for (int i=mines.Count-1; i>=0; i--) {
-				Token t = mines[i];
-				if (t.ID.Code != EToken.MINE) {mines.Remove(t);}
-			}
-			
+			TokenGroup mines = Parent.Owner.OwnedUnits.OnlyToken(EToken.MINE);
 			foreach (Token t in mines) {t.Die(new Source(Parent));}
 		}
 	}

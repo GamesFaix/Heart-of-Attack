@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(new HOA.Aim(ETraj.NEIGHBOR, Special.UnitDest, EPurp.ATTACK));
+			NewAim(Aim.AttackNeighbor(Special.UnitDest));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

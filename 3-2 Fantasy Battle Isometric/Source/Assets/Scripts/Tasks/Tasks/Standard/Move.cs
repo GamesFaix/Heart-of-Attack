@@ -11,7 +11,7 @@ namespace HOA.Actions {
 			Parent = parent;
 			Name = "Move";
 			Weight = 1;
-			NewAim(HOA.Aim.MovePath(r));
+			NewAim(Aim.MovePath(r));
 			Price = Price.Cheap;
 		}
 		

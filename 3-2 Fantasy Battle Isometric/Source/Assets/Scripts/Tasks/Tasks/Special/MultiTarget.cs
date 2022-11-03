@@ -12,8 +12,8 @@ namespace HOA.Actions {
 		int damage = 16;
 
 		public ThrowTerrain (Unit parent) {
-			NewAim(new Aim(ETraj.NEIGHBOR, ESpecial.DEST));
-			Aim.Add(HOA.Aim.Arc(3));
+			NewAim(Aim.AttackNeighbor(Special.Dest));
+			Aims.Add(Aim.AttackArc(Special.Unit, 0, 3));
 			Name = "Throw Terrain";
 			Weight = 4;
 			Parent = parent;
@@ -31,8 +31,8 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
@@ -52,15 +52,15 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(0,1);
-			NewAim(HOA.Aim.Shoot(3));
+			NewAim(Aim.AttackLine(Special.Unit,3));
 		}
 		
 		public override void Adjust () {
 			int shots = Mathf.Min(Parent.FP, 5);
-			for (int i=2; i<=shots; i++) {Aim.Add(HOA.Aim.Shoot(3));}
+			for (int i=2; i<=shots; i++) {Aims.Add(Aim.AttackLine(Special.Unit,3));}
 		}
 		
-		public override void UnAdjust () {NewAim(HOA.Aim.Shoot(3));}
+		public override void UnAdjust () {NewAim(Aim.AttackLine(Special.Unit,3));}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			for (int i=0; i<targets.Count; i++) {
@@ -72,22 +72,22 @@ namespace HOA.Actions {
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
 			int FP = Parent.FP;
-			Price price = new Price(0, FP);
+			Price price = new Price(0, (byte)FP);
 			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
 			int shots = Mathf.Min(Parent.FP, 5);
-			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			for (int i=2; i<=shots; i++) {
-				Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+				Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	} 
 
-	public class Bombard : Task, IMultiTarget, IRecursiveTarget {
+	public class Bombard : Task, IMultiTarget, IRecursiveMove {
 		
 		public override string Desc {get {return 
 				"Once per Focus (Max: 3), move upto "+range+" cells in a line and " +
@@ -103,15 +103,15 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(2,0);
-			NewAim(HOA.Aim.MoveLine(range));
+			NewAim(Aim.MoveLine(range));
 		}
 		
 		public override void Adjust () {
 			int shots = Mathf.Min(Parent.FP, 3);
-			for (int i=2; i<=shots; i++) {Aim.Add(HOA.Aim.MoveLine(range));}
+			for (int i=2; i<=shots; i++) {Aims.Add(Aim.MoveLine(range));}
 		}
 		
-		public override void UnAdjust () {NewAim(HOA.Aim.MoveLine(range));}
+		public override void UnAdjust () {NewAim(Aim.MoveLine(range));}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Parent.SetStat(new Source(Parent), EStat.FP, 0);
@@ -148,14 +148,14 @@ namespace HOA.Actions {
 		
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			Price price = new Price(Price.AP, Parent.FP);
+			Price price = new Price((byte)Price.E, (byte)Parent.FP);
 			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
-			Aim[0].Draw(p.LinePanel);
+			Aims[0].Draw(p.LinePanel);
 			int shots = Mathf.Min(3, Parent.FP);
 			for (int i=2; i<=shots; i++) {
-				Aim[0].Draw(p.LinePanel);
+				Aims[0].Draw(p.LinePanel);
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	

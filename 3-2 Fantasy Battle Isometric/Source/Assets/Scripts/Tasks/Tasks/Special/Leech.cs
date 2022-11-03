@@ -14,7 +14,7 @@ namespace HOA.Actions {
 			Name = "Death Field";
 			Weight = 4;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -58,7 +58,7 @@ namespace HOA.Actions {
 			Name = "Feast";
 			Weight = 3;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Arc(3,2));
+			NewAim(Aim.AttackArc(Special.Unit, 2,3));
 			Parent = u;
 		}
 		
@@ -79,7 +79,7 @@ namespace HOA.Actions {
 			Weight = 3;
 			
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 			Parent = u;
 		}
 		
@@ -100,7 +100,7 @@ namespace HOA.Actions {
 			Weight = 3;
 			
 			Price = new Price(1,0);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 			Parent = u;
 		}
 		
@@ -108,9 +108,11 @@ namespace HOA.Actions {
 			TokenGroup tokens = Parent.Body.CellMates;
 			tokens = tokens.OnlyType(ESpecial.UNIT);
 			tokens = tokens.RemoveOwner(Parent.Owner);
+			EffectGroup effects = new EffectGroup();
 			foreach (Token t in tokens) {
-				EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)t, damage));
+				effects.Add(new Effects.Leech(new Source(Parent), (Unit)t, damage));
 			}
+			EffectQueue.Add(effects);
 		}
 	}
 

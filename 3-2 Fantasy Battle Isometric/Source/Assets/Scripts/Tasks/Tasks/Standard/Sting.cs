@@ -21,7 +21,7 @@ namespace HOA.Actions {
 			cor = (int)Mathf.Floor(d*0.5f);
 			Weight = 3;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

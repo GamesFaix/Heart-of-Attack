@@ -1,5 +1,3 @@
-﻿namespace HOA { 
-
-	public interface IManualFree {
-	}
+﻿namespace HOA.Actions { 
+	public interface IManualFree {}
 }

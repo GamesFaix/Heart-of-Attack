@@ -146,19 +146,16 @@ namespace HOA {
 			CellGroup neighbors = new CellGroup();
 			
 			foreach (int2 dir in Direction.Directions) {
-				Cell c;
+				Cell neighbor;
 				index2 index;
 				if (index2.Safe((int2)Index + dir, out index)) {
-					if (Board.HasCell(index, out c)) {
-						neighbors.Add(c);
+					if (Board.HasCell(index, out neighbor)) {
+						neighbors.Add(neighbor);
 					}
 				}
 			}
 			if (self) {neighbors.Add(this);}
 			neighbors.Add(links);
-			foreach (Cell c in neighbors) {
-				if (c is ExoCell) {neighbors.Remove(c);}
-			}
 			return neighbors;
 		}
 

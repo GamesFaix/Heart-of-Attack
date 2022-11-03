@@ -14,9 +14,17 @@ namespace HOA {
 		public Unit Parent {get; protected set;}
 		public virtual Token Template {get; protected set;}
 
-		public List<Aim> Aim {get; protected set;}
-		protected void NewAim (Aim aim) {Aim = new List<Aim>{aim};}
-		public virtual void DrawAim (int n, Panel p) {Aim[n].Draw(p);}
+		protected Task () {
+			Name = "";
+			Weight = 0;
+			Price = Price.Free;
+			Parent = null;
+			Template = null;
+		}
+
+		public List<Aim> Aims {get; protected set;}
+		protected void NewAim (Aim aim) {Aims = new List<Aim>{aim};}
+		public virtual void DrawAim (int n, Panel p) {Aims[n].Draw(p);}
 
 		public void Execute (TargetGroup targets) {
 			ExecuteStart();
@@ -42,15 +50,29 @@ namespace HOA {
 		public bool Used {get; protected set;}
 		public void Reset () {Used = false;}
 
-		public virtual bool Legal {
-			get {
-				if (Used) {return false;}
-				if (Restrict()) {return false;}
-				if (!Parent.CanAfford(Price)) {return false;}
-				if (EffectQueue.Processing) {return false;}
-				if (Parent != TurnQueue.Top) {return false;}
-				return true;
+		public virtual bool Legal (out string message) {
+			message = Name+" currently legal.";
+			if (Parent != TurnQueue.Top) {
+				message = "It is not currently "+Parent+"'s turn.";
+				return false;
 			}
+			if (Used) {
+				message = Name+" has already been used this turn.";
+				return false;
+			}
+			if (!Parent.Wallet.CanAfford(Price)) {
+				message = Parent+" cannot afford "+Name+".";
+				return false;
+			}
+			if (Restrict()) {
+				message = Name+" currently illegal.";
+				return false;
+			}
+			if (EffectQueue.Processing) {
+				message = "Another action is currently in progress.";
+				return false;
+			}
+			return true;
 		}
 
 		public virtual bool Restrict () {return false;}
@@ -58,21 +80,20 @@ namespace HOA {
 		public virtual void Adjust () {}
 		public virtual void UnAdjust () {}
 
-		public virtual void Charge () {
+		public void Charge () {
 			Used = true;
-			Parent.Charge(Price);
+			Parent.Wallet.Charge(Price);
 		}
 
 		public int CompareTo (Task other) {
 			try {
 				if (Weight < other.Weight) {return -1;}
 				else if (Weight > other.Weight) {return 1;}
-				else if (Price != null && other.Price !=null) {
+				else {
 					int i = Price.CompareTo(other.Price);
 					if (i != 0) {return i;}
 					else {return (Name.CompareTo(other.Name));}
 				}
-				else {throw new Exception ("Task.CompareTo: Null price");}
 			}
 			catch {
 				return 0;

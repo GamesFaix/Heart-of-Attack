@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 
 namespace HOA.Actions { 
 
@@ -13,7 +13,7 @@ namespace HOA.Actions {
 			Weight = 5;
 			Parent = par;
 			Price = Price.Free;
-			NewAim(new Aim(ETraj.FREE, ESpecial.CELL, EPurp.CREATE));
+			NewAim(Aim.Free(Special.Cell, EPurp.CREATE));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -43,7 +43,7 @@ namespace HOA.Actions {
 			Weight = 5;
 			Parent = par;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -78,7 +78,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = par;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.CreateArc(3));
+			NewAim(Aim.CreateArc(0,3));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -115,8 +115,8 @@ namespace HOA.Actions {
 			Weight = 5;
 			Parent = par;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Create());
-			Aim.Add(HOA.Aim.Create());
+			NewAim(Aim.CreateNeighbor());
+			Aims.Add(Aim.CreateNeighbor());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -174,4 +174,34 @@ namespace HOA.Actions {
 		}
 	}
 	*/
+
+	public class CreateAREN : Task {
+		
+		public override string Desc {get {return "Create Arena in target cell.";} } 
+		public override Token Template {get {return TokenFactory.Template(EToken.AREN);} }
+		
+		public CreateAREN (Unit par) {
+			Name = "Create "+Template;
+			Weight = 5;
+			Parent = par;
+			Price = new Price(1,1);
+			NewAim(Aim.CreateAren());
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new Effects.Create(new Source(Parent), EToken.AREN, (Cell)targets[0]));
+		}
+		
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			
+			DrawAim(0, p.LinePanel);
+			Template.DisplayThumbNameTemplate(p.LinePanel);
+			float descH = (p.H-(p.LineH*2))/p.H;
+			GUI.Label(p.TallWideBox(descH), Desc);	
+		}
+	}
 }

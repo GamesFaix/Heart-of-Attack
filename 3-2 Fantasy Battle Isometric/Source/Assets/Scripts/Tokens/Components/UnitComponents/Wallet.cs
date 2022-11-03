@@ -22,27 +22,20 @@ namespace HOA {
 		public void FillAP (bool log=true) {
 			if (AP.Max > AP) {
 				AP.Add(new Source(parent), (AP.Max-AP), log);
-				if (log) {GameLog.Out(parent+" AP filled.");}
+				if (log) {GameLog.Out(parent+" Energy filled.");}
 			}
 		}
 
-		public bool CanAfford (Price Price) {
-			if (AP >= Price.AP
-			&& FP >= Price.FP
-			&& !Price.Other) {
-				return true;
-			}
-			return false;
-		}
-		
+		public bool CanAfford (Price Price) {return ( (AP>=Price.E && FP>=Price.F) ? true : false );}
+
 		public void Charge (Price Price) {
-			AP.Add (new Source(parent), 0-Price.AP, false);
-			FP.Add (new Source(parent), 0-Price.FP, false);
+			AP.Add (new Source(parent), 0-Price.E, false);
+			FP.Add (new Source(parent), 0-Price.F, false);
 		}
 		
 		public void Refund (Price Price) {
-			AP.Add (new Source(parent), Price.AP, false);
-			FP.Add (new Source(parent), Price.FP, false);
+			AP.Add (new Source(parent), Price.E, false);
+			FP.Add (new Source(parent), Price.F, false);
 		}
 
 		public virtual void Display (Panel p, float iconSize) {

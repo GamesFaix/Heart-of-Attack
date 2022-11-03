@@ -21,7 +21,7 @@ namespace HOA {
 			return neighbors;
 		}
 		
-		public TokenGroup CellMates {
+		public virtual TokenGroup CellMates {
 			get {
 				TokenGroup cellMates = Cell.Occupants;
 				cellMates.Remove(parent);

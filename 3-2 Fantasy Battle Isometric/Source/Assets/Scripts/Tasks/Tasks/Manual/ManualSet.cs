@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+using UnityEngine; 
 
 namespace HOA.Actions { 
 	
@@ -18,19 +18,25 @@ namespace HOA.Actions {
 			this.stat = stat;
 			this.newValue = newValue;
 			
-			NewAim(new Aim(ETraj.FREE, ESpecial.UNIT, EPurp.ATTACK));
+			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
 			for (int i=2; i<=10; i++) {
-				Aim.Add(new Aim(ETraj.FREE, ESpecial.UNIT, EPurp.ATTACK));
+				Aims.Add(Aim.Free(Special.Unit, EPurp.ATTACK));
 			}
 		}
-		
+		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
 				EffectQueue.Add(new Effects.SetStat(new Source(Roster.Neutral), (Unit)target, stat, newValue));
 			}
 		}
 		
-		public override bool Legal {get {return true;} }
-		public override void Charge () {}
+		public override bool Legal(out string message) {
+			message = Name+" currently legal.";
+			if (EffectQueue.Processing) {
+				message = "Another action is currently in progress.";
+				return false;
+			}
+			return true;
+		}
 	}
 }

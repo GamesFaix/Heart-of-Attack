@@ -11,7 +11,7 @@ namespace HOA.Actions {
 			Name = "Hour Saviour";
 			Weight = 4;
 			Price = new Price(0,2);
-			NewAim(new Aim(ETraj.FREE, ESpecial.UNIT));
+			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -35,7 +35,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -53,9 +53,9 @@ namespace HOA.Actions {
 			Name = "Second in Command";
 			Weight = 4;
 			Price = new Price(0,2);
-			NewAim(new Aim(ETraj.FREE, ESpecial.UNIT));
+			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
 
-			Aim[0].IncludeSelf = false;
+			Aims[0].IncludeSelf = false;
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -18,19 +18,25 @@ namespace HOA.Actions {
 			Weight = 5;
 			Price = Price.Free;
 			
-			NewAim(new Aim(ETraj.FREE, ESpecial.CELL, EPurp.CREATE));
+			NewAim(Aim.Free(Special.Cell, EPurp.CREATE));
 			for (int i=2; i<=10; i++) {
-				Aim.Add(new Aim(ETraj.FREE, ESpecial.CELL, EPurp.CREATE));
+				Aims.Add(Aim.Free(Special.Cell, EPurp.CREATE));
 			}
 		}
-		
+		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
 				EffectQueue.Add(new Effects.Create(new Source(Parent), child, (Cell)target));
 			}
 		}
 
-		public override bool Legal {get {return true;} }
-		public override void Charge () {}
+		public override bool Legal(out string message) {
+			message = Name+" currently legal.";
+			if (EffectQueue.Processing) {
+				message = "Another action is currently in progress.";
+				return false;
+			}
+			return true;
+		}
 	}
 }

@@ -1,4 +1,3 @@
-﻿namespace HOA {
-
+﻿namespace HOA.Actions {
 	interface IMultiMove {}
 }

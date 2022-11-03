@@ -1,5 +1,3 @@
-﻿namespace HOA {
-
-	interface IMultiTarget {
-	}
+﻿namespace HOA.Actions {
+	public interface IMultiTarget {}
 }

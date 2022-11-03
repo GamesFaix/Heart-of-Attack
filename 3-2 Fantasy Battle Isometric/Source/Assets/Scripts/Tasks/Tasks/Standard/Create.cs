@@ -16,7 +16,7 @@ namespace HOA.Actions {
 
 			Weight = 5;
 			Price = p;
-			NewAim(HOA.Aim.Create());
+			NewAim(Aim.CreateNeighbor());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -12,7 +12,7 @@ namespace HOA.Actions {
 			Name = "Cocktail";
 			Weight = 3;
 			Price = new Price(1,2);
-			NewAim(new HOA.Aim(ETraj.ARC, Special.UnitDest, 3));
+			NewAim(Aim.AttackArc(Special.UnitDest, 0, 3));
 			Parent = u;
 		}
 		
@@ -47,7 +47,7 @@ namespace HOA.Actions {
 			Name = "Firebreathing";
 			Weight = 3;
 			Price = new Price(2,0);
-			NewAim(new HOA.Aim(ETraj.LINE, Special.UnitDest, 3));
+			NewAim(Aim.AttackLine(Special.UnitDest, 3));
 			Parent = u;
 		}
 		

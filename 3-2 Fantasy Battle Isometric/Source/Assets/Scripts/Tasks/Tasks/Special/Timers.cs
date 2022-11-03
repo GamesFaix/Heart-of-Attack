@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 
 namespace HOA.Actions { 
 
@@ -16,7 +16,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,0);
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -50,8 +50,8 @@ namespace HOA.Actions {
 			Weight = 4;
 			Price = new Price(1,0);
 			Parent = par;
-			NewAim (new Aim (ETraj.NEIGHBOR, ESpecial.UNIT));
-			Aim[0].TeamOnly = true;
+			NewAim (Aim.AttackNeighbor(Special.Unit));
+			Aims[0].TeamOnly = true;
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -73,7 +73,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Shoot(2));
+			NewAim(Aim.AttackLine(Special.Unit, 2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -97,7 +97,7 @@ namespace HOA.Actions {
 			Name = "Time Slam";
 			Weight = 4;
 			Price = new Price(1,0);
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -130,7 +130,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(new Aim(ETraj.ARC, ESpecial.CELL, EPurp.ATTACK, 2));
+			NewAim(Aim.AttackArc(Special.Cell, 0,2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -195,7 +195,7 @@ namespace HOA.Actions {
 			Name = "Arctic Gust";
 			Weight = 4;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -203,7 +203,7 @@ namespace HOA.Actions {
 			EffectQueue.Add(new Effects.Damage (new Source(Parent), u, damage));
 			if (u.Arsenal.Move != default(Task)) {
 				Task move = u.Arsenal.Move;
-				Aim aim = move.Aim[0];
+				Aim aim = move.Aims[0];
 				aim.Range -= 2;
 				u.timers.Add(new TFreeze(u, Parent, move, 2));
 			}				
@@ -215,7 +215,7 @@ namespace HOA.Actions {
 				if (u != Parent
 				    && (u.Arsenal.Move != default(Task))) {
 					Task move = u.Arsenal.Move;
-					Aim aim = move.Aim[0];
+					Aim aim = move.Aims[0];
 					aim.Range -= 1;
 					
 					u.timers.Add(new TFreeze(u, Parent, move, 1));
@@ -236,7 +236,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Shoot(2));
+			NewAim(Aim.AttackLine(Special.Unit,2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

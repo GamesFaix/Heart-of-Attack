@@ -13,7 +13,7 @@ namespace HOA.Actions {
 			damage = d;
 			Weight = 3;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Arc(range));
+			NewAim(Aim.AttackArc(Special.Unit, 0, range));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -14,7 +14,7 @@ namespace HOA.Actions {
 			Name = "Shock";
 			Weight = 3;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 			Parent = parent;
 		}
 		
@@ -35,7 +35,7 @@ namespace HOA.Actions {
 			Name = "Discharge";
 			Weight = 4;
 			Price = new Price(1,2);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 			Parent = parent;
 		}
 		

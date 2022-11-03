@@ -1,4 +1,5 @@
 ﻿using UnityEngine; 
+using System.Collections.Generic;
 
 namespace HOA { 
 	
@@ -10,45 +11,66 @@ namespace HOA {
 		index2 down {get {return Cell.Index + Direction.Down;} }
 		index2 downRight {get {return Cell.Index + Direction.DownRight;} }
 
-		public BodyAren (Token parent) : base(parent){
-			aliases = new Alias[3];
-			aliases[0] = new ArenaAlias(parent);
-			aliases[1] = new ArenaAlias(parent);
-			aliases[2] = new ArenaAlias(parent);
-			foreach (Alias alias in aliases) {
-				TokenDisplay.Attach(alias);
+		public BodyAren (Token parent, bool template=false) : base(parent){
+			if (!template) {
+				aliases = new Alias[3];
+				aliases[0] = new ArenaAlias(parent);
+				aliases[1] = new ArenaAlias(parent);
+				aliases[2] = new ArenaAlias(parent);
+				foreach (Alias alias in aliases) {
+					TokenDisplay.Attach(alias);
+				}
 			}
 		}
 
 		public new BodyAren DeepCopy (Token parent) {return new BodyAren(parent);}
 
+		public override TokenGroup CellMates {
+			get {
+				CellGroup square;
+				TokenGroup cellMates = new TokenGroup();
+				if (SquareExists(Cell, out square)) {
+					cellMates.Add(square.Occupants);
+					cellMates.Remove(parent);
+					foreach (Alias a in aliases) {cellMates.Remove(a);}
+				}
+				return cellMates;
+			}
+		}
+
 		public override bool CanEnter (Cell newCell) {
 			CellGroup square;
-			if (Square(newCell, out square)) {
+			if (SquareExists(newCell, out square)) {
 				Token occupant;
-				if (newCell.Contains(EPlane.ETH, out occupant)) {
-					if (occupant.ID == parent.ID) {
-						return true;
+				foreach (Cell corner in square) {
+					if (corner is ExoCell) {return false;}
+					if (corner.Contains(EPlane.ETH, out occupant)) {
+						if (occupant.ID != parent.ID) {return false;}
 					}
-					return false;
 				}
 				return true;
 			}
 			return false;
 		}
 
-		static bool Square (Cell cell, out CellGroup square) {
-			square = new CellGroup(cell);
-			index2 index = cell.Index;
-			square.Add(Game.Board.Cell(index + Direction.Right));;
-	        square.Add(Game.Board.Cell(index + Direction.Down));
-    	    square.Add(Game.Board.Cell(index + Direction.DownRight));
-			for (int i=square.Count-1; i>=0; i--) {
-				Cell c = square[i];
-				if (c is ExoCell) {square.Remove(c);}
+		static bool SquareExists (Cell cell, out CellGroup square) {
+			square = new CellGroup();
+
+			List<index2> indexes = new List<index2> {
+				cell.Index,
+				cell.Index + Direction.Right,
+				cell.Index + Direction.Down,
+				cell.Index + Direction.DownRight
+			};
+
+			foreach (index2 index in indexes) {
+				if (Game.Board.HasCell(index, out cell)) {
+					if (!(cell is ExoCell)) {
+						square.Add(cell);
+					}
+				}
 			}
-			if (square.Count == 4) {return true;}
-			return false;
+			return (square.Count == 4 ? true : false);
 		}
 
 		protected override void EnterSpecial (Cell newCell) {

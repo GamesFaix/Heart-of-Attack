@@ -16,7 +16,7 @@ namespace HOA.Actions {
 			Weight = 3;
 			Parent = parent;
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Shoot(3));
+			NewAim(Aim.AttackLine(Special.Unit, 3));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -40,7 +40,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Shoot(3));
+			NewAim(Aim.AttackLine(Special.Unit, 3));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -67,7 +67,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(2,1);
-			NewAim(HOA.Aim.Shoot(20));
+			NewAim(Aim.AttackLine(Special.Unit, 20));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

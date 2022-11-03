@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using HOA.Actions;
+using UnityEngine;
 
 namespace HOA {
 
@@ -7,43 +9,64 @@ namespace HOA {
 		public static bool Passable {get; private set;}
 		public static Task Pending {get; private set;}
 		static TargetGroup targets;
-		static List<Aim> Aim;
+		static List<Aim> aims;
 		static int steps, step;
 
 		public static void Start (Task task) {
+			if (Illegal(task)) {return;}
 			Reset();
-			if (task.Legal) {
-				Pending = task;
-				Pending.Adjust();
-				Aim = new List<HOA.Aim>();
-				foreach (HOA.Aim a in Pending.Aim) {
-					Aim.Add(a.DeepCopy());
-				}
-				steps = Aim.Count;
-				StartStep();
+			Pending = task;
+			Pending.Adjust();
+			aims = CopyAims(Pending.Aims);
+			steps = aims.Count;
+			StartStep();
+		}
+
+		static bool Illegal (Task task) {
+			string message;
+			if (!task.Legal(out message)) {
+				GameLog.Out(message);
+				return true;
 			}
-			else {GameLog.Out("Task unaffordable, used, or restricted.");}
+			return false;
+		}
+
+		public static void Reset () {
+			if (Pending != null) {
+				Pending.UnAdjust();
+				Pending = null;
+			}
+			targets = new TargetGroup();
+			Ready = false;
+			Passable = false;
+			steps = 0;
+			step = 0;
+			Game.ClearLegal();
+		}
+
+		static List<Aim> CopyAims (List<Aim> original) {
+			List<Aim> copy = new List<Aim>();
+			foreach (Aim a in original) {copy.Add(a.DeepCopy());}
+			return copy;
 		}
 
 		static void StartStep () {
-			Token Parent = Pending.Parent;
-			Aim aim = Aim[step];
-			Token child = Pending.Template;
-			Cell start = null;
-			if (!(Pending is IManualFree)) {start = Parent.Body.Cell;}
-			if (Pending is IRecursiveTarget && step > 0) {start = (Cell)(targets[targets.Count-1]);}
-
-
+			Aim aim = aims[step];
 			if (aim.Trajectory == ETraj.SELF) {
 				FinishStep();
 				return;
 			}
+			Token actor = Pending.Parent;
+			Cell start = null;
+			if (actor != null) {start = actor.Body.Cell;}
+			Token child = Pending.Template;
+			if (Pending is IRecursiveMove && step > 0) {start = (Cell)(targets[targets.Count-1]);}
 
 			if (Pending is IMultiMove) {
 				if (step == 0) {
 					int range = aim.Range;
 					for (int i=0; i<range; i++) {
-						Aim.Add(HOA.Aim.MoveNeighbor());
+						aims.Add(Aim.MoveNeighbor());
 						steps++;
 					}
 					FinishStep();
@@ -57,7 +80,7 @@ namespace HOA {
 					if (last is Cell) {start = (Cell)last;}
 					else if (last is Token) {start = ((Token)last).Body.Cell;}
 
-					if (start.StopToken(Parent)) {
+					if (start.StopToken(actor)) {
 						FinishStep();
 						return;
 					}
@@ -67,17 +90,23 @@ namespace HOA {
 			else if (Pending is IMultiTarget && step > 0) {Passable = true;}
 
 			else if (Pending is ITeleport && step > 0) {
-				if (!(Pending is IManualFree)) {start = Pending.Parent.Body.Cell;}
-				Parent = (Token)targets[0];
+				start = Pending.Parent.Body.Cell;
+				actor = (Token)targets[0];
 			}
 
 			if (aim.Trajectory == ETraj.RADIAL) {
 				Token target1 = (Token)targets[step-1];
-				if (!Legalizer.Find(Parent, aim, target1.Body.Cell)) {NoLegalTargets();}
+				if (!Find(aim, actor, target1.Body.Cell, null)) {NoLegalTargets();}
 			}
 			else {
-				if (!Legalizer.Find(Parent, aim, start, child)) {NoLegalTargets();}
+				if (!Find(aim, actor, start, child)) {NoLegalTargets();}
 			}
+		}
+
+		static bool Find (Aim aim, Token actor, Cell center=null, Token other=null) {
+			TargetGroup targets = aim.Targets(actor, center, other);
+			targets.Legalize();
+			return (targets.Count>0 ? true : false);
 		}
 
 		static void FinishStep () {
@@ -118,19 +147,6 @@ namespace HOA {
 			}
 			return str;
 
-		}
-
-		public static void Reset () {
-			if (Pending != null) {
-				Pending.UnAdjust();
-				Pending = default(Task);
-			}
-			targets = new TargetGroup();
-			Ready = false;
-			Passable = false;
-			steps = 0;
-			step = 0;
-			Game.ClearLegal();
 		}
 	}
 }

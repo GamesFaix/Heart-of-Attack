@@ -10,7 +10,7 @@ namespace HOA.Actions {
 			Name = "End turn";
 			Weight = 0;
 			Price = Price.Free;
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 
 		protected override void ExecuteMain (TargetGroup targets) {

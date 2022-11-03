@@ -66,9 +66,6 @@ namespace HOA {
 		public int DEF {get {return Health.DEF;} }
 
 		//wallet
-		public bool CanAfford (Price p) {return Wallet.CanAfford(p);}
-		public void Charge (Price p) {Wallet.Charge(p);}
-		public void Refund (Price p) {Wallet.Refund(p);}
 		public int AP {get {return Wallet.AP;} }
 		public void FillAP (bool log=true) {Wallet.FillAP(log);}
 		public int FP {get {return Wallet.FP;} }

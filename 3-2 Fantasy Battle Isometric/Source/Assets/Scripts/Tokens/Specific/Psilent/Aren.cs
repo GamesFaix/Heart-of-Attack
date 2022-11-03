@@ -13,8 +13,7 @@ namespace HOA.Tokens {
 			ID = new ID(this, EToken.AREN, s, false, template);
 
 			Plane = Plane.Eth;
-			if (template) {Body = new Body(this);}
-			else {Body = new BodyAren(this);}
+			Body = new BodyAren(this, template);
 
 			OnDeath = EToken.NONE;
 			ScaleMedium();

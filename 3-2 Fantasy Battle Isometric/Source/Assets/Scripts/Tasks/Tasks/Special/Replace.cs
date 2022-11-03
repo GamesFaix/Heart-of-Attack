@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 
 namespace HOA.Actions { 
 
@@ -18,7 +18,7 @@ namespace HOA.Actions {
 			Name = "Evolve to "+ChildName;
 			Weight = 4;
 			Price = p;
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -48,7 +48,7 @@ namespace HOA.Actions {
 			Name = "Arise";
 			Weight = 4;
 			Price = new Price(2,0);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 			Parent = par;
 		}
 		
@@ -89,7 +89,7 @@ namespace HOA.Actions {
 			Weight = 5;
 			Price = p;
 			Parent = par;
-			NewAim(new Aim (ETraj.NEIGHBOR, ESpecial.REM));
+			NewAim(Aim.AttackNeighbor(Special.Rem));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -119,7 +119,7 @@ namespace HOA.Actions {
 			Weight = 5;
 			Price = new Price(1,2);
 			Parent = parent;
-			NewAim(new Aim (ETraj.NEIGHBOR, ESpecial.DEST));
+			NewAim(Aim.AttackNeighbor(Special.Dest));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -149,7 +149,7 @@ namespace HOA.Actions {
 			Weight = 5;
 			Price = new Price(1,1);
 			Parent = par;
-			NewAim(new Aim (ETraj.ARC, ESpecial.DEST, 2));
+			NewAim(Aim.AttackArc(Special.Dest, 0, 2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

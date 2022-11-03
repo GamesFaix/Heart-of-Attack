@@ -14,7 +14,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			
 			Price = Price.Cheap;
-			NewAim(HOA.Aim.Melee());
+			NewAim(Aim.AttackNeighbor(Special.Unit));
 			Parent = u;
 		}
 		
@@ -36,7 +36,7 @@ namespace HOA.Actions {
 			
 			Parent = u;
 			Price = new Price(0,2);
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 2));
+			NewAim(Aim.AttackArc(Special.Unit, 0, 2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -56,9 +56,9 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,1);
-			NewAim (new Aim(ETraj.NEIGHBOR, ESpecial.UNIT));
-			Aim[0].TeamOnly = true;
-			Aim[0].IncludeSelf = false;
+			NewAim (Aim.AttackNeighbor(Special.Unit));
+			Aims[0].TeamOnly = true;
+			Aims[0].IncludeSelf = false;
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -76,7 +76,7 @@ namespace HOA.Actions {
 			Weight = 4;
 			Parent = parent;
 			Price = new Price(1,1);
-			NewAim(new Aim(ETraj.NEIGHBOR, ESpecial.DEST));
+			NewAim(Aim.AttackNeighbor(Special.Dest));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -99,7 +99,7 @@ namespace HOA.Actions {
 			Weight = 3;
 			
 			Price = new Price(1,0);
-			NewAim(HOA.Aim.Self());
+			NewAim(Aim.Self());
 			Parent = u;
 		}
 		
@@ -107,9 +107,11 @@ namespace HOA.Actions {
 			TokenGroup tokens = Parent.Body.CellMates;
 			tokens = tokens.OnlyType(ESpecial.UNIT);
 			tokens = tokens.OnlyOwner(Parent.Owner);
+			EffectGroup effects = new EffectGroup();
 			foreach (Token t in tokens) {
-				EffectQueue.Add(new Effects.Donate(new Source(Parent), (Unit)t, damage));
+				effects.Add(new Effects.Donate(new Source(Parent), (Unit)t, damage));
 			}
+			EffectQueue.Add(effects);
 		}
 	}
 

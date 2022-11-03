@@ -59,10 +59,13 @@ namespace HOA {
 			}
 		}
 
+		public static Special None {get {return new Special(new List<ESpecial>());} }
 		public static Special Cell {get {return new Special(ESpecial.CELL);} }
 		public static Special Unit {get {return new Special(ESpecial.UNIT);} }
 		public static Special UnitDest {get {return new Special(new List<ESpecial> {ESpecial.UNIT, ESpecial.DEST, ESpecial.REM});} }
 		public static Special Dest {get {return new Special(ESpecial.DEST);} }
 		public static Special DestRem {get {return new Special(new List<ESpecial> {ESpecial.DEST, ESpecial.REM});} }
+		public static Special Rem {get {return new Special(ESpecial.REM);} }
+		public static Special Token {get {return new Special(new List<ESpecial> {ESpecial.TOKEN});} }
 	}
 }

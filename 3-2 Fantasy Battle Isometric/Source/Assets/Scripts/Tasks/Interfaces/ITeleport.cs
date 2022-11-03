@@ -1,8 +1,3 @@
-﻿namespace HOA {
-	
-	public interface ITeleport {
-		
-	
-		
-	}
+﻿namespace HOA.Actions {
+	public interface ITeleport {}
 }

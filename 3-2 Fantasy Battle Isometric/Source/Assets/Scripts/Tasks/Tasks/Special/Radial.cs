@@ -16,8 +16,8 @@ namespace HOA.Actions {
 			Name = "Laser Spin";
 			Weight = 4;
 			Price = new Price(1,1);
-			NewAim(new HOA.Aim(ETraj.NEIGHBOR, Special.Unit));
-			Aim.Add(new HOA.Aim(ETraj.RADIAL, Special.Cell));
+			NewAim(Aim.AttackNeighbor(Special.Unit));
+			Aims.Add(Aim.Radial(Special.Cell));
 			Parent = u;
 		}
 		
@@ -60,8 +60,8 @@ namespace HOA.Actions {
 			Weight = 4;
 			Price = new Price(1,1);
 			Parent = u;
-			NewAim(new HOA.Aim(ETraj.NEIGHBOR, Special.UnitDest));
-			Aim.Add(new HOA.Aim(ETraj.RADIAL, Special.Cell));
+			NewAim(Aim.AttackNeighbor(Special.UnitDest));
+			Aims.Add(Aim.Radial(Special.Cell));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -13,7 +13,7 @@
 			
 			Parent = u;
 			Price = new Price(1,1);
-			NewAim(HOA.Aim.Shoot(3));
+			NewAim(Aim.AttackLine(Special.Unit,3));
 			
 		}
 		

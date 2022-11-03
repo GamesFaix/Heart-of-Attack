@@ -1,4 +1,4 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 
 namespace HOA.Actions { 
 
@@ -6,9 +6,8 @@ namespace HOA.Actions {
 		public override string Desc {get {return "Move target remains to target cell.";} } 
 		
 		public Defile (Unit u) {
-			int range = 5;
-			NewAim(new Aim(ETraj.ARC, ESpecial.REM, range));
-			Aim.Add(HOA.Aim.MoveArc(range));
+			NewAim(Aim.AttackArc(Special.Rem, 0, 5));
+			Aims.Add(Aim.MoveArc(0, 5));
 			Name = "Defile";
 			Weight = 4;
 			Parent = u;
@@ -25,8 +24,8 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
@@ -36,10 +35,10 @@ namespace HOA.Actions {
 		public override string Desc {get {return "Move target teammate (including self) to target cell.";} }
 		
 		public Warp (Unit parent) {
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 5));
-			Aim[0].TeamOnly = true;
-			Aim[0].IncludeSelf = true;
-			Aim.Add(HOA.Aim.MoveArc(5));
+			NewAim(Aim.AttackArc(Special.Unit, 0, 5));
+			Aims[0].TeamOnly = true;
+			Aims[0].IncludeSelf = true;
+			Aims.Add(Aim.MoveArc(0, 5));
 			Name = "Warp";
 			Weight = 4;
 			Parent = parent;
@@ -56,8 +55,8 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
@@ -67,10 +66,10 @@ namespace HOA.Actions {
 		public override string Desc {get {return "Move target enemy (exluding Attack Kings) to target cell.";} }
 		
 		public Dislocate (Unit u) {
-			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 5));
-			Aim[0].EnemyOnly = true;
-			Aim[0].NoKings = true;
-			Aim.Add(HOA.Aim.MoveArc(5));
+			NewAim(Aim.AttackArc(Special.Unit, 0, 5));
+			Aims[0].EnemyOnly = true;
+			Aims[0].NoKings = true;
+			Aims.Add(Aim.MoveArc(0, 5));
 			Name = "Dislocate";
 			Weight = 4;
 			Parent = u;
@@ -87,8 +86,8 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			Aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}

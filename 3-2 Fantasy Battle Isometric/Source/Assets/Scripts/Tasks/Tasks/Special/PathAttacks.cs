@@ -15,11 +15,11 @@ namespace HOA.Actions {
 			Weight = 2;
 			Price = Price.Cheap;
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, ESpecial.DEST, 1));
+			NewAim(Aim.AttackPath(Special.Dest, 1));
 		}
 		
-		public override void Adjust () {Aim[0].Range += Parent.FP;}
-		public override void UnAdjust () {Aim[0].Range = 1;}
+		public override void Adjust () {Aims[0].Range += Parent.FP;}
+		public override void UnAdjust () {Aims[0].Range = 1;}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Parent.AddStat(new Source(Parent), EStat.FP, 1, false);
@@ -34,7 +34,7 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
+			Aim actual = Aim.MovePath(Aims[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
@@ -55,11 +55,11 @@ namespace HOA.Actions {
 			Weight = 4;
 			Price = new Price(1,1);
 			Parent = u;
-			NewAim(new Aim(ETraj.LINE, ESpecial.UNIT, EPurp.ATTACK, 2));
+			NewAim(Aim.AttackLine(Special.Unit, 2));
 		}
 		
-		public override void Adjust () {Aim[0].Range += Parent.FP;}
-		public override void UnAdjust () {Aim[0].Range = 2;}
+		public override void Adjust () {Aims[0].Range += Parent.FP;}
+		public override void UnAdjust () {Aims[0].Range = 2;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
@@ -75,7 +75,7 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
+			Aim actual = Aim.MovePath(Aims[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
@@ -95,11 +95,11 @@ namespace HOA.Actions {
 			Weight = 3;
 			Price = Price.Cheap;
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, ESpecial.UNIT, 1));
+			NewAim(Aim.AttackPath(Special.Unit, 1));
 		}
 		
-		public override void Adjust () {Aim[0].Range += Mathf.Min(Parent.FP, 3);}
-		public override void UnAdjust () {Aim[0].Range = 1;}
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range = 1;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
@@ -112,7 +112,7 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = Aim.AttackPath(Special.Unit, Aims[0].Range+Mathf.Min(3, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
@@ -132,11 +132,11 @@ namespace HOA.Actions {
 			Weight = 4;
 			Price = new Price(2,0);
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, ESpecial.UNIT, 1));
+			NewAim(Aim.AttackPath(Special.Unit, 1));
 		}
 		
-		public override void Adjust () {Aim[0].Range += Mathf.Min(Parent.FP, 3);}
-		public override void UnAdjust () {Aim[0].Range = 1;}
+		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
+		public override void UnAdjust () {Aims[0].Range = 1;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
@@ -159,7 +159,7 @@ namespace HOA.Actions {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = Aim.AttackPath(Special.Unit, Aims[0].Range+Mathf.Min(3, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	

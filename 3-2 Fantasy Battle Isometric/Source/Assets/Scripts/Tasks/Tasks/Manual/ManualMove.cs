@@ -12,15 +12,21 @@ namespace HOA.Actions {
 			Name = "Manual Move";
 			Weight = 0;
 			Price = Price.Free;
-			NewAim(new Aim (ETraj.FREE, ESpecial.TOKEN, EPurp.ATTACK));
-			Aim.Add(new Aim (ETraj.FREE, ESpecial.CELL, EPurp.MOVE));
+			NewAim(Aim.Free(Special.Token, EPurp.ATTACK));
+			Aims.Add(Aim.Free(Special.Cell, EPurp.MOVE));
 		}
-
-		public override bool Legal {get {return true;} }
-		public override void Charge () {}
-
+		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new Effects.Teleport(new Source(Roster.Neutral), (Token)targets[0], (Cell)targets[1]));
+		}
+
+		public override bool Legal(out string message) {
+			message = Name+" currently legal.";
+			if (EffectQueue.Processing) {
+				message = "Another action is currently in progress.";
+				return false;
+			}
+			return true;
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace HOA.Actions {
 			Name = "Dart";
 			Weight = 1;
 			Price = Price.Cheap;
-			NewAim(new Aim(ETraj.LINE, ESpecial.CELL, EPurp.MOVE, r));
+			NewAim(Aim.MoveLine(r));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

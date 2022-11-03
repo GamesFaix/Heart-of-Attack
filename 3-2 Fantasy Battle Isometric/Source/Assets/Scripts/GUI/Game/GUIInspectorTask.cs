@@ -23,10 +23,10 @@ namespace HOA {
 				p.NudgeX();
 				
 				box = p.Box(btnW);
-				
-				if (a.Legal) {
+
+				string message;
+				if (a.Legal(out message)) {
 					if (GUI.Button(box, a.Name+" ["+i+"]") || Input.GetKey(i.ToString()) || Input.GetKey("["+i+"]")) {
-						//Debug.Log("button clicked "+a.Name);
 						GUIMaster.PlaySound(EGUISound.CLICK);
 						Targeter.Start(a);
 					}

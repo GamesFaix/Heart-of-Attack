@@ -110,7 +110,10 @@ namespace HOA {
 
 		public bool HasCell (index2 index, out Cell cell) {
 			cell = null;
-			if (cells.Contains(index, out cell)) {return true;}
+			if (cells.Contains(index, out cell)) {
+				if (cell is ExoCell) {return false;}
+				return true;
+			}
 			return false;
 		}
 		public bool HasCell (int x, int y, out Cell cell) {
