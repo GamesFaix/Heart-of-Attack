@@ -85,6 +85,14 @@ Some time during this phase we picked the name Heart of Attack, and beta testing
 
 `v3.25` to `v3.45` are in the "Isometric" phase, and use Unity 4.3.1.
 
+#### v3.31
+
+<img src="3-2%20Fantasy%20Battle%20Isometric/Screenshots/v31-1.gif" alt="v3.31"/>
+
+#### v3.37
+
+<img src="3-2%20Fantasy%20Battle%20Isometric/Screenshots/v37-1.gif" alt="v3.37"/>
+
 ### v4 Heart of Attack (Sep 2014 - Oct 2014)
 
 This was really a fluid evolution of the v3 codebase. I think this was the point where I decided that there needed to be some kind of versioning system for the whole project's history, so v1 was given to GameMaker, v2 to the first cube-based Unity implementation, v3 to this codebase up to this point, and v4 starting "now".
