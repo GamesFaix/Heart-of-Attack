@@ -26,7 +26,8 @@ namespace HOA {
 			Token Parent = Pending.Parent;
 			Aim aim = Aim[step];
 			Token child = Pending.Template;
-			Cell start = Parent.Body.Cell;
+			Cell start = null;
+			if (!(Pending is IManualFree)) {start = Parent.Body.Cell;}
 
 			if (aim.Trajectory == ETraj.SELF) {
 				FinishStep();
@@ -61,7 +62,7 @@ namespace HOA {
 			else if (Pending is IMultiTarget && step >0) {Passable = true;}
 
 			else if (Pending is ITeleport && step > 0) {
-				start = Pending.Parent.Body.Cell;
+				if (!(Pending is IManualFree)) {start = Pending.Parent.Body.Cell;}
 				Parent = (Token)targets[0];
 			}
 
@@ -70,7 +71,8 @@ namespace HOA {
 		}
 
 		static void FinishStep () {
-			GUISelectors.Reset();
+			Board.ClearLegal();
+			TokenFactory.ClearLegal();
 			if (step < steps-1) {
 				step++;
 				StartStep();

@@ -102,6 +102,7 @@ namespace HOA {
 		public static Stat HP (Unit parent, byte normal) {return new HP (parent, normal);}
 		public static Stat DEF (Unit parent, byte normal) {return new Stat (parent, "Defense", EStat.DEF, ETip.DEF, normal, 0);}
 		public static Stat DEFCapped (Unit parent, byte normal, byte max) {return new Stat(parent, "Defense", EStat.DEF, ETip.DEF, normal, 0, max);}
+		public static Stat DEFBonus (Unit parent, byte normal) {return new DEFBonus(parent, normal);}
 		public static Stat AP (Unit parent, byte max) {return new Stat (parent, "Energy", EStat.AP, ETip.AP, 0,0, max);}
 		public static Stat FP (Unit parent) {return new Stat (parent, "Focus", EStat.FP, ETip.FP, 0,0);}
 		public static Stat FPaddsIN (Unit parent) {return new FPaddsIN (parent);}

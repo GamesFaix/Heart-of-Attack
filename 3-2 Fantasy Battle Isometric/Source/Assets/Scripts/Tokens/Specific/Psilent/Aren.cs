@@ -26,7 +26,7 @@ namespace HOA{
 			Arsenal.Sort();
 		}
 
-		public override string Notes () {return "";}
+		public override string Notes () {return "EXXXtremely buggy.";}
 
 		public CellGroup Cells {get {return ((BodyAren)Body).Cells;} }
 	}

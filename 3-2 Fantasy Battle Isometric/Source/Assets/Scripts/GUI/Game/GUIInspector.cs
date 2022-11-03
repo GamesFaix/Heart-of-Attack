@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HOA;
 
-public class GUIInspector : MonoBehaviour {
+public static class GUIInspector {
 
 	static Panel panel;
 	
@@ -18,14 +18,14 @@ public class GUIInspector : MonoBehaviour {
 	}
 	
 	static Vector2 scrollPos = new Vector2(0,0);
-	float internalW = 100;
-	float iconSize = 30;
-	float internalH = 0;
+	static float internalW = 100;
+	static float iconSize = 30;
+	static float internalH = 0;
 			
 	static Task inspectedAction =  default(Task);
 	public static ETip Tip {get; set;}
 
-	public void Display(Panel p){
+	public static void Display(Panel p){
 		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
 
 		Tip = ETip.NONE;
@@ -52,7 +52,7 @@ public class GUIInspector : MonoBehaviour {
 					timer.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
 				}
 			}
-
+			p.NudgeY();
 
 			float unitH = 0;
 			if (t is Unit) {Units (t, new Panel(p.TallBox(12), p.LineH, p.s), p, out unitH);}
@@ -72,15 +72,16 @@ public class GUIInspector : MonoBehaviour {
 
 	}
 
-	void Tokens (Token t, Panel p, Panel super, out float h) {
+	static void Tokens (Token t, Panel p, Panel super, out float h) {
 		float yStart = p.y2;
 		p.NudgeX();
-		Name(t, new Panel (p.Box(200), p.LineH, p.s), super);
-		if (t.OnDeath != EToken.NONE) {OnDeath(t, new Panel (p.Box(200), p.LineH, p.s), super);}
-		p.NextLine();
-		
-		p.NudgeX();
+		Name(t, new Panel (p.Box(250), p.LineH, p.s), super);
+		p.NudgeX();p.NudgeY();
 		if (t.Owner != default(Player) && t.Owner!=Roster.Neutral) {Owner (t, new Panel (p.Box(100), p.LineH, p.s), super);}
+
+		p.NextLine();
+		p.NudgeX();p.NudgeX();p.NudgeX();
+		if (t.OnDeath != EToken.NONE) {OnDeath(t, new Panel (p.Box(200), p.LineH, p.s), super);}
 		p.NextLine();
 		
 		p.NudgeX();	
@@ -95,25 +96,28 @@ public class GUIInspector : MonoBehaviour {
 		h=p.y2-yStart;
 	}
 
-	void Name (Token t, Panel p, Panel super) {
-		FancyText.Highlight(p.FullBox, t.ToString(), p.s, t.Owner.Colors);
+	static void Name (Token t, Panel p, Panel super) {
+		t.DisplayThumb(p.LinePanel, 30);
+
+		//FancyText.Highlight(p.FullBox, t.ToString(), p.s, t.Owner.Colors);
 		if (GUI.Button (p.FullBox, "", p.s)) {t.Display.Effect(EEffect.SHOW);}
 		if (ShiftMouseOver(p.FullBox)) {ToolTip("Name");}
 	}
-	void OnDeath (Token t, Panel p, Panel super) {
+	static void OnDeath (Token t, Panel p, Panel super) {
 		GUI.Box(p.Box(20), Icons.ONDEATH(), p.s);
 		p.NudgeX();
-		GUI.Label(p.Box(1),TokenRef.CodeToString(t.OnDeath));
+		TemplateFactory.Template(t.OnDeath).DisplayTemplate(new Panel(p.Box(250), p.LineH, p.s), 20);
+//		GUI.Label(p.Box(1),TokenRef.CodeToString(t.OnDeath));
 		if (ShiftMouseOver(p.FullBox)) {
 			Tip = ETip.ONDEATH;
 		}
 	}
 
-	void Owner (Token t, Panel p, Panel super) {
+	static void Owner (Token t, Panel p, Panel super) {
 		GUI.Label (p.FullBox, t.Owner.ToString());
 		if (ShiftMouseOver(p.FullBox)) {ToolTip("Owner");}
 	}
-	void Cell (Token t, Panel p, Panel super) {
+	static void Cell (Token t, Panel p, Panel super) {
 		GUI.Box(p.FullBox, "");
 		GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
@@ -125,7 +129,7 @@ public class GUIInspector : MonoBehaviour {
 		if (GUI.Button(p.FullBox, "", p.s) && Input.GetMouseButtonUp(1)) {Inspected = t.Body.Cell;}
 	}
 
-	void Plane (Token t, Panel p, Panel super) {
+	static void Plane (Token t, Panel p, Panel super) {
 		GUI.Box(p.FullBox, "");
 		Rect box;
 		string str = "";
@@ -152,7 +156,7 @@ public class GUIInspector : MonoBehaviour {
 		}	
 		if (str != "" && ShiftMouseOver(p.FullBox)) {ToolTip(str);}
 	}
-	void Special (Token t, Panel p, Panel super) {
+	static void Special (Token t, Panel p, Panel super) {
 		GUI.Box(p.FullBox, "");
 		Rect box;
 		string str = "";
@@ -196,7 +200,7 @@ public class GUIInspector : MonoBehaviour {
 		if (str != "" && ShiftMouseOver(p.FullBox)) {ToolTip(str);}
 	}
 
-	void Units (Token t, Panel p, Panel Super, out float h) {
+	static void Units (Token t, Panel p, Panel Super, out float h) {
 		Unit u = (Unit)t;
 		float yStart = p.y2;
 		p.NudgeX();
@@ -208,11 +212,12 @@ public class GUIInspector : MonoBehaviour {
 		p.NudgeX();
 		u.Wallet.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
 
+		p.NudgeY();
 		Arsenal(u, new Panel(p.TallBox(9), p.LineH, p.s), p);
 		h = p.y2-yStart;
 	}
 
-	void Arsenal (Unit u, Panel p, Panel super) {
+	static void Arsenal (Unit u, Panel p, Panel super) {
 		float btnW = 150;
 
 		Rect box;
@@ -272,14 +277,14 @@ public class GUIInspector : MonoBehaviour {
 		}
 	}
 
-	void Task (Panel p) {
+	static void Task (Panel p) {
 		GUI.Box (p.FullBox, "");
 		if (inspectedAction != default(Task)) {
 			inspectedAction.Draw(p);
 		}
 	}
 
-	void Cell (Cell c, Panel p, Panel super) {
+	static void Cell (Cell c, Panel p, Panel super) {
 		GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
 		p.NudgeX(); p.NudgeY();
 		GUI.Label(p.Box(0.5f), c.ToString(), p.s);

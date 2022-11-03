@@ -5,6 +5,6 @@ namespace HOA{
 			ID = new ID(this, EToken.APER, s, false, template);
 			Plane = Plane.Sunk;
 		}
-		public override string Notes () {return "";}
+		public override string Notes () {return "0% Functional";}
 	}
 }

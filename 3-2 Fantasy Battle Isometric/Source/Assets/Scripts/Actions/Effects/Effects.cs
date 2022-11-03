@@ -16,8 +16,8 @@ namespace HOA {
 			source = s; target = t;
 		}
 		public override void Process() {
-			target.Display.Effect(EEffect.TAILS);
-			Mixer.Play(SoundLoader.Effect(EEffect.TAILS));
+			target.Display.Effect(EEffect.MISS);
+			Mixer.Play(SoundLoader.Effect(EEffect.MISS));
 
 		}
 	}
@@ -65,11 +65,34 @@ namespace HOA {
 			source = s; target = t;
 		}
 		public override void Process() {
-			source.Player.Capture(target.Owner);
+			//source.Player.Capture(target.Owner);
+			EffectGroup effects = new EffectGroup();
+
+			foreach (Token token in target.Owner.OwnedUnits) {
+				effects.Add(new ESetOwner(source, token, source.Player));
+			}
 			target.Display.Effect(EEffect.GETHEART);
 			Mixer.Play(SoundLoader.Effect(EEffect.GETHEART));
 			GameLog.Out(source.Player.ToString() + " acquired the "+target.ToString()); 
-			EffectQueue.Add(new EKill2 (source, target));
+			effects.Add(new EKill2 (source, target));
+			EffectQueue.Add(effects);
 		}
-	}	
+	}
+
+	public class ESetOwner : Effect {
+		public override string ToString () {return "Effect - Set Owner";}
+		Token target;
+		Player owner;
+
+		public ESetOwner (Source s, Token t, Player owner) {
+			source = s; target = t; this.owner = owner;
+		}
+
+		public override void Process() {
+			target.Owner = owner;
+			target.Display.Effect(EEffect.OWNER);
+			Mixer.Play(SoundLoader.Effect(EEffect.OWNER));
+			GameLog.Out(owner.ToString() + " acquired "+target.ToString()); 
+		}
+	}
 }

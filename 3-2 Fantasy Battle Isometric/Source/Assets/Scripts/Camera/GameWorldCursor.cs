@@ -6,29 +6,32 @@ namespace HOA {
 		Ray rayFromCam;
 		RaycastHit[] hitCells;
 		RaycastHit[] hitTokens;
-		
+
+		public static Rect gameWindow = new Rect(0,0,0,0);
+
 		void Update(){
-
-			if (Input.GetMouseButtonUp(0)){
-				Target target = ClosestLegalTargetToCamera();
-				if (target != null) {
-					Targeter.Select(target);
-					GUIMaster.PlaySound(EGUISound.TARGET);
-				}
-			}
-
-			if (Input.GetMouseButtonUp(1)) { 
-				Target target = null;
-				if (Input.GetKey("left shift") || Input.GetKey("right shift")){
-					target = ClosestCellToCamera();
-				}
-				else {
-					target = ClosestTokenToCamera();
+			if (gameWindow.Contains(Input.mousePosition)) {
+				if (Input.GetMouseButtonUp(0)){
+					Target target = ClosestLegalTargetToCamera();
+					if (target != null) {
+						Targeter.Select(target);
+						GUIMaster.PlaySound(EGUISound.TARGET);
+					}
 				}
 
-				if (target != null) {
-					GUIInspector.Inspected = target;
-					GUIMaster.PlaySound(EGUISound.INSPECT);
+				if (Input.GetMouseButtonUp(1)) { 
+					Target target = null;
+					if (Input.GetKey("left shift") || Input.GetKey("right shift")){
+						target = ClosestCellToCamera();
+					}
+					else {
+						target = ClosestTokenToCamera();
+					}
+
+					if (target != null) {
+						GUIInspector.Inspected = target;
+						GUIMaster.PlaySound(EGUISound.INSPECT);
+					}
 				}
 			}
 		}

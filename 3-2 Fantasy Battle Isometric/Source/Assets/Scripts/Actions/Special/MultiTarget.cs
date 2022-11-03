@@ -26,7 +26,10 @@ namespace HOA {
 
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+
 			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -69,7 +72,9 @@ namespace HOA {
 			GUI.Label(p.LineBox, Name, p.s);
 			int FP = Parent.FP;
 			Price price = new Price(0, FP);
-			price.Draw(new Panel(p.LineBox, p.LineH, p.s));
+			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
 
 			int shots = Mathf.Min(Parent.FP, 5);
 			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
@@ -148,7 +153,9 @@ namespace HOA {
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
 			Price price = new Price(Price.AP, Parent.FP);
-			price.Draw(p.LinePanel);
+			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
 			Aim[0].Draw(p.LinePanel);
 			int shots = Mathf.Min(3, Parent.FP);
 			for (int i=2; i<=shots; i++) {

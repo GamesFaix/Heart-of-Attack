@@ -22,7 +22,7 @@ namespace HOA {
 			Add(EEffect.COR, "corrosion");
 			Add(EEffect.STUN, "stun");
 			Add(EEffect.HEADS, "heads");
-			Add(EEffect.TAILS, "tails");
+			Add(EEffect.MISS, "miss");
 			Add(EEffect.DESTRUCT, "destruct");
 			
 			Add(EEffect.CORRODE, "corrosion");
@@ -33,7 +33,7 @@ namespace HOA {
 			Add(EEffect.BURROW, "burrow");
 			Add(EEffect.TELEPORT, "teleport");
 			Add(EEffect.GETHEART, "getHeart");
-
+			Add(EEffect.OWNER, "owner");
 
 		}
 

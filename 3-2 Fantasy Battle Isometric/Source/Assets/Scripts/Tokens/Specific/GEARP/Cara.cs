@@ -25,7 +25,7 @@ namespace HOA {
 			Arsenal.Sort();
 		}
 
-		public override string Notes () {return "DEACTIVATED: All non-Carapace neighboring teammates add Carapace's Defense.";}
+		public override string Notes () {return "All non-Carapace neighboring teammates add Carapace's Defense.";}
 		
 		public override void Die (Source s, bool corpse=true, bool log=true) {
 			//BodyCara bc = (BodyCara)Body;

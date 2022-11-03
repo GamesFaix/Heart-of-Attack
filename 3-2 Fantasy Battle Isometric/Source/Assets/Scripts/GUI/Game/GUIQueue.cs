@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using HOA;
 
-public class GUIQueue : MonoBehaviour {
+public static class GUIQueue {
 	
-	public void Display (Panel p){
+	public static void Display (Panel p){
 		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
 		p.NudgeY();
 		if (TurnQueue.Count > 0) {
@@ -15,11 +15,11 @@ public class GUIQueue : MonoBehaviour {
 	}
 
 	//List
-	Vector2 scrollPos = new Vector2 (0,0);
-	float internalW = 100;
+	static Vector2 scrollPos = new Vector2 (0,0);
+	static float internalW = 100;
 
 	
-	void DrawList (Panel p) {
+	static void DrawList (Panel p) {
 		int oldSize = p.s.fontSize;
 		p.s.fontSize = 16;
 

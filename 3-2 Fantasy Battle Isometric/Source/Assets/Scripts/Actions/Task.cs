@@ -29,7 +29,9 @@ namespace HOA {
 
 		public virtual void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(p.LinePanel);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
 			DrawAim(0, p.LinePanel);
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallBox(descH), Desc);	
@@ -37,12 +39,12 @@ namespace HOA {
 
 		public void DrawPrice (Panel p) {Price.Draw(p);}
 
-		protected bool used = false;
-		public void Reset () {used = false;}
+		public bool Used {get; protected set;}
+		public void Reset () {Used = false;}
 
 		public virtual bool Legal {
 			get {
-				if (used) {return false;}
+				if (Used) {return false;}
 				if (Restrict()) {return false;}
 				if (!Parent.CanAfford(Price)) {return false;}
 				if (EffectQueue.Processing) {return false;}
@@ -56,8 +58,8 @@ namespace HOA {
 		public virtual void Adjust () {}
 		public virtual void UnAdjust () {}
 
-		public void Charge () {
-			used = true;
+		public virtual void Charge () {
+			Used = true;
 			Parent.Charge(Price);
 		}
 

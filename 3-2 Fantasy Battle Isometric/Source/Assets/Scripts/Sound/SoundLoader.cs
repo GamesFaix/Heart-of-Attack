@@ -42,7 +42,7 @@ namespace HOA {
 			AddEffect(EEffect.WATERLOG, "Waterlog");
 			AddEffect(EEffect.INCINERATE, "Incinerate");
 			AddEffect(EEffect.LASER, "Laser");
-			AddEffect(EEffect.TAILS, "Tails");
+			AddEffect(EEffect.MISS, "Miss");
 			AddEffect(EEffect.STICK, "Stick");
 			AddEffect(EEffect.DETONATE, "Detonate");
 			AddEffect(EEffect.EXP, "Explosion");
@@ -51,7 +51,7 @@ namespace HOA {
 			AddEffect(EEffect.BURROW, "Burrow");
 			AddEffect(EEffect.TELEPORT, "Teleport");
 			AddEffect(EEffect.GETHEART, "GetHeart");
-
+			AddEffect(EEffect.OWNER, "Owner");
 
 
 		}

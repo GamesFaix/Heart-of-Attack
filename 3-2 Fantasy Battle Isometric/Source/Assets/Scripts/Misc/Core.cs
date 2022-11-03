@@ -7,7 +7,6 @@ public class Core : MonoBehaviour {
 	public GameObject guiPrefab;
 	public GameObject mixerPrefab;
 
-	public static GUISelectors guiSelectors;
 	static AudioSource music;
 	
 	void Start () {
@@ -26,7 +25,6 @@ public class Core : MonoBehaviour {
 		ImageLoader.Load();
 		SoundLoader.Load();
 		TemplateFactory.MakeTemplates();
-		guiSelectors = gameObject.AddComponent("GUISelectors") as GUISelectors;
 		gameObject.AddComponent("EffectQueue");
 		gameObject.AddComponent("GameWorldCursor");
 		SetupMusic();

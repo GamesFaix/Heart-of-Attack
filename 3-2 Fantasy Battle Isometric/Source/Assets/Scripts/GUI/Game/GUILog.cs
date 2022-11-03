@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using HOA;
 
-public class GUILog : MonoBehaviour {
+public static class GUILog {
 	
-	public void Display (Panel p){
+	public static void Display (Panel p){
 		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
 		p.NudgeY();
 
@@ -17,7 +17,7 @@ public class GUILog : MonoBehaviour {
 
 	//Control Buttons
 	//int view = 1;
-	ELog showLog = ELog.OUT;
+	static ELog showLog = ELog.OUT;
 	/*
 	void ControlButtons(Panel p){
 		string[] views = new string[3]{"Input","Output","Debug"};
@@ -41,11 +41,11 @@ public class GUILog : MonoBehaviour {
 	static Vector2 historyScroll = new Vector2 (0,0);
 	static float internalH;
 	static float internalW = 1;
-	float charWidth = 7f;
-	string entry;
+	static float charWidth = 7f;
+	static string entry;
 	
 	//Command History
-	void CommandHistory(Panel p){
+	static void CommandHistory(Panel p){
 		//GUI.Box(p.FullBox,"");
 
 		internalH = p.LineH * GameLog.Count(showLog);
@@ -64,8 +64,8 @@ public class GUILog : MonoBehaviour {
 	public static void ScrollToBottom () {historyScroll = new Vector2 (0, internalH);}
 
 	//Command Field
-	string input = "";
-	void CommandField (Rect r) {
+	static string input = "";
+	static void CommandField (Rect r) {
 
 		input = GUI.TextField(r, input, 100);
 		if(EnterKeyPressed()){
@@ -73,7 +73,7 @@ public class GUILog : MonoBehaviour {
 			ScrollToBottom();
 		}
 	}
-	bool EnterKeyPressed () {
+	static bool EnterKeyPressed () {
 		if(Event.current.type == EventType.KeyDown 
 		   && Event.current.character == '\n') {
 			return true;

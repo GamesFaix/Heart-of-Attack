@@ -18,7 +18,8 @@ namespace HOA {
 
 		public Unit () {
 			Body = new Body(this);
-			Special = new Special(EType.UNIT);
+			Special = new Special(EType.TOKEN);
+			Special.Add(EType.UNIT);
 			OnDeath = EToken.CORP;
 			NewWallet();
 		}
@@ -59,7 +60,7 @@ namespace HOA {
 		}
 		
 		//health
-		public int Damage(Source s, int n, bool log=true) {return Health.Damage(s, n, log);}
+		public bool Damage(Source s, int n, bool log=true) {return Health.Damage(s, n, log);}
 		public int HP {get {return Health.HP;} }
 		public int MaxHP {get {return Health.HP.Max;} }
 		public int DEF {get {return Health.DEF;} }

@@ -8,7 +8,7 @@ namespace HOA {
 		
 		public static void Find (Token Parent, Aim a, Cell start=default(Cell), Token other=default(Token)) {
 			//GUISelectors.Reset();
-			if (start == default(Cell)) {start = Parent.Body.Cell;}
+			if (start == null && a.Trajectory != ETraj.FREE) {start = Parent.Body.Cell;}
 
 			switch (a.Trajectory) {
 				case ETraj.NEIGHBOR: Neighbor(start, Parent, a, other); break;

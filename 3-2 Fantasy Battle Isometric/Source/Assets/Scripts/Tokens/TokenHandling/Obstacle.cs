@@ -7,7 +7,8 @@ namespace HOA {
 
 		public Obstacle () {
 			Body = new Body(this);
-			Special = new Special(EType.OB);
+			Special = new Special (EType.TOKEN);
+			Special.Add(EType.OB);
 			Plane = Plane.Gnd;
 			OnDeath = EToken.NONE;
 		}

@@ -129,4 +129,21 @@ namespace HOA {
 		}
 	}
 
+	public class DEFBonus: Stat {
+
+		public DEFBonus (Unit parent, byte normal) {
+			this.parent = parent;
+			label = "Defense";
+			eStat = EStat.DEF;
+			eTip = ETip.DEF;
+			Normal = normal;
+			Current = Normal;
+			Min = 0;
+			Max = 255;
+			debuff = false;
+		}
+
+		public override int Modified {get {return 1;} }
+	}
+
 }

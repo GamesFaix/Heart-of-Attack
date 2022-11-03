@@ -83,7 +83,7 @@ namespace HOA {
 				checked {
 					byte d = (byte)(Original.DEF);
 					if (parent.ID.Code != EToken.CARA) {d += (byte)(carapace.DEF);}
-					return Stat.DEF(parent, d);
+					return Stat.DEFBonus(parent, d);
 				}
 			}
 //			protected set {Original.DEF = value;}
@@ -101,6 +101,6 @@ namespace HOA {
 			return Original.AddMaxHP (s, n, log);
 		}
 
-		public override int Damage(Source s, int n, bool log=true) {return Original.Damage(s, n, log);}
+		public override bool Damage(Source s, int n, bool log=true) {return Original.Damage(s, n, log);}
 	}
 }

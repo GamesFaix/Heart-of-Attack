@@ -31,11 +31,13 @@ namespace HOA {
 		public void DisplayTemplate (Panel p, float iconSize) {
 			if (GUI.Button(p.FullBox, "", p.s)) {GUIInspector.Inspected = Template();}
 			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
-			GUI.Label(p.Box(100), ID.Name);
+			p.NudgeX();
+			GUI.Label(p.Box(150), ID.Name);
 		}
 		public void DisplayThumb (Panel p, float iconSize) {
 			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
 			p.NudgeX();
+			p.NudgeY();
 			FancyText.Highlight(p.Box(150), ID.FullName, p.s, Owner.Colors);
 			//GUI.Label(p.Box(100), ID.FullName);
 		}

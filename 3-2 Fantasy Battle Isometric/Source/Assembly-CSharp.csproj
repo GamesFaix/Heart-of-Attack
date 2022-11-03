@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E8E64D6A-33AD-A324-9877-DE2BA02C7F37}</ProjectGuid>
+	<ProjectGuid>{F8C1097B-A6EF-2602-0EA1-4EDA932F4A19}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -55,10 +55,19 @@
      <Compile Include="Assets\Scripts\Actions\Effects\Effects - Queue.cs" />
      <Compile Include="Assets\Scripts\Actions\Effects\Effects.cs" />
      <Compile Include="Assets\Scripts\Actions\Effects\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Actions\Interfaces\IManualFree.cs" />
      <Compile Include="Assets\Scripts\Actions\Interfaces\IMultiMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Interfaces\IMultiTarget.cs" />
      <Compile Include="Assets\Scripts\Actions\Interfaces\ITeleport.cs" />
      <Compile Include="Assets\Scripts\Actions\Legalizer.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\ACreateManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AEndTurnManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AKillManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AMoveManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AQueueShiftManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\ASetOwnerManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AStatAddManual.cs" />
+     <Compile Include="Assets\Scripts\Actions\Manual\AStatSetManual.cs" />
      <Compile Include="Assets\Scripts\Actions\Special\AElectric.cs" />
      <Compile Include="Assets\Scripts\Actions\Special\ATime.cs" />
      <Compile Include="Assets\Scripts\Actions\Special\ATimers.cs" />
@@ -78,12 +87,9 @@
      <Compile Include="Assets\Scripts\Actions\Special\Teleports.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreate.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreateArc.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ACreateManual.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AEnd.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AFocus.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMoveLine.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AMoveManual.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMovePath.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ARage.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AShoot.cs" />
@@ -117,12 +123,11 @@
      <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\GUIBoard.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUICheats.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIQueue.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\GUITools.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\GUIToolTips.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipAP.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipArc.cs" />
@@ -144,14 +149,6 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipSelf.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipTram.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipUnit.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUISelectionGrids.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUISelectors.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolCreate.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolKill.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolMove.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolQueue.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolRandom.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolStats.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
@@ -188,12 +185,12 @@
      <Compile Include="Assets\Scripts\Tokens\Components\ID.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Plane.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\Special.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Stat.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\StatCustom.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Timer.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Timers.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\TokenDisplay.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Components\Type.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Wallet.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Watch.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Chrono\Aper.cs" />

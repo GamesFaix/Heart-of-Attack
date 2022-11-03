@@ -10,9 +10,14 @@ namespace HOA {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
-			target.Display.Effect(EEffect.DMG);
+			if (target.Damage(source, dmg)) {
+				Mixer.Play(SoundLoader.Effect(EEffect.DMG));
+				target.Display.Effect(EEffect.DMG);
+			}
+			else {
+				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				target.Display.Effect(EEffect.MISS);
+			}
 		}
 	}
 	
@@ -99,15 +104,22 @@ namespace HOA {
 			TokenGroup targets = cell.Occupants.OnlyType(Special.UnitDest);
 			
 			foreach (Token t in targets) {
-				t.Display.Effect(EEffect.EXP);
-				Mixer.Play(SoundLoader.Effect(EEffect.EXP));
 				if (t.Special.Is(EType.DEST)) {
+					t.Display.Effect(EEffect.EXP);
+					Mixer.Play(SoundLoader.Effect(EEffect.EXP));
 					source.Sequence.AddToNext(new EDestruct(source, t));
 				}
 				
 				else if (t is Unit) {
 					Unit u = (Unit)t;
-					u.Damage(source, dmg);
+					if (u.Damage(source, dmg)) {
+						t.Display.Effect(EEffect.EXP);
+						Mixer.Play(SoundLoader.Effect(EEffect.EXP));
+					}
+					else {
+						t.Display.Effect(EEffect.MISS);
+						Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+					}
 				}
 			}		
 		}
@@ -123,16 +135,21 @@ namespace HOA {
 		public override void Process() {
 			EffectGroup nextEffects = new EffectGroup();
 			
-			target.Display.Effect(EEffect.FIRE);
-			
-			Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
-			
 			if (target.Special.Is(EType.DEST)) {
 				nextEffects.Add(new EDestruct(source, target));
+				target.Display.Effect(EEffect.FIRE);
+				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
 			}
 			else if (target is Unit) {
 				Unit u = (Unit)target;
-				u.Damage(source, dmg);
+				if(u.Damage(source, dmg)) {
+					target.Display.Effect(EEffect.FIRE);
+					Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
+				}
+				else {
+					target.Display.Effect(EEffect.MISS);
+					Mixer.Play(SoundLoader.Effect(EEffect.MISS));	
+				}
 			}
 			
 			TokenGroup neighbors = target.Body.Neighbors(true);
@@ -156,16 +173,22 @@ namespace HOA {
 			source = s; target = t; dmg = n;
 		}
 		public override void Process() {
-			target.Display.Effect(EEffect.FIRE);
-			Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
-			
 			if (target.Special.Is(EType.DEST)) {
+				target.Display.Effect(EEffect.FIRE);
+				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
 				EffectQueue.Add(new EDestruct (source, target));
 			}
 			
 			else if (target is Unit) {
 				Unit u = (Unit)target;
-				u.Damage(source, dmg);
+				if (u.Damage(source, dmg)) {
+					target.Display.Effect(EEffect.FIRE);
+					Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
+				}
+				else {
+					target.Display.Effect(EEffect.MISS);
+					Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				}
 			}
 		}
 	}
@@ -198,10 +221,16 @@ namespace HOA {
 					Debug.Log("obstacle hit");
 				}
 				foreach (Token t in targets.OnlyType(EType.UNIT)) {
-					((Unit)t).Damage(source, currentDmg);
-					t.Display.Effect(EEffect.LASER);
+					if (((Unit)t).Damage(source, currentDmg)) {
+						t.Display.Effect(EEffect.LASER);
+						Mixer.Play(SoundLoader.Effect(EEffect.LASER));
+					}
+					else {
+						t.Display.Effect(EEffect.MISS);
+						Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+					}
 				}
-				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
+
 				if (targets.Count > 0) {currentDmg = (int)Mathf.Floor(currentDmg*0.5f);}
 				
 				int nextX = cell.X-direction[0];
@@ -222,14 +251,19 @@ namespace HOA {
 		}
 		public override void Process() {
 			int oldHP = target.HP;
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
-			target.Display.Effect(EEffect.DMG);
-			int actualDmg = oldHP - target.HP;
-			Unit Parent = (Unit)(source.Token);
-			Parent.AddStat(source, EStat.HP, actualDmg);
-			Parent.Display.Effect(EEffect.STATUP);
-			Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
+			if (target.Damage(source, dmg)) {
+				Mixer.Play(SoundLoader.Effect(EEffect.DMG));
+				target.Display.Effect(EEffect.DMG);
+				int actualDmg = oldHP - target.HP;
+				Unit Parent = (Unit)(source.Token);
+				Parent.AddStat(source, EStat.HP, actualDmg);
+				Parent.Display.Effect(EEffect.STATUP);
+				Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
+			}
+			else {
+				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				target.Display.Effect(EEffect.MISS);
+			}
 		}
 	}
 	
@@ -264,9 +298,9 @@ namespace HOA {
 			//Debug.Log("effect corrode");
 			int cor = (int)Mathf.Floor(dmg*0.5f);
 			target.Damage(source, dmg);
-			target.timers.Add(new TCorrosion(target, source.Token, cor));
 			Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
 			target.Display.Effect(EEffect.COR);
+			target.timers.Add(new TCorrosion(target, source.Token, cor));
 		}
 	}
 	
@@ -278,9 +312,14 @@ namespace HOA {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
-			target.Display.Effect(EEffect.CORRODE);
+			if (target.Damage(source, dmg)) {
+				Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
+				target.Display.Effect(EEffect.CORRODE);
+			}
+			else {
+				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				target.Display.Effect(EEffect.MISS);
+			}
 		}
 	}
 	
@@ -307,9 +346,14 @@ namespace HOA {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
-			target.Damage(source, dmg);
-			target.Display.Effect(EEffect.DMG);
-			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
+			if (target.Damage(source, dmg)) {
+				target.Display.Effect(EEffect.DMG);
+				Mixer.Play(SoundLoader.Effect(EEffect.DMG));
+			}
+			else {
+				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				target.Display.Effect(EEffect.MISS);
+			}
 			Unit Parent = (Unit)source.Token;
 			Parent.Damage(source, (int)Mathf.Floor(dmg*0.5f));
 			Parent.Display.Effect(EEffect.DMG);

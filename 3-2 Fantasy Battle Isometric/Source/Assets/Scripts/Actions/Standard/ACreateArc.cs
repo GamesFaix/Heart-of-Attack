@@ -25,7 +25,10 @@ namespace HOA {
 
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(p.LinePanel);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+
 			DrawAim(0, p.LinePanel);
 			Template.DisplayTemplate(p.LinePanel, 30);
 			float descH = (p.H-(p.LineH*2))/p.H;

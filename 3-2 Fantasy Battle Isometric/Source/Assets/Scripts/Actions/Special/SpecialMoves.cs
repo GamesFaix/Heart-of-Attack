@@ -31,7 +31,10 @@ namespace HOA {
 		
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, Aim[0].Range-Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -83,7 +86,10 @@ namespace HOA {
 		
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Min(6, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -113,7 +119,10 @@ namespace HOA {
 		
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;

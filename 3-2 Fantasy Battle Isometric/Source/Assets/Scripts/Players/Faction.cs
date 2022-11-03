@@ -5,6 +5,7 @@ namespace HOA {
 
 	public abstract class Faction {
 		protected string name;
+		public string Name {get {return name;} }
 		protected List<EToken> tokens;
 		protected EToken king;
 		protected EToken heart;

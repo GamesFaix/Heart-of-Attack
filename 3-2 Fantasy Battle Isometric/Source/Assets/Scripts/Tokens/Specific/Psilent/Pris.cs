@@ -1,10 +1,12 @@
-﻿namespace HOA{
+﻿using UnityEngine;
+
+namespace HOA{
 	public class PrismGuard : Unit {
 		public PrismGuard(Source s, bool template=false){
 			ID = new ID(this, EToken.PRIS, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();
-			NewHealth(15);
+			Health = new HealthHalfDodge(this, 15);
 			NewWatch(3);
 			BuildArsenal();
 		}
@@ -19,22 +21,25 @@
 			Arsenal.Sort();
 		}
 
-		public override string Notes () {return 
-			"Actions targetting "+ID.Name+" have a 50% chance of missing.";
+		public override string Notes () {return "";}
+			/*"Actions targetting "+ID.Name+" have a 50% chance of missing.";
 		}
-		
-		public override void Select (Source s) {
+		/*
+		public override bool Select (Source s) {
 			int flip = DiceCoin.Throw(s, EDice.COIN);
+			Debug.Log("coin result"+flip);
 			if (flip == 1) {
 				Display.Effect(EEffect.HEADS);
-				GUISelectors.Instance = this;
+				return true;
+	//			GUISelectors.Instance = this;
 			}
 			else {
 				GameLog.Out(s.ToString()+" tried to target "+ToString()+" and missed.");
 				EffectQueue.Add(new ETails(new Source(this), this));
+				return false;
 			}
 		}
 		
-		
+		*/
 	}
 }
