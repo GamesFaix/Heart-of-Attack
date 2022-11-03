@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipDEF () {
 			Name = "Defense";
-			Icon = Icons.Stat(EStat.DEF);
+			Icon = Icons.Stats.defense;
 			ETip = ETip.DEF;
 		}
 		

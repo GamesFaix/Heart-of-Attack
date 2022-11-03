@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipOb () {
 			Name = "Obstacle";
-			Icon = Icons.Special(ESpecial.OB);
-			ETip = ETip.OB;
+			Icon = Icons.Types.obstacle;
+			ETip = ETip.Obstacle;
 		}
 		
 		public override void Content (Panel p) {

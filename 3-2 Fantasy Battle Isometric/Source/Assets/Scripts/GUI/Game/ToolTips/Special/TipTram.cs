@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipTram () {
 			Name = "Trample";
-			Icon = Icons.Special(ESpecial.TRAM);
-			ETip = ETip.TRAM;
+			Icon = Icons.Types.trample;
+			ETip = ETip.Trample;
 		}
 		
 		public override void Content (Panel p) {

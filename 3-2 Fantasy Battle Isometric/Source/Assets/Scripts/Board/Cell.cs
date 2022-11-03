@@ -11,6 +11,8 @@ namespace HOA {
 		public int X {get {return Index.x;} }
 		public int Y {get {return Index.y;} }
 
+		public Plane stop {get; set;}
+
 		public override string ToString() {return "("+X+","+Y+")";}
 
 		protected Cell () {}
@@ -20,84 +22,50 @@ namespace HOA {
 			Index = index;
 			CellDisplay.Attach(this);
 			links = new CellGroup();
+			stop = new Plane(false,false,false,false);
 		}
 
 		public Vector3 Location {get {return Display.gameObject.transform.position;} }
 
-		Token[] tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
+		Token[] tokens = new Token[Plane.count];
 		
-		public virtual Token Occupant (EPlane plane) {return tokens[(int)plane];}
+		public virtual Token Occupant (byte i) {return tokens[i];}
 		public virtual TokenGroup Occupants {
 			get {
 				TokenGroup occupants = new TokenGroup();
-				for (byte i=0; i<tokens.Length; i++) {
+				for (byte i=0; i<Plane.count; i++) {
 					if (tokens[i] != null) {occupants.Add(tokens[i]);}
 				}
 				return occupants;
 			}
 		}
-		public int TokenCount {get {return Occupants.Count;} }
-		public bool IsEmpty () {
-			if (TokenCount < 1) {return true;}
-			return false;
-		}
-		
-		public bool Occupied (EPlane p) {
-			if (tokens[(int)p] != null) {return true;}
-			return false;
-		}
-		public bool Occupied (List<EPlane> ps) {
-			foreach (EPlane p in ps) {
-				if (tokens[(int)p] != null) {return true;}
-			}
-			return false;
-		}
-		public bool Contains (ESpecial s) {
-			foreach (Token t in Occupants) {
-				if (t.Special.Is(s)) {return true;}
-			}
-			return false;
-		}
 
-		public bool Contains (ESpecial c, out Token occupant){
+		public bool Occupied (int i, out Token occupant) {
 			occupant = null;
-			foreach (Token t in Occupants) {
-				if (t.Special.Is(c)) {
-					occupant = t;
-					return true;
-				}
+			if (i < tokens.Length && i >= 0) {
+				occupant = tokens[i];
+				if (occupant != null) {return true;}
 			}
 			return false;
 		}
 
-		public bool Contains (EPlane p) {
-			foreach (Token t in Occupants) {
-				if (t.Plane.Is(p)) {return true;}
+		public bool Occupied (Plane p) {
+			for (byte i=0; i<Plane.count; i++) {
+				if (p.planes[i] && tokens[i]!=null) {return true;}
 			}
 			return false;
 		}
 
-		public bool Contains (EPlane p, out Token occupant){
-			occupant = default(Token);
-			foreach (Token t in Occupants) {
-				if (t.Plane.Is(p)) {
-					occupant = t;
-					return true;
-				}
-			}
-			return false;
-		}
 
-		public bool ContainsOnly (EPlane p) {
-			if (Contains(p) && Occupants.Count == 1) {return true;}
-			return false;
-		}
-		
+
+		public int TokenCount {get {return Occupants.Count;} }
+		public bool IsEmpty () {return (TokenCount < 1 ? true : false);}
+
 		public virtual void Enter (Token t) {
-			foreach (EPlane p in t.Plane.Value) {
-				tokens[(int)p] = t;
+			for (byte i=0; i<Plane.count; i++) {
+				if (t.Plane.planes[i]) {tokens[i] = t;}
 			}
-			if (t.Plane.Is(EPlane.SUNK)) {EnterSunken(t);}
+			if (t.Plane.sunken) {EnterSunken(t);}
 
 			for (int i=sensors.Count-1; i>=0; i--) {
 				Sensor s = sensors[i];
@@ -108,20 +76,16 @@ namespace HOA {
 		public virtual void EnterSunken (Token t) {((CellDisplay)Display).EnterSunken(t);}
 
 		public virtual void Exit (Token t) {
-			for (int i=0; i<=3; i++){
-				if (tokens[i] == t) {tokens[i] = default(Token);}	
+			for (byte i=0; i<Plane.count; i++){
+				if (tokens[i] == t) {tokens[i] = null;}	
 			}
-
-			if (t.Plane.Is(EPlane.SUNK)) {ExitSunken();}
-
+			if (t.Plane.sunken) {ExitSunken();}
 			foreach (Sensor s in sensors) {s.OtherExit(t);}
 		}
 
 		void ExitSunken () {((CellDisplay)Display).ExitSunken();}
 
-		public virtual void Clear () {
-			tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
-		}
+		public virtual void Clear () {tokens = new Token[Plane.count];}
 
 		//Sensors
 		List<Sensor> sensors = new List<Sensor>();
@@ -159,29 +123,12 @@ namespace HOA {
 			return neighbors;
 		}
 
-		bool[] stop = new bool[4];
-
-		bool Stop (EPlane p) {
-			if (p == EPlane.SUNK) {return stop[0];}
-			if (p == EPlane.GND) {return stop[1];}
-			if (p == EPlane.AIR) {return stop[2];}
-			if (p == EPlane.ETH) {return stop[3];}
-			return false;
-		}
-
 		public virtual bool StopToken (Token t) {
-			foreach (EPlane p in t.Plane.Value) {
-				if (Stop(p)) {return true;}
+			for (byte i=0; i<Plane.count; i++) {
+				if (stop.planes[i] && t.Plane.planes[i]) {return true;}
 			}
 			if (Body.CanTrample(t, this)) {return true;}
 			return false;
-		}
-
-		public virtual void SetStop (EPlane p, bool s) {
-			if (p == EPlane.SUNK) {stop[0] = s;}
-			if (p == EPlane.GND) {stop[1] = s;}
-			if (p == EPlane.AIR) {stop[2] = s;}
-			if (p == EPlane.ETH) {stop[3] = s;}
 		}
 	}
 }

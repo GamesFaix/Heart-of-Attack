@@ -13,14 +13,14 @@ namespace HOA {
 
 		SensorLava (Token par, Cell c) {
 			parent = par;	
-			planesToStop = Plane.Gnd;
+			planesToStop = Plane.Ground;
 			Enter(c);
 		}
 
 		public static Sensor Instantiate (Token par, Cell c) {return new SensorLava(par, c);}
 
 		protected override bool IsTrigger (Token trigger) {
-			if (trigger.Plane.Is(EPlane.GND)) {return true;}
+			if (trigger.Plane.ground) {return true;}
 			return false;
 		}
 
@@ -46,7 +46,7 @@ namespace HOA {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
 			}
-			if (Game.Active && (t is Unit || t.Special.Is(ESpecial.DEST))) {
+			if (Game.Active && (t.TokenType.unit || t.TokenType.destructible)) {
 				EffectQueue.Interrupt(new Effects.Fire(new Source(parent), t, 7));
 			}
 		}
@@ -74,14 +74,14 @@ namespace HOA {
 
 		SensorWater (Token par, Cell c) {
 			parent = par;	
-			planesToStop = Plane.Gnd;
+			planesToStop = Plane.Ground;
 			Enter(c);
 		}
 
 		public static Sensor Instantiate (Token par, Cell c) {return new SensorWater(par, c);}
 
 		protected override bool IsTrigger (Token trigger) {
-			if (trigger is Unit && trigger.Plane.Is(EPlane.GND)) {return true;}
+			if (trigger is Unit && trigger.Plane.ground) {return true;}
 			return false;
 		}
 		
@@ -272,7 +272,7 @@ namespace HOA {
 		public static Sensor Instantiate (Token par, Cell c) {return new SensorIce(par, c);}
 
 		protected override bool IsTrigger (Token trigger) {
-			if (trigger.Plane.Is(EPlane.GND)) {return true;}
+			if (trigger.Plane.ground) {return true;}
 			return false;
 		}
 
@@ -305,7 +305,7 @@ namespace HOA {
 
 		protected override bool IsTrigger (Token trigger) {
 			if (trigger is Unit 
-			    && (trigger.Plane.Is(EPlane.GND) || trigger.Plane.Is(EPlane.AIR))) {
+			    && (trigger.Plane.ground || trigger.Plane.air)) {
 				return true;
 			}
 			return false;
@@ -428,7 +428,7 @@ namespace HOA {
 
 		protected override bool IsTrigger (Token trigger) {
 			if (trigger is Unit
-			    && (trigger.Plane.Is(EPlane.GND) || trigger.Plane.Is(EPlane.AIR))) {
+			    && (trigger.Plane.ground || trigger.Plane.air)) {
 				return true;
 			}
 			return false;
@@ -445,7 +445,7 @@ namespace HOA {
 				Unit u = list[i];
 				Task move = u.Arsenal.Move;
 				if (move != null) {
-					move.Aims[0].Range = web.Affected[u];
+					move.aims[0].range = web.Affected[u];
 					web.Affected.Remove(u);
 				}
 			}
@@ -459,7 +459,7 @@ namespace HOA {
 			Unit u = (Unit)t;
 			Task move = u.Arsenal.Move;
 			if (move != default(Task)) {
-				move.Aims[0].Range = web.Affected[u];
+				move.aims[0].range = web.Affected[u];
 				web.Affected.Remove(u);
 			}
 		}
@@ -535,7 +535,7 @@ namespace HOA {
 		
 		SensorAper (Token par, Cell c) {
 			parent = par;	
-			planesToStop = new Plane (new List<EPlane>() {EPlane.GND, EPlane.AIR, EPlane.ETH});
+			planesToStop = new Plane (true,true,true,true);
 			Enter(c);
 		}
 		

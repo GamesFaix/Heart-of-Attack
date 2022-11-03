@@ -41,15 +41,18 @@ namespace HOA.Effects {
 		public override void Process() {
 			int currentDmg = damage;
 			foreach (Cell c in cells) {
-				Group<Unit> units = c.Occupants.Units;
-				foreach (Unit u in units) {
-					if (u.Damage(source, currentDmg)) {
-						u.Display.Effect(EEffect.LASER);
-						Mixer.Play(SoundLoader.Effect(EEffect.LASER));
-					}
-					else {
-						u.Display.Effect(EEffect.MISS);
-						Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+				TokenGroup units = c.Occupants.units;
+				foreach (Token t in units) {
+					if (t is Unit) {
+						Unit u = (Unit)t;
+						if (u.Damage(source, currentDmg)) {
+							u.Display.Effect(EEffect.LASER);
+							Mixer.Play(SoundLoader.Effect(EEffect.LASER));
+						}
+						else {
+							u.Display.Effect(EEffect.MISS);
+							Mixer.Play(SoundLoader.Effect(EEffect.MISS));
+						}
 					}
 				}
 				if (Block(c.Occupants)) {return;}
@@ -58,8 +61,8 @@ namespace HOA.Effects {
 		}
 
 		bool Block (TokenGroup tokens) {
-			tokens = tokens.OnlyType(ESpecial.OB);
-			tokens = tokens.RemovePlane(EPlane.SUNK);
+			tokens -= tokens.obstacles;
+			tokens -= Plane.Sunken;
 			if (tokens.Count > 0) {return true;}
 			return false;
 		}

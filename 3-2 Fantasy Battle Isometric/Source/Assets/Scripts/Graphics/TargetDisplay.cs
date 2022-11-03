@@ -82,17 +82,13 @@ namespace HOA {
 			t.Display = display;
 	
 			AttachCards(display);
-		//	if (t is Token) {AttachPost(display);}
-
 
 			if (t is Token) {
 				display.Sprite = Thumbs.CodeToThumb(((Token)t).ID.Code);
-				if (((Token)t).Plane.Is(EPlane.SUNK)) {
+				if (((Token)t).Plane.sunken) {
 					display.HideSprite();
 					display.Clickable = false;
 				}
-				//((TokenDisplay)display).MoveTo(((Token)t).Body.Cell);
-
 			}
 
 		}

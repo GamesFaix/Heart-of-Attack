@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipPath () {
 			Name = "Path";
-			Icon = Icons.Traj(ETraj.PATH);
+			Icon = Icons.Aims.path;
 			ETip = ETip.PATH;
 		}
 		

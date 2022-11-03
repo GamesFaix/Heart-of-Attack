@@ -46,5 +46,21 @@ namespace HOA {
 			}
 			return occupiable;
 		}
+
+		public static CellGroup operator + (CellGroup a, CellGroup b) {a.Add(b); return a;}
+		public static CellGroup operator + (CellGroup a, Cell b) {a.Add(b); return a;}
+
+		public static CellGroup operator - (CellGroup a, CellGroup b) {a.Remove(b); return a;}
+		public static CellGroup operator - (CellGroup a, Cell b) {a.Remove(b); return a;}
+
+		public static CellGroup operator / (CellGroup cells, Token t) {return cells.Occupiable(t);}
+		public static CellGroup operator - (CellGroup cells, Token t) {return new CellGroup(cells) - cells.Occupiable(t);}
+
+		public static implicit operator TargetGroup(CellGroup cells) {
+			TargetGroup targets = new TargetGroup();
+			targets.Add(cells);
+			return targets;
+		}
+
 	}
 }

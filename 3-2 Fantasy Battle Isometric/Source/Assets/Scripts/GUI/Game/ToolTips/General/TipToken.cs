@@ -7,7 +7,7 @@ namespace HOA {
 		public TipToken () {
 			Name = "Token";
 			Icon = null;
-			ETip = ETip.TOKEN;
+			ETip = ETip.Token;
 		}
 		
 		public override void Content (Panel p) {
@@ -46,9 +46,6 @@ namespace HOA {
 			tip = new TipDest();
 			tip.Link(p.LinePanel);
 			
-			tip = new TipRem();
-			tip.Link(p.LinePanel);
-
 			tip = new TipKing();
 			tip.Link(p.LinePanel);
 

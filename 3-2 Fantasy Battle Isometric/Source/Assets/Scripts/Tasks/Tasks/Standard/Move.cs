@@ -3,21 +3,19 @@ using System.Collections.Generic;
 
 namespace HOA.Actions {
 	
-	public class Move : Task, IMultiMove {
+	public class Move : Task {
 
-		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+		public override string desc {get {return "Move "+parent+" to target cell.";} }
 
-		public Move (Unit parent, int r) {
-			Parent = parent;
-			Name = "Move";
-			Weight = 1;
-			NewAim(Aim.MovePath(r));
-			Price = Price.Cheap;
+		public Move (Unit parent, int range) : base(parent) {
+			name = "Move";
+			weight = 1;
+			aims += Aim.MovePath(range);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(source, parent, (Cell)target));
 			}
 		}
 	}

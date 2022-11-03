@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipCOR () {
 			Name = "Corrosion";
-			Icon = Icons.COR();
+			Icon = Icons.Effects.corrosive;
 			ETip = ETip.COR;
 		}
 		

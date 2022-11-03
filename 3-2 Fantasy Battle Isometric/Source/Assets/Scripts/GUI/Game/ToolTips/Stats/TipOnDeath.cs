@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipOnDeath () {
 			Name = "Token-on-Death";
-			Icon = Icons.ONDEATH();
+			Icon = Icons.Other.onDeath;
 			ETip = ETip.ONDEATH;
 		}
 		
@@ -30,9 +30,6 @@ namespace HOA {
 		}	
 		public override void SeeAlso (Panel p) {
 			Tip tip = new TipToken();
-			tip.Link(p.LinePanel);
-
-			tip = new TipRem();
 			tip.Link(p.LinePanel);
 
 			tip = new TipHeart();

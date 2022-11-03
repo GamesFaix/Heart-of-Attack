@@ -6,18 +6,17 @@ namespace HOA.Actions {
 		
 		int damage = 16;
 		
-		public override string Desc {get {return "Do "+damage+" damage to target unit.";} }
+		public override string desc {get {return "Do "+damage+" damage to target unit.";} }
 		
-		public Fling (Unit u) {
-			Name = "Fling";
-			Weight = 3;
-			Parent = u;
-			Price = new Price(1,1);
-			NewAim(Aim.AttackArc(Special.Unit, 0, 3));
+		public Fling (Unit parent) : base(parent) {
+			name = "Fling";
+			weight = 3;
+			price = new Price(1,1);
+			aims += Aim.AttackArc(Filters.Units, 0, 3);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Damage (new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Damage (source, (Unit)targets[0], damage));
 		}
 	}
 }

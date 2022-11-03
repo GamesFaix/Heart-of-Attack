@@ -3,13 +3,12 @@
 namespace HOA { 
 	public enum ETip {
 		NONE, 
-		CELL, TOKEN,
-		DEST, REM, KING, TRAM, HEART, 
+		Cell, Token,
+		Unit, Obstacle, King, Heart, Destructible, Trample, 
 		ONDEATH, 
 		AP, FP, IN, DEF, HP, 
 		SELF, NEIGHBOR, PATH, LINE, ARC, FREE, 
-		UNIT, OB,
-		PLANE, DAMAGE, TIMER, SENSOR,
+		Plane, DAMAGE, TIMER, SENSOR,
 		STUN, SKIP, FIR, EXP, COR
 	}
 
@@ -47,39 +46,42 @@ namespace HOA {
 		public abstract void SeeAlso (Panel p);
 
 
-		public static ETip Trajectory (ETraj a) {
-			if (a == ETraj.SELF) {return ETip.SELF;}
-			else if (a == ETraj.NEIGHBOR) {return ETip.NEIGHBOR;}
-			else if (a == ETraj.PATH) {return ETip.PATH;}
-			else if (a == ETraj.LINE) {return ETip.LINE;}
-			else if (a == ETraj.ARC) {return ETip.ARC;}
-			else if (a == ETraj.FREE) {return ETip.FREE;}
-			return ETip.NONE;
+		public static ETip Trajectory (Trajectory traj) {
+			switch (traj) {
+			case HOA.Trajectory.Self: return ETip.SELF;
+			case HOA.Trajectory.Neighbor: return ETip.NEIGHBOR;
+			case HOA.Trajectory.Path: return ETip.PATH;
+			case HOA.Trajectory.Line: return ETip.LINE;
+			case HOA.Trajectory.Arc: return ETip.ARC;
+			case HOA.Trajectory.Free: return ETip.FREE;
+			default: return ETip.NONE;
+			}
 		}
 		
-		public static ETip Special (ESpecial special) {
-			if (special == ESpecial.KING) {return ETip.KING;}
-			else if (special == ESpecial.HEART) {return ETip.HEART;}
-			else if (special == ESpecial.DEST) {return ETip.DEST;}
-			else if (special == ESpecial.REM) {return ETip.REM;}
-			else if (special == ESpecial.TRAM) {return ETip.TRAM;}
-			else if (special == ESpecial.UNIT) {return ETip.UNIT;}
-			else if (special == ESpecial.OB) {return ETip.OB;}
-			else if (special == ESpecial.CELL) {return ETip.CELL;}
-			return ETip.NONE;
+		public static ETip TargetType (TargetTypes type) {
+			switch (type) {
+			case TargetTypes.Cell: {return ETip.Cell;}
+			case TargetTypes.Unit: {return ETip.Unit;}
+			case TargetTypes.Obstacle: {return ETip.Obstacle;}
+			case TargetTypes.King: {return ETip.King;}
+			case TargetTypes.Heart: {return ETip.Heart;}
+			case TargetTypes.Destructible: {return ETip.Destructible;}
+			case TargetTypes.Trample: {return ETip.Trample;}
+			default: return ETip.NONE;
+			}
 		}
 
 		public static Tip FromETip (ETip eTip) {
 			switch (eTip) {
-			case ETip.UNIT: return new TipUnit();
-			case ETip.OB: return new TipOb();
-			case ETip.KING: return new TipKing();
-			case ETip.HEART: return new TipHeart();
-			case ETip.DEST: return new TipDest();
-			case ETip.REM: return new TipRem();
-			case ETip.CELL: return new TipCell();
-			case ETip.PLANE: return new TipPlane();
-			case ETip.TRAM: return new TipTram();
+			case ETip.Cell: return new TipCell();
+			case ETip.Token: return new TipToken();
+			case ETip.Unit: return new TipUnit();
+			case ETip.Obstacle: return new TipOb();
+			case ETip.King: return new TipKing();
+			case ETip.Heart: return new TipHeart();
+			case ETip.Destructible: return new TipDest();
+			case ETip.Trample: return new TipTram();
+			case ETip.Plane: return new TipPlane();
 			case ETip.AP: return new TipAP();
 			case ETip.FP: return new TipFP();
 			case ETip.HP: return new TipHP();
@@ -92,7 +94,6 @@ namespace HOA {
 			case ETip.ARC: return new TipArc();
 			case ETip.FREE: return new TipFree();
 			case ETip.SELF: return new TipSelf();
-			case ETip.TOKEN: return new TipToken();
 			case ETip.DAMAGE: return new TipDamage();
 			case ETip.TIMER: return new TipTimer();
 			case ETip.SENSOR: return new TipSensor();

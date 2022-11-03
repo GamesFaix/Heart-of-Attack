@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipHeart () {
 			Name = "Heart of Attack";
-			Icon = Icons.Special(ESpecial.HEART);
-			ETip = ETip.HEART;
+			Icon = Icons.Types.heart;
+			ETip = ETip.Heart;
 		}
 		
 		public override void Content (Panel p) {

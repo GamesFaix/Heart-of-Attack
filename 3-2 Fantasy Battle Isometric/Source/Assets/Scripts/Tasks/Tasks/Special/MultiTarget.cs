@@ -5,118 +5,114 @@ namespace HOA.Actions {
 
 	public class ThrowTerrain : Task {
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 				"Destroy target non-Remains destructible." +
 				"\nDo "+damage+" damage to target unit.";} } 
 		
 		int damage = 16;
 
-		public ThrowTerrain (Unit parent) {
-			NewAim(Aim.AttackNeighbor(Special.Dest));
-			Aims.Add(Aim.AttackArc(Special.Unit, 0, 3));
-			Name = "Throw Terrain";
-			Weight = 4;
-			Parent = parent;
-			Price = new Price(1,1);
+		public ThrowTerrain (Unit parent) : base(parent) {
+			aims += Aim.AttackNeighbor(Filters.Destructible);
+			aims += Aim.AttackArc(Filters.Units, 0, 3);
+			name = "Throw Terrain";
+			weight = 4;
+			price = new Price(1,1);
 		} 
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Kill (new Source(Parent), (Token)targets[0]));
-			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[1], damage));
+			EffectQueue.Add(new Effects.Kill (source, (Token)targets[0]));
+			EffectQueue.Add(new Effects.Damage(source, (Unit)targets[1], damage));
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			Aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			aims[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
 	public class Quickdraw : Task, IMultiTarget {
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 				"Once per Focus (Max: 5), select and deal "+damage+" damage to target unit." +
 				"\n(You may choose the same target multiple times.)" +
 				"\nLose all Focus.";} }
 		
 		int damage = 6;
 
-		public Quickdraw (Unit parent) {
-			Name = "Quickdraw";
-			Weight = 4;
-			Parent = parent;
-			Price = new Price(0,1);
-			NewAim(Aim.AttackLine(Special.Unit,3));
+		public Quickdraw (Unit parent) : base(parent) {
+			name = "Quickdraw";
+			weight = 4;
+			price = new Price(0,1);
+			aims += Aim.AttackLine(Filters.Units,3);
 		}
 		
 		public override void Adjust () {
-			int shots = Mathf.Min(Parent.FP, 5);
-			for (int i=2; i<=shots; i++) {Aims.Add(Aim.AttackLine(Special.Unit,3));}
+			int shots = Mathf.Min(parent.FP, 5);
+			for (int i=2; i<=shots; i++) {aims += Aim.AttackLine(Filters.Units,3);}
 		}
 		
-		public override void UnAdjust () {NewAim(Aim.AttackLine(Special.Unit,3));}
+		public override void UnAdjust () {aims = new AimSeq(Aim.AttackLine(Filters.Units, 3));}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			for (int i=0; i<targets.Count; i++) {
-				EffectQueue.Add(new Effects.Damage (new Source(Parent), (Unit)targets[i], damage));
+				EffectQueue.Add(new Effects.Damage (source, (Unit)targets[i], damage));
 			}
-			Parent.SetStat(new Source(Parent), EStat.FP, 0);
+			parent.SetStat(source, EStat.FP, 0);
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
-			int FP = Parent.FP;
+			GUI.Label(p.LineBox, name, p.s);
+			int FP = parent.FP;
 			Price price = new Price(0, (byte)FP);
 			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			int shots = Mathf.Min(Parent.FP, 5);
-			Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
-			for (int i=2; i<=shots; i++) {
-				Aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
+			int shots = Mathf.Min(parent.FP, 5);
+			for (byte i=0; i<shots; i++) {
+				aims[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	} 
 
 	public class Bombard : Task, IMultiTarget, IRecursiveMove {
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 				"Once per Focus (Max: 3), move upto "+range+" cells in a line and " +
 				"deal "+damage+" explosive damage at that cell." +
-				"\n("+Parent+" receives no damage.)" +
+				"\n("+parent+" receives no damage.)" +
 				"\nLose all Focus.";} }
 		
 		int damage = 10;
 		int range = 4;
 
-		public Bombard (Unit parent) {
-			Name = "Bombard";
-			Weight = 4;
-			Parent = parent;
-			Price = new Price(2,0);
-			NewAim(Aim.MoveLine(range));
+		public Bombard (Unit parent) : base(parent) {
+			name = "Bombard";
+			weight = 4;
+			price = new Price(2,0);
+			aims += Aim.MoveLine(range);
 		}
 		
 		public override void Adjust () {
-			int shots = Mathf.Min(Parent.FP, 3);
-			for (int i=2; i<=shots; i++) {Aims.Add(Aim.MoveLine(range));}
+			int shots = Mathf.Min(parent.FP, 3);
+			for (int i=2; i<=shots; i++) {aims += Aim.MoveLine(range);}
 		}
 		
-		public override void UnAdjust () {NewAim(Aim.MoveLine(range));}
-		
+		public override void UnAdjust () {aims = new AimSeq(Aim.MoveLine(range));}	
+
 		protected override void ExecuteMain (TargetGroup targets) {
-			Parent.SetStat(new Source(Parent), EStat.FP, 0);
+			parent.SetStat(source, EStat.FP, 0);
 			
-			Cell start = Parent.Body.Cell;
+			Cell start = parent.Body.Cell;
 			
 			for (int i=0; i<targets.Count; i++) {
 				Cell endCell = (Cell)targets[i];
@@ -134,8 +130,8 @@ namespace HOA.Actions {
 					line.Add(c);
 				}
 				
-				foreach (Cell point in line) {EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, point));}
-				EffectQueue.Add(new Effects.Explosion(new Source(Parent), endCell, 10, true));
+				foreach (Cell point in line) {EffectQueue.Add(new Effects.Move(source, parent, point));}
+				EffectQueue.Add(new Effects.Explosion(source, endCell, 10, true));
 				start = endCell;
 			}
 		}
@@ -147,18 +143,17 @@ namespace HOA.Actions {
 		}
 		
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
-			Price price = new Price((byte)Price.E, (byte)Parent.FP);
-			price.Draw(new Panel(p.Box(150), p.LineH, p.s));
+			GUI.Label(p.LineBox, name, p.s);
+			Price actual = new Price((byte)price.E, (byte)parent.FP);
+			actual.Draw(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
-			Aims[0].Draw(p.LinePanel);
-			int shots = Mathf.Min(3, Parent.FP);
-			for (int i=2; i<=shots; i++) {
-				Aims[0].Draw(p.LinePanel);
+			int shots = Mathf.Min(3, parent.FP);
+			for (byte i=0; i<shots; i++) {
+				aims[0].Draw(p.LinePanel);
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 }

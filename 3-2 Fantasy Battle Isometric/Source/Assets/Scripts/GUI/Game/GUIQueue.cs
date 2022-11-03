@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using HOA;
+using HOA.Icons;
 
 public static class GUIQueue {
 	
@@ -42,24 +43,21 @@ public static class GUIQueue {
 				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
 
 			////watch
-				GUI.Box(p.Box(iconSize), Icons.Stat(EStat.IN), p.s);
+				GUI.Box(p.Box(iconSize), Stats.initiative, p.s);
 				p.x2 += 5;
 				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
 				
 				if (u.IsStunned()) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.STUN), p.s);
+					GUI.Box(p.Box(iconSize), Effects.stun, p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
-				}
-				else if (u.IsSkipped()) {
-					GUI.Box(p.Box(iconSize), Icons.SKIP(), p.s);
 				}
 				else {p.x2 += iconSize;}
 
 			////wallet
 				p.NudgeX();		
 				if (u.FP > 0) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.FP), p.s);
+					GUI.Box(p.Box(iconSize), Stats.focus, p.s);
 					p.NudgeX();
 					GUI.Label(p.Box(iconSize), u.FP+"", p.s);
 				}
@@ -68,12 +66,12 @@ public static class GUIQueue {
 
 			////health
 				//p.NudgeX();
-				GUI.Box(p.Box(iconSize), Icons.Stat(EStat.HP), p.s);
+				GUI.Box(p.Box(iconSize), Stats.health, p.s);
 				p.NudgeX();
 				GUI.Label (p.Box(iconSize*3), u.Health.HP.ToString(), p.s);
 				
 				if (u.DEF > 0) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.DEF), p.s);
+					GUI.Box(p.Box(iconSize), Stats.defense, p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
 				}

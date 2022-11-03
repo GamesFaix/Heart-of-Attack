@@ -46,9 +46,7 @@ public class Group<t> : IEnumerable<t>, ICollection<t>, IList<t>{
 
 	//IEnumerator
 	public IEnumerator<t> GetEnumerator() {
-		for (int i=0; i< list.Count; i++) {
-			yield return list[i];
-		}
+		for (int i=0; i<Count; i++) {yield return list[i];}
 	}
 	IEnumerator IEnumerable.GetEnumerator() {return GetEnumerator();}
 

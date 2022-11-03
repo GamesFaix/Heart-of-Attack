@@ -1,91 +1,83 @@
 
 namespace HOA.Tokens {
 	
-	public class SiliconHOA : Obstacle {
+	public class SiliconHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new SiliconHOA (source, template);
 		}
 
 		SiliconHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSIL, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}
 	
-	public class SteelHOA : Obstacle {
+	public class SteelHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new SteelHOA (source, template);
 		}
 		SteelHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSTE, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}
 	
-	public class StoneHOA : Obstacle {
+	public class StoneHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new StoneHOA (source, template);
 		}
 		StoneHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSTO, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}
 	
-	public class FirHOA : Obstacle {
+	public class FirHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new FirHOA (source, template);
 		}
 		FirHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HFIR, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}
 		
-	public class BrassHOA : Obstacle {
+	public class BrassHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new BrassHOA (source, template);
 		}
 		BrassHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HBRA, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}
 	
-	public class SilkHOA : Obstacle {
+	public class SilkHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new SilkHOA (source, template);
 		}
 		SilkHOA(Source s, bool template=false){
-			ID = new ID(this, EToken.HSLK, s, true, template);
-			BuildHeart();		
+			ID = new ID(this, EToken.HSLK, s, true, template);		
 		}
 		public override string Notes () {return "";}
 	}
 	
-	public class GlassHOA : Obstacle {
+	public class GlassHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new GlassHOA (source, template);
 		}
 		GlassHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HGLA, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}	
 	
-	public class BloodHOA : Obstacle {
+	public class BloodHOA : Heart {
 		public static Token Instantiate (Source source, bool template) {
 			return new BloodHOA (source, template);
 		}
 		BloodHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HBLO, s, true, template);
-			BuildHeart();
 		}
 		public override string Notes () {return "";}
 	}

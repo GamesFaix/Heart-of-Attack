@@ -4,14 +4,13 @@ namespace HOA.Actions {
 
 	public class HourSaviour : Task {
 		
-		public override string Desc {get {return "Target Unit shifts to the bottom of the Queue";} }
+		public override string desc {get {return "Target Unit shifts to the bottom of the Queue";} }
 		
-		public HourSaviour (Unit parent) {
-			Parent = parent;
-			Name = "Hour Saviour";
-			Weight = 4;
-			Price = new Price(0,2);
-			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
+		public HourSaviour (Unit parent) : base(parent) {
+			name = "Hour Saviour";
+			weight = 4;
+			price = new Price(0,2);
+			aims += Aim.Free(Filters.Units);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -21,47 +20,42 @@ namespace HOA.Actions {
 			int current = TurnQueue.IndexOf(u);
 			int magnitude = 0-(last-current);
 			
-			EffectQueue.Add(new Effects.Shift(new Source(Parent), u, magnitude));
+			EffectQueue.Add(new Effects.Shift(source, u, magnitude));
 		}
 	}
 	
 	public class MinuteWaltz : Task {
-		public override string Desc {get {return "Shuffle the Queue." +
-				"\n(End "+Parent.ID.Name+"'s turn.)";} }
+		public override string desc {get {return "Shuffle the Queue." +
+				"\n(End "+parent.ID.Name+"'s turn.)";} }
 		
-		public MinuteWaltz (Unit parent) {
-			Parent = parent;
-			Name = "Minute Waltz";
-			Weight = 4;
-			
-			Price = new Price(1,1);
-			NewAim(Aim.Self());
+		public MinuteWaltz (Unit parent) : base(parent) {
+			name = "Minute Waltz";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Shuffle(new Source(Parent)));
-			EffectQueue.Add(new Effects.Advance(new Source(Parent), false));
+			EffectQueue.Add(new Effects.Shuffle(source));
+			EffectQueue.Add(new Effects.Advance(source, false));
 		}
 	}
 	
 	public class SecondInCommand : Task {
-		public override string Desc {get {return "Target unit takes the next turn." +
+		public override string desc {get {return "Target unit takes the next turn." +
 				"\n(Cannot target self.)";} }
 		
-		public SecondInCommand (Unit parent) {
-			Parent = parent;
-			Name = "Second in Command";
-			Weight = 4;
-			Price = new Price(0,2);
-			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
-
-			Aims[0].IncludeSelf = false;
+		public SecondInCommand (Unit parent) : base(parent) {
+			name = "Second in Command";
+			weight = 4;
+			price = new Price(0,2);
+			aims += Aim.Free(Filters.UnitsNoSelf);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
 			int magnitude = TurnQueue.IndexOf(u) - 1;
-			EffectQueue.Add(new Effects.Shift (new Source(Parent), u, magnitude));
+			EffectQueue.Add(new Effects.Shift (source, u, magnitude));
 		}
 	}
 

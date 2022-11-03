@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipCell () {
 			Name = "Cell";
-			Icon = Icons.Special(ESpecial.CELL);
-			ETip = ETip.CELL;
+			Icon = Icons.Types.cell;
+			ETip = ETip.Cell;
 		}
 		
 		public override void Content (Panel p) {

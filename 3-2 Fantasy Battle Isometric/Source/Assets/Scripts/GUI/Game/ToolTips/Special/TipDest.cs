@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipDest () {
 			Name = "Destructible";
-			Icon = Icons.Special(ESpecial.DEST);
-			ETip = ETip.DEST;
+			Icon = Icons.Types.destructible;
+			ETip = ETip.Destructible;
 		}
 		
 		public override void Content (Panel p) {

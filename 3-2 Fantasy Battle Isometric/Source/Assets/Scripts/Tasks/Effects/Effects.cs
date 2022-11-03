@@ -111,8 +111,8 @@ namespace HOA.Effects {
 		public override void Process() {
 			Task move = target.Arsenal.Move;
 			if (move != default(Task)) {
-				parent.Affected.Add(target, move.Aims[0].Range);
-				move.Aims[0].Range = 1;
+				parent.Affected.Add(target, move.aims[0].range);
+				move.aims[0].range = 1;
 				Mixer.Play(SoundLoader.Effect(EEffect.STICK));
 				target.Display.Effect(EEffect.STICK);
 			}

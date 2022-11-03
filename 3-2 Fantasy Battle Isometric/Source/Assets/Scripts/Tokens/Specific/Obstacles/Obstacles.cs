@@ -22,7 +22,7 @@ namespace HOA.Tokens {
 		}
 		Hole(Source s, bool template=false){
 			ID = new ID(this, EToken.HOLE, s, false, template);
-			Plane = Plane.GndSunk;
+			Plane = new Plane(true,true,false,false);
 			ScaleLarge();
 			Neutralize();
 		}

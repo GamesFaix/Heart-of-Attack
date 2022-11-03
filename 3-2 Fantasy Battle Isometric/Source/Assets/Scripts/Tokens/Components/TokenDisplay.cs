@@ -21,8 +21,8 @@ namespace HOA {
 
 			targetPos.y += Token.SpriteScale.z*4;
 
-			if (Token.Plane.Is(EPlane.AIR) || Token.Plane.Is(EPlane.ETH)) {
-				if (Token.Plane.Is(EPlane.GND)) {targetPos.y += 5;}
+			if (Token.Plane.air || Token.Plane.ethereal) {
+				if (Token.Plane.ground) {targetPos.y += 5;}
 				else {targetPos.y +=20;}
 			}
 			moveStartTime = Time.time;
@@ -34,8 +34,8 @@ namespace HOA {
 			
 			targetPos.y += Token.SpriteScale.z*4;
 			
-			if (Token.Plane.Is(EPlane.AIR) || Token.Plane.Is(EPlane.ETH)) {
-				if (Token.Plane.Is(EPlane.GND)) {targetPos.y += 5;}
+			if (Token.Plane.air || Token.Plane.ethereal) {
+				if (Token.Plane.ground) {targetPos.y += 5;}
 				else {targetPos.y +=20;}
 			}
 			gameObject.transform.position = targetPos;
@@ -50,7 +50,6 @@ namespace HOA {
 					moving = false;
 					moveStartTime = 0;
 				}
-			//	if (CameraPanner.Target == Token) {CameraPanner.Focus(Token, false);}
 			}
 		}
 

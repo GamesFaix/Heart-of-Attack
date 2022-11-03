@@ -8,19 +8,18 @@ namespace HOA {
 		static float iconSize = 30;
 
 		public static void Display (Cell c, Panel p, Panel super) {
-			GUI.Box(p.Box(iconSize), Icons.Special(ESpecial.CELL), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Types.cell, p.s);
 			p.NudgeX(); p.NudgeY();
 			GUI.Label(p.Box(0.5f), c.ToString(), p.s);
 			p.NextLine();
 			
 			Token t;
 
-			int planes = Enum.GetValues(typeof(EPlane)).Length;
-			for (int i=0; i<planes; i++) {
+			for (int i=0; i<Plane.count; i++) {
 				Rect box = p.IconBox;
-				if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.PLANE);}
-				GUI.Box(box, Icons.Plane((EPlane)i), p.s);
-				if (c.Contains((EPlane)i, out t)) {
+				if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.Plane);}
+				GUI.Box(box, Icons.Planes.planes[i], p.s);
+				if (c.Occupied(i, out t)) {
 					p.NudgeX();
 					t.DisplayThumbName(new Panel(p.Box(0.5f), p.LineH, p.s));
 				}

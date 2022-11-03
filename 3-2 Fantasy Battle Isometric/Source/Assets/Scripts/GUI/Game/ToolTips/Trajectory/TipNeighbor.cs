@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipNeighbor () {
 			Name = "Neighbor";
-			Icon = Icons.Traj(ETraj.NEIGHBOR);
+			Icon = Icons.Aims.neighbor;
 			ETip = ETip.NEIGHBOR;
 		}
 		

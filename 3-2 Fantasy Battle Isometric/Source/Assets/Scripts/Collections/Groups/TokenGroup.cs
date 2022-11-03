@@ -9,101 +9,159 @@ namespace HOA {
 		public TokenGroup (Token t, int capacity=4) {list = new List<Token>(capacity){t};}
 		public TokenGroup (IEnumerable<Token> t) {list = new List<Token>(t);}
 
-		//filters
-		public TokenGroup OnlyOwner(Player p){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {
-				if (t.Owner == p) {filtered.Add(t);}
+		public TokenGroup units {
+			get {
+				TokenGroup units = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.unit) {units.Add(t);} }
+				return units;
 			}
-			return filtered;
 		}
-		public TokenGroup RemoveOwner(Player p){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {
-				if (t.Owner != p) {filtered.Add(t);}
+		
+		public TokenGroup obstacles {
+			get {
+				TokenGroup obstacles = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.obstacle) {obstacles.Add(t);} }
+				return obstacles;
 			}
-			return filtered;
+		}
+		
+		public TokenGroup kings {
+			get {
+				TokenGroup kings = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.king) {kings.Add(t);} }
+				return kings;
+			}
+		}
+		public TokenGroup hearts {
+			get {
+				TokenGroup hearts = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.heart) {hearts.Add(t);} }
+				return hearts;
+			}
+		}
+		public TokenGroup destructible {
+			get {
+				TokenGroup destructible = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.destructible) {destructible.Add(t);} }
+				return destructible;
+			}	
+		}
+		public TokenGroup trample {
+			get {
+				TokenGroup trample = new TokenGroup();
+				foreach (Token t in list) {if (t.TokenType.trample) {trample.Add(t);} }
+				return trample;
+			}	
 		}
 
-		public TokenGroup OnlyPlane(EPlane p){
-			TokenGroup filtered = new TokenGroup();
+		public TokenGroup Keep (Plane plane) {
+			TokenGroup output = new TokenGroup();
 			foreach (Token t in list) {
-				if (t.Plane.Is(p)) {filtered.Add(t);}
-			}
-			return filtered;
-		}
-		public TokenGroup RemovePlane(EPlane p){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {
-				if (!t.Plane.Is(p)) {filtered.Add(t);}
-			}
-			return filtered;
-		}
-
-		public TokenGroup OnlyType(ESpecial c){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {
-				if (t.Special.Is(c)) {filtered.Add(t);}
-			}
-			return filtered;
-		}
-		public TokenGroup OnlyType(Special cs){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {
-				foreach (ESpecial c in cs) {
-					if (t.Special.Is(c)) {filtered.Add(t);}
+				for (byte i=0; i<Plane.count; i++) {
+					if (plane.planes[i] && t.Plane.planes[i]) {output.Add(t);}
 				}
 			}
-			return filtered;
+			return output;
 		}
-
-
-		public TokenGroup RemoveType(ESpecial c){
-			TokenGroup filtered = new TokenGroup();
+		
+		public TokenGroup Keep (Player owner) {
+			TokenGroup output = new TokenGroup();
 			foreach (Token t in list) {
-				if (!t.Special.Is(c)) {filtered.Add(t);}
+				if (t.Owner == owner) {output.Add(t);}
 			}
-			return filtered;
+			return output;
 		}
-		public TokenGroup RemoveType(Special cs){
-			TokenGroup filtered = new TokenGroup();
-			foreach (Token t in list) {filtered.Add(t);}
 
-			for (int i=filtered.Count-1; i>=0; i--) {
-				Token t = filtered[i];
-				foreach (ESpecial c in cs) {
-					if (t.Special.Is(c)) {filtered.Remove(t);}
+		public TokenGroup Keep (Token token) {
+			TokenGroup output = new TokenGroup();
+			foreach (Token t in list) {
+				if (t == token) {output.Add(t);}
+			}
+			return output;
+		}
+		
+		public TokenGroup Keep (IEnumerable<Token> tokens) {
+			TokenGroup output = new TokenGroup();
+			foreach (Token t in list) {
+				foreach (Token token in tokens) {
+					if (t == token) {output.Add(t);}
 				}
 			}
-			return filtered;
+			return output;
 		}
 
-		public TokenGroup OnlyToken (EToken code) {
-			TokenGroup filtered = new TokenGroup();
+		public TokenGroup Keep (EToken token) {
+			TokenGroup output = new TokenGroup();
 			foreach (Token t in list) {
-				if (t.ID.Code == code) {filtered.Add(t);}
+				if (t.ID.Code == token) {output.Add(t);}
 			}
-			return filtered;
+			return output;
 		}
-
-
-		public static TokenGroup operator / (TokenGroup g, Player p) {return g.RemoveOwner(p);}
-		public static TokenGroup operator % (TokenGroup g, Player p) {return g.OnlyOwner(p);}
-		public static TokenGroup operator / (TokenGroup g, EPlane p) {return g.RemovePlane(p);}
-		public static TokenGroup operator % (TokenGroup g, EPlane p) {return g.OnlyPlane(p);}
-		public static TokenGroup operator / (TokenGroup g, Special c) {return g.RemoveType(c);}
-		public static TokenGroup operator % (TokenGroup g, Special c) {return g.OnlyType(c);}
-		public static TokenGroup operator / (TokenGroup g, ESpecial c) {return g.RemoveType(c);}
-		public static TokenGroup operator % (TokenGroup g, ESpecial c) {return g.OnlyType(c);}
-
-		public TokenGroup Restrict (Token Parent, Aim a) {
-			TokenGroup restricted = new TokenGroup (this);
-			restricted = restricted.OnlyType(a.Special);
-			if (a.TeamOnly) {restricted = restricted.OnlyOwner(Parent.Owner);}
-			if (a.EnemyOnly) {restricted = restricted.RemoveOwner(Parent.Owner);}
-			if (a.NoKings) {restricted = restricted.RemoveType(ESpecial.KING);}
-			if (!a.IncludeSelf) {restricted.Remove(Parent);}
-			return restricted;
+		
+		public TokenGroup Keep (IEnumerable<EToken> tokens) {
+			TokenGroup output = new TokenGroup();
+			foreach (Token t in list) {
+				foreach (EToken token in tokens) {
+					if (t.ID.Code == token) {output.Add(t);}
+				}
+			}
+			return output;
+		}
+		
+		public TokenGroup Exclude (Plane plane) {
+			TokenGroup output = new TokenGroup(this);
+			foreach (Token t in list) {
+				for (byte i=0; i<Plane.count; i++) {
+					if (plane.planes[i] && t.Plane.planes[i]) {output.Remove(t);}
+				}
+			}
+			return output;
+		}
+		public TokenGroup Exclude (Player owner) {
+			TokenGroup output = new TokenGroup(this);
+			foreach (Token t in list) {
+				if (t.Owner == owner) {output.Remove(t);}
+			}
+			return output;
+		}
+		public TokenGroup Exclude (EToken token) {
+			TokenGroup output = new TokenGroup(this);
+			foreach (Token t in list) {
+				if (t.ID.Code == token) {output.Remove(t);}
+			}
+			return output;
+		}
+		
+		public TokenGroup Exclude (IEnumerable<EToken> tokens) {
+			TokenGroup output = new TokenGroup(this);
+			foreach (Token t in list) {
+				foreach (EToken token in tokens) {
+					if (t.ID.Code == token) {output.Remove(t);}
+				}
+			}
+			return output;
+		}
+		public static TokenGroup operator + (TokenGroup tokens, Token other) {tokens.Add(other); return tokens;}
+		public static TokenGroup operator + (TokenGroup tokens, IEnumerable<Token> others) {tokens.Add(others); return tokens;}
+		
+		public static TokenGroup operator - (TokenGroup tokens, Token other) {tokens.Remove(other); return tokens;}
+		public static TokenGroup operator - (TokenGroup tokens, IEnumerable<Token> others) {tokens.Remove(others); return tokens;}
+		
+		public static TokenGroup operator - (TokenGroup tokens, Plane plane) {return tokens.Exclude(plane);}
+		public static TokenGroup operator - (TokenGroup tokens, Player player) {return tokens.Exclude(player);}
+		public static TokenGroup operator - (TokenGroup tokens, EToken code) {return tokens.Exclude(code);}
+		public static TokenGroup operator - (TokenGroup tokens, IEnumerable<EToken> codes) {return tokens.Exclude(codes);}
+		
+		public static TokenGroup operator / (TokenGroup tokens, IEnumerable<Token> others) {return tokens.Keep(others);}
+		public static TokenGroup operator / (TokenGroup tokens, Plane plane) {return tokens.Keep(plane);}
+		public static TokenGroup operator / (TokenGroup tokens, Player player) {return tokens.Keep(player);}
+		public static TokenGroup operator / (TokenGroup tokens, EToken code) {return tokens.Keep(code);}
+		public static TokenGroup operator / (TokenGroup tokens, IEnumerable<EToken> codes) {return tokens.Keep(codes);}
+		
+		public static implicit operator TargetGroup(TokenGroup tokens) {
+			TargetGroup targets = new TargetGroup();
+			foreach (Token t in tokens) {targets.Add(t);}
+			return targets;
 		}
 
 		public CellGroup Cells {
@@ -114,20 +172,6 @@ namespace HOA {
 				}
 				return cells;
 			}
-		}
-
-		public Group<Unit> Units {
-			get {
-				Group<Unit> units = new Group<Unit>();
-				foreach (Token t in list) {
-					if (t is Unit) {units.Add((Unit)t);}
-				}
-				return units;
-			}
-		}
-
-		public void Legalize (bool b=true) {
-			foreach (Token t in list) {t.Legal = b;}	
 		}
 	}
 }

@@ -7,14 +7,12 @@ namespace HOA.Actions {
 		
 		int range;
 
-		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+		public override string desc {get {return "Move "+parent+" to target cell.";} }
 		
-		public Dart (Unit parent, int r) {
-			Parent = parent;
-			Name = "Dart";
-			Weight = 1;
-			Price = Price.Cheap;
-			NewAim(Aim.MoveLine(r));
+		public Dart (Unit parent, int range) : base(parent){
+			name = "Dart";
+			weight = 1;
+			aims += Aim.MoveLine(range);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -22,11 +20,11 @@ namespace HOA.Actions {
 		
 			CellGroup line = new CellGroup();
 
-			int2 dir = Direction.FromCells(Parent.Body.Cell, endCell);
+			int2 dir = Direction.FromCells(parent.Body.Cell, endCell);
 		
-			int length = Length(Parent.Body.Cell, endCell);
+			int length = Length(parent.Body.Cell, endCell);
 		
-			Cell c = Parent.Body.Cell;
+			Cell c = parent.Body.Cell;
 
 			for (int i=0; i<length; i++) {
 				index2 index = c.Index + dir;
@@ -35,7 +33,7 @@ namespace HOA.Actions {
 			}
 
 			foreach (Cell point in line) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, point));
+				EffectQueue.Add(new Effects.Move(source, parent, point));
 			}
 		}
 

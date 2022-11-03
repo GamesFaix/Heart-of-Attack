@@ -23,7 +23,7 @@ namespace HOA {
 			p.NudgeX(); p.NudgeX();
 			iconSize = 20;
 			GUI.Label(p.Box(30), "(Max");
-			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.DEF), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Stats.defense, p.s);
 			GUI.Label(p.Box(40), "= "+cap+")");
 			
 		}

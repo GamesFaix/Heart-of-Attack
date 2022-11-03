@@ -8,7 +8,9 @@ namespace HOA.Tokens {
 		}
 		Rock(Source s, bool template=false){
 			ID = new ID(this, EToken.ROCK, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -21,7 +23,9 @@ namespace HOA.Tokens {
 		}
 		Tree(Source s, bool template=false){
 			ID = new ID(this, EToken.TREE, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -33,7 +37,9 @@ namespace HOA.Tokens {
 		}
 		Tree2(Source s, bool template=false){
 			ID = new ID(this, EToken.TREE2, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -45,7 +51,9 @@ namespace HOA.Tokens {
 		}
 		Tree3(Source s, bool template=false){
 			ID = new ID(this, EToken.TREE3, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -57,7 +65,9 @@ namespace HOA.Tokens {
 		}
 		Tree4(Source s, bool template=false){
 			ID = new ID(this, EToken.TREE4, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -69,7 +79,9 @@ namespace HOA.Tokens {
 		}
 		House(Source s, bool template=false){
 			ID = new ID(this, EToken.HOUS, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -81,7 +93,9 @@ namespace HOA.Tokens {
 		}
 		Cottage(Source s, bool template=false){
 			ID = new ID(this, EToken.COTT, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -94,7 +108,9 @@ namespace HOA.Tokens {
 		}
 		Rampart(Source s, bool template=false){
 			ID = new ID(this, EToken.RAMP, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;	
 			ScaleMedium();
 			Neutralize();
 		}
@@ -107,7 +123,9 @@ namespace HOA.Tokens {
 		}
 		Temple(Source s, bool template=false){
 			ID = new ID(this, EToken.TEMP, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -120,7 +138,9 @@ namespace HOA.Tokens {
 		}
 		Antenna(Source s, bool template=false){
 			ID = new ID(this, EToken.ANTE, s, false, template);
-			Special.Add(ESpecial.DEST);	
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}
@@ -132,8 +152,9 @@ namespace HOA.Tokens {
 		}
 		Corpse(Source s, bool template=false){
 			ID = new ID(this, EToken.CORP, s, false, template);
-			Special.Add(ESpecial.DEST);
-			Special.Add(ESpecial.REM);
+			TokenType type = this.TokenType;
+			type.destructible = true;
+			this.TokenType = type;
 			ScaleMedium();
 			Neutralize();
 		}

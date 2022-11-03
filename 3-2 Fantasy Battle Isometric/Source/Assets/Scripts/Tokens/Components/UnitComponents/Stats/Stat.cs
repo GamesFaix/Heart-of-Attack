@@ -77,7 +77,7 @@ namespace HOA {
 	
 		public virtual void Display (Panel p, float iconSize) {
 			if (GUI.Button(p.FullBox, "")) {TipInspector.Inspect(eTip);}
-			GUI.Box(p.Box(iconSize), Icons.Stat(eStat), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Stats.Stat(eStat), p.s);
 			p.NudgeX();
 			p.NudgeY();
 

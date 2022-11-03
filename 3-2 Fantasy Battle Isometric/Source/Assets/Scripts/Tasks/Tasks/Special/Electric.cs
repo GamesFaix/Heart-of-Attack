@@ -4,50 +4,47 @@ namespace HOA.Actions {
 
 	public class Shock : Task {
 		
-		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+		public override string desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nTarget is stunned for "+stun+" turns.";} }
 		
 		int damage = 10;
 		int stun = 5;
 		
-		public Shock (Unit parent) {
-			Name = "Shock";
-			Weight = 3;
-			Price = Price.Cheap;
-			NewAim(Aim.AttackNeighbor(Special.Unit));
-			Parent = parent;
+		public Shock (Unit parent) : base(parent) {
+			name = "Shock";
+			weight = 3;
+			aims += Aim.AttackNeighbor(Filters.Units);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Shock(new Source(Parent), (Unit)targets[0], damage, stun));
+			EffectQueue.Add(new Effects.Shock(source, (Unit)targets[0], damage, stun));
 		}
 	}
 	
 	public class Discharge : Task {
 		
-		public override string Desc {get {return "Do "+damage+" damage to self, neighbors, and cellmates.  " +
+		public override string desc {get {return "Do "+damage+" damage to self, neighbors, and cellmates.  " +
 				"\nAll damaged units are stunned for "+stun+" turns.";} }
 		
 		int damage = 10;
 		int stun = 5;
 		
-		public Discharge (Unit parent) {
-			Name = "Discharge";
-			Weight = 4;
-			Price = new Price(1,2);
-			NewAim(Aim.Self());
-			Parent = parent;
+		public Discharge (Unit parent) : base(parent) {
+			name = "Discharge";
+			weight = 4;
+			price = new Price(1,2);
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup cellMates = Parent.Body.Cell.Occupants;
-			TokenGroup neighbors = Parent.Body.Cell.Neighbors().Occupants;
+			TokenGroup cellMates = parent.Body.Cell.Occupants;
+			TokenGroup neighbors = parent.Body.Cell.Neighbors().Occupants;
 			foreach (Token t in neighbors) {cellMates.Add(t);}
-			cellMates = cellMates.OnlyType(ESpecial.UNIT);
+			cellMates = cellMates.units;
 			
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Token t in cellMates) {
-				nextEffects.Add(new Effects.Shock(new Source(Parent), (Unit)t, damage, stun));
+				nextEffects.Add(new Effects.Shock(source, (Unit)t, damage, stun));
 			}
 			EffectQueue.Add(nextEffects);
 		}

@@ -6,8 +6,8 @@ namespace HOA {
 		
 		public TipKing () {
 			Name = "Attack King";
-			Icon = Icons.Special(ESpecial.KING);
-			ETip = ETip.KING;
+			Icon = Icons.Types.king;
+			ETip = ETip.King;
 		}
 		
 		public override void Content (Panel p) {

@@ -6,24 +6,22 @@ namespace HOA.Actions {
 		int range = 2;
 		int damage = 5;
 		
-		public override string Desc {get {return "Do "+damage+" damage to all units within "+range+" cells of "+Parent.ID.Name+". " +
-				"\n"+Parent.ID.Name+" gains Health equal to damage successfully dealt.";} }
+		public override string desc {get {return "Do "+damage+" damage to all units within "+range+" cells of "+parent.ID.Name+". " +
+				"\n"+parent.ID.Name+" gains Health equal to damage successfully dealt.";} }
 		
-		public DeathField (Unit u) {
-			Parent = u;
-			Name = "Death Field";
-			Weight = 4;
-			Price = new Price(1,1);
-			NewAim(Aim.Self());
+		public DeathField (Unit parent) : base(parent) {
+			name = "Death Field";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			CellGroup zone = Zone(Parent, range);
-			TokenGroup affected = zone.Occupants.OnlyType(ESpecial.UNIT);
-			affected.Remove(Parent);
-			
+			CellGroup zone = Zone(parent, range);
+			TokenGroup affected = zone.Occupants.units - parent;
+
 			foreach (Unit u in affected) {
-				EffectQueue.Add(new Effects.Leech(new Source(Parent), u, damage));
+				EffectQueue.Add(new Effects.Leech(source, u, damage));
 			}
 		}
 		
@@ -51,19 +49,17 @@ namespace HOA.Actions {
 		
 		int damage = 12;
 		
-		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+		public override string desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nGain health equal to damage successfully dealt.";} }
 		
-		public Feast (Unit u) {
-			Name = "Feast";
-			Weight = 3;
-			Price = Price.Cheap;
-			NewAim(Aim.AttackArc(Special.Unit, 2,3));
-			Parent = u;
+		public Feast (Unit parent) : base(parent) {
+			name = "Feast";
+			weight = 3;
+			aims += Aim.AttackArc(Filters.Units, 2,3);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Leech(source, (Unit)targets[0], damage));
 		}
 	}
 
@@ -71,20 +67,17 @@ namespace HOA.Actions {
 		
 		int damage = 5;
 		
-		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+		public override string desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nGain health equal to damage successfully dealt.";} }
 		
-		public Feed (Unit u) {
-			Name = "Feed";
-			Weight = 3;
-			
-			Price = Price.Cheap;
-			NewAim(Aim.AttackNeighbor(Special.Unit));
-			Parent = u;
+		public Feed (Unit parent) : base(parent) {
+			name = "Feed";
+			weight = 3;
+			aims += Aim.AttackNeighbor(Filters.Units);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Leech(source, (Unit)targets[0], damage));
 		}
 	}
 
@@ -92,25 +85,21 @@ namespace HOA.Actions {
 		
 		int damage = 7;
 		
-		public override string Desc {get {return  "Do "+damage+" damage to all enemy cellmates. " +
+		public override string desc {get {return  "Do "+damage+" damage to all enemy cellmates. " +
 				"\nGain health equal to damage successfully dealt.";} }
 		
-		public MneumonicPlague (Unit u) {
-			Name = "Leech life";
-			Weight = 3;
-			
-			Price = new Price(1,0);
-			NewAim(Aim.Self());
-			Parent = u;
+		public MneumonicPlague (Unit parent) : base(parent) {
+			name = "Leech life";
+			weight = 3;
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup tokens = Parent.Body.CellMates;
-			tokens = tokens.OnlyType(ESpecial.UNIT);
-			tokens = tokens.RemoveOwner(Parent.Owner);
+			TokenGroup tokens = parent.Body.CellMates;
+			tokens = (tokens.units) - parent.Owner;
 			EffectGroup effects = new EffectGroup();
 			foreach (Token t in tokens) {
-				effects.Add(new Effects.Leech(new Source(Parent), (Unit)t, damage));
+				effects.Add(new Effects.Leech(source, (Unit)t, damage));
 			}
 			EffectQueue.Add(effects);
 		}

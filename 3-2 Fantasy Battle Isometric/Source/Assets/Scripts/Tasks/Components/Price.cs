@@ -24,7 +24,7 @@ namespace HOA{
 			if (GUI.Button(box,"")) {
 				if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.AP);}
 			}
-			GUI.Box(box, Icons.Stat(EStat.AP), p.s);
+			GUI.Box(box, Icons.Stats.energy, p.s);
 			box = p.IconBox;
 			GUI.Label(box, E+"", p.s);
 			p.NudgeX();
@@ -33,7 +33,7 @@ namespace HOA{
 			if (GUI.Button(box,"")) {
 				if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.FP);}
 			}
-			GUI.Box(box, Icons.Stat(EStat.FP), p.s);
+			GUI.Box(box, Icons.Stats.focus, p.s);
 			box = p.IconBox;
 			GUI.Label(box, F+"", p.s);
 		}

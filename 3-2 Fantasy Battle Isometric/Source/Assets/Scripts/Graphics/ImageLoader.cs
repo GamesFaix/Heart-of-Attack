@@ -9,7 +9,7 @@ namespace HOA {
 
 		public static void Load() {
 			Thumbs.Load();
-			Icons.Load();
+			LoadIcons();
 			SpriteEffects.Load();
 
 			wood = new Texture2D[2] {
@@ -18,6 +18,15 @@ namespace HOA {
 			};
 
 			parchment = Resources.Load("Images/Textures/GUI/parchment") as Texture2D;
+		}
+
+		static void LoadIcons () {
+			Icons.Aims.Load();
+			Icons.Effects.Load();
+			Icons.Planes.Load();
+			Icons.Stats.Load();
+			Icons.Types.Load();
+			Icons.Other.Load();
 		}
 	}
 }

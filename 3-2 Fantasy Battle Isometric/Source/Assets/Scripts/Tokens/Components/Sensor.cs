@@ -11,20 +11,21 @@ namespace HOA {
 
 		protected abstract string Desc {get;}
 
-		protected Plane planesToStop = null;
+		protected Plane planesToStop;
 		protected void Stop (Cell cell) {
-			if (planesToStop != null) {
-				foreach (EPlane plane in planesToStop.Value) {
-					cell.SetStop(plane, true);
-				}
+			Plane plane = cell.stop;
+			for (byte i=0; i<Plane.count; i++) {
+				if (planesToStop.planes[i]) {plane.planes[i] = true;}
 			}
+			cell.stop = plane;
 		}
+
 		protected void ReleaseStop (Cell cell) {
-			if (planesToStop != null) {
-				foreach (EPlane plane in planesToStop.Value) {
-					cell.SetStop(plane, false);
-				}
+			Plane plane = cell.stop;
+			for (byte i=0; i<Plane.count; i++) {
+				if (planesToStop.planes[i]) {plane.planes[i] = false;}
 			}
+			cell.stop = plane;
 		}
 
 		protected abstract bool IsTrigger (Token trigger);
@@ -56,7 +57,7 @@ namespace HOA {
 			p.NudgeX();
 			Rect box = p.IconBox;
 			if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.SENSOR);}
-			GUI.Box(box, Icons.SENSOR(), p.s);
+			GUI.Box(box, Icons.Other.sensor, p.s);
 			p.NudgeX();
 			p.NudgeX();
 			GUI.Box(p.Box(0.9f), parent.ID.FullName, p.s);

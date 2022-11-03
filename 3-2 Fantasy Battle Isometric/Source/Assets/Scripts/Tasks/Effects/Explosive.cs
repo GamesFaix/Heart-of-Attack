@@ -70,17 +70,18 @@ namespace HOA.Effects {
 		}
 		
 		public override void Process() {
-			TokenGroup targets = cell.Occupants.OnlyType(Special.UnitDest);
-			if (selfImmune) {targets.Remove(source.Token);}
+			TokenGroup targets = cell.Occupants;
+			targets /= (targets.units + targets.destructible);
+			if (selfImmune) {targets -= source.Token;}
 			
 			foreach (Token t in targets) {
-				if (t.Special.Is(ESpecial.DEST)) {
+				if (t.TokenType.destructible) {
 					t.Display.Effect(EEffect.EXP);
 					Mixer.Play(SoundLoader.Effect(EEffect.EXP));
 					source.Sequence.AddToNext(new Destruct(source, t));
 				}
 				
-				else if (t is Unit) {
+				else if (t.TokenType.unit) {
 					Unit u = (Unit)t;
 					if (u.Damage(source, dmg)) {
 						t.Display.Effect(EEffect.EXP);

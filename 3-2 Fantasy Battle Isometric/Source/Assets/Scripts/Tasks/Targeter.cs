@@ -5,20 +5,18 @@ using UnityEngine;
 namespace HOA {
 
 	public static class Targeter {
-		public static bool Ready {get; private set;}
-		public static bool Passable {get; private set;}
-		public static Task Pending {get; private set;}
+		public static bool ready {get; private set;}
+		public static Task pending {get; private set;}
 		static TargetGroup targets;
-		static List<Aim> aims;
-		static int steps, step;
+		static AimSeq aims;
+		static int step;
 
 		public static void Start (Task task) {
 			if (Illegal(task)) {return;}
 			Reset();
-			Pending = task;
-			Pending.Adjust();
-			aims = CopyAims(Pending.Aims);
-			steps = aims.Count;
+			pending = task;
+			pending.Adjust();
+			aims = pending.aims.Copy;
 			StartStep();
 		}
 
@@ -32,69 +30,50 @@ namespace HOA {
 		}
 
 		public static void Reset () {
-			if (Pending != null) {
-				Pending.UnAdjust();
-				Pending = null;
+			if (pending != null) {
+				pending.UnAdjust();
+				pending = null;
 			}
 			targets = new TargetGroup();
-			Ready = false;
-			Passable = false;
-			steps = 0;
+			ready = false;
 			step = 0;
 			Game.ClearLegal();
 		}
 
-		static List<Aim> CopyAims (List<Aim> original) {
-			List<Aim> copy = new List<Aim>();
-			foreach (Aim a in original) {copy.Add(a.DeepCopy());}
-			return copy;
-		}
-
 		static void StartStep () {
 			Aim aim = aims[step];
-			if (aim.Trajectory == ETraj.SELF) {
+			aim.Extend(aim, aims);
+			if (aim.optional) {ready = true;}
+
+			if (aim.trajectory == Trajectory.Self) {
 				FinishStep();
 				return;
 			}
-			Token actor = Pending.Parent;
+
+			Token actor = pending.parent;
 			Cell start = null;
 			if (actor != null) {start = actor.Body.Cell;}
-			Token child = Pending.Template;
-			if (Pending is IRecursiveMove && step > 0) {start = (Cell)(targets[targets.Count-1]);}
+			Token child = pending.template;
 
-			if (Pending is IMultiMove) {
-				if (step == 0) {
-					int range = aim.Range;
-					for (int i=0; i<range; i++) {
-						aims.Add(Aim.MoveNeighbor());
-						steps++;
-					}
+			if (aim.recursiveTarget) {
+				Target last = targets[targets.Count-1];
+				if (last is Cell) {start = (Cell)last;}
+				else if (last is Token) {start = ((Token)last).Body.Cell;}
+
+				if (start.StopToken(actor)) {
 					FinishStep();
 					return;
 				}
-				else if (step > 1) {
-					Passable = true;
-					int index = targets.Count-1;
-					Target last = targets[index];
-
-					if (last is Cell) {start = (Cell)last;}
-					else if (last is Token) {start = ((Token)last).Body.Cell;}
-
-					if (start.StopToken(actor)) {
-						FinishStep();
-						return;
-					}
-				}
 			}
 
-			else if (Pending is IMultiTarget && step > 0) {Passable = true;}
+			else if (pending is IMultiTarget && step > 0) {ready = true;}
 
-			else if (Pending is ITeleport && step > 0) {
-				start = Pending.Parent.Body.Cell;
+			else if (pending is ITeleport && step > 0) {
+				start = pending.parent.Body.Cell;
 				actor = (Token)targets[0];
 			}
 
-			if (aim.Trajectory == ETraj.RADIAL) {
+			if (aim.trajectory == Trajectory.Radial) {
 				Token target1 = (Token)targets[step-1];
 				if (!Find(aim, actor, target1.Body.Cell, null)) {NoLegalTargets();}
 			}
@@ -104,18 +83,18 @@ namespace HOA {
 		}
 
 		static bool Find (Aim aim, Token actor, Cell center=null, Token other=null) {
-			TargetGroup targets = aim.Targets(actor, center, other);
+			TargetGroup targets = aim.Find(actor, center, other);
 			targets.Legalize();
 			return (targets.Count>0 ? true : false);
 		}
 
 		static void FinishStep () {
 			Game.ClearLegal();
-			if (step < steps-1) {
+			if (step < aims.Count) {
 				step++;
 				StartStep();
 			}
-			else {Ready = true;}
+			else {ready = true;}
 		}
 
 		public static void Select (Target t) {
@@ -126,7 +105,7 @@ namespace HOA {
 		}
 
 		public static void Execute () {
-			if (Passable || Ready) {Pending.Execute(targets);}
+			if (ready) {pending.Execute(targets);}
 			else {GameLog.Out("Please finish selecting targets.");}
 		}
 
@@ -137,8 +116,8 @@ namespace HOA {
 
 		public static string PendingString () {
 			string str = "";
-			if (Pending != default(Task)) {
-				str = Pending.Name;
+			if (pending != default(Task)) {
+				str = pending.name;
 				foreach (Target t in targets) {
 					if (t != default(Target)) {
 						str += "\n"+t.ToString();

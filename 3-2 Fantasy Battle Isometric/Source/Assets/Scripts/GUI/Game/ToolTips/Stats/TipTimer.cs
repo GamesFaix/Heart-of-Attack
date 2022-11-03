@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipTimer () {
 			Name = "Timer";
-			Icon = Icons.TIMER();
+			Icon = Icons.Other.timer;
 			ETip = ETip.TIMER;
 		}
 		

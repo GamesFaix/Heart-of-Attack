@@ -6,84 +6,82 @@ namespace HOA.Actions {
 		
 		int damage = 6;
 		
-		public override string Desc {get {return "Target unit gains "+damage+" health. " +
-				"\n"+Parent+" takes damage equal to health successfully gained.";} }
+		public override string desc {get {return "Target unit gains "+damage+" health. " +
+				"\n"+parent+" takes damage equal to health successfully gained.";} }
 		
-		public Donate (Unit u) {
-			Name = "Donate Life";
-			Weight = 4;
-			
-			Price = Price.Cheap;
-			NewAim(Aim.AttackNeighbor(Special.Unit));
-			Parent = u;
+		public Donate (Unit parent) : base(parent) {
+			name = "Donate Life";
+			weight = 4;	
+			aims += Aim.AttackNeighbor(Filters.Units);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Donate(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Donate(source, (Unit)targets[0], damage));
 		}
 	}
 
 	public class Repair : Task {
 		
-		public override string Desc {get {return "Target unit gains "+magnitude+" health." +
+		public override string desc {get {return "Target unit gains "+magnitude+" health." +
 				"\n(Can target self.)";} }
 		
 		int magnitude = 10;
 		
-		public Repair (Unit u) {
-			Name = "Repair";
-			Weight = 4;
-			
-			Parent = u;
-			Price = new Price(0,2);
-			NewAim(Aim.AttackArc(Special.Unit, 0, 2));
+		public Repair (Unit parent) : base(parent) {
+			name = "Repair";
+			weight = 4;
+			price = new Price(0,2);
+			aims += Aim.AttackArc(Filters.Units, 0, 2);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.AddStat(new Source(Parent), (Unit)targets[0], EStat.HP, magnitude));
+			EffectQueue.Add(new Effects.AddStat(source, (Unit)targets[0], EStat.HP, magnitude));
 		}
 	}
 
 	public class Sooth : Task {
 		
-		public override string Desc {get {return "Target teammate gains "+magnitude+" health." +
+		public override string desc {get {return "Target teammate gains "+magnitude+" health." +
 				"\n(Cannot target self.)";} }
 		
 		int magnitude = 10;
 		
-		public Sooth (Unit parent) {
-			Name = "Sooth";
-			Weight = 4;
-			Parent = parent;
-			Price = new Price(1,1);
-			NewAim (Aim.AttackNeighbor(Special.Unit));
-			Aims[0].TeamOnly = true;
-			Aims[0].IncludeSelf = false;
+		public Sooth (Unit parent) : base(parent) {
+			name = "Sooth";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.AttackNeighbor(MyFilter);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.AddStat(new Source(Parent), (Unit)targets[0], EStat.HP, magnitude));
+			EffectQueue.Add(new Effects.AddStat(source, (Unit)targets[0], EStat.HP, magnitude));
+		}
+
+		public static TargetGroup MyFilter (TargetGroup targets, Token actor) {
+			TokenGroup output = (targets.tokens).units;
+			output /= actor.Owner;
+			output -= actor;
+			return output;
 		}
 	}
 
 	public class Engorge : Task {
 		
-		public override string Desc {get {return "Destroy neighboring non-Remains destructible." +
-				"\n"+Parent+" gains 12 health.";} }
+		public override string desc {get {return "Destroy neighboring non-Remains destructible." +
+				"\n"+parent+" gains 12 health.";} }
 		
-		public Engorge (Unit parent) {
-			Name = "Engorge";
-			Weight = 4;
-			Parent = parent;
-			Price = new Price(1,1);
-			NewAim(Aim.AttackNeighbor(Special.Dest));
+		public Engorge (Unit parent) : base(parent) {
+			name = "Engorge";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.AttackNeighbor(Filters.DestNoCorpse);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Token t = (Token)targets[0];
-			t.Die(new Source(Parent));
-			Parent.AddStat(new Source(Parent), EStat.HP, 12);
-			Parent.Display.Effect(EEffect.STATUP);
+			t.Die(source);
+			parent.AddStat(source, EStat.HP, 12);
+			parent.Display.Effect(EEffect.STATUP);
 		}
 	}
 
@@ -91,25 +89,21 @@ namespace HOA.Actions {
 		
 		int damage = 7;
 		
-		public override string Desc {get {return  "All friendly cellmates +"+damage+" health. " +
+		public override string desc {get {return  "All friendly cellmates +"+damage+" health. " +
 				"\nLose health equal to health successfully given.";} }
 		
-		public Oasis (Unit u) {
-			Name = "Donate life";
-			Weight = 3;
-			
-			Price = new Price(1,0);
-			NewAim(Aim.Self());
-			Parent = u;
+		public Oasis (Unit parent) : base(parent) {
+			name = "Donate life";
+			weight = 3;
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup tokens = Parent.Body.CellMates;
-			tokens = tokens.OnlyType(ESpecial.UNIT);
-			tokens = tokens.OnlyOwner(Parent.Owner);
+			TokenGroup tokens = parent.Body.CellMates;
+			tokens = (tokens.units) / parent.Owner;
 			EffectGroup effects = new EffectGroup();
 			foreach (Token t in tokens) {
-				effects.Add(new Effects.Donate(new Source(Parent), (Unit)t, damage));
+				effects.Add(new Effects.Donate(source, (Unit)t, damage));
 			}
 			EffectQueue.Add(effects);
 		}

@@ -92,8 +92,7 @@ namespace HOA {
 					display = g.GetComponent("CellDisplay") as TargetDisplay;
 					Cell c = (Cell)display.Parent;
 					targets.Add(c);
-					Token sunk;
-					if (c.Contains(EPlane.SUNK, out sunk)) {targets.Add(sunk);}
+					targets.Add(c.Occupants / Plane.Sunken);
 				}
 				if (g.GetComponent("TokenDisplay")) {
 					display = g.GetComponent("TokenDisplay") as TargetDisplay;

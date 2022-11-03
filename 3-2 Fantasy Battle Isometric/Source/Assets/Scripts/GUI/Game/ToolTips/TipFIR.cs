@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipFIR () {
 			Name = "Fire";
-			Icon = Icons.FIR();
+			Icon = Icons.Effects.fire;
 			ETip = ETip.FIR;
 		}
 		

@@ -8,50 +8,66 @@ namespace HOA {
 	
 		TargetGroup FindNeighbor (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
-
-			TargetGroup targets = new TargetGroup();
-			
-			CellGroup neighborCells = center.Neighbors(true);
-			if (Purpose == EPurp.MOVE) {neighborCells.Remove(center);}
-			
-			if (Special.Is(ESpecial.CELL)) {
-				if (Purpose == EPurp.CREATE) {targets.Add(neighborCells.Occupiable(other));}
-				if (Purpose == EPurp.MOVE) {targets.Add(neighborCells.Occupiable(actor));}
-			}
-			else {targets.Add(neighborCells.Occupants.Restrict(actor, this));}
-			return targets;
+			CellGroup cells = center.Neighbors(true);
+			TargetGroup targets = (TargetGroup)(cells) + (TargetGroup)(cells.Occupants);
+			return ((other == null) ? Filter(targets, actor) : Filter(targets, other));
 		}
 
 		TargetGroup FindFree (Token actor, Cell center, Token other) {
-			//center does nothing
-			TargetGroup targets = new TargetGroup();
-			
-			if (Special.Is(ESpecial.CELL)) {
-				if (Purpose == EPurp.CREATE) {targets.Add(Game.Board.Cells.Occupiable(other));}
-				if (Purpose == EPurp.MOVE) {targets.Add(Game.Board.Cells.Occupiable(actor));}
+			CellGroup cells = Game.Board.Cells;
+			TargetGroup targets = (TargetGroup)(cells) + (TargetGroup)(cells.Occupants);
+			return (other == null ? Filter(targets, actor) : Filter(targets, other));
+		}
+
+		TargetGroup FindArc (Token actor, Cell center, Token other) {
+			if (center == null) {center = actor.Body.Cell;}
+			CellGroup cells = CellSquare (center, range, minRange);
+			TargetGroup targets = (TargetGroup)cells + (TargetGroup)(cells.Occupants);
+			return (other == null ? Filter(targets, actor) : Filter(targets, other));
+		}
+		
+		static CellGroup CellSquare (Cell start, int range, int min) {
+			CellGroup square = new CellGroup();
+			Cell c;
+
+			for (int x=(start.X-range); x<=(start.X+range); x++) {
+				for (int y=(start.Y-range); y<=(start.Y+range); y++) {
+					if (Game.Board.HasCell(x, y, out c)) {square.Add(c);}
+				}
 			}
-			else {targets.Add(TokenFactory.Tokens.Restrict(actor, this));}
-			return targets;
+			if (min > 0) {square = RemoveMin(square, start, min);}
+			return square;
+		}
+		
+		static CellGroup RemoveMin (CellGroup square, Cell start, int min) {
+			CellGroup ring = new CellGroup();
+			foreach (Cell c in square) {
+				if ((Math.Abs(c.X - start.X) >= min) 
+				    || (Math.Abs(c.Y - start.Y) >= min)) {
+					ring.Add(c);
+				}
+			}
+			return ring;
 		}
 
 		TargetGroup FindPath (Token actor, Cell center, Token other=null) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			if (!Special.Is(ESpecial.CELL)) {
+			if (!(Filter == Filters.Cells)) {
 				TargetGroup targets = new TargetGroup();
 				
 				CellGroup thisRad = center.Neighbors();
 				CellGroup nextRad = new CellGroup();
 				CellGroup marked = new CellGroup();
 				
-				for (int i=1; i<=Range; i++) {
+				for (int i=1; i<=range; i++) {
 					
 					foreach (Cell c in thisRad) {
-						targets.Add(c.Occupants.Restrict(actor, this));
+						targets += Filter(c.Occupants, actor);
 						marked.Add(c);
 						
 						if (c.Occupants.Count==0 ||
-						    (c.Occupants.Count==1 && c.Contains(EPlane.SUNK))) {
+						    (c.Occupants.Count==1 && (c.Occupants/Plane.Sunken).Count > 0)) {
 							
 							foreach (Cell d in c.Neighbors()) {
 								if (!marked.Contains(d)) {nextRad.Add(d);}		
@@ -70,15 +86,13 @@ namespace HOA {
 			if (center == null) {center = actor.Body.Cell;}
 
 			TargetGroup targets = new TargetGroup();
-			List<CellGroup> star = CellStar(center, Range);
+			List<CellGroup> star = CellStar(center, range);
 			foreach (CellGroup line in star) {
-				if (Special.Is(ESpecial.CELL)) {
-					if (Purpose == EPurp.MOVE) {targets.Add(LineUntilStop(line, actor));}
-					if (Purpose == EPurp.CREATE) {targets.Add(LineUntilStop(line, other));}
-				}
+				if (Filter == Filters.Move) {targets += (TargetGroup)(LineUntilStop(line, actor));}
+				else if (Filter == Filters.Create) {targets += (TargetGroup)(LineUntilStop(line, other));}
 				else {
-					targets.Add(LineUntilStop(line,actor,true).Occupants.OnlyType(Special));
-					targets.Add(center.Occupants.OnlyType(Special));
+					targets += Filter(LineUntilStop(line,actor,true).Occupants, actor);
+					targets += Filter(center.Occupants, actor);
 				}
 			}
 			return targets;
@@ -122,7 +136,8 @@ namespace HOA {
 			CellGroup legal = new CellGroup();
 			foreach (Cell c in line) {
 				legal.Add(c);
-				if (!(c.IsEmpty() || c.ContainsOnly(EPlane.SUNK))) {
+				if (!(c.IsEmpty() || 
+				     (c.Occupants.Count == 1 && (c.Occupants/Plane.Sunken).Count > 0))) {
 					break;
 				}
 			}
@@ -147,46 +162,7 @@ namespace HOA {
 			return targets;
 		}
 
-		TargetGroup FindArc (Token actor, Cell center, Token other) {
-			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup targets = new TargetGroup();
-			CellGroup square = CellSquare (center, Range, MinRange);
-			
-			if (Special.Is(ESpecial.CELL)) {
-				if (Purpose == EPurp.ATTACK) {targets.Add(square);}
-				if (Purpose == EPurp.CREATE) {targets.Add(square.Occupiable(other));}
-				if (Purpose == EPurp.MOVE) {
-					if (other == default(Token)) {targets.Add(square.Occupiable(actor));}
-					else {targets.Add(square.Occupiable(other));}
-				}
-			}
-			else {targets.Add(square.Occupants.Restrict(actor, this));}
-			return targets;
-		}
-
-		static CellGroup CellSquare (Cell start, int range, int min) {
-			CellGroup square = new CellGroup();
-			Cell c;
-			for (int x=(start.X-range); x<=(start.X+range); x++) {
-				for (int y=(start.Y-range); y<=(start.Y+range); y++) {
-					if (Game.Board.HasCell(x, y, out c)) {square.Add(c);}
-				}
-			}
-			if (min > 0) {square = RemoveMin(square, start, min);}
-			return square;
-		}
-		
-		static CellGroup RemoveMin (CellGroup square, Cell start, int min) {
-			CellGroup ring = new CellGroup();
-			foreach (Cell c in square) {
-				if ((Math.Abs(c.X - start.X) >= min) 
-				    || (Math.Abs(c.Y - start.Y) >= min)) {
-					ring.Add(c);
-				}
-			}
-			return ring;
-		}
 
 		TargetGroup FindCreateAren (Token actor, Cell center, Token other) {
 			TargetGroup targets = new TargetGroup();

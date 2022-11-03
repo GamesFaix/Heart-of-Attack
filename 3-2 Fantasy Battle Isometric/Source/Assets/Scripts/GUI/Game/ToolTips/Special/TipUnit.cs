@@ -6,8 +6,8 @@ namespace HOA {
 
 		public TipUnit () {
 			Name = "Unit";
-			Icon = Icons.Special(ESpecial.UNIT);
-			ETip = ETip.UNIT;
+			Icon = Icons.Types.unit;
+			ETip = ETip.Unit;
 		}
 
 		public override void Content (Panel p) {

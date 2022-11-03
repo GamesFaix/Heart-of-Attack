@@ -10,9 +10,9 @@ namespace HOA {
 		}
 		
 		static bool TrampleVsDestructible (Token token, Cell newCell) {
-			if (token.Special.Is(ESpecial.TRAM)) {
+			if (token.TokenType.trample) {
 				foreach (Token occupant in newCell.Occupants) {
-					if (occupant.Special.Is(ESpecial.DEST) 
+					if (occupant.TokenType.destructible 
 					    && CanTakePlaceOf(token, occupant)) {
 						return true;
 					}
@@ -22,9 +22,9 @@ namespace HOA {
 		}
 		
 		static bool KingVsHeart (Token token, Cell newCell) {
-			if (token.Special.Is(ESpecial.KING)) {
+			if (token.TokenType.king) {
 				foreach (Token occupant in newCell.Occupants) {
-					if (occupant.Special.Is(ESpecial.HEART)
+					if (occupant.TokenType.heart
 					    && CanTakePlaceOf(token, occupant)) {
 						return true;
 					}
@@ -33,13 +33,9 @@ namespace HOA {
 			return false;
 		}
 		static bool CanTakePlaceOf (Token taker, Token taken) {
-			Cell otherCell = taken.Body.Cell;
-			Token blocker;
-			
-			foreach (EPlane plane in taker.Plane.Value) {
-				if (otherCell.Contains(plane, out blocker)) {
-					if (blocker != taken) {return false;}
-				}
+			TokenGroup occupants = taken.Body.Cell.Occupants/taker.Plane;
+			foreach (Token t in occupants) {
+				if (t != taken) {return false;}
 			}
 			return true;
 		}
@@ -55,13 +51,13 @@ namespace HOA {
 				EffectGroup effects = new EffectGroup();
 			
 				if (TrampleVsDestructible(trampler, newCell)) {
-					TokenGroup destructibles = occupants.OnlyType(ESpecial.DEST);
+					TokenGroup destructibles = occupants.destructible;
 					for (int i=destructibles.Count-1; i>=0; i--) {
 						effects.Add(new Effects.Destruct(new Source(trampler), destructibles[i]));
 					}
 				}
 				if (KingVsHeart(trampler, newCell)) {
-					TokenGroup hearts = occupants.OnlyType(ESpecial.HEART);
+					TokenGroup hearts = occupants.hearts;
 					if (hearts.Count>0) {
 						effects.Add(new Effects.GetHeart(new Source(trampler.Owner), hearts[0]));
 					}

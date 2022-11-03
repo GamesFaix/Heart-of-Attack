@@ -4,20 +4,19 @@ namespace HOA.Actions {
 	
 	public class ManualOwner : Task, IManualFree, IMultiTarget{
 		
-		public override string Desc {get {return "Set owner of up to 10 units.";} }
+		public override string desc {get {return "Set owner of up to 10 units.";} }
 		
 		Player owner;
 
 		public ManualOwner (Player owner) {
-			Parent = null;
-			Name = "Manual Set Owner: "+owner.ToString();
-			Weight = 0;
-			Price = Price.Free;
+			parent = null;
+			name = "Manual Set Owner: "+owner.ToString();
+			weight = 0;
+			price = Price.Free;
 			this.owner = owner;
 
-			NewAim(Aim.Free(Special.Token, EPurp.ATTACK));
-			for (int i=2; i<=10; i++) {
-				Aims.Add(Aim.Free(Special.Token, EPurp.ATTACK));
+			for (byte i=0; i<10; i++) {
+				aims += Aim.Free(Filters.Tokens);
 			}
 		}
 		protected override void ExecuteStart () {}
@@ -28,7 +27,7 @@ namespace HOA.Actions {
 		}
 		
 		public override bool Legal(out string message) {
-			message = Name+" currently legal.";
+			message = name+" currently legal.";
 			if (EffectQueue.Processing) {
 				message = "Another action is currently in progress.";
 				return false;

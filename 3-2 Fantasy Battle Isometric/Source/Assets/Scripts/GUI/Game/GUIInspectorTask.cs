@@ -19,27 +19,27 @@ namespace HOA {
 			}
 			
 			int i =1;
-			foreach (Task a in u.Arsenal) {
+			foreach (Task task in u.Arsenal) {
 				p.NudgeX();
 				
 				box = p.Box(btnW);
 
 				string message;
-				if (a.Legal(out message)) {
-					if (GUI.Button(box, a.Name+" ["+i+"]") || Input.GetKey(i.ToString()) || Input.GetKey("["+i+"]")) {
+				if (task.Legal(out message)) {
+					if (GUI.Button(box, task.name+" ["+i+"]") || Input.GetKey(i.ToString()) || Input.GetKey("["+i+"]")) {
 						GUIMaster.PlaySound(EGUISound.CLICK);
-						Targeter.Start(a);
+						Targeter.Start(task);
 					}
 				}
 				else {
 					Color oldColor = p.s.normal.textColor;
 					p.s.normal.textColor = Color.gray;
-					GUI.Box (box, a.Name);
+					GUI.Box (box, task.name);
 					
 					p.s.normal.textColor = oldColor;
 				}
 				
-				if (box.Contains(GUIInspector.MousePos())) {inspectedAction = a;}
+				if (box.Contains(GUIInspector.MousePos())) {inspectedAction = task;}
 				p.NextLine();
 				i++;
 			}
@@ -49,7 +49,7 @@ namespace HOA {
 			
 			p.NextLine();
 			
-			if (Targeter.Pending != default(Task)) {
+			if (Targeter.pending != default(Task)) {
 				p.NudgeX(); p.NudgeY();
 				GUI.Label(p.TallWideBox(3), "Pending: \n"+Targeter.PendingString());
 				

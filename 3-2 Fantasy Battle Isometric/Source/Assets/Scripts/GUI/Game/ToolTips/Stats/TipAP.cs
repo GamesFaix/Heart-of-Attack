@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipAP () {
 			Name = "Energy";
-			Icon = Icons.Stat(EStat.AP);
+			Icon = Icons.Stats.energy;
 			ETip = ETip.AP;
 		}
 		

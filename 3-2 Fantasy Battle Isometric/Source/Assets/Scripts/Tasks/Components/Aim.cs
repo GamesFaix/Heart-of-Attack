@@ -1,64 +1,46 @@
 using UnityEngine;
 using System.Collections.Generic;
 namespace HOA {
-	public enum ETraj {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, RADIAL, OTHER}
-	public enum EPurp {MOVE, CREATE, ATTACK, OTHER}
+	public enum Trajectory {Neighbor, Path, Line, Arc, Free, Self, Radial}
 
-	public partial class Aim : IDeepCopy<Aim>{
+	public delegate TargetGroup Finder (Token actor, Cell center, Token other);
+	public delegate void AimExtension (Aim aim, AimSeq aims);
 
-		public ETraj Trajectory {get; protected set;}
-		public Special Special {get; protected set;}
-		public EPurp Purpose {get; protected set;}
-		public int Range {get; set;}
-		public int MinRange {get; set;}
-		public bool TeamOnly {get; set;}
-		public bool EnemyOnly {get; set;}
-		public bool IncludeSelf {get; set;} 
-		public bool NoKings {get; set;}
 
-		public delegate TargetGroup TargetFinder (Token actor, Cell center, Token other);
-		public TargetFinder Targets {get; private set;}
+	public partial class Aim {
 
-		private Aim () {
-			Special = Special.None;
-		}
+		public Trajectory trajectory {get; protected set;}
+		public Finder Find {get; private set;}
+		public Filter Filter {get; protected set;}
+		public int range {get; set;}
+		public int minRange {get; set;}
+		public AimExtension Extend {get; set;}
+		public bool recursiveTarget;
+		public bool optional;
 
-		public Aim DeepCopy () {
-			Aim a = new Aim();
-			a.Trajectory = this.Trajectory;
-			a.Special = this.Special.DeepCopy();
-			a.Purpose = this.Purpose;
-			a.Range = this.Range;
-			a.MinRange = this.MinRange;
-			a.TeamOnly = this.TeamOnly;
-			a.EnemyOnly = this.EnemyOnly;
-			a.IncludeSelf = this.IncludeSelf;
-			a.NoKings = this.NoKings;
-			a.Targets = this.Targets;
-			return a;
+		public Aim Copy {
+			get {
+				Aim a = new Aim();
+				a.trajectory = trajectory;
+				a.Find = Find;
+				a.Filter = Filter;
+				a.range = range;
+				a.minRange = minRange;
+				a.recursiveTarget = recursiveTarget;
+				a.optional = optional;
+				a.Extend = Extend;
+				return a;
+			}
 		}
 
 		string RangeString {
 			get {
-				if (Trajectory == ETraj.PATH || Trajectory == ETraj.LINE) {return Range+"";}	
-				else if (Trajectory == ETraj.ARC) {
-					if (MinRange > 0) {return MinRange+"-"+Range;}
-					return Range+"";
+				if (trajectory == Trajectory.Path || trajectory == Trajectory.Line) {return range+"";}	
+				else if (trajectory == Trajectory.Arc) {
+					if (minRange > 0) {return minRange+" to "+range;}
+					return range+"";
 				}
 				return "";
-			}
-		}
-
-		Texture2D[] TargetIcon {
-			get {
-				if (Special != default(Special)) {
-					Texture2D[] texs = new Texture2D[Special.Count];
-					for (int i=0; i<texs.Length; i++) {
-						texs[i] = Icons.Special(Special[i]);
-					}
-					return texs;
-				}
-				else return new Texture2D[0];
 			}
 		}
 
@@ -66,19 +48,12 @@ namespace HOA {
 			float iconSize = p.LineH;
 
 			Rect iconBox = p.Box(iconSize);
-			if (Icons.Traj(Trajectory) != default(Texture2D)) {
-				if (GUI.Button(iconBox, "")) {
-					//if (GUIInspector.RightClick) {
-						TipInspector.Inspect(Tip.Trajectory(Trajectory));
-					//}
-				}
-				GUI.Box(iconBox, Icons.Traj(Trajectory));
-			}
-			if (RangeString != "") {
-				GUI.Label(p.Box(iconSize), RangeString, p.s);
-			}
+			if (GUI.Button(iconBox, "")) {TipInspector.Inspect(Tip.Trajectory(trajectory));}
+			GUI.Box(iconBox, Icons.Aims.aims[(int)trajectory]);
+
+			if (RangeString != "") {GUI.Label(p.Box(iconSize), RangeString, p.s);}
 			p.NudgeX();
-			if (Special != null) {Special.Display(new Panel(new Rect(p.x2, p.y2, 200, p.LineH), p.LineH, p.s));}
+			/*Filters.Display(Filters, new Panel(new Rect(p.x2, p.y2, 200, p.LineH), p.LineH, p.s));}*/
 			/*if (TargetIcon != default(Texture2D[])) {
 				foreach (Texture2D tex in TargetIcon) {
 					GUI.Box(p.Box(iconSize), tex, p.s);
@@ -86,5 +61,6 @@ namespace HOA {
 			}
 			*/
 		}
+
 	}
 }

@@ -75,7 +75,7 @@ namespace HOA {
 
 			p.NextLine();
 			p.NextLine();
-			if (Targeter.Pending != default(Task)) {
+			if (Targeter.pending != default(Task)) {
 				p.NudgeX(); p.NudgeY();
 				GUI.Label(p.TallWideBox(7), "Pending: \n"+Targeter.PendingString());
 				

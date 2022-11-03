@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipEXP () {
 			Name = "Explosives";
-			Icon = Icons.EXP();
+			Icon = Icons.Effects.explosive;
 			ETip = ETip.EXP;
 		}
 		

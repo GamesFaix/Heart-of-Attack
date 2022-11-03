@@ -41,10 +41,10 @@ namespace HOA {
 		public override bool CanEnter (Cell newCell) {
 			CellGroup square;
 			if (SquareExists(newCell, out square)) {
-				Token occupant;
 				foreach (Cell corner in square) {
 					if (corner is ExoCell) {return false;}
-					if (corner.Contains(EPlane.ETH, out occupant)) {
+					TokenGroup occupants = corner.Occupants/parent.Plane;
+					foreach (Token occupant in occupants) {
 						if (occupant.ID != parent.ID) {return false;}
 					}
 				}

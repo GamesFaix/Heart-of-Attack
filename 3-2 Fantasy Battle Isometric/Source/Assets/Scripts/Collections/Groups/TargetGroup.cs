@@ -35,12 +35,32 @@ namespace HOA {
 			return cells;
 		}
 
+		public CellGroup cells {
+			get {
+				CellGroup output = new CellGroup();
+				foreach (Target t in list) {
+					if (t is Cell && !(t is ExoCell)) {output.Add((Cell)t);}
+				}
+				return output;
+			}
+		}
+
 		public TargetGroup Tokens () {
 			TargetGroup tokens = new TargetGroup();
 			foreach (Target t in list) {
 				if (t is Token) {tokens.Add(t);}
 			}
 			return tokens;
+		}
+
+		public TokenGroup tokens {
+			get {
+				TokenGroup output = new TokenGroup();
+				foreach (Target t in list) {
+					if (t is Token) {output.Add((Token)t);}
+				}
+				return output;
+			}
 		}
 
 		public void Add (Cell c) {list.Add(c);} 
@@ -67,6 +87,11 @@ namespace HOA {
 				if (list.Contains(t)) {list.Remove(t);}
 			}
 		}
+
+		public static TargetGroup operator + (TargetGroup targets, Target other) {targets.Add(other); return targets;}
+		public static TargetGroup operator + (TargetGroup targets, IEnumerable<Target> other) {targets.Add(other); return targets;}
+		public static TargetGroup operator - (TargetGroup targets, Target other) {targets.Remove(other); return targets;}
+		public static TargetGroup operator - (TargetGroup targets, IEnumerable<Target> other) {targets.Remove(other); return targets;}
 
 
 	}

@@ -7,27 +7,24 @@ namespace HOA.Actions {
 		
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
 		
-		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+		public override string desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nTarget recieves "+Cor+" corrosion counters." +
 					"\n(If a unit has corrosion counters, at the beginning of its turn " +
 						"it takes damage equal to the number of counters, " +
 						"then removes half the counters (rounded up).)";} }
 		
-		public Sporatic (Unit u) {
-			Name = "Sporatic Emission";
-			Weight = 3;
-			
-			Price = Price.Cheap;
-			NewAim(Aim.AttackArc(Special.Unit, 0,2));
-			Parent = u;
+		public Sporatic (Unit parent) : base(parent){
+			name = "Sporatic Emission";
+			weight = 3;
+			aims += Aim.AttackArc(Filters.Units, 0,2);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Corrode(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Corrode(source, (Unit)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
@@ -35,7 +32,7 @@ namespace HOA.Actions {
 			
 			Rect box = p.IconBox;
 			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
-			GUI.Box(box,Icons.COR(),p.s);
+			GUI.Box(box, Icons.Effects.corrosive, p.s);
 			p.NudgeX();
 			GUI.Box(p.Box(30),damage.ToString(), p.s);
 		}
@@ -45,31 +42,28 @@ namespace HOA.Actions {
 		int damage = 15;
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
 		
-		public override string Desc {get {return "Destroy "+Parent+"." +
+		public override string desc {get {return "Destroy "+parent+"." +
 				"\nDo "+damage+" damage to target unit. " +
 					"\nTarget takes "+Cor+" corrosion counters. " +
 						"\n(If a unit has corrosion counters, at the beginning of its turn " +
 						"it takes damage equal to the number of counters, " +
 						"then removes half the counters (rounded up).)";} }
 		
-		public FatalBlow (Unit u) {
-			Name = "Fatal Blow";
-			Weight = 4;
-			
-			Price = new Price(1,1);
-			Parent = u;
-			NewAim(Aim.AttackNeighbor(Special.Unit));
+		public FatalBlow (Unit parent) : base(parent) {
+			name = "Fatal Blow";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.AttackNeighbor(Filters.Units);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new Effects.Corrode (new Source(Parent), u, damage));
-			
-			EffectQueue.Add(new Effects.Kill (new Source(Parent), Parent));
+			EffectQueue.Add(new Effects.Corrode (source, u, damage));
+			EffectQueue.Add(new Effects.Kill (source, parent));
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
@@ -77,11 +71,11 @@ namespace HOA.Actions {
 
 			Rect box = p.IconBox;
 			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
-			GUI.Box(box,Icons.COR(),p.s);
+			GUI.Box(box, Icons.Effects.corrosive, p.s);
 			p.NudgeX();
 			GUI.Box(p.Box(30),damage.ToString(), p.s);
 			p.NextLine();
-			GUI.Label(p.LineBox, "Destroy "+Parent.ToString()+".");
+			GUI.Label(p.LineBox, "Destroy "+parent.ToString()+".");
 		}
 	}
 
@@ -90,7 +84,7 @@ namespace HOA.Actions {
 		
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
 		
-		public override string Desc {get {return "Destroy "+Parent+"." +
+		public override string desc {get {return "Destroy "+parent+"." +
 				"\nDo "+damage+" damage to cellmates and neighbors. " +
 					"\nDamaged units take "+Cor+" corrosion counters. " +
 						"\n(If a unit has corrosion counters, at the beginning of its turn " +
@@ -98,26 +92,24 @@ namespace HOA.Actions {
 						"then removes half the counters (rounded up).)";
 			} } 
 		
-		public Burst (Unit u) {
-			Name = "Burst";
-			Weight = 4;
-			
-			Price = new Price(1,1);
-			NewAim(Aim.Self());
-			Parent = u;
+		public Burst (Unit parent) : base(parent) {
+			name = "Burst";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.Self();
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup victims = Parent.Body.Neighbors(true).OnlyType(ESpecial.UNIT);
+			TokenGroup victims = parent.Body.Neighbors(true).units;
 			EffectGroup nextEffects = new EffectGroup();
-			nextEffects.Add(new Effects.Kill(new Source(Parent), Parent));
+			nextEffects.Add(new Effects.Kill(source, parent));
 			foreach (Token t in victims) {
-				nextEffects.Add(new Effects.Corrode(new Source(Parent), (Unit)t, damage));	
+				nextEffects.Add(new Effects.Corrode(source, (Unit)t, damage));	
 			}
 			EffectQueue.Add(nextEffects);
 		}
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
@@ -126,11 +118,11 @@ namespace HOA.Actions {
 			GUI.Label(p.LineBox, "All neighbors: ");
 			Rect box = p.IconBox;
 			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.COR);}
-			GUI.Box(box,Icons.COR(),p.s);
+			GUI.Box(box, Icons.Effects.corrosive, p.s);
 			p.NudgeX();
 			GUI.Box(p.Box(30),damage.ToString(), p.s);
 			p.NextLine();
-			GUI.Label(p.LineBox, "Destroy "+Parent.ToString()+".");
+			GUI.Label(p.LineBox, "Destroy "+parent+".");
 		}
 	}
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using HOA;
+using HOA.Icons;
 
 public static class GUIInspector {
 
@@ -79,10 +80,10 @@ public static class GUIInspector {
 		t.Plane.Display(new Panel (p.Box(iconSize*3), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		t.Special.Display(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
+		t.TokenType.Display(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		if (!t.IsTemplate) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
+		if (!t.TokenType.template) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
 
 
 		p.NextLine();
@@ -98,10 +99,10 @@ public static class GUIInspector {
 	static void Cell (Token t, Panel p, Panel super) {
 		if (GUI.Button(p.Box(80), "")) {
 			if (LeftClick) {Inspected = t.Body.Cell;}
-			if (RightClick) {TipInspector.Inspect(ETip.CELL);}
+			if (RightClick) {TipInspector.Inspect(ETip.Cell);}
 		}
 		p.ResetX();
-		GUI.Box(p.IconBox, Icons.Special(ESpecial.CELL), p.s);
+		GUI.Box(p.IconBox, HOA.Icons.Types.cell, p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(50), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);
@@ -110,7 +111,7 @@ public static class GUIInspector {
 			if (GUI.Button(box, "")) {
 				TipInspector.Inspect(ETip.SENSOR);
 			}
-			GUI.Box(box, Icons.SENSOR(), p.s);
+			GUI.Box(box, HOA.Icons.Other.sensor, p.s);
 		}
 	}
 

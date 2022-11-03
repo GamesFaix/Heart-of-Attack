@@ -5,15 +5,15 @@ namespace HOA.Actions {
 	
 	public class ManualMove : Task, IManualFree, ITeleport {
 
-		public override string Desc {get {return "Move target token to target cell.";} }
+		public override string desc {get {return "Move target token to target cell.";} }
 
 		public ManualMove () {
-			Parent = null;
-			Name = "Manual Move";
-			Weight = 0;
-			Price = Price.Free;
-			NewAim(Aim.Free(Special.Token, EPurp.ATTACK));
-			Aims.Add(Aim.Free(Special.Cell, EPurp.MOVE));
+			parent = null;
+			name = "Manual Move";
+			weight = 0;
+			price = Price.Free;
+			aims += Aim.Free(Filters.Tokens);
+			aims += Aim.Free(Filters.Move);
 		}
 		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -21,7 +21,7 @@ namespace HOA.Actions {
 		}
 
 		public override bool Legal(out string message) {
-			message = Name+" currently legal.";
+			message = name+" currently legal.";
 			if (EffectQueue.Processing) {
 				message = "Another action is currently in progress.";
 				return false;

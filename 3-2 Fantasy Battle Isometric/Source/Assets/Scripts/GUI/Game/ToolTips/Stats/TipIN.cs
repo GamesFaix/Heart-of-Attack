@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipIN () {
 			Name = "Initiative";
-			Icon = Icons.Stat(EStat.IN);
+			Icon = Icons.Stats.initiative;
 			ETip = ETip.IN;
 		}
 		

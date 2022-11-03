@@ -5,33 +5,31 @@ namespace HOA.Actions {
 	
 	public class ManualCreate : Task, IMultiTarget {
 
-		public override string Desc {get {return "Create "+Template.ID.Name+" in upto 10 cells.";} }
+		public override string desc {get {return "Create "+template.ID.Name+" in upto 10 cells.";} }
 
 		EToken child;
 		
-		public ManualCreate (Unit parent, EToken child) {
-			Parent = parent;
+		public ManualCreate (Unit parent, EToken child) : base(parent) {
 			this.child = child;
-			Template = TokenFactory.Template(child);
-			Name = "Manual Create "+Template.ID.Name;
+			template = TokenFactory.Template(child);
+			name = "Manual Create "+template.ID.Name;
 
-			Weight = 5;
-			Price = Price.Free;
+			weight = 5;
+			price = Price.Free;
 			
-			NewAim(Aim.Free(Special.Cell, EPurp.CREATE));
-			for (int i=2; i<=10; i++) {
-				Aims.Add(Aim.Free(Special.Cell, EPurp.CREATE));
+			for (int i=0; i<10; i++) {
+				aims += Aim.Free(Filters.Create);
 			}
 		}
 		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Create(new Source(Parent), child, (Cell)target));
+				EffectQueue.Add(new Effects.Create(source, child, (Cell)target));
 			}
 		}
 
 		public override bool Legal(out string message) {
-			message = Name+" currently legal.";
+			message = name+" currently legal.";
 			if (EffectQueue.Processing) {
 				message = "Another action is currently in progress.";
 				return false;

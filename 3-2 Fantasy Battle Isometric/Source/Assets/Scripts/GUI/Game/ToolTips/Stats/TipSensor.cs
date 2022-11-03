@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipSensor () {
 			Name = "Sensor";
-			Icon = Icons.SENSOR();
+			Icon = Icons.Other.sensor;
 			ETip = ETip.SENSOR;
 		}
 		

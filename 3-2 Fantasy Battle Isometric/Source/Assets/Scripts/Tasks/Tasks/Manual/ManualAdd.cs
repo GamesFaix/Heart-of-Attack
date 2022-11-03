@@ -4,34 +4,33 @@ namespace HOA.Actions {
 
 	public class ManualAdd : Task, IManualFree, IMultiTarget{
 		
-		public override string Desc {get {return "Increase/Descrease stat of up to 10 units.";} }
+		public override string desc {get {return "Increase/Descrease stat of up to 10 units.";} }
 
 		EStat stat;
 		int change;
 
 		public ManualAdd (EStat stat, int change) {
-			Parent = null;
-			Name = "Manual "+stat+" Add "+change;
-			Weight = 0;
-			Price = Price.Free;
+			parent = null;
+			name = "Manual "+stat+" Add "+change;
+			weight = 0;
+			price = Price.Free;
 
 			this.stat = stat;
 			this.change = change;
 
-			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
-			for (int i=2; i<=10; i++) {
-				Aims.Add(Aim.Free(Special.Unit, EPurp.ATTACK));
+			for (int i=0; i<10; i++) {
+				aims += Aim.Free(Filters.Units);
 			}
 		}
 		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.AddStat(new Source(Roster.Neutral), (Unit)target, stat, change));
+				EffectQueue.Add(new Effects.AddStat(Source.Neutral, (Unit)target, stat, change));
 			}
 		}
 		
 		public override bool Legal(out string message) {
-			message = Name+" currently legal.";
+			message = name+" currently legal.";
 			if (EffectQueue.Processing) {
 				message = "Another action is currently in progress.";
 				return false;

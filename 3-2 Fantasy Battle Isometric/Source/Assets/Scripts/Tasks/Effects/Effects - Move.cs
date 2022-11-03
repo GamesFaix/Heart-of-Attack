@@ -15,8 +15,8 @@ namespace HOA.Effects {
 		//	target.SpriteMove(cell);
 			target.Body.MoveTo(cell);
 			Cell newCell = target.Body.Cell;
-			if (target.Plane.Is(EPlane.GND)) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
-			else if (target.Plane.Is(EPlane.AIR)) {Mixer.Play(SoundLoader.Effect(EEffect.FLY));}
+			if (target.Plane.ground) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
+			else if (target.Plane.air) {Mixer.Play(SoundLoader.Effect(EEffect.FLY));}
 			
 			GameLog.Out (target+" moved from "+oldCell+" to "+newCell+".");
 		}

@@ -3,141 +3,133 @@ using System.Collections.Generic;
 
 namespace HOA.Actions { 
 
-	public class Tread : Task, IMultiMove {
-		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+	public class Tread : Task {
+		public override string desc {get {return "Move "+parent+" to target cell.";} }
 		
-		public Tread (Unit parent) {
-			Name = "Tread";
-			Weight = 1;
-			Parent = parent;
-			NewAim(Aim.MovePath(3));
-			Price = Price.Cheap;
+		public Tread (Unit parent) : base(parent) {
+			name = "Tread";
+			weight = 1;
+			aims += Aim.MovePath(3);
 		}
 		
-		public override void Adjust () {Aims[0].Range = Mathf.Max(0, Aims[0].Range-Parent.FP);}
-		public override void UnAdjust () {NewAim(Aim.MovePath(3));}
+		public override void Adjust () {aims[0].range = Mathf.Max(0, aims[0].range-parent.FP);}
+		public override void UnAdjust () {aims[0] = Aim.MovePath(3);}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(source, parent, (Cell)target));
 			}
 		}
 		
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.MovePath(Mathf.Max(0, Aims[0].Range-Parent.FP));
+			Aim actual = Aim.MovePath(Mathf.Max(0, aims[0].range-parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
-	public class Rebuild : Task, IMultiMove {
-		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+	public class Rebuild : Task {
+		public override string desc {get {return "Move "+parent+" to target cell.";} }
 		
-		public Rebuild (Unit u) {
-			Name = "Rebuild";
-			Weight = 1;
-			Parent = u;
-			Price = new Price(0,2);
-			NewAim(Aim.MovePath(2));
+		public Rebuild (Unit parent) : base(parent) {
+			name = "Rebuild";
+			weight = 1;
+			price = new Price(0,2);
+			aims += Aim.MovePath(2);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(source, parent, (Cell)target));
 			}
 		}
 	}
 
-	public class Sprint : Task, IMultiMove {
-		public override string Desc {get {return "Move "+Parent+" to target cell.  " +
+	public class Sprint : Task {
+		public override string desc {get {return "Move "+parent+" to target cell.  " +
 			"\nRange +1 per focus (up to +6). " +
-			"\n"+Parent+" loses all focus.";} }
+			"\n"+parent+" loses all focus.";} }
 		
-		public Sprint (Unit parent) {
-			Name = "Sprint";
-			Weight = 4;
-			Parent = parent;
-			Price = Price.Free;
-			NewAim(Aim.MovePath(0));
+		public Sprint (Unit parent) : base(parent) {
+			name = "Sprint";
+			weight = 4;
+			price = Price.Free;
+			aims += Aim.MovePath(0);
 		}
 		
-		public override void Adjust () {Aims[0].Range = Mathf.Min(Parent.FP, 6);}
-		public override void UnAdjust () {NewAim(Aim.MovePath(0));}
+		public override void Adjust () {aims[0].range = Mathf.Min(parent.FP, 6);}
+		public override void UnAdjust () {aims[0] = Aim.MovePath(0);}
 
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(source, parent, (Cell)target));
 			}
-			Parent.SetStat(new Source(Parent), EStat.FP, 0);
+			parent.SetStat(source, EStat.FP, 0);
 		}
 		
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.MovePath(Mathf.Min(6, Parent.FP));
+			Aim actual = Aim.MovePath(Mathf.Min(6, parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
-	public class Creep : Task, IMultiMove {
-		public override string Desc {get {return "Range +1 per focus.";} }
+	public class Creep : Task {
+		public override string desc {get {return "Range +1 per focus.";} }
 		
-		public Creep (Unit u) {
-			Name = "Creep";
-			Weight = 1;
-			Parent = u;
-			Price = Price.Cheap;
-			NewAim(Aim.MovePath(1));
+		public Creep (Unit parent) : base(parent) {
+			name = "Creep";
+			weight = 1;
+			aims += Aim.MovePath(1);
 		}
 		
-		public override void Adjust () {Aims[0].Range = Aims[0].Range + Parent.FP;}
-		public override void UnAdjust () {NewAim(Aim.MovePath(1));}
+		public override void Adjust () {aims[0].range = aims[0].range + parent.FP;}
+		public override void UnAdjust () {aims[0] = Aim.MovePath(1);}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(source, parent, (Cell)target));
 			}
 		}
 		
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.MovePath(Aims[0].Range+Parent.FP);
+			Aim actual = Aim.MovePath(aims[0].range+parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
 	public class Burrow : Task {
 		
-		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+		public override string desc {get {return "Move "+parent+" to target cell.";} }
 		
-		public Burrow (Unit u) {
-			Name = "Burrow";
-			Weight = 1;
-			NewAim(Aim.MoveArc(0, 3));
-			Parent = u;
-			Price = Price.Cheap;
+		public Burrow (Unit parent) : base(parent) {
+			name = "Burrow";
+			weight = 1;
+			aims += Aim.MoveArc(0, 3);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new Effects.Burrow(new Source(Parent), Parent, (Cell)targets[0]));
+			EffectQueue.Add(new Effects.Burrow(source, parent, (Cell)targets[0]));
 		}
 	}
 }

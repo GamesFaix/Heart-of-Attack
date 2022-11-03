@@ -7,7 +7,7 @@ namespace HOA {
 		public TipPlane () {
 			Name = "Plane";
 			Icon = null;
-			ETip = ETip.PLANE;
+			ETip = ETip.Plane;
 		}
 		
 		public override void Content (Panel p) {
@@ -22,7 +22,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(EPlane.SUNK), p.s);
+			GUI.Box(p.IconBox, Icons.Planes.sunken, p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 				"Sunken" +
@@ -36,7 +36,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(EPlane.GND), p.s);
+			GUI.Box(p.IconBox, Icons.Planes.ground, p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Ground" +
@@ -48,7 +48,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(EPlane.AIR), p.s);
+			GUI.Box(p.IconBox, Icons.Planes.air, p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Air" +
@@ -65,7 +65,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(EPlane.ETH), p.s);
+			GUI.Box(p.IconBox, Icons.Planes.ethereal, p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Ethereal" +

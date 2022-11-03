@@ -4,33 +4,32 @@ namespace HOA.Actions {
 
 	public class ManualShift : Task, IManualFree, IMultiTarget{
 		
-		public override string Desc {get {return "Move up to 10 units in the queue.";} }
+		public override string desc {get {return "Move up to 10 units in the queue.";} }
 		
 		int change;
 		
 		public ManualShift (int change) {
-			Parent = null;
-			Name = "Manual Queue Shift: "+change;
-			Weight = 0;
-			Price = Price.Free;
+			parent = null;
+			name = "Manual Queue Shift: "+change;
+			weight = 0;
+			price = Price.Free;
 			
 			this.change = change;
 			
-			NewAim(Aim.Free(Special.Unit, EPurp.ATTACK));
-			for (int i=2; i<=10; i++) {
-				Aims.Add(Aim.Free(Special.Unit, EPurp.ATTACK));
+			for (byte i=0; i<10; i++) {
+				aims += Aim.Free(Filters.Units);
 			}
 		}
 		
 		protected override void ExecuteStart () {}
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new Effects.Shift(new Source(Roster.Neutral), (Unit)target, change));
+				EffectQueue.Add(new Effects.Shift(Source.Neutral, (Unit)target, change));
 			}
 		}
 		
 		public override bool Legal(out string message) {
-			message = Name+" currently legal.";
+			message = name+" currently legal.";
 			if (EffectQueue.Processing) {
 				message = "Another action is currently in progress.";
 				return false;

@@ -12,12 +12,12 @@ namespace HOA.Effects {
 		public override void Process() {
 			EffectGroup nextEffects = new EffectGroup();
 			
-			if (target.Special.Is(ESpecial.DEST)) {
+			if (target.TokenType.destructible) {
 				nextEffects.Add(new Destruct(source, target));
 				target.Display.Effect(EEffect.FIRE);
 				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
 			}
-			else if (target is Unit) {
+			else if (target.TokenType.unit) {
 				Unit u = (Unit)target;
 				u.AddStat(source, EStat.HP, 0-dmg);
 				target.Display.Effect(EEffect.FIRE);
@@ -25,8 +25,8 @@ namespace HOA.Effects {
 			}
 			
 			TokenGroup neighbors = target.Body.Neighbors(true);
-			neighbors.Remove(source.Token);
-			neighbors = neighbors.OnlyType(Special.UnitDest);
+			neighbors -= source.Token;
+			neighbors = (neighbors.units + neighbors.destructible);
 			
 			int newDmg = (int)Mathf.Floor(dmg * 0.5f);
 			foreach (Token t2 in neighbors) {
@@ -45,13 +45,13 @@ namespace HOA.Effects {
 			source = s; target = t; dmg = n;
 		}
 		public override void Process() {
-			if (target.Special.Is(ESpecial.DEST)) {
+			if (target.TokenType.destructible) {
 				target.Display.Effect(EEffect.FIRE);
 				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
 				EffectQueue.Add(new Destruct (source, target));
 			}
 			
-			else if (target is Unit) {
+			else if (target.TokenType.unit) {
 				Unit u = (Unit)target;
 				u.AddStat(source, EStat.HP, 0-dmg);
 				target.Display.Effect(EEffect.FIRE);

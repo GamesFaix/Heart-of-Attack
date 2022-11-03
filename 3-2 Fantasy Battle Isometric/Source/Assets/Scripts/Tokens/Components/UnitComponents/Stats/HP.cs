@@ -32,7 +32,7 @@ namespace HOA {
 		public override void Display (Panel p, float iconSize) {
 			if (GUI.Button(p.FullBox, "")) {TipInspector.Inspect(eTip);}
 
-			GUI.Box(p.Box(iconSize), Icons.Stat(eStat), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Stats.health, p.s);
 			p.NudgeX();
 			p.NudgeY();
 			

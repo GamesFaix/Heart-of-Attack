@@ -1,45 +1,66 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
 
 namespace HOA {
-	public enum EPlane {SUNK, GND, AIR, ETH}
 
-	public class Plane : IDeepCopy<Plane> {
-		List<EPlane> planes;
+	public enum Planes {Sunken, Ground, Air, Ethereal}
+	
+	public struct Plane {
 
-		public Plane (EPlane p) {planes = new List<EPlane> {p};}
-		public Plane (List<EPlane> p) {planes = p;}
-
-		public void Set (EPlane p) {planes = new List<EPlane> {p};}
-		public void Set (List<EPlane> p) {planes = p;}
+		public const byte count = 4;
+		public bool sunken, ground, air, ethereal;
 		
-		public List<EPlane> Value {get {return planes;} }
-
-		public Plane DeepCopy () {return new Plane(Value);}
-
-		public bool Is (EPlane p){
-			if (planes.Contains(p)) {return true;}
+		public Plane (bool sunken, bool ground, bool air, bool ethereal) {
+			this.sunken = sunken;
+			this.ground = ground;
+			this.air = air;
+			this.ethereal = ethereal;
+		}
+		
+		public bool[] planes {get {return new bool[4] {sunken, ground, air, ethereal};} }
+		
+		public bool Equals (Plane other) {
+			if (sunken == other.sunken 
+			    && ground == other.ground 
+			    && air == other.air 
+			    && ethereal == other.ethereal) {
+				return true;
+			}
 			return false;
 		}
+		public override bool Equals (System.Object obj) {return (obj is Plane ? Equals((Plane)obj) : false);}
+
+		public override int GetHashCode () {
+			int hash = 0;
+			for (byte i=0; i<count; i++) {
+				if (planes[i]) {hash += (1 << 2);}
+			}
+			return hash;
+		}
+
+		public static bool operator == (Plane a, Plane b) {return a.Equals(b);}
+		public static bool operator != (Plane a, Plane b) {return !(a.Equals(b));}
+		
+		public static Plane Sunken {get {return new Plane(true,false,false,false);} }
+		public static Plane Ground {get {return new Plane(false,true,false,false);} }
+		public static Plane Air {get {return new Plane(false,false,true,false);} }
+		public static Plane Ethereal {get {return new Plane(false,false,false,true);} }
+		public static Plane Tall {get {return new Plane(false,true,true,false);} }
+
+
 
 		public void Display (Panel p) {
-			foreach (EPlane plane in planes) {
-				Rect box = p.Box(p.LineH);
-				if (GUI.Button(box, "")) {
-					//if (GUIInspector.RightClick) {
-						TipInspector.Inspect(ETip.PLANE);
-					//}
+			Rect box = p.IconBox;
+			for (byte i=0; i<planes.Length; i++) {
+				if (planes[i]) {
+					if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.Plane);}
+					GUI.Box (box, Icons.Planes.planes[i], p.s);
+					p.NudgeX();
+					box = p.IconBox;
 				}
-				GUI.Box (box, Icons.Plane(plane), p.s);
-				p.NudgeX();
 			}
 		}
 
-		public static Plane Gnd {get {return new Plane(EPlane.GND);} }
-		public static Plane Air {get {return new Plane(EPlane.AIR);} }
-		public static Plane Eth {get {return new Plane(EPlane.ETH);} }
-		public static Plane Sunk {get {return new Plane(EPlane.SUNK);} }
-		public static Plane Tall {get {return new Plane(new List<EPlane> {EPlane.GND, EPlane.AIR});} }
-		public static Plane GndSunk {get {return new Plane(new List<EPlane> {EPlane.GND, EPlane.SUNK});} }
-	}
+
+	}	
 }

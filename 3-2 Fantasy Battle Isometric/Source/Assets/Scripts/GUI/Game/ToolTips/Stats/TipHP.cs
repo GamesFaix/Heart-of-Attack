@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipHP () {
 			Name = "Health";
-			Icon = Icons.Stat(EStat.HP);
+			Icon = Icons.Stats.health;
 			ETip = ETip.HP;
 		}
 		

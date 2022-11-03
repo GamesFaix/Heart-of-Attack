@@ -22,7 +22,7 @@ namespace HOA {
 
 		public abstract void Activate ();
 
-		public Texture2D Icon {get {return Icons.TIMER();} }
+		public Texture2D Icon {get {return Icons.Other.timer;} }
 
 		public void Display (Panel p, float iconSize) {
 			Rect box = p.IconBox;

@@ -68,7 +68,6 @@ namespace HOA {
 		}
 
 		public static void PrepareNewTop (Unit newTop) {
-			newTop.ClearSkip(false);
 			newTop.FillAP(false);
 			GUIInspector.Inspected = newTop;
 

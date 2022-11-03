@@ -18,9 +18,9 @@ namespace HOA {
 			
 			p.NudgeX(); p.NudgeX();
 			iconSize = 20;
-			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.IN), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Stats.initiative, p.s);
 			GUI.Label(p.Box(40), "+1 per ");
-			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.FP), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Stats.focus, p.s);
 		}
 	}
 }

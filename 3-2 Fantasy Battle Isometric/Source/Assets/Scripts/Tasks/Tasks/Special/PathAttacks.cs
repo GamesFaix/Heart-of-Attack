@@ -5,39 +5,37 @@ namespace HOA.Actions {
 
 	public class Grow : Task {
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 			"Switch cells with target Destructible. " +
 			"\nRange +1 per focus.  " +
-			"\n"+Parent+" +1 Focus.";} }
+			"\n"+parent+" +1 Focus.";} }
 		
-		public Grow (Unit u) {
-			Name = "Grow";
-			Weight = 2;
-			Price = Price.Cheap;
-			Parent = u;
-			NewAim(Aim.AttackPath(Special.Dest, 1));
+		public Grow (Unit parent) : base(parent) {
+			name = "Grow";
+			weight = 2;
+			aims += Aim.AttackPath(Filters.Destructible, 1);
 		}
 		
-		public override void Adjust () {Aims[0].Range += Parent.FP;}
-		public override void UnAdjust () {Aims[0].Range = 1;}
+		public override void Adjust () {aims[0].range += parent.FP;}
+		public override void UnAdjust () {aims[0].range = 1;}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			Parent.AddStat(new Source(Parent), EStat.FP, 1, false);
+			parent.AddStat(source, EStat.FP, 1, false);
 			Token t = (Token)targets[0];
-			Parent.Body.Swap(t);
+			parent.Body.Swap(t);
 			UnAdjust();
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.MovePath(Aims[0].Range+Parent.FP);
+			Aim actual = Aim.MovePath(aims[0].range+parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
@@ -45,124 +43,120 @@ namespace HOA.Actions {
 			
 		int damage = 18;
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 			"Do "+damage+" damage target Unit." +
 			"\nRange +1 per focus." +
 			"\nIf target is killed and leaves Remains, switch cells with it's Remains.";} } 
 		
-		public VineWhip (Unit u) {
-			Name = "Vine Whip";
-			Weight = 4;
-			Price = new Price(1,1);
-			Parent = u;
-			NewAim(Aim.AttackLine(Special.Unit, 2));
+		public VineWhip (Unit parent) : base(parent) {
+			name = "Vine Whip";
+			weight = 4;
+			price = new Price(1,1);
+			aims += Aim.AttackLine(Filters.Units, 2);
 		}
 		
-		public override void Adjust () {Aims[0].Range += Parent.FP;}
-		public override void UnAdjust () {Aims[0].Range = 2;}
+		public override void Adjust () {aims[0].range += parent.FP;}
+		public override void UnAdjust () {aims[0].range = 2;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new Effects.Damage(new Source(Parent), u, damage));
-			Token dest;
-			if (u.Body.Cell.Contains(ESpecial.DEST, out dest)) {Parent.Body.Swap(dest);}
+			EffectQueue.Add(new Effects.Damage(source, u, damage));
+			TokenGroup dests = (u.Body.Cell.Occupants.destructible)/Plane.Ground;
+			if (dests.Count > 0) {parent.Body.Swap(dests[0]);}
 			UnAdjust();
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.MovePath(Aims[0].Range+Parent.FP);
+			Aim actual = Aim.MovePath(aims[0].range+parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 
 	public class Flail : Task {
 		int damage = 8;
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 			"Do "+damage+" damage to target unit.  " +
 			"\nRange +1 per focus (Up to +3).  " +
-			"\n"+Parent+" loses all focus.";} }
+			"\n"+parent+" loses all focus.";} }
 		
-		public Flail (Unit u) {
-			Name = "Flail";
-			Weight = 3;
-			Price = Price.Cheap;
-			Parent = u;
-			NewAim(Aim.AttackPath(Special.Unit, 1));
+		public Flail (Unit parent) : base(parent) {
+			name = "Flail";
+			weight = 3;
+			aims += Aim.AttackPath(Filters.Units, 1);
 		}
 		
-		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
-		public override void UnAdjust () {Aims[0].Range = 1;}
+		public override void Adjust () {aims[0].range += Mathf.Min(parent.FP, 3);}
+		public override void UnAdjust () {aims[0].range = 1;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
-			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
-			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[0], damage));
+			parent.SetStat(source, EStat.FP, 0, false);
+			EffectQueue.Add(new Effects.Damage(source, (Unit)targets[0], damage));
 			UnAdjust();
 		}
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.AttackPath(Special.Unit, Aims[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = Aim.AttackPath(Filters.Units, aims[0].range+Mathf.Min(3, parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 	
 	public class Slam : Task {
 		int damage = 8;
 		
-		public override string Desc {get {return 
+		public override string desc {get {return 
 			"Do "+damage+" damage to target unit and each of its neighbors and cellmates.  " +
 			"\nRange +1 per focus (up to +3).  " +
-			"\n"+Parent+" loses all focus.";} }
+			"\n"+parent+" loses all focus.";} }
 		
-		public Slam (Unit u) {
-			Name = "Slam";
-			Weight = 4;
-			Price = new Price(2,0);
-			Parent = u;
-			NewAim(Aim.AttackPath(Special.Unit, 1));
+		public Slam (Unit parent) : base(parent) {
+			name = "Slam";
+			weight = 4;
+			price = new Price(2,0);
+			aims += Aim.AttackPath(Filters.Units, 1);
 		}
 		
-		public override void Adjust () {Aims[0].Range += Mathf.Min(Parent.FP, 3);}
-		public override void UnAdjust () {Aims[0].Range = 1;}
+		public override void Adjust () {aims[0].range += Mathf.Min(parent.FP, 3);}
+		public override void UnAdjust () {aims[0].range = 1;}
 
 		protected override void ExecuteMain (TargetGroup targets) {
-			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
+			parent.SetStat(source, EStat.FP, 0, false);
 			
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new Effects.Damage(new Source(Parent), u, damage));
+			EffectQueue.Add(new Effects.Damage(source, u, damage));
 			
-			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(ESpecial.UNIT);
+			TokenGroup neighbors = u.Body.Neighbors(true).units;
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Unit u2 in neighbors) {
-				nextEffects.Add(new Effects.Damage(new Source(Parent), u2, damage));
+				nextEffects.Add(new Effects.Damage(source, u2, damage));
 			}
 			EffectQueue.Add(nextEffects);
 			UnAdjust();
 		}
 
 		public override void Draw (Panel p) {
-			GUI.Label(p.LineBox, Name, p.s);
+			GUI.Label(p.LineBox, name, p.s);
 			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = Aim.AttackPath(Special.Unit, Aims[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = Aim.AttackPath(Filters.Units, aims[0].range+Mathf.Min(3, parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallWideBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), desc);	
 		}
 	}
 }

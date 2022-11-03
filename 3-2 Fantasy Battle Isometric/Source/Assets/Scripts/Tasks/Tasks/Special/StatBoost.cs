@@ -4,30 +4,28 @@ namespace HOA.Actions {
 
 	public class TimeMine : Task {
 		
-		public override string Desc {get {return "Destroy neighboring destructible." +
+		public override string desc {get {return "Destroy neighboring destructible." +
 				"\nIf initative is less than 6, initiative +1.";} }
 		
-		public TimeMine (Unit parent) {
-			Name = "Time Mine";
-			Weight = 4;
-			Parent = parent;
-			Price = Price.Cheap;
-			NewAim(Aim.AttackNeighbor(Special.DestRem));
+		public TimeMine (Unit parent) : base(parent) {
+			name = "Time Mine";
+			weight = 4;
+			aims += Aim.AttackNeighbor(Filters.Destructible);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Token t = (Token)targets[0];
 			Cell c = t.Body.Cell;
 			
-			EffectQueue.Add(new Effects.Destruct(new Source(Parent), t));
+			EffectQueue.Add(new Effects.Destruct(source, t));
 			
 			EffectGroup nextEffects = new EffectGroup();
 			
-			if (Parent.IN < 7) {
-				nextEffects.Add(new Effects.AddStat(new Source(Parent), Parent, EStat.IN, 1));
+			if (parent.IN < 7) {
+				nextEffects.Add(new Effects.AddStat(source, parent, EStat.IN, 1));
 			}
-			if (Parent.Body.CanEnter(c)) {
-				nextEffects.Add(new Effects.Move(new Source(Parent), Parent, c));
+			if (parent.Body.CanEnter(c)) {
+				nextEffects.Add(new Effects.Move(source, parent, c));
 			}
 			
 			if (nextEffects.Count > 0) {EffectQueue.Add(nextEffects);}
@@ -36,23 +34,21 @@ namespace HOA.Actions {
 
 	public class Cannibalize : Task {
 		
-		public override string Desc {get {return "Destroy target remains." +
+		public override string desc {get {return "Destroy target remains." +
 				"\nHealth +10/10";} } 
 		
-		public Cannibalize (Unit par) {
-			Name = "Cannibalize";
-			Weight = 4;
-			Price = new Price(1,0);
-			Parent = par;
-			NewAim(Aim.AttackNeighbor(Special.Rem));
+		public Cannibalize (Unit parent) : base(parent) {
+			name = "Cannibalize";
+			weight = 4;
+			aims += Aim.AttackNeighbor(Filters.Corpses);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Token t = (Token)targets[0];
 			
-			t.Die(new Source(Parent));
-			Parent.AddStat(new Source(Parent), EStat.MHP, 10);
-			Parent.AddStat(new Source(Parent), EStat.HP, 10);
+			t.Die(source);
+			parent.AddStat(source, EStat.MHP, 10);
+			parent.AddStat(source, EStat.HP, 10);
 		}
 	}
 

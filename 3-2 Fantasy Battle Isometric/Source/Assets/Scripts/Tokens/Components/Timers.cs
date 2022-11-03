@@ -75,8 +75,8 @@ namespace HOA {
 			
 			if (Parent.Arsenal.Move != default(Task)) {
 				Task move = Parent.Arsenal.Move;
-				Aim aim = move.Aims[0];
-				aim.Range += magnitude;
+				Aim aim = move.aims[0];
+				aim.range += magnitude;
 			}
 		}
 	}
