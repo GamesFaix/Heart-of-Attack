@@ -9,7 +9,7 @@ namespace HOA {
 		AP, FP, IN, DEF, HP, 
 		SELF, NEIGHBOR, PATH, LINE, ARC, FREE, 
 		UNIT, OB,
-		PLANE, DAMAGE,
+		PLANE, DAMAGE, TIMER, SENSOR,
 		STUN, SKIP, FIRE, EXP, COR
 	}
 
@@ -94,6 +94,8 @@ namespace HOA {
 			case ETip.SELF: return new TipSelf();
 			case ETip.TOKEN: return new TipToken();
 			case ETip.DAMAGE: return new TipDamage();
+			case ETip.TIMER: return new TipTimer();
+			case ETip.SENSOR: return new TipSensor();
 			default: return null;
 			}
 		}

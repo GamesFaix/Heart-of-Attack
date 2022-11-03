@@ -38,7 +38,7 @@ namespace HOA {
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, Aim[0].Range-Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
@@ -93,7 +93,7 @@ namespace HOA {
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Min(6, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
@@ -126,7 +126,7 @@ namespace HOA {
 			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 

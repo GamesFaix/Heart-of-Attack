@@ -1,9 +1,11 @@
-﻿namespace HOA {
+﻿using UnityEngine;
+
+namespace HOA {
 
 	public abstract class Timer {
 
 		public string Name {get; protected set;}
-		public string Desc {get; protected set;}
+		public abstract string Desc {get;}
 
 		public Source Source {get; protected set;}
 		public Unit Parent {get; protected set;}
@@ -20,6 +22,21 @@
 
 		public abstract void Activate ();
 
-		public abstract void Display (Panel p, float iconSize);
+		public Texture2D Icon {get {return Icons.TIMER();} }
+
+		public void Display (Panel p, float iconSize) {
+			Rect box = p.IconBox;
+
+			if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.TIMER);}
+			GUI.Box(box, Icon, p.s);
+
+			p.NudgeY();
+			GUI.Label(p.Box(100), Name);
+			p.NudgeY(false);
+			
+			p.NudgeX();
+			p.NudgeY();
+			GUI.Label(p.Box(250), Desc);
+		}
 	}
 }

@@ -8,7 +8,7 @@ public static class GUILog {
 		p.NudgeY();
 
 		float historySize = (p.H-2*p.LineH) / p.H;
-		Panel historyPanel = new Panel(p.TallBox(historySize), p.LineH, p.s);
+		Panel historyPanel = new Panel(p.TallWideBox(historySize), p.LineH, p.s);
 		CommandHistory(historyPanel);
 		
 		//CommandField(p.LineBox);

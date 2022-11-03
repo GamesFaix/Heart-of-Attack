@@ -51,7 +51,7 @@ namespace HOA {
 			
 			if (Targeter.Pending != default(Task)) {
 				p.NudgeX(); p.NudgeY();
-				GUI.Label(p.TallBox(3), "Pending: \n"+Targeter.PendingString());
+				GUI.Label(p.TallWideBox(3), "Pending: \n"+Targeter.PendingString());
 				
 				p.NudgeX();
 				if (GUI.Button(p.Box(btnW), "Execute [Space]") || Input.GetKeyUp("space")) {

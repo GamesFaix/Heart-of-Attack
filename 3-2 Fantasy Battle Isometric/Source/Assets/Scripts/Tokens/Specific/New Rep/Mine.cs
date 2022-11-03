@@ -7,7 +7,7 @@ namespace HOA{
 			ID = new ID(this, EToken.MINE, s, false, template);
 			Special.Add(EType.DEST);
 			Plane = Plane.Sunk;
-			Body = new BodyMine(this);
+			Body = new BodySensor9(this, SensorMine.Instantiate);
 		}
 		public override string Notes () {return "If any Token enters Mine's Cell or a neighboring Cell, destroy Mine.\nWhen Mine is destroyed, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";}
 		
@@ -27,74 +27,7 @@ namespace HOA{
 		*/
 			EffectQueue.Interrupt(new EExplosion(new Source(this), Body.Cell, 12));
 		//	}
-			((BodyMine)Body).DestroySensors();
-		}
-	}
-
-	public class BodyMine : Body{
-		List<Sensor> sensors;
-		
-		public BodyMine(Token t){
-			parent = t;
-			sensors = new List<Sensor>();
-		}
-		
-		public override bool Enter (Cell newCell) {
-
-			if (CanEnter(newCell)) {
-				if (cell != default(Cell)) {Exit();}
-				cell = newCell;
-				newCell.Enter(parent);
-				
-				foreach (Sensor s in sensors) {s.Delete();}
-				
-				CellGroup sensorCells = newCell.Neighbors(true);
-				foreach (Cell c in sensorCells) {
-					Sensor s = new SensorMine(parent, c);
-					sensors.Add(s);
-					c.AddSensor(s);
-				}
-				
-				return true;
-			}	
-			if (newCell == Game.Board.TemplateCell) {
-				cell = newCell;
-				return true;	
-			}
-			return false;
-		}
-		
-		public override void Exit () {
-			cell.Exit(parent);
-		}
-		
-		public void DestroySensors () {
-			for (int i=sensors.Count-1; i>=0; i--) {
-				Sensor s = sensors[i];
-				s.Delete();
-			}
-		}
-		
-	}
-
-	public class SensorMine : Sensor {
-
-		public SensorMine (Token par, Cell c) {
-			parent = par;	
-			cell = c;
-			Enter(c);
-		}
-		
-		public override void Enter (Cell c) {cell = c;}
-		public override void Exit () {}
-		
-		public override void OtherEnter (Token t) {
-			if (Game.Active) {EffectQueue.Interrupt(new EDetonate(new Source(t), parent));}
-		}
-		public override void OtherExit (Token t) {}
-		
-		public override string ToString () {
-			return "Trigger ("+parent.ToString()+")";
+			((BodySensor9)Body).DestroySensors();
 		}
 	}
 

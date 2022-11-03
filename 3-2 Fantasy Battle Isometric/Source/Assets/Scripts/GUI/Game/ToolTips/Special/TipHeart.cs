@@ -12,7 +12,7 @@ namespace HOA {
 		
 		public override void Content (Panel p) {
 			p.NudgeX();
-			GUI.Label(p.TallBox(5), 
+			GUI.Label(p.TallWideBox(5), 
 			          "Heart of Attacks are a class of unique " +
 			          "\nObstacles, created on the death of Attack " +
 			          "\nKings." +

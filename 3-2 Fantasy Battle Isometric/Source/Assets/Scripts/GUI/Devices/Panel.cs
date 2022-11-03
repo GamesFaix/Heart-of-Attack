@@ -45,7 +45,7 @@ public class Panel {
 	
 	public Rect FullBox {get {return new Rect (x,y,w,h);} }
 	
-	public Rect TallBox (float n) {
+	public Rect TallWideBox (float n) {
 		Rect rect;
 		if (n <= 1) {rect = new Rect(x,y2,w,n*h);}
 		else {rect = new Rect(x,y2,w,dy*n);}
@@ -72,6 +72,17 @@ public class Panel {
 		else {rect = new Rect(x2,y2,n,dy);}
 			
 		x2 += rect.width;
+		return rect;
+	}
+
+	public Rect TallBox (float n, int lines) {
+		Rect rect;
+		if (n <= 1) {rect = new Rect(x2,y2,w*n,dy);}
+		else {rect = new Rect(x2,y2,n,dy);}
+		if (lines > 0) {rect.height *= lines;}
+
+		x2 += rect.width;
+		y2 += rect.height;
 		return rect;
 	}
 	

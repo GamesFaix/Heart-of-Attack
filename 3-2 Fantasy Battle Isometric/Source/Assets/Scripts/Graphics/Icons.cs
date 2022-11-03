@@ -11,7 +11,7 @@ namespace HOA {
 		static Dictionary<EType, Texture2D> types;
 		static Dictionary<ETraj, Texture2D> trajectories;
 
-		static Texture2D skip, onDeath, timer;
+		static Texture2D skip, onDeath, timer, sensor;
 
 		public static void Load() {
 			stats = new Dictionary<EStat, Texture2D>();
@@ -50,7 +50,7 @@ namespace HOA {
 			skip = LoadFile("Stats/SKIP");
 			onDeath = LoadFile("ONDEATH");
 			timer = LoadFile("TIMER");
-
+			sensor = LoadFile("SENSOR");
 		}
 
 		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Icons/"+name) as Texture2D);}
@@ -68,5 +68,6 @@ namespace HOA {
 		public static Texture2D SKIP() {return skip;}
 		public static Texture2D ONDEATH() {return onDeath;}
 		public static Texture2D TIMER() {return timer;}
+		public static Texture2D SENSOR() {return sensor;}
 	}
 }

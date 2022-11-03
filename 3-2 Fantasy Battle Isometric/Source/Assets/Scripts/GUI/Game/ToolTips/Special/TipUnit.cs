@@ -36,6 +36,9 @@ namespace HOA {
 
 			tip = new TipHP();
 			tip.Link(p.LinePanel);
+
+			tip = new TipTimer();
+			tip.Link(p.LinePanel);
 		}
 	}
 	

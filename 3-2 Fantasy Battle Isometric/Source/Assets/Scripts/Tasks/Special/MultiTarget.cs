@@ -33,7 +33,7 @@ namespace HOA {
 			Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			Aim[1].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
@@ -82,7 +82,7 @@ namespace HOA {
 				Aim[0].Draw(new Panel(p.LineBox, p.LineH, p.s));
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	} 
 
@@ -157,7 +157,7 @@ namespace HOA {
 				Aim[0].Draw(p.LinePanel);
 			}
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 }

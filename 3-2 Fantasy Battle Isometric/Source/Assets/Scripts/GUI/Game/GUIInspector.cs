@@ -30,26 +30,21 @@ public static class GUIInspector {
 			Token t = (Token)inspected;
 			float boxH = (p.H-p.LineH) / p.H;
 
-			scrollPos = GUI.BeginScrollView(p.TallBox(boxH), scrollPos, new Rect(p.x2, p.y2, internalW, internalH));
+			scrollPos = GUI.BeginScrollView(p.TallWideBox(boxH), scrollPos, new Rect(p.x2, p.y2, internalW, internalH));
 				
 			float tokenH = 0;
-			Tokens(t, new Panel(p.TallBox(3), p.LineH, p.s), p, out tokenH);
+			Tokens(t, new Panel(p.TallWideBox(3), p.LineH, p.s), p, out tokenH);
 
 			if (t.Notes() != "") {
 				p.NudgeY();
-				GUI.Label(p.TallBox(1.5f), t.Notes());
+				GUI.Label(p.TallWideBox(1.5f), t.Notes());
 				p.NudgeY(false);
 			}
 
-			if (t.timers.Count>0) {
-				foreach (Timer timer in t.timers) {
-					timer.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
-				}
-			}
 			p.NudgeY();
-
+			p.NextLine();
 			float unitH = 0;
-			if (t is Unit) {Units (t, new Panel(p.TallBox(12), p.LineH, p.s), p, out unitH);}
+			if (t is Unit) {Units (t, new Panel(p.TallWideBox(12), p.LineH, p.s), p, out unitH);}
 			GUI.Label(p.LineBox, "");
 			internalH = tokenH+unitH;
 
@@ -57,7 +52,7 @@ public static class GUIInspector {
 		}
 
 		else if (inspected is Cell) {
-			GUIInspectorCell.Display((Cell)inspected, new Panel(p.TallBox(3), p.LineH, p.s), p);
+			GUIInspectorCell.Display((Cell)inspected, new Panel(p.TallWideBox(3), p.LineH, p.s), p);
 		}
 
 	}
@@ -77,7 +72,9 @@ public static class GUIInspector {
 
 		t.DisplayOnDeath(new Panel (p.Box(200), p.LineH, p.s));
 		p.NextLine();
-		
+		p.NudgeY();
+		p.NudgeY();
+
 		p.NudgeX();	
 		t.Plane.Display(new Panel (p.Box(iconSize*3), p.LineH, p.s));
 
@@ -85,7 +82,7 @@ public static class GUIInspector {
 		t.Special.Display(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		if (!t.IsTemplate()) {Cell(t, new Panel (p.Box(iconSize*3), p.LineH, p.s), super);}
+		if (!t.IsTemplate()) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
 
 
 		p.NextLine();
@@ -99,29 +96,49 @@ public static class GUIInspector {
 	}
 
 	static void Cell (Token t, Panel p, Panel super) {
-		if (GUI.Button(p.FullBox, "")) {
+		if (GUI.Button(p.Box(80), "")) {
 			if (LeftClick) {Inspected = t.Body.Cell;}
 			if (RightClick) {TipInspector.Inspect(ETip.CELL);}
 		}
-		GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
+		p.ResetX();
+		GUI.Box(p.IconBox, Icons.Special(EType.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
-		GUI.Label (p.Box(iconSize*2), t.Body.Cell.ToString(), p.s);
+		GUI.Label (p.Box(50), t.Body.Cell.ToString(), p.s);
+		p.NudgeY(false);
+		if (t.Body.Cell.Sensors().Count > 0) {
+			Rect box = p.IconBox;
+			if (GUI.Button(box, "")) {
+				TipInspector.Inspect(ETip.SENSOR);
+			}
+			GUI.Box(box, Icons.SENSOR(), p.s);
+		}
 	}
 
 	static void Units (Token t, Panel p, Panel Super, out float h) {
 		Unit u = (Unit)t;
 		float yStart = p.y2;
 		p.NudgeX();
-		u.Health.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
+		u.Health.Display(new Panel(p.Box(0.9f), p.LineH, p.s), iconSize);
+		p.NextLine();
 
 		p.NudgeX();
-		u.Watch.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
+		u.Watch.Display(new Panel(p.Box(0.9f), p.LineH, p.s), iconSize);
+		p.NextLine();
 
 		p.NudgeX();
-		u.Wallet.Display(new Panel(p.LineBox, p.LineH, p.s), iconSize);
+		u.Wallet.Display(new Panel(p.Box(0.9f), p.LineH, p.s), iconSize);
+		p.NextLine();
+
+		if (t.timers.Count>0) {
+			foreach (Timer timer in t.timers) {
+				p.NudgeX();
+				timer.Display(new Panel(p.Box(0.9f), p.LineH, p.s), iconSize);
+				p.NextLine();
+			}
+		}
 
 		p.NudgeY();
-		GUIInspectorTask.Arsenal(u, new Panel(p.TallBox(9), p.LineH, p.s), p);
+		GUIInspectorTask.Arsenal(u, new Panel(p.TallWideBox(9), p.LineH, p.s), p);
 		h = p.y2-yStart;
 	}
 

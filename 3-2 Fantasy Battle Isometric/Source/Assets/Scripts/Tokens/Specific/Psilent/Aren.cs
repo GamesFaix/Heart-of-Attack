@@ -193,7 +193,7 @@ namespace HOA{
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 

@@ -11,7 +11,7 @@ namespace HOA {
 			ID = new ID(this, EToken.WEBB, s, false, template);
 			Plane = Plane.Sunk;
 			Special.Add(EType.DEST);
-			Body = new BodyWeb(this);	
+			Body = new BodySensor1(this, SensorWeb.Instantiate);	
 			Neutralize();
 			affected = new Dictionary<Unit, int>();
 		}
@@ -21,95 +21,10 @@ namespace HOA {
 		}
 	
 		public override void Die (Source s, bool corpse=true, bool log=true) {
-			((BodyWeb)Body).DestroySensors();
+			((BodySensor1)Body).DestroySensors();
 			base.Die(s,corpse,log);
 		}
 	
-	}
-	
-	public class BodyWeb : Body{
-		Sensor sensor;
-		
-		public BodyWeb(Token t){
-			parent = t;
-		}
-		
-		public override bool Enter (Cell newCell) {
-			if (CanEnter(newCell)) {
-				if (cell != default(Cell)) {Exit();}
-				cell = newCell;
-				newCell.Enter(parent);
-				
-				if (sensor != default(Sensor)) {sensor.Delete();}
-				sensor = new SensorWeb(parent, newCell);
-				newCell.AddSensor(sensor);
-				return true;
-			}	
-			if (newCell == Game.Board.TemplateCell) {
-				cell = newCell;
-				return true;	
-			}
-			return false;
-		}
-		
-		public override void Exit () {cell.Exit(parent);}
-		
-		public void DestroySensors () {sensor.Delete();}
-	}
-	
-	public class SensorWeb : Sensor {
-
-		Web web;
-
-		public SensorWeb (Token par, Cell c) {
-			parent = par;
-			web = (Web)par;
-			cell = c;
-			Enter(c);
-		}
-		
-		public override void Enter (Cell c) {
-			c.SetStop(EPlane.GND, true);
-			c.SetStop(EPlane.AIR, true);
-
-			foreach (Token t in c.Occupants) {
-				if (t is Unit) {
-					EffectQueue.Add(new EStick(new Source(parent), (Unit)t));
-				}
-			}
-		}
-		public override void Exit () {
-			cell.SetStop(EPlane.GND, false);
-			cell.SetStop(EPlane.AIR, false);
-
-			foreach (Unit u in web.Affected.Keys) {
-				Task move = u.Arsenal.Move;
-				if (move != default(Task)) {
-					move.Aim[0].Range = web.Affected[u];
-					web.Affected.Remove(u);
-				}
-			}
-		}
-		
-		public override void OtherEnter (Token t) {
-			if (t is Unit) {
-				EffectQueue.Add(new EStick(new Source(parent), (Unit)t));
-			}
-		}
-		public override void OtherExit (Token t) {
-			if (t is Unit) {
-				Unit u = (Unit)t;
-				Task move = u.Arsenal.Move;
-				if (move != default(Task)) {
-					move.Aim[0].Range = web.Affected[u];
-					web.Affected.Remove(u);
-				}
-			}
-		}
-		
-		public override string ToString () {
-			return "("+parent.ToString()+")";
-		}
 	}
 
 	public class EStick : Effect {

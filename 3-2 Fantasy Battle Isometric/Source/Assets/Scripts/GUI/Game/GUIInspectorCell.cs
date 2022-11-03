@@ -17,7 +17,9 @@ namespace HOA {
 
 			int planes = Enum.GetValues(typeof(EPlane)).Length;
 			for (int i=0; i<planes; i++) {
-				GUI.Box(p.Box(iconSize), Icons.Plane((EPlane)i), p.s);
+				Rect box = p.IconBox;
+				if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.PLANE);}
+				GUI.Box(box, Icons.Plane((EPlane)i), p.s);
 				if (c.Contains((EPlane)i, out t)) {
 					p.NudgeX();
 					p.NudgeY();
@@ -29,12 +31,10 @@ namespace HOA {
 
 			if (c.Sensors().Count > 0) {
 				p.NextLine();
-				GUI.Label(p.Box(0.5f), "Local effects:", p.s);
-				p.NextLine();
-				
 				foreach (Sensor s in c.Sensors()) {
 					p.NudgeX();
-					FancyText.Highlight(p.Box(0.5f), s.ToString(), p.s, s.Parent.Owner.Colors);
+					s.Display(p.LinePanel);
+					p.NextLine();
 					p.NextLine();
 				}
 			}

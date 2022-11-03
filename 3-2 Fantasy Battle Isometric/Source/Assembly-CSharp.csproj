@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{CD90305F-C09C-1CC9-3C45-F4C5C53411D5}</ProjectGuid>
+	<ProjectGuid>{6DA00672-4C71-0D2A-CB07-A8B97FCBF3EC}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -115,6 +115,8 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipIN.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipOnDeath.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipPlane.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipSensor.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipArc.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipFree.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipLine.cs" />
@@ -207,11 +209,14 @@
      <Compile Include="Assets\Scripts\Tasks\Task.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Arsenal.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Body.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Components\CaraShield.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\BodySensor1.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\BodySensor9.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Health.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\HealthCaraShield.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\ID.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Plane.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\Sensors.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Special.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Stat.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\StatCustom.cs" />

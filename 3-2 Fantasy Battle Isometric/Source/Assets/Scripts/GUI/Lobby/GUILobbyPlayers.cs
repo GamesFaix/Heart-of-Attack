@@ -32,7 +32,7 @@ public static class GUILobbyPlayers {
 		p.y2 = p.Y + 9.5f*p.LineH;
 		
 		if (selectee != default(Player)){
-			FactionSelector(new Panel (p.TallBox(3), p.LineH, p.s), selectee);
+			FactionSelector(new Panel (p.TallWideBox(3), p.LineH, p.s), selectee);
 		}
 		
 		bool ready = true;

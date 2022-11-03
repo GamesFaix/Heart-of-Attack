@@ -9,7 +9,7 @@ public static class GUIQueue {
 		p.NudgeY();
 		if (TurnQueue.Count > 0) {
 			float listHeight = (p.H-p.LineH) / p.H;
-			Panel listPanel = new Panel(p.TallBox(listHeight), p.LineH, p.s);
+			Panel listPanel = new Panel(p.TallWideBox(listHeight), p.LineH, p.s);
 			DrawList(listPanel);
 		}
 	}

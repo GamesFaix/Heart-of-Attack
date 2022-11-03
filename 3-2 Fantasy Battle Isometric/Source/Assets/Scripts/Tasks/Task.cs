@@ -34,7 +34,7 @@ namespace HOA {
 			p.NextLine();
 			DrawAim(0, p.LinePanel);
 			float descH = (p.H-(p.LineH*2))/p.H;
-			GUI.Label(p.TallBox(descH), Desc);	
+			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 
 		public void DrawPrice (Panel p) {Price.Draw(p);}

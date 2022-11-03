@@ -27,9 +27,9 @@ namespace HOA {
 				p.NextLine();
 				tip.Label(p.LinePanel);
 				p.NextLine();
-				tip.Content(new Panel(p.TallBox(16), p.LineH, p.s));
+				tip.Content(new Panel(p.TallWideBox(16), p.LineH, p.s));
 				p.NextLine();
-				tip.SeeAlso(new Panel(p.TallBox(5), p.LineH, p.s));
+				tip.SeeAlso(new Panel(p.TallWideBox(5), p.LineH, p.s));
 			}
 			p.s.normal.textColor = normalColor;
 		}

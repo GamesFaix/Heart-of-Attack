@@ -70,6 +70,9 @@ namespace HOA {
 
 			tip = new TipTram();
 			tip.Link(p.LinePanel);
+
+			tip = new TipSensor();
+			tip.Link(p.LinePanel);
 		}	
 		
 		public override void SeeAlso (Panel p) {
