@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace HOA{
 	public class ArenaNonSensus : Unit {
 		public ArenaNonSensus(Source s, bool template=false){
-			id = new ID(this, EToken.AREN, s, false, template);
-			body = new BodyAren(this);
-			plane = Plane.Eth;
-			onDeath = EToken.NONE;
+			ID = new ID(this, EToken.AREN, s, false, template);
+			Body = new BodyAren(this);
+			Plane = Plane.Eth;
+			OnDeath = EToken.NONE;
 
 			ScaleQuad();
 			NewHealth(55,3);
@@ -18,17 +18,17 @@ namespace HOA{
 
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
-			arsenal.Add(new Task[]{
+			Arsenal.Add(new Task[]{
 				new AMoveAren(this, 3),
 				new AArenLeech (this),
 				new AArenDonate (this)
 			});
-			arsenal.Sort();
+			Arsenal.Sort();
 		}
 
 		public override string Notes () {return "";}
 
-		public CellGroup Cells {get {return ((BodyAren)body).Cells;} }
+		public CellGroup Cells {get {return ((BodyAren)Body).Cells;} }
 	}
 		
 	public class BodyAren : Body{
@@ -171,7 +171,7 @@ namespace HOA{
 			range = r;
 			for (int i=0; i<range; i++) {
 				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
-				AddAim(a);
+				NewAim(a);
 				//Debug.Log(a);
 			}
 		}
@@ -209,7 +209,7 @@ namespace HOA{
 			Weight = 3;
 
 			Price = new Price(1,0);
-			AddAim(HOA.Aim.Self());
+			NewAim(HOA.Aim.Self());
 			Parent = u;
 		}
 		
@@ -235,7 +235,7 @@ namespace HOA{
 			Weight = 3;
 
 			Price = new Price(1,0);
-			AddAim(HOA.Aim.Self());
+			NewAim(HOA.Aim.Self());
 			Parent = u;
 		}
 		

@@ -264,8 +264,7 @@ namespace HOA {
 			//Debug.Log("effect corrode");
 			int cor = (int)Mathf.Floor(dmg*0.5f);
 			target.Damage(source, dmg);
-			target.AddStat(source, EStat.COR, cor);
-			
+			target.timers.Add(new TCorrosion(target, source.Token, cor));
 			Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
 			target.Display.Effect(EEffect.COR);
 		}

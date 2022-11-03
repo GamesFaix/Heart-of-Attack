@@ -1,38 +1,25 @@
-﻿
+﻿namespace HOA {
 
-namespace HOA {
-	public class Timer {
+	public abstract class Timer {
 
-		protected string name;
-		public string Name {get {return name;} }
+		public string Name {get; protected set;}
+		public string Desc {get; protected set;}
 
-		protected string desc;
-		public string Desc {get {return desc;} }
+		public Source Source {get; protected set;}
+		public Unit Parent {get; protected set;}
 
-
-		protected Unit parent;
-
-		protected int turns;
-		public int Turns {get {return turns;} }
+		public int Turns {get; protected set;}
 
 		public void Tick () {
-			turns--;
-			if (turns == 0) {
+			Turns--;
+			if (Turns == 0) {
 				Activate();
-				if (turns == 0) {parent.timers.Remove(this);}
+				if (Turns == 0) {Parent.timers.Remove(this);}
 			}
 		}
 
-		public virtual void Activate () {}
+		public abstract void Activate ();
 
-
-
-
-
+		public abstract void Display (Panel p, float iconSize);
 	}
-
-
-
-
-
 }

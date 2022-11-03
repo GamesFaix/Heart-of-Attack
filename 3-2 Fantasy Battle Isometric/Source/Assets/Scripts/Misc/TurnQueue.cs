@@ -82,9 +82,8 @@ namespace HOA {
 
 
 		static void ResetOldTop (Unit oldTop) {
-			if(oldTop.IsCOR()) {oldTop.DecayCOR();}
 			oldTop.SetStat(new Source(), EStat.AP, 0, false);
-			oldTop.ResetArsenal();
+			oldTop.Arsenal.Reset();
 		}
 
 		public static void PrepareNewTop (Unit newTop) {

@@ -17,7 +17,7 @@ namespace HOA {
 			damage = d;
 			Weight = 3;
 			Price = Price.Cheap;
-			AddAim(HOA.Aim.Melee());
+			NewAim(HOA.Aim.Melee());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

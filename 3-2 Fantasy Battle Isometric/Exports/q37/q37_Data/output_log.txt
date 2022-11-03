@@ -15,3 +15,9 @@ Loading C:\github\gamesfaix\Heart-of-Attack\3-2 Fantasy Battle Isometric\Exports
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+HandleD3DDeviceLost
+  HandleD3DDeviceLost: needs reset, doing it
+FullResetD3DDevice
+ResetD3DDevice
+dev->Reset
+D3Dwindow device not lost anymore

@@ -43,22 +43,12 @@ namespace HOA {
 			return tokens;
 		}
 
-		public void Add (Cell c) {
-			if (!list.Contains(c)) {list.Add(c);} 
-		}
-		public void Add (IEnumerable<Cell> cg) {
-			foreach (Cell c in cg) {
-				if (!list.Contains(c)) {list.Add(c);}
-			}
-		}
-		public void Add (Token t) {
-			if (!list.Contains(t)) {list.Add(t);}
-		}
-		public void Add (IEnumerable<Token> tg) {
-			foreach (Token t in tg) {
-				if (!list.Contains(t)) {list.Add(t);}
-			}
-		}
+		public void Add (Cell c) {list.Add(c);} 
+		public void Add (IEnumerable<Cell> cg) {foreach (Cell c in cg) {list.Add(c);} }
+		public void Add (Token t) {list.Add(t);}
+		public void Add (IEnumerable<Token> tg) {foreach (Token t in tg) {list.Add(t);} }
+
+		public override void Add (Target target) {list.Add(target);}
 
 		public void Remove (Cell c) {
 			if (list.Contains(c)) {list.Remove(c);}

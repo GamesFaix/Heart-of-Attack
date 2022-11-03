@@ -83,12 +83,12 @@ namespace HOA {
 			cell.SetStop(EPlane.AIR, false);
 			
 			foreach (Unit u in ((Web)parent).Affected.Keys) {
-				foreach (Task a in u.Arsenal()) {
+				foreach (Task a in u.Arsenal) {
 					if (a is AMove) {
 						
-						u.Arsenal().Remove(a);
-						u.Arsenal().Add(((Web)parent).Affected[u]);
-						u.Arsenal().Sort();
+						u.Arsenal.Remove(a);
+						u.Arsenal.Add(((Web)parent).Affected[u]);
+						u.Arsenal.Sort();
 						((Web)parent).Affected.Remove(u);
 					}
 				}
@@ -103,12 +103,12 @@ namespace HOA {
 		public override void OtherExit (Token t) {
 			if (t is Unit) {
 				Unit u = (Unit)t;
-				foreach (Task a in u.Arsenal()) {
+				foreach (Task a in u.Arsenal) {
 					if (a is AMove) {
 						
-						u.Arsenal().Remove(a);
-						u.Arsenal().Add(((Web)parent).Affected[u]);
-						u.Arsenal().Sort();
+						u.Arsenal.Remove(a);
+						u.Arsenal.Add(((Web)parent).Affected[u]);
+						u.Arsenal.Sort();
 						((Web)parent).Affected.Remove(u);
 					}
 				}
@@ -129,8 +129,8 @@ namespace HOA {
 		}
 		public override void Process() {
 			Debug.Log("sticking "+target);
-			for(int i=target.Arsenal().Count-1; i>=0; i--) {
-				Task a = target.Arsenal()[i];
+			for(int i=target.Arsenal.Count-1; i>=0; i--) {
+				Task a = target.Arsenal[i];
 				if (a is AMove) {
 					//Debug.Log(target+" has move");
 					((Web)source.Token).Affected.Add(target, a);
@@ -138,9 +138,9 @@ namespace HOA {
 					Aim oldAim = a.Aim[0];
 					Aim newAim = new Aim (oldAim.Trajectory, oldAim.Special, oldAim.Purpose, 1);
 					
-					target.Arsenal().Add(new AMove(target, newAim));
-					target.Arsenal().Remove(a);
-					target.Arsenal().Sort();
+					target.Arsenal.Add(new AMove(target, newAim));
+					target.Arsenal.Remove(a);
+					target.Arsenal.Sort();
 					
 					Mixer.Play(SoundLoader.Effect(EEffect.STICK));
 					target.Display.Effect(EEffect.STICK);

@@ -8,23 +8,21 @@ namespace HOA {
 		public Dictionary<Unit, int> Affected {get {return affected;} }
 
 		public Web(Source s, bool template=false){
-			id = new ID(this, EToken.WEBB, s, false, template);
-			plane = Plane.Sunk;
-			type.Add(EType.DEST);
-			body = new BodyWeb(this);	
+			ID = new ID(this, EToken.WEBB, s, false, template);
+			Plane = Plane.Sunk;
+			Special.Add(EType.DEST);
+			Body = new BodyWeb(this);	
 			Neutralize();
 			affected = new Dictionary<Unit, int>();
 		}
-		public override string Notes () {return "Ground and Air units may not move through "+id.Name+".\nUnits sharing "+id.Name+"'s Cell have a Move Range of 1.";}
+		public override string Notes () {return 
+			"Ground and Air units may not move through "+ID.Name+"." +
+			"\nUnits sharing "+ID.Name+"'s Cell have a Move Range of 1.";
+		}
 	
 		public override void Die (Source s, bool corpse=true, bool log=true) {
-			BodyWeb bw = (BodyWeb)body;
-			bw.DestroySensors();
-			
-			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
-			TokenFactory.Remove(this);
-			Body.Exit();
-			if (log) {GameLog.Out(s.Token+" destroyed "+this+".");}
+			((BodyWeb)Body).DestroySensors();
+			base.Die(s,corpse,log);
 		}
 	
 	}
@@ -85,7 +83,7 @@ namespace HOA {
 			cell.SetStop(EPlane.AIR, false);
 
 			foreach (Unit u in web.Affected.Keys) {
-				Task move = u.Arsenal().Move;
+				Task move = u.Arsenal.Move;
 				if (move != default(Task)) {
 					move.Aim[0].Range = web.Affected[u];
 					web.Affected.Remove(u);
@@ -101,7 +99,7 @@ namespace HOA {
 		public override void OtherExit (Token t) {
 			if (t is Unit) {
 				Unit u = (Unit)t;
-				Task move = u.Arsenal().Move;
+				Task move = u.Arsenal.Move;
 				if (move != default(Task)) {
 					move.Aim[0].Range = web.Affected[u];
 					web.Affected.Remove(u);
@@ -124,7 +122,7 @@ namespace HOA {
 			parent = (Web)source.Token; 
 		}
 		public override void Process() {
-			Task move = target.Arsenal().Move;
+			Task move = target.Arsenal.Move;
 			if (move != default(Task)) {
 				parent.Affected.Add(target, move.Aim[0].Range);
 				move.Aim[0].Range = 1;

@@ -35,7 +35,7 @@ namespace HOA {
 			
 			if (temp) {
 				instance = 'T';
-				fullName = name+" TEMPLATE";
+				fullName = name;//+" TEMPLATE";
 			}
 				
 			else if(!unique){

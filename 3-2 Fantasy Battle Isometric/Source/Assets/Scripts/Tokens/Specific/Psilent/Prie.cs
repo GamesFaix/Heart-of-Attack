@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace HOA{
 	public class PriestOfNaja : Unit {
 		public PriestOfNaja(Source s, bool template=false){
-			id = new ID(this, EToken.PRIE, s, false, template);
-			plane = Plane.Gnd;
+			ID = new ID(this, EToken.PRIE, s, false, template);
+			Plane = Plane.Gnd;
 			ScaleLarge();
 			NewHealth(50,2);
 			NewWatch(4);
@@ -13,12 +13,12 @@ namespace HOA{
 
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
-			arsenal.Add(new Task[]{
+			Arsenal.Add(new Task[]{
 				new AMovePath(this, 4),
 				new AStrike(this, 15),
 				new APrieShove(this)
 			});
-			arsenal.Sort();
+			Arsenal.Sort();
 		}
 
 		public override string Notes () {return "";}
@@ -40,7 +40,7 @@ namespace HOA{
 
 			Parent = u;
 			Price = new Price(1,1);
-			AddAim(HOA.Aim.Melee());
+			NewAim(HOA.Aim.Melee());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

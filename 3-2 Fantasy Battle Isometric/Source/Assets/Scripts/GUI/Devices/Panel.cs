@@ -63,7 +63,9 @@ public class Panel {
 			return rect;
 		}
 	}
-	
+
+	public Panel LinePanel {get {return new Panel(LineBox, LineH, s);} }
+
 	public Rect Box (float n) {
 		Rect rect;
 		if (n <= 1) {rect = new Rect(x2,y2,w*n,dy);}

@@ -1,65 +1,32 @@
-﻿
+﻿using UnityEngine;
+
 namespace HOA {
 	
 	public class Wallet {
-		protected int maxAp;
-		protected int ap;
-		protected int fp;
+
+		public Stat AP {get; protected set;}
+		public Stat FP {get; protected set;}
+
 		protected Unit parent;
 		
 		public Wallet () {}
 		
-		public Wallet (Unit p, int n=2) {
+		public Wallet (Unit p, byte n=2) {
 			parent = p;
-			MaxAP = n;
-			AP = 0;
-			FP = 0;
+			AP = Stat.AP(parent, n);
+			FP = Stat.FP(parent);
 		}
 
-		public int AP {
-			get {return ap;} 
-			set {ap = Clamp(value);}
-		}
-		public int MaxAP {
-			get {return maxAp;} 
-			set {maxAp = Clamp(value);}
-		}
-		public int FP {
-			get {return fp;} 
-			set {fp = Clamp(value);}
-		}
-
-		public string APString {get {return "("+ap+"/"+maxAp+")";} }
-		public string FPString {get {return "("+fp+")";} }
-
-		public int AddAP (Source s, int n, bool log=true) {
-			ap = Clamp(ap+n);
-			string sign ="+"+n;
-			if (n<0) {sign = ""+n;}
-			if (log) {GameLog.Out(s+": "+parent+" "+sign+"AP. AP="+ap);}
-			return ap;
-		}
 		public void FillAP (bool log=true) {
-			ap=maxAp;
-			if (log) {GameLog.Out(parent+" AP filled.");}
+			if (AP.Max > AP) {
+				AP.Add(new Source(parent), (AP.Max-AP), log);
+				if (log) {GameLog.Out(parent+" AP filled.");}
+			}
 		}
 
-		public virtual int AddFP (Source s, int n, bool log=true) {
-			fp = Clamp(fp+n);
-			string sign ="+"+n;
-			if (n<0) {sign = ""+n;}
-			if (log) {GameLog.Out(s+": "+parent+" "+sign+"FP. FP="+fp);}
-			return fp;
-		}
-
-		protected int Clamp (int x) {
-			if (x<0){x=0;}
-			return x;
-		}
-		
 		public bool CanAfford (Price Price) {
-			if (ap >= Price.AP
-			&& fp >= Price.FP
+			if (AP >= Price.AP
+			&& FP >= Price.FP
 			&& !Price.Other) {
 				return true;
 			}
@@ -67,13 +34,62 @@ namespace HOA {
 		}
 		
 		public void Charge (Price Price) {
-			AddAP (new Source(parent), 0-Price.AP, false);
-			AddFP (new Source(parent), 0-Price.FP, false);
+			AP.Add (new Source(parent), 0-Price.AP, false);
+			FP.Add (new Source(parent), 0-Price.FP, false);
 		}
 		
 		public void Refund (Price Price) {
-			AddAP (new Source(parent), Price.AP, false);
-			AddFP (new Source(parent), Price.FP, false);
+			AP.Add (new Source(parent), Price.AP, false);
+			FP.Add (new Source(parent), Price.FP, false);
+		}
+
+		public virtual void Display (Panel p, float iconSize) {
+			AP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+			FP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+		}
+	}
+
+	public class INWallet : Wallet{
+		
+		public INWallet (Unit parent, byte ap=2) {
+			this.parent = parent;
+			AP = Stat.AP(parent, ap);
+			FP = Stat.FPaddsIN(parent);
+		}
+
+		public override void Display (Panel p, float iconSize) {
+			AP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+			FP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+
+			p.NudgeX(); p.NudgeX();
+			iconSize = 20;
+			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.IN), p.s);
+			GUI.Label(p.Box(40), "+1 per ");
+			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.FP), p.s);
+		}
+	}
+
+	public class DEFWallet : Wallet{
+
+		byte cap;
+
+		public DEFWallet (Unit parent, byte ap=2, byte cap=4) {
+			this.parent = parent;
+			this.cap = cap;
+			AP = Stat.AP(parent, ap);
+			FP = Stat.FPaddsDEF(parent, cap);
+		}
+		public override void Display (Panel p, float iconSize) {
+			AP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+			FP.Display (new Panel(p.Box(iconSize*2 +5), p.LineH, p.s), iconSize);
+			
+			p.NudgeX(); p.NudgeX();
+			iconSize = 20;
+			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.DEF), p.s);
+			GUI.Label(p.Box(40), "+1 per ");
+			GUI.Box(p.Box(iconSize), Icons.Stat(EStat.FP), p.s);
+			p.NudgeX();
+			GUI.Label(p.Box(60), "(Max +"+cap+")");
 		}
 	}
 }

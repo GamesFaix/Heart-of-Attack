@@ -3,9 +3,9 @@
 namespace HOA{
 	public class Conflagragon : Unit {
 		public Conflagragon(Source s, bool template=false){
-			id = new ID(this, EToken.CONF, s, false, template);
-			plane = Plane.Air;
-			onDeath = EToken.ASHE;
+			ID = new ID(this, EToken.CONF, s, false, template);
+			Plane = Plane.Air;
+			OnDeath = EToken.ASHE;
 			ScaleMedium();
 			NewHealth(30);
 			NewWatch(4);
@@ -14,13 +14,13 @@ namespace HOA{
 
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
-			arsenal.Add(new Task[]{
+			Arsenal.Add(new Task[]{
 				new AMovePath(this, 6),
 				new AConfStrike(this),
 				new AConfFire(this)
 			});
 
-			arsenal.Sort();
+			Arsenal.Sort();
 		}
 
 		public override string Notes () {return "";}
@@ -37,7 +37,7 @@ namespace HOA{
 			Weight = 3;
 			Parent = u;
 			Price = new Price(0,1);
-			AddAim(HOA.Aim.Melee());
+			NewAim(HOA.Aim.Melee());
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
@@ -45,26 +45,7 @@ namespace HOA{
 		}
 	}
 
-	public class AConfFire : Task {
-		
-		int damage = 10;
 
-		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
-				"\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
-					"\nDestroy all destructible tokens that would take damage.";} }
-		
-		public AConfFire (Unit u) {
-			Name = "Firebreathing";
-			Weight = 3;
-			Price = new Price(2,0);
-			AddAim(new HOA.Aim(ETraj.LINE, Special.UnitDest, 3));
-			Parent = u;
-		}
-		
-		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EFire(new Source(Parent), (Token)targets[0], damage));
-		}
-	}
 
 
 }

@@ -15,7 +15,7 @@ namespace HOA {
 			Name = "Rage";
 			Weight = 3;
 			Price = Price.Cheap;
-			AddAim(HOA.Aim.Melee());
+			NewAim(HOA.Aim.Melee());
 			damage = d;
 		}
 		

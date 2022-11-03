@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Mine : Obstacle {
 		public Mine(Source s, bool template=false){
-			id = new ID(this, EToken.MINE, s, false, template);
-			type.Add(EType.DEST);
-			plane = Plane.Sunk;
-			body = new BodyMine(this);
+			ID = new ID(this, EToken.MINE, s, false, template);
+			Special.Add(EType.DEST);
+			Plane = Plane.Sunk;
+			Body = new BodyMine(this);
 		}
 		public override string Notes () {return "If any Token enters Mine's Cell or a neighboring Cell, destroy Mine.\nWhen Mine is destroyed, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";}
 		
@@ -27,8 +27,7 @@ namespace HOA{
 		*/
 			EffectQueue.Interrupt(new EExplosion(new Source(this), Body.Cell, 12));
 		//	}
-			BodyMine bodyMine = (BodyMine)body;
-			bodyMine.DestroySensors();
+			((BodyMine)Body).DestroySensors();
 		}
 	}
 

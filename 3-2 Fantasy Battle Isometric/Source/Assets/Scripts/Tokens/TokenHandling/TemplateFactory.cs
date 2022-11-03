@@ -16,6 +16,7 @@ namespace HOA {
 			foreach (EToken code in (EToken[])Enum.GetValues(typeof(EToken))) {
 				if (code != EToken.NONE) {
 					Token template = Make(code);
+					template.Owner = Roster.Neutral;
 		//			Debug.Log(template);
 					template.BuildTemplate();
 					templates.Add(code, template);

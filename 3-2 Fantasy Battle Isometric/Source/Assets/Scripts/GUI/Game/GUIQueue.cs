@@ -69,20 +69,13 @@ public class GUIQueue : MonoBehaviour {
 				//p.NudgeX();
 				GUI.Box(p.Box(iconSize), Icons.Stat(EStat.HP), p.s);
 				p.NudgeX();
-				GUI.Label (p.Box(iconSize*3), u.HPString, p.s);
+				GUI.Label (p.Box(iconSize*3), u.Health.HP.ToString(), p.s);
 				
 				if (u.DEF > 0) {
 					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.DEF), p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
 				}
-				
-				if (u.COR > 0) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.COR), p.s);
-					p.x2 += 5;
-					GUI.Label(p.Box(iconSize), u.COR+"", p.s);
-				}
-				
 				
 				if (p.x2-p.X > internalW) {internalW = p.x2-p.X;}
 				p.NextLine();

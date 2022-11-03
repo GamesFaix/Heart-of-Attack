@@ -14,7 +14,7 @@ namespace HOA {
 			Name = "Move";
 			Weight = 1;
 			Price = Price.Cheap;
-			AddAim(new Aim(ETraj.LINE, EType.CELL, EPurp.MOVE, r));
+			NewAim(new Aim(ETraj.LINE, EType.CELL, EPurp.MOVE, r));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -16,11 +16,11 @@ namespace HOA {
 			GUISelectors.TokenGrid(subPanel); 
 		
 			if (token != EToken.NONE) {
-				Targeter.Find(new ACreateManual(TurnQueue.Top, token));
+				Targeter.Start(new ACreateManual(TurnQueue.Top, token));
 			}
 
-			if (Targeter.Pending() != default(Task)) {
-				if (GUI.Button(p.LineBox, Targeter.Pending().ToString())
+			if (Targeter.Pending != default(Task)) {
+				if (GUI.Button(p.LineBox, Targeter.Pending.ToString())
 				    || Input.GetKeyUp ("space")) {
 					Targeter.Execute();
 				}

@@ -18,7 +18,6 @@ namespace HOA {
 			AddStat (EStat.HP, "HP");  
 			AddStat (EStat.DEF, "DEF"); 
 			AddStat (EStat.IN, "IN"); 
-			AddStat (EStat.COR, "COR");
 			AddStat (EStat.STUN, "STUN"); 
 			AddStat (EStat.AP, "AP"); 
 			AddStat (EStat.FP, "FP");

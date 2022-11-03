@@ -5,15 +5,18 @@ namespace HOA {
 
 	public abstract class Token : Target {
 
-		protected ID id;
-		public ID ID {get {return id;} }
+		public ID ID {get; protected set;}
+		public Plane Plane {get; protected set;}
+		public Special Special {get; protected set;}
+		public EToken OnDeath {get; protected set;}
+		public Body Body {get; protected set;}
 
-		public override string ToString () {return id.FullName;}
+		public override string ToString () {return ID.FullName;}
 		public abstract string Notes ();
 
 		public Player Owner {
-			get {return id.Owner;} 
-			set {id.Owner = value;}
+			get {return ID.Owner;} 
+			set {ID.Owner = value;}
 		}
 
 		//templates
@@ -22,23 +25,21 @@ namespace HOA {
 		public bool IsTemplate () {return isTemplate;}
 		public Token Template () {
 			if (IsTemplate()) {return this;}
-			return TemplateFactory.Template(id.Code);
+			return TemplateFactory.Template(ID.Code);
 		}
 
-		//
-		protected Plane plane;
-		public Plane Plane {get {return plane;} }
-		
-		protected Special type;
-		public Special Special {get {return type;} }
-		
-		protected EToken onDeath = EToken.NONE;
-		public EToken OnDeath {
-			get {return onDeath;}
-			set {onDeath = value;}
+		public void DisplayTemplate (Panel p, float iconSize) {
+			if (GUI.Button(p.FullBox, "", p.s)) {GUIInspector.Inspected = Template();}
+			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
+			GUI.Label(p.Box(100), ID.Name);
 		}
-		protected Body body;
-		public Body Body {get {return body;} }
+		public void DisplayThumb (Panel p, float iconSize) {
+			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
+			p.NudgeX();
+			FancyText.Highlight(p.Box(150), ID.FullName, p.s, Owner.Colors);
+			//GUI.Label(p.Box(100), ID.FullName);
+		}
+
 
 		//graphics
 		Vector3 scale = new Vector3 (2.5f, 1, 2.5f);

@@ -6,14 +6,15 @@ namespace HOA {
 	public abstract class Obstacle : Token{
 
 		public Obstacle () {
-			body = new Body(this);
-			type = new Special(EType.OB);
-			plane = Plane.Gnd;
+			Body = new Body(this);
+			Special = new Special(EType.OB);
+			Plane = Plane.Gnd;
+			OnDeath = EToken.NONE;
 		}
 
 		protected void BuildHeart () {
-			plane = Plane.Tall;
-			type = new Special(new List<EType> {EType.OB, EType.HEART});
+			Plane = Plane.Tall;
+			Special = new Special(new List<EType> {EType.OB, EType.HEART});
 			Neutralize();
 		}
 

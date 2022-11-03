@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{356CDCC2-10C2-82F0-F7A2-35808BFF7C64}</ProjectGuid>
+	<ProjectGuid>{E8E64D6A-33AD-A324-9877-DE2BA02C7F37}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -59,6 +59,23 @@
      <Compile Include="Assets\Scripts\Actions\Interfaces\IMultiTarget.cs" />
      <Compile Include="Assets\Scripts\Actions\Interfaces\ITeleport.cs" />
      <Compile Include="Assets\Scripts\Actions\Legalizer.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\AElectric.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\ATime.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\ATimers.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Corrosive.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Fire.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Heals.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Lasers.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Leech.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Morphs.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\MultiTarget.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\PathAttacks.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Replace.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\ScalingRange.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\SpecialCreates.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\SpecialMoves.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\StatBoost.cs" />
+     <Compile Include="Assets\Scripts\Actions\Special\Teleports.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreate.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreateArc.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreateManual.cs" />
@@ -76,7 +93,6 @@
      <Compile Include="Assets\Scripts\Actions\Standard\IMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Targeter.cs" />
      <Compile Include="Assets\Scripts\Actions\Task.cs" />
-     <Compile Include="Assets\Scripts\Actions\TaskRef.cs" />
      <Compile Include="Assets\Scripts\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Board\BorderFactory.cs" />
      <Compile Include="Assets\Scripts\Board\Cell.cs" />
@@ -167,12 +183,15 @@
      <Compile Include="Assets\Scripts\Sound\SoundLoader.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Arsenal.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Body.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\CaraShield.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Health.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\ID.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Plane.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Sensor.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Stat.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\StatCustom.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Timer.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\Timers.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\TokenDisplay.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Type.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Wallet.cs" />
@@ -183,7 +202,6 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\Chrono\Repr.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Chrono\Revo.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\GEARP\Cara.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Specific\GEARP\CaraShield.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\GEARP\Kabu.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\GEARP\Kata.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\GEARP\Mawt.cs" />

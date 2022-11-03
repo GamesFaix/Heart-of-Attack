@@ -27,7 +27,7 @@ namespace HOA{
 		}
 		
 		public void Draw (Panel p) {
-			float iconSize = p.LineH;
+			float iconSize = 20;
 		
 			Rect box = p.Box(iconSize);
 			GUI.Box(box, Icons.Stat(EStat.AP), p.s);

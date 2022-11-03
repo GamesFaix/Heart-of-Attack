@@ -12,12 +12,11 @@ namespace HOA {
 		public int Weight {get; protected set;}
 		public Price Price {get; protected set;}
 		public Unit Parent {get; protected set;}
-		public Token Template {get; protected set;}
+		public virtual Token Template {get; protected set;}
 
-		protected List<Aim> aim = new List<Aim>();
-		public List<Aim> Aim {get {return aim;} }
-		public void AddAim (Aim a) {aim.Add(a);}
-		public virtual void DrawAim (int n, Panel p) {aim[n].Draw(p);}
+		public List<Aim> Aim {get; protected set;}
+		protected void NewAim (Aim aim) {Aim = new List<Aim>{aim};}
+		public virtual void DrawAim (int n, Panel p) {Aim[n].Draw(p);}
 
 		public void Execute (TargetGroup targets) {
 			ExecuteStart();
@@ -30,8 +29,8 @@ namespace HOA {
 
 		public virtual void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
-			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
-			DrawAim(0, new Panel(p.LineBox, p.LineH, p.s));
+			DrawPrice(p.LinePanel);
+			DrawAim(0, p.LinePanel);
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallBox(descH), Desc);	
 		}
@@ -41,27 +40,17 @@ namespace HOA {
 		protected bool used = false;
 		public void Reset () {used = false;}
 
-		public bool Playable {
+		public virtual bool Legal {
 			get {
-				if (!used && !Restrict() && Parent.CanAfford(Price) && !EffectQueue.Processing && Parent == TurnQueue.Top) {
-					return true;
-				}
-				return false;
-			}
-		}
-
-		protected bool multiAim = false;
-		public bool MultiAim { get{return multiAim;} }
-
-
-		public virtual bool Legal () {
-			if (Parent.CanAfford(Price) 
-			    && !used
-			    && !Restrict()) {
+				if (used) {return false;}
+				if (Restrict()) {return false;}
+				if (!Parent.CanAfford(Price)) {return false;}
+				if (EffectQueue.Processing) {return false;}
+				if (Parent != TurnQueue.Top) {return false;}
 				return true;
 			}
-			return false;
 		}
+
 		public virtual bool Restrict () {return false;}
 
 		public virtual void Adjust () {}

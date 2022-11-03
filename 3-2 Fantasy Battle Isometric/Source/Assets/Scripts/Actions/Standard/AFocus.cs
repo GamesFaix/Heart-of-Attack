@@ -10,7 +10,7 @@ namespace HOA {
 			Name = "Focus";
 			Weight = 2;
 			Price = Price.Cheap;
-			AddAim(HOA.Aim.Self());
+			NewAim(HOA.Aim.Self());
 		}
 
 		protected override void ExecuteMain (TargetGroup targets) {

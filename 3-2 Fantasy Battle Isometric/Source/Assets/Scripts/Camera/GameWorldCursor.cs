@@ -7,7 +7,7 @@ namespace HOA {
 		RaycastHit[] hitCells;
 		RaycastHit[] hitTokens;
 		
-		void OnGUI(){
+		void Update(){
 
 			if (Input.GetMouseButtonUp(0)){
 				Target target = ClosestLegalTargetToCamera();

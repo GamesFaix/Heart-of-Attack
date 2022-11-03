@@ -5,12 +5,21 @@ namespace HOA {
 	
 	public class Lava : Obstacle {
 		public Lava(Source s, bool template=false){
-			id = new ID(this, EToken.LAVA, s, false, template);
-			plane = Plane.Sunk;
-			body = new BodyLava(this);	
+			ID = new ID(this, EToken.LAVA, s, false, template);
+			Plane = Plane.Sunk;
+			Body = new BodyLava(this);	
 			Neutralize();
 		}
-		public override string Notes () {return "Ground units may not move through "+id.Name+".\nGround Units take 7 damage upon entering "+id.Name+"'s Cell.\nGround Units sharing "+id.Name+"'s Cell take 7 damage at the end of their turn.";}
+		public override string Notes () {return 
+			"Ground units may not move through "+ID.Name+"." +
+			"\nGround Units take 7 damage upon entering "+ID.Name+"'s Cell." +
+			"\nGround Units sharing "+ID.Name+"'s Cell take 7 damage at the end of their turn.";
+		}
+
+		public override void Die (Source source, bool corpse=true, bool log=true) {
+			((BodyLava)Body).DestroySensors();
+			base.Die(source, corpse, log);
+		}
 	}
 	
 	public class BodyLava : Body{
@@ -100,27 +109,7 @@ namespace HOA {
 			return "("+parent.ToString()+")";
 		}
 	}
-	
-	public class TLava : Timer {
-		
-		Token source;
-		
-		public TLava (Unit par, Token s) {
-			parent = par;
-			source = s;
-			turns = 1;
-			
-			name = "Incinerating";
-			desc = "Do 7 damage to "+parent.ToString()+" at the end of its turn if sharing cell with "+source.ToString()+".";		
-		}
-		
-		public override void Activate () {
-			EffectQueue.Add(new EIncinerate(new Source(source), parent, 7));
-			turns++;
-		}
-	}
 
-	
 	public class EIncinerate : Effect {
 		public override string ToString () {return "Effect - Incinerate";}
 		Unit target; int dmg;

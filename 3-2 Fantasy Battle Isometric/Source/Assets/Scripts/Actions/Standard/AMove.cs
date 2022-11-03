@@ -13,7 +13,7 @@ namespace HOA {
 			Weight = 1;
 
 			Price = Price.Cheap;
-			AddAim(a);
+			NewAim(a);
 			Parent = u;
 		}
 		

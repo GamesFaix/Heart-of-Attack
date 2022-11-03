@@ -1,8 +1,4 @@
 ﻿namespace HOA {
 
-	interface IMultiMove {
-
-		int Optional();
-
-	}
+	interface IMultiMove {}
 }

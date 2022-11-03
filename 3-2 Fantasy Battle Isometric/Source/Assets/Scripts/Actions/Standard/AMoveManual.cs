@@ -15,10 +15,10 @@ namespace HOA {
 			Name = "Manual Move";
 			Weight = 1;
 			Price = Price.Free;
-			AddAim( new Aim (ETraj.FREE, EType.CELL, EPurp.MOVE));
+			NewAim( new Aim (ETraj.FREE, EType.CELL, EPurp.MOVE));
 		}
 
-		public override bool Legal() {return true;}
+		public override bool Legal {get {return true;} }
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			EffectQueue.Add(new EMove(new Source(Parent), mover, (Cell)targets[0]));

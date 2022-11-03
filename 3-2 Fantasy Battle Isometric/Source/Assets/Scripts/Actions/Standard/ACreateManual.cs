@@ -19,7 +19,7 @@ namespace HOA {
 			Weight = 5;
 			Price = Price.Free;
 			
-			AddAim(new Aim(ETraj.FREE, EType.CELL, EPurp.CREATE));
+			NewAim(new Aim(ETraj.FREE, EType.CELL, EPurp.CREATE));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

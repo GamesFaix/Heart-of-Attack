@@ -15,7 +15,7 @@ namespace HOA {
 			Token instance = GUISelectors.Instance;
 
 			if (instance != default(Token)) {
-				Targeter.Find(new AMoveManual(TurnQueue.Top, instance));
+				Targeter.Start(new AMoveManual(TurnQueue.Top, instance));
 			}
 		}
 	}

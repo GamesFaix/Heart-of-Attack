@@ -5,12 +5,20 @@ namespace HOA {
 
 	public class Water : Obstacle {
 		public Water(Source s, bool template=false){
-			id = new ID(this, EToken.WATR, s, false, template);
-			plane = Plane.Sunk;
-			body = new BodyWater(this);	
+			ID = new ID(this, EToken.WATR, s, false, template);
+			Plane = Plane.Sunk;
+			Body = new BodyWater(this);	
 			Neutralize();
 		}
-		public override string Notes () {return "Ground units may not move through "+id.Name+".\nGround Units sharing "+id.Name+"'s Cell take 5 damage at the end of their turn.";}
+		public override string Notes () {return 
+			"Ground units may not move through "+ID.Name+"." +
+			"\nGround Units sharing "+ID.Name+"'s Cell take 5 damage at the end of their turn.";
+		}
+
+		public override void Die (Source source, bool corpse=true, bool log=true) {
+			((BodyWater)Body).DestroySensors();
+			base.Die(source, corpse, log);
+		}
 	}
 
 	public class BodyWater : Body{
@@ -98,25 +106,6 @@ namespace HOA {
 		
 		public override string ToString () {
 			return "("+parent.ToString()+")";
-		}
-	}
-
-	public class TWater : Timer {
-		
-		Token source;
-		
-		public TWater (Unit par, Token s) {
-			parent = par;
-			source = s;
-			turns = 1;
-			
-			name = "Waterlogged";
-			desc = "Do 5 damage to "+parent.ToString()+" at the end of its turn if sharing cell with "+source.ToString()+".";		
-		}
-		
-		public override void Activate () {
-			EffectQueue.Add(new EWaterlog(new Source(source), parent, 5));
-			turns++;
 		}
 	}
 

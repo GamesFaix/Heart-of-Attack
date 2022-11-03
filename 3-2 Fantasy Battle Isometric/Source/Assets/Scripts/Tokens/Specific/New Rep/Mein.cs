@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace HOA{
 	public class MeinSchutz : Unit {
 		public MeinSchutz(Source s, bool template=false){
-			id = new ID(this, EToken.MEIN, s, false, template);
-			plane = Plane.Gnd;
+			ID = new ID(this, EToken.MEIN, s, false, template);
+			Plane = Plane.Gnd;
 
 			ScaleMedium();
 			NewHealth(40);
@@ -15,13 +15,13 @@ namespace HOA{
 
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
-			arsenal.Add(new Task[]{
+			Arsenal.Add(new Task[]{
 				new AMovePath(this, 5),
 				new AShoot(this, 2, 12),
 				new ACreate(this, new Price(0,1), EToken.MINE),
 				new AMeinDetonate(this)
 			});
-			arsenal.Sort();
+			Arsenal.Sort();
 		}
 
 		public override string Notes () {return "";}
@@ -37,7 +37,7 @@ namespace HOA{
 
 			Parent = u;
 			Price = new Price(1,1);
-			AddAim(new Aim(ETraj.GLOBAL, EType.DEST));
+			NewAim(new Aim(ETraj.GLOBAL, EType.DEST));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
