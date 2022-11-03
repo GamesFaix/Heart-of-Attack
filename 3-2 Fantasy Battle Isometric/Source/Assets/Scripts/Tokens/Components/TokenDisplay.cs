@@ -29,6 +29,18 @@ namespace HOA {
 			moving = true;
 		}
 
+		public void Enter (Cell c) {
+			targetPos = c.Location;
+			
+			targetPos.y += Token.SpriteScale.z*4;
+			
+			if (Token.Plane.Is(EPlane.AIR) || Token.Plane.Is(EPlane.ETH)) {
+				if (Token.Plane.Is(EPlane.GND)) {targetPos.y += 5;}
+				else {targetPos.y +=20;}
+			}
+			gameObject.transform.position = targetPos;
+		}
+
 		void Update () {
 			if (moving) {
 				gameObject.transform.position = Vector3.Lerp(startPos, targetPos, MovePercent());

@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Lichenthrope : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Lichenthrope (source, template);
@@ -17,11 +18,11 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 0),
-				new ALichFeed(this),
-				new AEvolve(this, Price.Cheap, EToken.BEES),
-				new AEvolve(this, new Price(1,2), EToken.MYCO),
-				new AEvolve(this, new Price(1,3), EToken.MART)
+				new Actions.Move(this, 0),
+				new Actions.Feed(this),
+				new Actions.Evolve(this, Price.Cheap, EToken.BEES),
+				new Actions.Evolve(this, new Price(1,2), EToken.MYCO),
+				new Actions.Evolve(this, new Price(1,3), EToken.MART)
 			});
 			Arsenal.Sort();
 		}

@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipHeart () {
 			Name = "Heart of Attack";
-			Icon = Icons.Special(EType.HEART);
+			Icon = Icons.Special(ESpecial.HEART);
 			ETip = ETip.HEART;
 		}
 		

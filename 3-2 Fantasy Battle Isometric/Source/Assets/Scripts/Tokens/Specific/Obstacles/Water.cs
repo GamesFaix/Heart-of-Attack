@@ -1,4 +1,4 @@
-﻿namespace HOA {
+﻿namespace HOA.Tokens {
 
 	public class Water : Obstacle {
 		public static Token Instantiate (Source source, bool template) {
@@ -19,20 +19,6 @@
 		public override void Die (Source source, bool corpse=true, bool log=true) {
 			((BodySensor1)Body).DestroySensors();
 			base.Die(source, corpse, log);
-		}
-	}
-
-	public class EWaterlog : Effect {
-		public override string ToString () {return "Effect - Waterlog";}
-		Unit target; int dmg;
-		
-		public EWaterlog (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.WATERLOG));
-			target.Display.Effect(EEffect.WATERLOG);
 		}
 	}
 }

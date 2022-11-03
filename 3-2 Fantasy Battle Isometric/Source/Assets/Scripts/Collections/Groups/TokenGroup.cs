@@ -40,7 +40,7 @@ namespace HOA {
 			return filtered;
 		}
 
-		public TokenGroup OnlyType(EType c){
+		public TokenGroup OnlyType(ESpecial c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				if (t.Special.Is(c)) {filtered.Add(t);}
@@ -50,7 +50,7 @@ namespace HOA {
 		public TokenGroup OnlyType(Special cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				foreach (EType c in cs) {
+				foreach (ESpecial c in cs) {
 					if (t.Special.Is(c)) {filtered.Add(t);}
 				}
 			}
@@ -58,7 +58,7 @@ namespace HOA {
 		}
 
 
-		public TokenGroup RemoveType(EType c){
+		public TokenGroup RemoveType(ESpecial c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				if (!t.Special.Is(c)) {filtered.Add(t);}
@@ -71,7 +71,7 @@ namespace HOA {
 
 			for (int i=filtered.Count-1; i>=0; i--) {
 				Token t = filtered[i];
-				foreach (EType c in cs) {
+				foreach (ESpecial c in cs) {
 					if (t.Special.Is(c)) {filtered.Remove(t);}
 				}
 			}
@@ -84,15 +84,15 @@ namespace HOA {
 		public static TokenGroup operator % (TokenGroup g, EPlane p) {return g.OnlyPlane(p);}
 		public static TokenGroup operator / (TokenGroup g, Special c) {return g.RemoveType(c);}
 		public static TokenGroup operator % (TokenGroup g, Special c) {return g.OnlyType(c);}
-		public static TokenGroup operator / (TokenGroup g, EType c) {return g.RemoveType(c);}
-		public static TokenGroup operator % (TokenGroup g, EType c) {return g.OnlyType(c);}
+		public static TokenGroup operator / (TokenGroup g, ESpecial c) {return g.RemoveType(c);}
+		public static TokenGroup operator % (TokenGroup g, ESpecial c) {return g.OnlyType(c);}
 
 		public TokenGroup Restrict (Token Parent, Aim a) {
 			TokenGroup restricted = new TokenGroup (this);
 			restricted = restricted.OnlyType(a.Special);
 			if (a.TeamOnly) {restricted = restricted.OnlyOwner(Parent.Owner);}
 			if (a.EnemyOnly) {restricted = restricted.RemoveOwner(Parent.Owner);}
-			if (a.NoKings) {restricted = restricted.RemoveType(EType.KING);}
+			if (a.NoKings) {restricted = restricted.RemoveType(ESpecial.KING);}
 			if (!a.IncludeSelf) {restricted.Remove(Parent);}
 			return restricted;
 		}
@@ -104,6 +104,16 @@ namespace HOA {
 					cells.Add(t.Body.Cell);
 				}
 				return cells;
+			}
+		}
+
+		public Group<Unit> Units {
+			get {
+				Group<Unit> units = new Group<Unit>();
+				foreach (Token t in list) {
+					if (t is Unit) {units.Add((Unit)t);}
+				}
+				return units;
 			}
 		}
 

@@ -1,13 +1,13 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class ANecrTeleport : Task, ITeleport {
+	public class Defile : Task, ITeleport {
 		public override string Desc {get {return "Move target remains to target cell.";} } 
 		
-		public ANecrTeleport (Unit u) {
+		public Defile (Unit u) {
 			int range = 5;
-			NewAim(new Aim(ETraj.ARC, EType.REM, range));
+			NewAim(new Aim(ETraj.ARC, ESpecial.REM, range));
 			Aim.Add(HOA.Aim.MoveArc(range));
 			Name = "Defile";
 			Weight = 4;
@@ -16,7 +16,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ETeleport(new Source(Parent), (Token)targets[0], (Cell)targets[1]));
+			EffectQueue.Add(new Effects.Teleport(new Source(Parent), (Token)targets[0], (Cell)targets[1]));
 		}
 
 		public override void Draw (Panel p) {
@@ -31,12 +31,12 @@ namespace HOA {
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
-	public class AKabuTeleport : Task, ITeleport {
+	public class Warp : Task, ITeleport {
 		
 		public override string Desc {get {return "Move target teammate (including self) to target cell.";} }
 		
-		public AKabuTeleport (Unit parent) {
-			NewAim(new Aim(ETraj.ARC, EType.UNIT, 5));
+		public Warp (Unit parent) {
+			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 5));
 			Aim[0].TeamOnly = true;
 			Aim.Add(HOA.Aim.MoveArc(5));
 			Name = "Warp";
@@ -46,7 +46,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ETeleport(new Source(Parent), (Unit)targets[0], (Cell)targets[1]));
+			EffectQueue.Add(new Effects.Teleport(new Source(Parent), (Unit)targets[0], (Cell)targets[1]));
 		}
 
 		public override void Draw (Panel p) {
@@ -62,11 +62,11 @@ namespace HOA {
 		}
 	}
 
-	public class ADreaTeleport : Task, ITeleport {
+	public class Dislocate : Task, ITeleport {
 		public override string Desc {get {return "Move target enemy (exluding Attack Kings) to target cell.";} }
 		
-		public ADreaTeleport (Unit u) {
-			NewAim(new Aim(ETraj.ARC, EType.UNIT, 5));
+		public Dislocate (Unit u) {
+			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 5));
 			Aim[0].EnemyOnly = true;
 			Aim[0].NoKings = true;
 			Aim.Add(HOA.Aim.MoveArc(5));
@@ -77,7 +77,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ETeleport(new Source(Parent), (Unit)targets[0], (Cell)targets[1]));
+			EffectQueue.Add(new Effects.Teleport(new Source(Parent), (Unit)targets[0], (Cell)targets[1]));
 		}
 
 		public override void Draw (Panel p) {

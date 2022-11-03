@@ -1,4 +1,4 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
 	
 	public class RevolvingTom : Unit {
 		public static Token Instantiate (Source source, bool template) {
@@ -18,9 +18,9 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[] {
-				new AMovePath(this, 3),
-				new AShoot(this, 2, 8),
-				new ARevoQuick(this)
+				new Actions.Move(this, 3),
+				new Actions.Shoot(this, 2, 8),
+				new Actions.Quickdraw(this)
 			});
 			Arsenal.Sort();
 		}

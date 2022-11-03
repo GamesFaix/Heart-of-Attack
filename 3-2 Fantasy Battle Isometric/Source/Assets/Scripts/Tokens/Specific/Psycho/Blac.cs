@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class BlackWinnow : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new BlackWinnow (source, template);
@@ -7,7 +8,7 @@
 		BlackWinnow(Source s, bool template=false){
 			ID = new ID(this, EToken.BLAC, s, true, template);
 			Plane = Plane.Gnd;
-			Special.Add(EType.KING);
+			Special.Add(ESpecial.KING);
 			OnDeath = EToken.HSLK;
 			ScaleJumbo();
 			NewHealth(75);
@@ -19,10 +20,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal ();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 3),
-				new ASting(this, 15),
-				new ABlacLich(this),
-				new ABlacWeb(this)
+				new Actions.Move(this, 3),
+				new Actions.Sting(this, 15),
+				new Actions.CreateLICH(this),
+				new Actions.WebShot(this)
 			});
 			Arsenal.Sort();
 		}

@@ -12,8 +12,6 @@ namespace HOA {
 		public Int2 CellCount {get; private set;}
 		Matrix<Cell> cells;
 
-		public Cell TemplateCell {get; private set;}
-
 		public TileSet TileSet {get; private set;}
 
 		public Board (Int2 zoneCount, TileSet tileSet=null){
@@ -30,13 +28,8 @@ namespace HOA {
 
 				physical = new BoardPhysical(this);
 				physical.AttachCellPrefabs();
-
-				TemplateCell = new Cell (this, new Int2(-1,-1));
-				TemplateCell.Display.HideTerrain();
 			}
 		}
-
-
 
 		static bool LegalBoardSize (Int2 zoneCount) {
 			if (!MaxZones.Fits(zoneCount)) {
@@ -97,9 +90,6 @@ namespace HOA {
 
 			return zones;
 		}
-
-
-
 
 		public static int MaxPlayers (Int2 zoneCount) {
 			int peripheralZones = 2* (zoneCount.x-1 + zoneCount.y-1);

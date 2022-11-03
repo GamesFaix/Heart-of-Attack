@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Beesassin : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Beesassin (source, template);
@@ -17,9 +18,9 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMoveLine(this, 5),
-				new ASting(this, 8),
-				new ABeesFatalBlow(this)
+				new Actions.Dart(this, 5),
+				new Actions.Sting(this, 8),
+				new Actions.FatalBlow(this)
 			});
 			Arsenal.Sort();
 		}

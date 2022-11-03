@@ -15,7 +15,10 @@ namespace HOA {
 			if (task.Legal) {
 				Pending = task;
 				Pending.Adjust();
-				Aim = Pending.Aim;
+				Aim = new List<HOA.Aim>();
+				foreach (HOA.Aim a in Pending.Aim) {
+					Aim.Add(a.DeepCopy());
+				}
 				steps = Aim.Count;
 				StartStep();
 			}
@@ -28,6 +31,8 @@ namespace HOA {
 			Token child = Pending.Template;
 			Cell start = null;
 			if (!(Pending is IManualFree)) {start = Parent.Body.Cell;}
+			if (Pending is IRecursiveTarget && step > 0) {start = (Cell)(targets[targets.Count-1]);}
+
 
 			if (aim.Trajectory == ETraj.SELF) {
 				FinishStep();
@@ -59,7 +64,7 @@ namespace HOA {
 				}
 			}
 
-			else if (Pending is IMultiTarget && step >0) {Passable = true;}
+			else if (Pending is IMultiTarget && step > 0) {Passable = true;}
 
 			else if (Pending is ITeleport && step > 0) {
 				if (!(Pending is IManualFree)) {start = Pending.Parent.Body.Cell;}

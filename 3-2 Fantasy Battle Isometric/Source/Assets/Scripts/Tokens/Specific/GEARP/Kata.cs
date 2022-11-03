@@ -1,4 +1,4 @@
-﻿namespace HOA {
+﻿namespace HOA.Tokens {
 	
 	public class Katandroid : Unit {
 		public static Token Instantiate (Source source, bool template) {
@@ -17,10 +17,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 4),
-				new AStrike(this, 8),
-				new AKataSprint(this),
-				new AKataSpin(this)
+				new Actions.Move(this, 4),
+				new Actions.Strike(this, 8),
+				new Actions.Sprint(this),
+				new Actions.LaserSpin(this)
 			});
 			Arsenal.Sort();
 		}

@@ -1,13 +1,13 @@
 ﻿using UnityEngine; 
 using System.Collections.Generic;
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class ADeciMove : Task, IMultiMove {
+	public class Tread : Task, IMultiMove {
 		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
 		
-		public ADeciMove (Unit parent) {
-			Name = "Move";
+		public Tread (Unit parent) {
+			Name = "Tread";
 			Weight = 1;
 			Parent = parent;
 			NewAim(HOA.Aim.MovePath(3));
@@ -25,7 +25,7 @@ namespace HOA {
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
 			}
 		}
 		
@@ -35,17 +35,17 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, Aim[0].Range-Parent.FP));
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Mathf.Max(0, Aim[0].Range-Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
-	public class ARookMove : Task, IMultiMove {
+	public class Rebuild : Task, IMultiMove {
 		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
 		
-		public ARookMove (Unit u) {
+		public Rebuild (Unit u) {
 			Name = "Rebuild";
 			Weight = 1;
 			Parent = u;
@@ -55,17 +55,17 @@ namespace HOA {
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
 			}
 		}
 	}
 
-	public class AKataSprint : Task, IMultiMove {
+	public class Sprint : Task, IMultiMove {
 		public override string Desc {get {return "Move "+Parent+" to target cell.  " +
 			"\nRange +1 per focus (up to +6). " +
 			"\n"+Parent+" loses all focus.";} }
 		
-		public AKataSprint (Unit parent) {
+		public Sprint (Unit parent) {
 			Name = "Sprint";
 			Weight = 4;
 			Parent = parent;
@@ -79,7 +79,7 @@ namespace HOA {
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
 			}
 			Parent.SetStat(new Source(Parent), EStat.FP, 0);
 		}
@@ -90,18 +90,18 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Min(6, Parent.FP));
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Mathf.Min(6, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
-	public class AMartMove : Task, IMultiMove {
+	public class Creep : Task, IMultiMove {
 		public override string Desc {get {return "Range +1 per focus.";} }
 		
-		public AMartMove (Unit u) {
-			Name = "Move";
+		public Creep (Unit u) {
+			Name = "Creep";
 			Weight = 1;
 			Parent = u;
 			Price = Price.Cheap;
@@ -113,7 +113,7 @@ namespace HOA {
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			foreach (Target target in targets) {
-				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
+				EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, (Cell)target));
 			}
 		}
 		
@@ -123,27 +123,27 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
-	public class AGateBurrow : Task {
+	public class Burrow : Task {
 		
 		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
 		
-		public AGateBurrow (Unit u) {
+		public Burrow (Unit u) {
 			Name = "Burrow";
 			Weight = 1;
-			NewAim(new Aim(ETraj.ARC, EType.CELL, EPurp.MOVE, 3, 0));
+			NewAim(new Aim(ETraj.ARC, ESpecial.CELL, EPurp.MOVE, 3, 0));
 			Parent = u;
 			Price = Price.Cheap;
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EBurrow(new Source(Parent), Parent, (Cell)targets[0]));
+			EffectQueue.Add(new Effects.Burrow(new Source(Parent), Parent, (Cell)targets[0]));
 		}
 	}
 }

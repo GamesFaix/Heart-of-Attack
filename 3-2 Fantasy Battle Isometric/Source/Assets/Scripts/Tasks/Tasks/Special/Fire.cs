@@ -1,14 +1,14 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
-	public class ABattCocktail : Task {
+namespace HOA.Actions { 
+	public class Cocktail : Task {
 		int damage = 20;
 		
 		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
 					"\nDestroy all destructible tokens that would take damage.";} }
 		
-		public ABattCocktail (Unit u) {
+		public Cocktail (Unit u) {
 			Name = "Cocktail";
 			Weight = 3;
 			Price = new Price(1,2);
@@ -17,7 +17,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EFire(new Source(Parent), (Token)targets[0], damage));
+			EffectQueue.Add(new Effects.Fire(new Source(Parent), (Token)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -35,7 +35,7 @@ namespace HOA {
 		}
 	}
 
-	public class AConfFire : Task {
+	public class Firebreathing : Task {
 		
 		int damage = 10;
 		
@@ -43,7 +43,7 @@ namespace HOA {
 				"\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
 					"\nDestroy all destructible tokens that would take damage.";} }
 		
-		public AConfFire (Unit u) {
+		public Firebreathing (Unit u) {
 			Name = "Firebreathing";
 			Weight = 3;
 			Price = new Price(2,0);
@@ -52,7 +52,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EFire(new Source(Parent), (Token)targets[0], damage));
+			EffectQueue.Add(new Effects.Fire(new Source(Parent), (Token)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -78,7 +78,7 @@ namespace HOA {
 			Price = new Price(1,2);
 			Parent = u;
 			
-			NewAim(new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2));
+			NewAim(new Aim (ETraj.LINE, new List<ESpecial> {ESpecial.UNIT, ESpecial.DEST}, 2));
 			damage = 20;
 			
 			name = "Eternal Flame";

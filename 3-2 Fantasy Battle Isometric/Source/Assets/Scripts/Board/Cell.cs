@@ -52,14 +52,14 @@ namespace HOA {
 			}
 			return false;
 		}
-		public bool Contains (EType s) {
+		public bool Contains (ESpecial s) {
 			foreach (Token t in Occupants) {
 				if (t.Special.Is(s)) {return true;}
 			}
 			return false;
 		}
 
-		public bool Contains (EType c, out Token occupant){
+		public bool Contains (ESpecial c, out Token occupant){
 			occupant = null;
 			foreach (Token t in Occupants) {
 				if (t.Special.Is(c)) {
@@ -142,7 +142,7 @@ namespace HOA {
 			links.Remove(cell);
 		}
 
-		public CellGroup Neighbors(bool self=false) {
+		public CellGroup Neighbors (bool self=false) {
 			CellGroup neighbors = new CellGroup();
 			
 			for (int i=0; i<8; i++) {
@@ -155,6 +155,9 @@ namespace HOA {
 			}
 			if (self) {neighbors.Add(this);}
 			neighbors.Add(links);
+			foreach (Cell c in neighbors) {
+				if (c is ExoCell) {neighbors.Remove(c);}
+			}
 			return neighbors;
 		}
 
@@ -172,7 +175,7 @@ namespace HOA {
 			foreach (EPlane p in t.Plane.Value) {
 				if (Stop(p)) {return true;}
 			}
-			if (t.Body.CanTrample(this)) {return true;}
+			if (Body.CanTrample(t, this)) {return true;}
 			return false;
 		}
 

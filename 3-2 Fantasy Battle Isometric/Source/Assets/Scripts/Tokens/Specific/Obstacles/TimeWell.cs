@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HOA {
+namespace HOA.Tokens {
 	
 	public class TimeWell : Obstacle {
 		List<Unit> affected;

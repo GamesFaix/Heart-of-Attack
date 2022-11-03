@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class TalonedScout : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new TalonedScout (source, template);
@@ -16,9 +17,9 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 6),
-				new AStrike(this, 12),
-				new ATaloGust(this)
+				new Actions.Move(this, 6),
+				new Actions.Strike(this, 12),
+				new Actions.ArcticGust(this)
 			});
 			Arsenal.Sort();
 		}

@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipKing () {
 			Name = "Attack King";
-			Icon = Icons.Special(EType.KING);
+			Icon = Icons.Special(ESpecial.KING);
 			ETip = ETip.KING;
 		}
 		

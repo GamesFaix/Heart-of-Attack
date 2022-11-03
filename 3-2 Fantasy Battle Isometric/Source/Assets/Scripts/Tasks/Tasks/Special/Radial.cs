@@ -1,7 +1,8 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
-	public class AKataSpin : Task {
+namespace HOA.Actions {
+
+	public class LaserSpin : Task {
 		int damage = 10;
 		
 		public override string Desc {get {return 
@@ -11,7 +12,7 @@ namespace HOA {
 				"\nHalf of that damage to Units in the next cell, and so on," +
 				"\nuntil damage is less than 1 or a cell contains a non-Sunken Obstacle.";} }
 		
-		public AKataSpin (Unit u) {
+		public LaserSpin (Unit u) {
 			Name = "Laser Spin";
 			Weight = 4;
 			Price = new Price(1,1);
@@ -28,27 +29,8 @@ namespace HOA {
 
 			NeighborMatrix neighbors = new NeighborMatrix(center);
 			CellGroup ring = neighbors.Ring(start, next);
-			int dmg = damage;
 
-			foreach (Cell cell in ring) {
-				TokenGroup occupants = cell.Occupants;
-				TokenGroup units = occupants.OnlyType(EType.UNIT);
-				EffectGroup effects = new EffectGroup();
-				foreach (Token t in units) {
-					Unit u = (Unit)t;
-					effects.Add(new ELaser2(new Source(Parent), u, dmg));
-				}
-				EffectQueue.Add(effects);
-				TokenGroup obstacles = occupants.OnlyType(EType.OB);
-				bool stop = false;
-				foreach (Token t in obstacles) {
-					if (t.Plane.Is(EPlane.GND) || t.Plane.Is(EPlane.AIR)) {
-						stop = true;
-					}
-				}
-				if (stop) {break;}
-				if (units.Count > 0) {dmg = (int)Mathf.Floor(dmg*0.5f);}
-			}
+			EffectQueue.Add(new Effects.Laser(new Source(Parent), ring, damage));
 		}
 		
 		public override void Draw (Panel p) {
@@ -58,16 +40,11 @@ namespace HOA {
 			p.NextLine();
 			DrawAim(0, p.LinePanel);
 			DrawAim(1, p.LinePanel);
-
-			//Rect box = p.IconBox;
-			//if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.FIR);}
-			//GUI.Box(box,Icons.FIR(),p.s);
-			//p.NudgeX();
 			GUI.Box(p.Box(30), Desc);
 		}
 	}
 
-	public class AGargTailWhip : Task {
+	public class TailWhip : Task {
 		int damage = 10;
 		
 		public override string Desc {get {return 
@@ -78,7 +55,7 @@ namespace HOA {
 				"\nuntil a Cell contains a non-Sunken, non-Destructible Obstacle," +
 				"\nor all 8 neighboring Cells are hit.";} }
 		
-		public AGargTailWhip (Unit u) {
+		public TailWhip (Unit u) {
 			Name = "Tail Whip";
 			Weight = 4;
 			Price = new Price(1,1);
@@ -98,21 +75,21 @@ namespace HOA {
 
 			foreach (Cell cell in ring) {
 				TokenGroup occupants = cell.Occupants;
-				TokenGroup units = occupants.OnlyType(EType.UNIT);
+				TokenGroup units = occupants.OnlyType(ESpecial.UNIT);
 				EffectGroup effects = new EffectGroup();
 				foreach (Token t in units) {
 					Unit u = (Unit)t;
-					effects.Add(new EDamage(new Source(Parent), u, damage));
+					effects.Add(new Effects.Damage(new Source(Parent), u, damage));
 				}
-				TokenGroup dests = occupants.OnlyType(EType.DEST);
+				TokenGroup dests = occupants.OnlyType(ESpecial.DEST);
 				foreach (Token t in dests) {
-					effects.Add(new EDestruct(new Source(Parent), t));
+					effects.Add(new Effects.Destruct(new Source(Parent), t));
 				}
 				EffectQueue.Add(effects);
-				TokenGroup obstacles = occupants.OnlyType(EType.OB);
+				TokenGroup obstacles = occupants.OnlyType(ESpecial.OB);
 				bool stop = false;
 				foreach (Token t in obstacles) {
-					if ((t.Plane.Is(EPlane.GND) || t.Plane.Is(EPlane.AIR)) && !t.Special.Is(EType.DEST)) {
+					if ((t.Plane.Is(EPlane.GND) || t.Plane.Is(EPlane.AIR)) && !t.Special.Is(ESpecial.DEST)) {
 						stop = true;
 					}
 				}
@@ -127,11 +104,6 @@ namespace HOA {
 			p.NextLine();
 			DrawAim(0, p.LinePanel);
 			DrawAim(1, p.LinePanel);
-			
-			//Rect box = p.IconBox;
-			//if (GUI.Button(box,"")) {TipInspector.Inspect(ETip.FIR);}
-			//GUI.Box(box,Icons.FIR(),p.s);
-			//p.NudgeX();
 			GUI.Box(p.Box(30), Desc);
 		}
 	}

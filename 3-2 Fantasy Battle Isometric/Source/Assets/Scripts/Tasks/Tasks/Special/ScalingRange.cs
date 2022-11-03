@@ -1,24 +1,22 @@
 ﻿using UnityEngine; 
 
+namespace HOA.Actions { 
 
-namespace HOA { 
-
-
-	public class APanoCannon : Task {
+	public class Cannon : Task {
 		
 		int damage = 12;
 		
 		public override string Desc {get {return "Do "+damage+" damage to target unit.  " +
 				"\nMax range +1 per focus (up to +3).";} }
 		
-		public APanoCannon (Unit u, Price p, int damage) {
+		public Cannon (Unit u, Price p, int damage) {
 			Name = "Cannon";
 			Weight = 3;
 			
 			Price = p;
 			Parent = u;
 			
-			NewAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
+			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2));
 			this.damage = damage;
 		}
 		
@@ -28,11 +26,11 @@ namespace HOA {
 		}
 		
 		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
+			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -51,21 +49,21 @@ namespace HOA {
 			GUI.Label(p.Box(0.9f), "Max Range +1 per Focus (up to +3).");
 		}
 	}
-	public class APanoPierce : Task {
+	public class Pierce : Task {
 		
 		int damage = 12;
 		
 		public override string Desc {get {return "Do "+damage+" damage to target unit (ignore defense).  " +
 				"\nMax range +1 per focus (up to +3)."; } }
 		
-		public APanoPierce (Unit u, Price p, int damage) {
+		public Pierce (Unit u, Price p, int damage) {
 			Name = "Armor Pierce";
 			Weight = 4;
 			
 			Price = p;
 			Parent = u;
 			
-			NewAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
+			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 3, 2));
 			this.damage = damage;
 		}
 		
@@ -75,14 +73,14 @@ namespace HOA {
 		}
 		
 		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, EType.UNIT, 4, 3);
+			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, 4, 3);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EPierce (new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Pierce (new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
-	public class ADeciMortar : Task {
+	public class Mortar : Task {
 		
 		public override string Desc {get {return "Do "+damage+" damage to all units in target cell. " +
 				"\nAll units in neighboring cells take 50% damage (rounded down). " +
@@ -93,12 +91,12 @@ namespace HOA {
 		int minRange, range; 
 		int damage =18;
 		
-		public ADeciMortar (Unit parent) {
+		public Mortar (Unit parent) {
 			Name = "Mortar";
 			Weight = 4;
 			Price = new Price(2,1);
 			Parent = parent;
-			NewAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, 3, 2));
+			NewAim(new Aim (ETraj.ARC, ESpecial.CELL, EPurp.ATTACK, 3, 2));
 		}
 		
 		public override void Adjust () {
@@ -107,11 +105,11 @@ namespace HOA {
 		}
 		
 		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
+			Aim[0] = new Aim(Aim[0].Trajectory, Aim[0].Special, 3, 2);
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EExplosion(new Source(Parent), (Cell)targets[0], damage));
+			EffectQueue.Add(new Effects.Explosion(new Source(Parent), (Cell)targets[0], damage));
 		}
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
@@ -131,7 +129,7 @@ namespace HOA {
 		}
 	}
 
-	public class ARookVolley : Task {
+	public class Volley : Task {
 		
 		int damage = 12;
 		
@@ -139,12 +137,12 @@ namespace HOA {
 				"\nMay only be used if neighboring or sharing cell with non-Rook teammate." +
 					"\nRange +1 per focus (up to 3).";} }
 		
-		public ARookVolley (Unit u) {
+		public Volley (Unit u) {
 			Name = "Volley";
 			Weight = 3;
 			Parent = u;
 			Price = Price.Cheap;
-			NewAim(new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2));
+			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, EPurp.ATTACK, 2, 2));
 		}
 		
 		public override void Adjust () {
@@ -153,7 +151,7 @@ namespace HOA {
 		}
 		
 		public override void UnAdjust () {
-			Aim[0] = new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2);
+			Aim[0] = new Aim(ETraj.ARC, ESpecial.UNIT, EPurp.ATTACK, 2, 2);
 		}
 		
 		public override bool Restrict () {
@@ -169,7 +167,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {

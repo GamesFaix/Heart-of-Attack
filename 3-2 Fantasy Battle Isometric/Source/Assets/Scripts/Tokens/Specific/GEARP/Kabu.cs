@@ -1,4 +1,5 @@
-namespace HOA {
+namespace HOA.Tokens {
+
 	public class Kabutomachine : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Kabutomachine (source, template);
@@ -7,7 +8,7 @@ namespace HOA {
 		Kabutomachine(Source s, bool template=false){
 			ID = new ID(this, EToken.KABU, s, true, template);
 			Plane = Plane.Air;
-			Special.Add(EType.KING);
+			Special.Add(ESpecial.KING);
 			OnDeath = EToken.HSIL;
 
 			ScaleJumbo();
@@ -20,13 +21,13 @@ namespace HOA {
 		protected override void BuildArsenal() {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMoveLine(this, 5),
-				new AStrike(this, 16),
-				new AKabuTeleport(this),
-				new AKabuLaser(this),
-				new ACreate(this, Price.Cheap, EToken.KATA),
-				new ACreate(this, new Price(2,1), EToken.CARA),
-				new ACreate(this, new Price(2,2), EToken.MAWT)
+				new Actions.Dart(this, 5),
+				new Actions.Strike(this, 16),
+				new Actions.Warp(this),
+				new Actions.GammaBurst(this),
+				new Actions.Create(this, Price.Cheap, EToken.KATA),
+				new Actions.Create(this, new Price(2,1), EToken.CARA),
+				new Actions.Create(this, new Price(2,2), EToken.MAWT)
 			});
 			Arsenal.Sort();
 		}

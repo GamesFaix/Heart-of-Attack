@@ -34,8 +34,9 @@ public static class GUIQueue {
 				
 				p.NudgeX();
 				if (GUI.Button(p.Box(nameW), "", p.s)) {
-					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspected = u;}
-					else if (Input.GetMouseButtonUp(0)) {u.Display.Effect(EEffect.SHOW);}
+					GUIInspector.Inspected = u;
+					u.Display.Effect(EEffect.SHOW);
+					CameraPanner.MoveTo(u);
 				}
 				p.ResetX(); p.NudgeX();
 				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);

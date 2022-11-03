@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Smashbuckler : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Smashbuckler (source, template);
@@ -16,9 +17,9 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 3),
-				new ASmasFlail(this),
-				new ASmasSlam(this)
+				new Actions.Move(this, 3),
+				new Actions.Flail(this),
+				new Actions.Slam(this)
 			});
 			Arsenal.Sort();
 		}

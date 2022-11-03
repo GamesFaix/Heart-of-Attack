@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Monolith : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Monolith (source, template);
@@ -7,7 +8,7 @@
 		Monolith(Source s, bool template=false){
 			ID = new ID(this, EToken.MONO, s, true, template);
 			Plane = Plane.Tall;
-			Special.Add(EType.KING);
+			Special.Add(ESpecial.KING);
 			OnDeath = EToken.HBLO;
 			ScaleTall();
 			NewHealth(100);
@@ -19,14 +20,14 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 4),
-				new ARage(this, 20),
-				new AMonoField(this),
-				new AMonoAltar(this),
-				new ACreate(this, new Price(1,0), EToken.RECY),
-				new AMonoReanimate(this, new Price(1,0)),
-				new ACreate(this, new Price(2,1), EToken.NECR),
-				new ACreateArc(this, new Price(1,2), EToken.GATE, 3,3)
+				new Actions.Move(this, 4),
+				new Actions.Rage(this, 20),
+				new Actions.DeathField(this),
+				new Actions.BloodAltar(this),
+				new Actions.Create(this, new Price(1,0), EToken.RECY),
+				new Actions.Recycle(this, new Price(1,0)),
+				new Actions.Create(this, new Price(2,1), EToken.NECR),
+				new Actions.CreateArc(this, new Price(1,2), EToken.GATE, 3,3)
 			});
 			Arsenal.Sort();
 		}

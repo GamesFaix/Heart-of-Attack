@@ -1,7 +1,7 @@
 ﻿namespace HOA { 
 
-	public class ArenaNonSensusAlias : Alias {
-		public ArenaNonSensusAlias (Token parent){
+	public class ArenaAlias : Alias {
+		public ArenaAlias (Token parent){
 			Parent = parent;
 			Body = new Body(this);
 			ScaleMedium();

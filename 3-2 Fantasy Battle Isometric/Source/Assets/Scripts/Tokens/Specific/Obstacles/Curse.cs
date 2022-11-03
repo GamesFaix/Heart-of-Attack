@@ -1,4 +1,4 @@
-﻿namespace HOA {
+﻿namespace HOA.Tokens {
 	
 	public class Curse : Obstacle {
 		public static Token Instantiate (Source source, bool template) {

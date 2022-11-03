@@ -12,7 +12,7 @@ namespace HOA {
 			if (u == TurnQueue.Top) {
 				p.NudgeX();
 				if (GUI.Button(p.Box(btnW), "End Turn [0]") || Input.GetKey("0") || Input.GetKey("[0]")) {
-					Targeter.Start(new AEnd(u));
+					Targeter.Start(new Actions.End(u));
 					GUIMaster.PlaySound(EGUISound.CLICK);
 				}
 				p.NextLine();

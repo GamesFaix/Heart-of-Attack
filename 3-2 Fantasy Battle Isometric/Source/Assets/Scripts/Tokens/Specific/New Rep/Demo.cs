@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿namespace HOA.Tokens {
 
-namespace HOA{
 	public class Demolitia : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Demolitia (source, template);
@@ -14,16 +12,16 @@ namespace HOA{
 			ScaleSmall();
 			NewHealth(30);
 			NewWatch(3);
-			Wallet = new DEFWallet(this, 2, 4);
+			Wallet = new WalletDEF(this, 2, 4);
 			BuildArsenal();
 		}
 
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[] {
-				new AMovePath(this, 3),
-				new ADemoThrow(this),
-				new ADemoSticky(this)
+				new Actions.Move(this, 3),
+				new Actions.Throw(this),
+				new Actions.StickyGrenade(this)
 			});
 			Arsenal.Sort();
 		}

@@ -2,39 +2,28 @@
 
 namespace HOA { 
 	
-	public class BodySensor9 : Body {
+	public class BodySensor9 : Body, IDeepCopyToken<BodySensor9> {
 		
-		public BodySensor9 (Token parent, SensorContructor sc) {
-			this.parent = parent;
+		public BodySensor9 (Token parent, SensorContructor sc) : base(parent) {
 			this.sc = sc;
 		}
+
+		public new BodySensor9 DeepCopy (Token parent) {return new BodySensor9(parent, sc);}
 		
 		public delegate Sensor SensorContructor (Token parent, Cell cell);
 		SensorContructor sc;
 		List<Sensor> sensors;
-		
-		public override bool Enter (Cell newCell) {
-			if (CanEnter(newCell)) {
-				Exit();
-				cell = newCell;
-				newCell.Enter(parent);
-				
-				sensors = new List<Sensor>();
-				CellGroup cells = cell.Neighbors(true);
-				foreach (Cell c in cells) {
-					if (!(c is ExoCell)) {
-						Sensor s = sc(parent, c);
-						sensors.Add(s);
-						c.AddSensor(s);
-					}
+
+		protected override void EnterSpecial (Cell newCell) {
+			sensors = new List<Sensor>();
+			CellGroup cells = Cell.Neighbors(true);
+			foreach (Cell c in cells) {
+				if (!(c is ExoCell)) {
+					Sensor s = sc(parent, c);
+					sensors.Add(s);
+					c.AddSensor(s);
 				}
-				return true;
 			}
-			if (newCell == Game.Board.TemplateCell) {
-				cell = newCell;
-				return true;	
-			}
-			return false;
 		}
 		
 		public override void Exit () {
@@ -43,7 +32,7 @@ namespace HOA {
 					sensors[i].Delete();
 				}
 			}
-			if (cell != null) {cell.Exit(parent);}
+			if (Cell != null) {Cell.Exit(parent);}
 		}
 		
 		public void DestroySensors () {foreach (Sensor s in sensors) {s.Delete();} }

@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class GrizzlyElder : Unit {
 
 		public static Token Instantiate (Source source, bool template) {
@@ -18,10 +19,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 3),
-				new AStrike(this, 9),
-				new ACreate(this, new Price(0,1), EToken.TREE),
-				new AGrizHeal(this)
+				new Actions.Move(this, 3),
+				new Actions.Strike(this, 9),
+				new Actions.Create(this, new Price(0,1), EToken.TREE),
+				new Actions.Sooth(this)
 			});
 			Arsenal.Sort();
 		}

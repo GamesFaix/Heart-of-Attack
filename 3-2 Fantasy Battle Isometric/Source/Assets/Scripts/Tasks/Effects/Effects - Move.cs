@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA {
+namespace HOA.Effects {
 
-
-	public class EMove : Effect {
+	public class Move : Effect {
 		public override string ToString () {return "Effect - Move";}
 		Token target; Cell cell;
 		
-		public EMove (Source s, Token t, Cell c) {
+		public Move (Source s, Token t, Cell c) {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
 			Cell oldCell = target.Body.Cell;
 		//	target.SpriteMove(cell);
-			target.Body.Enter(cell);
+			target.Body.MoveTo(cell);
 			Cell newCell = target.Body.Cell;
 			if (target.Plane.Is(EPlane.GND)) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
 			else if (target.Plane.Is(EPlane.AIR)) {Mixer.Play(SoundLoader.Effect(EEffect.FLY));}
@@ -23,11 +22,11 @@ namespace HOA {
 		}
 	}	
 
-	public class EBurrow : Effect {
+	public class Burrow : Effect {
 		public override string ToString () {return "Effect - Burrow";}
 		Token target; Cell cell;
 		
-		public EBurrow (Source s, Token t, Cell c) {
+		public Burrow (Source s, Token t, Cell c) {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
@@ -35,18 +34,18 @@ namespace HOA {
 			
 			target.Display.Effect(EEffect.BURROW);
 			Mixer.Play(SoundLoader.Effect(EEffect.BURROW));
-			EffectQueue.Add(new EBurrow2(source, target, cell));
+			EffectQueue.Add(new Burrow2(source, target, cell));
 			
 			
 			GameLog.Out (target+" burrowed from "+oldCell+" to "+cell+".");
 		}
 	}	
 
-	public class EBurrow2 : Effect {
+	public class Burrow2 : Effect {
 		public override string ToString () {return "Effect - Burrow2";}
 		Token target; Cell cell;
 		
-		public EBurrow2 (Source s, Token t, Cell c) {
+		public Burrow2 (Source s, Token t, Cell c) {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
@@ -56,11 +55,11 @@ namespace HOA {
 		}
 	}	
 
-	public class ETeleport : Effect {
+	public class Teleport : Effect {
 		public override string ToString () {return "Effect - Teleport";}
 		Token target; Cell cell;
 		
-		public ETeleport (Source s, Token t, Cell c) {
+		public Teleport (Source s, Token t, Cell c) {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
@@ -68,18 +67,18 @@ namespace HOA {
 			
 			target.Display.Effect(EEffect.TELEPORT);
 			Mixer.Play(SoundLoader.Effect(EEffect.TELEPORT));
-			EffectQueue.Add(new ETeleport2(source, target, cell));
+			EffectQueue.Add(new Teleport2(source, target, cell));
 			
 			
 			GameLog.Out (source.Token+" teleported "+target+" from "+oldCell+" to "+cell+".");
 		}
 	}	
 
-	public class ETeleport2 : Effect {
+	public class Teleport2 : Effect {
 		public override string ToString () {return "Effect - Teleport2";}
 		Token target; Cell cell;
 		
-		public ETeleport2 (Source s, Token t, Cell c) {
+		public Teleport2 (Source s, Token t, Cell c) {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
@@ -89,11 +88,11 @@ namespace HOA {
 		}
 	}	
 
-	public class ESwap : Effect {
+	public class Swap : Effect {
 		public override string ToString () {return "Effect - Swap";}
 		Token target; Token other;
 		
-		public ESwap (Source s, Token t, Token t2) {
+		public Swap (Source s, Token t, Token t2) {
 			source = s; target = t; other = t2;
 		}
 		public override void Process() {
@@ -104,11 +103,11 @@ namespace HOA {
 		}
 	}	
 
-	public class EKnockback : Effect {
+	public class Knockback : Effect {
 		public override string ToString () {return "Effect - Knockback";}
 		Token target; int range; int damage;
 		
-		public EKnockback (Source s, Token t, int r, int d=0) {
+		public Knockback (Source s, Token t, int r, int d=0) {
 			source = s; target = t; range = r; damage = d;
 		}
 		public override void Process() {
@@ -132,7 +131,7 @@ namespace HOA {
 			int totalCells = 0;
 			foreach (Cell c in line) {
 				if (target.Body.CanEnter(c)) {
-					EffectQueue.Add(new EMove(source, target, c));
+					EffectQueue.Add(new Move(source, target, c));
 					totalDamage += damage;
 					totalCells++;
 				}
@@ -145,7 +144,7 @@ namespace HOA {
 			else {
 				log = source.Token+" knocked "+target+" back "+totalCells+" cells";
 				if (totalDamage > 0) {
-					EffectQueue.Add(new EDamage(source, (Unit)target, totalDamage));
+					EffectQueue.Add(new Damage(source, (Unit)target, totalDamage));
 					log += ", dealing "+totalDamage+" damage.";
 				}
 				else {log +=".";}

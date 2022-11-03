@@ -17,7 +17,7 @@ namespace HOA {
 		}
 
 		public override void Activate () {
-			EffectQueue.Add(new ECorrode2 (new Source(Parent), Parent, magnitude));
+			EffectQueue.Add(new Effects.Corrode2 (new Source(Parent), Parent, magnitude));
 
 			magnitude = (int)Math.Floor(magnitude*0.5f);
 			if (magnitude > 0) {Turns++;}
@@ -112,7 +112,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EExplosion(Source, Parent.Body.Cell, magnitude));
+			EffectQueue.Add(new Effects.Explosion(Source, Parent.Body.Cell, magnitude));
 		}
 	}
 
@@ -129,7 +129,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EIncinerate(Source, Parent, magnitude));
+			EffectQueue.Add(new Effects.Fire(Source, Parent, magnitude));
 			Turns++;
 		}
 	}
@@ -147,7 +147,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EDamage(Source, Parent, magnitude));
+			EffectQueue.Add(new Effects.Damage(Source, Parent, magnitude));
 			Turns++;
 		}
 	}
@@ -165,7 +165,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EIncinerate(Source, Parent, magnitude));
+			EffectQueue.Add(new Effects.Damage(Source, Parent, magnitude));
 			Turns++;
 		}
 	}
@@ -183,7 +183,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EWaterlog(Source, Parent, magnitude));
+			EffectQueue.Add(new Effects.Waterlog(Source, Parent, magnitude));
 			Turns++;
 		}
 	}
@@ -201,7 +201,7 @@ namespace HOA {
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EExplosion(Source, Parent.Body.Cell, magnitude));
+			EffectQueue.Add(new Effects.Explosion(Source, Parent.Body.Cell, magnitude));
 			Turns++;
 		}
 	}

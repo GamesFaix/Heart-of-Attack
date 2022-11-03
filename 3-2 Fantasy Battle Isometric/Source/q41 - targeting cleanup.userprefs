@@ -1,10 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\Token.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tokens\Specific\Psilent\Aren.cs">
     <Files>
-      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\Token.cs" Line="78" Column="2" />
-      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\TokenFactory.cs" Line="1" Column="1" />
-      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\Specific\Chrono\Piec.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\TokenHandling\TokenFactory.cs" Line="18" Column="24" />
+      <File FileName="Assets\Scripts\Tokens\TokenHandling\Token.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\TokenHandling\Alias.cs" Line="14" Column="47" />
+      <File FileName="Assets\Scripts\Tokens\Specific\Psilent\ArenAlias.cs" Line="7" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\Specific\Psilent\Aren.cs" Line="19" Column="5" />
+      <File FileName="Assets\Scripts\Tokens\Components\Body.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\Components\BodyAren.cs" Line="15" Column="4" />
+      <File FileName="Assets\Scripts\Graphics\TargetDisplay.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

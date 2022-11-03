@@ -17,8 +17,8 @@ namespace HOA {
 				GameLog.Reset();
 				TurnQueue.Reset();
 				GUILobbyMap.Assign();
-				EffectQueue.Add(new EShuffle(new Source()));
-				EffectQueue.Add(new EInitialize(new Source()));
+				EffectQueue.Add(new Effects.Shuffle(new Source()));
+				EffectQueue.Add(new Effects.Initialize(new Source()));
 
 				ActivePending = true;
 			}

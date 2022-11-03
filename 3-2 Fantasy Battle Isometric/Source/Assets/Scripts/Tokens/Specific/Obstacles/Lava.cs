@@ -1,4 +1,4 @@
-﻿namespace HOA {
+﻿namespace HOA.Tokens {
 	
 	public class Lava : Obstacle {
 		public static Token Instantiate (Source source, bool template) {
@@ -22,21 +22,4 @@
 			base.Die(source, corpse, log);
 		}
 	}
-
-	public class EIncinerate : Effect {
-		public override string ToString () {return "Effect - Incinerate";}
-		Unit target; int dmg;
-		
-		public EIncinerate (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.INCINERATE));
-			target.Display.Effect(EEffect.INCINERATE);
-		}
-	}
-	
-	
-	
 }

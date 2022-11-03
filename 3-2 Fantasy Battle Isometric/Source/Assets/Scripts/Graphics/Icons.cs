@@ -8,7 +8,7 @@ namespace HOA {
 
 		static Dictionary<EStat, Texture2D> stats;
 		static Dictionary<EPlane, Texture2D> planes;
-		static Dictionary<EType, Texture2D> types;
+		static Dictionary<ESpecial, Texture2D> types;
 		static Dictionary<ETraj, Texture2D> trajectories;
 
 		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
@@ -28,15 +28,15 @@ namespace HOA {
 			AddPlane (EPlane.ETH, "ETH");
 			AddPlane (EPlane.SUNK, "SUNK");
 
-			types = new Dictionary<EType, Texture2D>();
-			AddType (EType.DEST, "DEST"); 
-			AddType (EType.REM, "REM"); 
-			AddType (EType.KING, "KING"); 
-			AddType (EType.HEART, "HEART"); 
-			AddType (EType.TRAM, "TRAM");
-			AddType (EType.UNIT, "UNIT");
-			AddType (EType.OB, "OBSTACLE");
-			AddType (EType.CELL, "CELL");
+			types = new Dictionary<ESpecial, Texture2D>();
+			AddType (ESpecial.DEST, "DEST"); 
+			AddType (ESpecial.REM, "REM"); 
+			AddType (ESpecial.KING, "KING"); 
+			AddType (ESpecial.HEART, "HEART"); 
+			AddType (ESpecial.TRAM, "TRAM");
+			AddType (ESpecial.UNIT, "UNIT");
+			AddType (ESpecial.OB, "OBSTACLE");
+			AddType (ESpecial.CELL, "CELL");
 
 			trajectories = new Dictionary<ETraj, Texture2D>();
 			AddTraj (ETraj.NEIGHBOR, "NEIGHBOR"); 
@@ -62,12 +62,12 @@ namespace HOA {
 
 		static void AddStat (EStat s, string fileName) {stats.Add(s, LoadFile("Stats/"+fileName));}
 		static void AddPlane (EPlane p, string fileName) {planes.Add(p, LoadFile("Planes/"+fileName));}
-		static void AddType (EType s, string fileName) {types.Add(s, LoadFile("Types/"+fileName));}
+		static void AddType (ESpecial s, string fileName) {types.Add(s, LoadFile("Types/"+fileName));}
 		static void AddTraj (ETraj a, string fileName) {trajectories.Add(a, LoadFile("Trajectories/"+fileName));}
 
 		public static Texture2D Stat(EStat s) {return stats[s];}
 		public static Texture2D Plane(EPlane p) {return planes[p];}
-		public static Texture2D Special(EType s) {return types[s];}
+		public static Texture2D Special(ESpecial s) {return types[s];}
 		public static Texture2D Traj(ETraj a) {return trajectories[a];}
 
 		public static Texture2D SKIP() {return skip;}

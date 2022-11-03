@@ -18,15 +18,15 @@ namespace HOA {
 
 		public Unit () {
 			Body = new Body(this);
-			Special = new Special(EType.TOKEN);
-			Special.Add(EType.UNIT);
+			Special = new Special(ESpecial.TOKEN);
+			Special.Add(ESpecial.UNIT);
 			OnDeath = EToken.CORP;
 			NewWallet();
 		}
 
 		protected virtual void BuildArsenal () {
 			Arsenal = new Arsenal(this);
-			Arsenal.Add(new AFocus(this));
+			Arsenal.Add(new Actions.Focus(this));
 		}
 
 		public int SetStat (Source s, EStat stat, int n, bool log=true) {

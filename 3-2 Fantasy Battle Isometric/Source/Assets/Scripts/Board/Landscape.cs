@@ -46,7 +46,7 @@ namespace HOA {
 			foreach (Int2 index in Tokens.Size) {
 				if (Tokens[index] != EToken.NONE) {
 					Cell cell = Board.Cell(index);
-					effects.Add(new ECreate(Source.Neutral, Tokens[index], cell));
+					effects.Add(new Effects.Create(Source.Neutral, Tokens[index], cell));
 				}
 			}
 			EffectQueue.Add(effects);

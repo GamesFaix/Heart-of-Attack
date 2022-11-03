@@ -20,8 +20,8 @@ namespace HOA {
 			          "\nDamage specified in the effect." +
 			          "\nIf the target is Destructible, it is destroyed." +
 
-			          "\n\nAny Units Neighboring the target take half" +
-			          "\nthe Damage of the effect (rounded down)." +
+			          "\n\nAny Units Neighboring the target lose Health" +
+			          "\nequal to half the Damage of the effect (rounded down)." +
 			          "\nAny Destructibles Neighboring the target " +
 			          "\nare destroyed.",
 			          p.s);

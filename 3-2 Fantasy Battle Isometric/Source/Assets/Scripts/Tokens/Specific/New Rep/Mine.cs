@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA{
+namespace HOA.Tokens {
+
 	public class Mine : Obstacle {
 		public static Token Instantiate (Source source, bool template) {
 			return new Mine (source, template);
@@ -9,7 +10,7 @@ namespace HOA{
 
 		Mine(Source s, bool template=false){
 			ID = new ID(this, EToken.MINE, s, false, template);
-			Special.Add(EType.DEST);
+			Special.Add(ESpecial.DEST);
 			Plane = Plane.Sunk;
 			Body = new BodySensor9(this, SensorMine.Instantiate);
 		}
@@ -20,62 +21,15 @@ namespace HOA{
 			Debug.Log(this+" dying");
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			TokenFactory.Remove(this);
-//			Cell oldCell = Cell;
+
 			Body.Exit();
-			if (log && !Special.Is(EType.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
-			/*if (s.Sequence != default(EffectSeq)) {
-				Debug.Log("valid sequence");
-				s.Sequence.AddToNext(new EExplosion(s, Cell, 12));
-			}
-			else {
-		*/
-			EffectQueue.Interrupt(new EExplosion(new Source(this), Body.Cell, 12));
-		//	}
+			if (log && !Special.Is(ESpecial.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
+
+			EffectQueue.Interrupt(new Effects.Explosion(new Source(this), Body.Cell, 12));
+
 			((BodySensor9)Body).DestroySensors();
 		}
 	}
 
-	public class EDetonate : EffectSeq {
-		public override string ToString () {return "EffectSeq - Detonate";}
-		Token target;
-		
-		public EDetonate (Source s, Token t) {
-			source = s; target = t;
 
-			list = new List<EffectGroup>();
-
-			EffectGroup group = new EffectGroup();
-			group.Add(new EDetonate1 (new Source(source.Token, this), target));
-			list.Add(group);
-		}
-	}
-
-	public class EDetonate1 : Effect {
-		public override string ToString () {return "Effect - Detonate1";}
-		Token target;
-		
-		public EDetonate1 (Source s, Token t) {
-			source = s; target = t;
-		}
-		public override void Process() {
-			Mixer.Play(SoundLoader.Effect(EEffect.DETONATE));
-			target.Display.Effect(EEffect.DETONATE);
-			source.Sequence.AddToNext(new EDetonate2(source, target));
-		}
-
-	}
-
-	public class EDetonate2 : Effect {
-		public override string ToString () {return "Effect - Detonate2";}
-		Token target;
-		
-		public EDetonate2 (Source s, Token t) {
-			source = s; target = t;
-			Debug.Log(ToString());
-		}
-		public override void Process() {
-			Debug.Log("processing "+ToString());
-			target.Die(source);
-		}
-	}
 }

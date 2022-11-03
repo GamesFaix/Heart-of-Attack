@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace HOA {
 	public enum EPlane {SUNK, GND, AIR, ETH}
 
-	public class Plane {
+	public class Plane : IDeepCopy<Plane> {
 		List<EPlane> planes;
 
 		public Plane (EPlane p) {planes = new List<EPlane> {p};}
@@ -14,6 +14,8 @@ namespace HOA {
 		public void Set (List<EPlane> p) {planes = p;}
 		
 		public List<EPlane> Value {get {return planes;} }
+
+		public Plane DeepCopy () {return new Plane(Value);}
 
 		public bool Is (EPlane p){
 			if (planes.Contains(p)) {return true;}

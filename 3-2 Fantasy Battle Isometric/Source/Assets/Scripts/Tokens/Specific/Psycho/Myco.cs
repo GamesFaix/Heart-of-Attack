@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Mycolonist : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Mycolonist (source, template);
@@ -16,10 +17,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 2),
-				new AMycoSpore(this),
-				new AMycoDonate(this),
-				new AMycoSeed(this)
+				new Actions.Move(this, 2),
+				new Actions.Sporatic(this),
+				new Actions.Donate(this),
+				new Actions.Seed(this)
 			});
 			Arsenal.Sort();
 		}

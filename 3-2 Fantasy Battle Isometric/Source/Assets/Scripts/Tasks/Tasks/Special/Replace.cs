@@ -1,8 +1,8 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class AEvolve : Task {
+	public class Evolve : Task {
 		
 		EToken child;
 		
@@ -11,7 +11,7 @@ namespace HOA {
 		public override string Desc {get {return "Transform "+Parent+" into a "+ChildName+".  " +
 				"\n(New "+ChildName+" is added to the end of the Queue and does not retain any of "+Parent+"'s attributes.)";} }
 		
-		public AEvolve (Unit u, Price p, EToken chi) {
+		public Evolve (Unit u, Price p, EToken chi) {
 			Parent = u;
 			child = chi;
 			Template = TokenFactory.Template(child);
@@ -22,7 +22,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EReplace(new Source(Parent), Parent, child));
+			EffectQueue.Add(new Effects.Replace(new Source(Parent), Parent, child));
 		}
 
 		public override void Draw (Panel p) {
@@ -38,13 +38,13 @@ namespace HOA {
 		}
 	}
 
-	public class AAsheArise : Task {
+	public class Arise : Task {
 		
 		public override string Desc {get {return "Transform "+Parent+" into a Conflagragon." +
 				"\n(New Conflagragon starts with "+Parent+"'s health.)";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.CONF);} }
 
-		public AAsheArise (Unit par) {
+		public Arise (Unit par) {
 			Name = "Arise";
 			Weight = 4;
 			Price = new Price(2,0);
@@ -79,21 +79,21 @@ namespace HOA {
 		}
 	}
 
-	public class AMonoReanimate : Task {
+	public class Recycle : Task {
 		
 		public override string Desc {get {return "Replace target remains with Recyclops.";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.RECY);} }
 
-		public AMonoReanimate (Unit par, Price p) {
+		public Recycle (Unit par, Price p) {
 			Name = "Recycle Recyclops";
 			Weight = 5;
 			Price = p;
 			Parent = par;
-			NewAim(new Aim (ETraj.NEIGHBOR, EType.REM));
+			NewAim(new Aim (ETraj.NEIGHBOR, ESpecial.REM));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.RECY));
+			EffectQueue.Add(new Effects.Replace(new Source(Parent), (Token)targets[0], EToken.RECY));
 		}
 
 		public override void Draw (Panel p) {
@@ -109,21 +109,21 @@ namespace HOA {
 		}
 	}
 	
-	public class AUltrCreateMeta : Task {
+	public class Animate : Task {
 		
 		public override string Desc {get {return "Replace target non-remains destructible with Metaterrainean.";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.META);} }
 
-		public AUltrCreateMeta (Unit parent) {
+		public Animate (Unit parent) {
 			Name = "Animate Metaterrainean";
 			Weight = 5;
 			Price = new Price(1,2);
 			Parent = parent;
-			NewAim(new Aim (ETraj.NEIGHBOR, EType.DEST));
+			NewAim(new Aim (ETraj.NEIGHBOR, ESpecial.DEST));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.META));
+			EffectQueue.Add(new Effects.Replace(new Source(Parent), (Token)targets[0], EToken.META));
 		}
 		public override void Draw (Panel p) {
 			GUI.Label(p.LineBox, Name, p.s);
@@ -140,20 +140,20 @@ namespace HOA {
 	}
 
 	
-	public class AMycoSeed : Task {
+	public class Seed : Task {
 		public override string Desc {get {return "Replace target non-Remains destructible with Lichenthrope.";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.LICH);} }
 
-		public AMycoSeed (Unit par) {
+		public Seed (Unit par) {
 			Name = "Seed";
 			Weight = 5;
 			Price = new Price(1,1);
 			Parent = par;
-			NewAim(new Aim (ETraj.ARC, EType.DEST, 2));
+			NewAim(new Aim (ETraj.ARC, ESpecial.DEST, 2));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.LICH));
+			EffectQueue.Add(new Effects.Replace(new Source(Parent), (Token)targets[0], EToken.LICH));
 		}
 
 		public override void Draw (Panel p) {

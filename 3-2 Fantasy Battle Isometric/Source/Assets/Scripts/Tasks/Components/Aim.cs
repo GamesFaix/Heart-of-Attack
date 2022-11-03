@@ -4,7 +4,7 @@ namespace HOA {
 	public enum ETraj {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, RADIAL, OTHER}
 	public enum EPurp {MOVE, CREATE, ATTACK, OTHER}
 
-	public class Aim {
+	public class Aim : IDeepCopy<Aim>{
 
 		public ETraj Trajectory {get; private set;}
 		public Special Special {get; private set;}
@@ -18,7 +18,7 @@ namespace HOA {
 		public bool IncludeSelf {get; set;} 
 		public bool NoKings {get; set;}
 
-		public Aim (ETraj a, EType tc, EPurp p, int r=0, int rMin=0) {
+		public Aim (ETraj a, ESpecial tc, EPurp p, int r=0, int rMin=0) {
 			Trajectory = a;
 			Special = new Special(tc);
 			Purpose = p;
@@ -32,9 +32,18 @@ namespace HOA {
 			Range = r;
 			MinRange = rMin;
 		}
-		public Aim (ETraj a, EType tc, int r=0, int rMin=0) : this (a, tc, EPurp.ATTACK, r, rMin) {}
+		public Aim (ETraj a, ESpecial tc, int r=0, int rMin=0) : this (a, tc, EPurp.ATTACK, r, rMin) {}
 		public Aim (ETraj a, Special t, int r=0, int rMin=0) : this (a, t, EPurp.ATTACK, r, rMin) {}
 		public Aim (ETraj a) : this (a, null, EPurp.ATTACK, 0, 0) {}
+
+		public Aim DeepCopy () {
+			Aim a = new Aim (Trajectory, Special, Purpose, Range, MinRange);
+			a.TeamOnly = this.TeamOnly;
+			a.EnemyOnly = this.EnemyOnly;
+			a.IncludeSelf = this.IncludeSelf;
+			a.NoKings = this.NoKings;
+			return a;
+		}
 
 		string RangeString {
 			get {
@@ -86,18 +95,18 @@ namespace HOA {
 		}
 
 		public static Aim Self () {return new Aim (ETraj.SELF);}
-		public static Aim MoveNeighbor () {return new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE);}
-		public static Aim MovePath (int r) {return new Aim (ETraj.PATH, EType.CELL, EPurp.MOVE, r);}
-		public static Aim MoveLine (int r) {return new Aim (ETraj.LINE, EType.CELL, EPurp.MOVE, r);}
-		public static Aim MoveArc (int r, int mr=0) {return new Aim (ETraj.ARC, EType.CELL, EPurp.MOVE, r, mr);}
-		public static Aim Create () {return new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.CREATE);}
-		public static Aim CreateArc (int r, int mr=0) {return new Aim (ETraj.ARC, EType.CELL, EPurp.CREATE, r, mr);}
-		public static Aim Melee () {return new Aim (ETraj.NEIGHBOR, EType.UNIT);}
+		public static Aim MoveNeighbor () {return new Aim (ETraj.NEIGHBOR, ESpecial.CELL, EPurp.MOVE);}
+		public static Aim MovePath (int r) {return new Aim (ETraj.PATH, ESpecial.CELL, EPurp.MOVE, r);}
+		public static Aim MoveLine (int r) {return new Aim (ETraj.LINE, ESpecial.CELL, EPurp.MOVE, r);}
+		public static Aim MoveArc (int r, int mr=0) {return new Aim (ETraj.ARC, ESpecial.CELL, EPurp.MOVE, r, mr);}
+		public static Aim Create () {return new Aim (ETraj.NEIGHBOR, ESpecial.CELL, EPurp.CREATE);}
+		public static Aim CreateArc (int r, int mr=0) {return new Aim (ETraj.ARC, ESpecial.CELL, EPurp.CREATE, r, mr);}
+		public static Aim Melee () {return new Aim (ETraj.NEIGHBOR, ESpecial.UNIT);}
 		public static Aim Shoot (int n) {
-			Aim a = new Aim (ETraj.LINE, EType.UNIT, n);
+			Aim a = new Aim (ETraj.LINE, ESpecial.UNIT, n);
 			a.IncludeSelf = false;
 			return a;
 		}
-		public static Aim Arc (int r, int mr=0) {return new Aim (ETraj.ARC, EType.UNIT, r, mr);}
+		public static Aim Arc (int r, int mr=0) {return new Aim (ETraj.ARC, ESpecial.UNIT, r, mr);}
 	}
 }

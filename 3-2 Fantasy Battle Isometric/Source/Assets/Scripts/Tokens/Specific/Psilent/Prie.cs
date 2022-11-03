@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-namespace HOA{
+namespace HOA.Tokens {
+
 	public class PriestOfNaja : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new PriestOfNaja (source, template);
@@ -18,9 +19,9 @@ namespace HOA{
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 4),
-				new AStrike(this, 15),
-				new APrieShove(this)
+				new Actions.Move(this, 4),
+				new Actions.Strike(this, 15),
+				new Actions.Shove(this)
 			});
 			Arsenal.Sort();
 		}
@@ -28,32 +29,7 @@ namespace HOA{
 		public override string Notes () {return "";}
 	}
 		
-	public class APrieShove : Task {
-		
-		int damage = 12;
-		int kb = 5;
-		int kbdmg = 2;
 
-		public override string Desc {get {return "Do "+damage+" damage to target unit." +
-				"\nKnockback "+kb+" (Move target in a line away from "+Parent+", up to "+kb+" cells.)" +
-					"\nTarget takes "+kbdmg+" damage per cell knocked back.";} }
-
-		public APrieShove (Unit u) {
-			Name = "Shove";
-			Weight = 4;
-
-			Parent = u;
-			Price = new Price(1,1);
-			NewAim(HOA.Aim.Melee());
-		}
-		
-		protected override void ExecuteMain (TargetGroup targets) {
-			EffectGroup e = new EffectGroup();
-			e.Add(new EDamage (new Source(Parent), (Unit)targets[0], damage));
-			e.Add(new EKnockback (new Source(Parent), (Unit)targets[0], kb, kbdmg));
-			EffectQueue.Add(e);
-		}
-	}
 
 
 

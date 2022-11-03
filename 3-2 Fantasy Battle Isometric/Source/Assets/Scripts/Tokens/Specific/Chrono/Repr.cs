@@ -1,4 +1,5 @@
-namespace HOA{
+namespace HOA.Tokens {
+
 	public class Reprospector : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Reprospector (source, template);
@@ -17,10 +18,10 @@ namespace HOA{
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[] {
-				new AMovePath(this, 4),
-				new AReprMine(this),
-				new AReprSlam(this),
-				new AReprBomb(this)
+				new Actions.Move(this, 4),
+				new Actions.TimeMine(this),
+				new Actions.TimeSlam(this),
+				new Actions.TimeBomb(this)
 			});
 			Arsenal.Sort();
 		}

@@ -1,8 +1,9 @@
 ﻿using UnityEngine; 
 using System.Collections.Generic;
 
-namespace HOA { 
-	public class AUltrThrow : Task {
+namespace HOA.Actions {
+
+	public class ThrowTerrain : Task {
 		
 		public override string Desc {get {return 
 				"Destroy target non-Remains destructible." +
@@ -10,8 +11,8 @@ namespace HOA {
 		
 		int damage = 16;
 
-		public AUltrThrow (Unit parent) {
-			NewAim(new Aim(ETraj.NEIGHBOR, EType.DEST));
+		public ThrowTerrain (Unit parent) {
+			NewAim(new Aim(ETraj.NEIGHBOR, ESpecial.DEST));
 			Aim.Add(HOA.Aim.Arc(3));
 			Name = "Throw Terrain";
 			Weight = 4;
@@ -20,8 +21,8 @@ namespace HOA {
 		} 
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EKill (new Source(Parent), (Token)targets[0]));
-			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[1], damage));
+			EffectQueue.Add(new Effects.Kill (new Source(Parent), (Token)targets[0]));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[1], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -37,7 +38,7 @@ namespace HOA {
 		}
 	}
 
-	public class ARevoQuick : Task, IMultiTarget {
+	public class Quickdraw : Task, IMultiTarget {
 		
 		public override string Desc {get {return 
 				"Once per Focus (Max: 5), select and deal "+damage+" damage to target unit." +
@@ -46,7 +47,7 @@ namespace HOA {
 		
 		int damage = 6;
 
-		public ARevoQuick (Unit parent) {
+		public Quickdraw (Unit parent) {
 			Name = "Quickdraw";
 			Weight = 4;
 			Parent = parent;
@@ -63,7 +64,7 @@ namespace HOA {
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			for (int i=0; i<targets.Count; i++) {
-				EffectQueue.Add(new EDamage (new Source(Parent), (Unit)targets[i], damage));
+				EffectQueue.Add(new Effects.Damage (new Source(Parent), (Unit)targets[i], damage));
 			}
 			Parent.SetStat(new Source(Parent), EStat.FP, 0);
 		}
@@ -86,7 +87,7 @@ namespace HOA {
 		}
 	} 
 
-	public class AMawtBomb : Task, IMultiTarget {
+	public class Bombard : Task, IMultiTarget, IRecursiveTarget {
 		
 		public override string Desc {get {return 
 				"Once per Focus (Max: 3), move upto "+range+" cells in a line and " +
@@ -97,7 +98,7 @@ namespace HOA {
 		int damage = 10;
 		int range = 4;
 
-		public AMawtBomb (Unit parent) {
+		public Bombard (Unit parent) {
 			Name = "Bombard";
 			Weight = 4;
 			Parent = parent;
@@ -133,8 +134,8 @@ namespace HOA {
 					line.Add(c);
 				}
 				
-				foreach (Cell point in line) {EffectQueue.Add(new EMove(new Source(Parent), Parent, point));}
-				EffectQueue.Add(new EMawtExplosion(new Source(Parent), endCell, 10));
+				foreach (Cell point in line) {EffectQueue.Add(new Effects.Move(new Source(Parent), Parent, point));}
+				EffectQueue.Add(new Effects.Explosion(new Source(Parent), endCell, 10, true));
 				start = endCell;
 			}
 		}

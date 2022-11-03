@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA{
+namespace HOA.Tokens {
+
 	public class MeinSchutz : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new MeinSchutz (source, template);
@@ -20,39 +21,15 @@ namespace HOA{
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 5),
-				new AShoot(this, 2, 12),
-				new ACreate(this, new Price(0,1), EToken.MINE),
-				new AMeinDetonate(this)
+				new Actions.Move(this, 5),
+				new Actions.Shoot(this, 2, 12),
+				new Actions.Create(this, new Price(0,1), EToken.MINE),
+				new Actions.Detonate(this)
 			});
 			Arsenal.Sort();
 		}
 
 		public override string Notes () {return "";}
-	}
-
-	public class AMeinDetonate : Task {
-
-		public override string Desc {get {return "Destroy all mines on team.";} }
-
-		public AMeinDetonate (Unit u) {
-			Name = "Detonate";
-			Weight = 4;
-
-			Parent = u;
-			Price = new Price(1,1);
-			NewAim(new Aim(ETraj.GLOBAL, EType.DEST));
-		}
-		
-		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup mines = Parent.Owner.OwnedUnits;
-			for (int i=mines.Count-1; i>=0; i--) {
-				Token t = mines[i];
-				if (t.ID.Code != EToken.MINE) {mines.Remove(t);}
-			}
-			
-			foreach (Token t in mines) {t.Die(new Source(Parent));}
-		}
 	}
 }
 

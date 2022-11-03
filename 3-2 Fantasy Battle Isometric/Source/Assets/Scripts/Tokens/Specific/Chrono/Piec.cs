@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Piecemaker : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Piecemaker (source, template);
@@ -18,10 +19,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[] {
-				new AMovePath(this, 4),
-				new AStrike(this, 10),
-				new ACreateArc(this, new Price(1,1), EToken.APER, 2),
-				new APiecHeal(this)
+				new Actions.Move(this, 4),
+				new Actions.Strike(this, 10),
+				new Actions.CreateArc(this, new Price(1,1), EToken.APER, 2),
+				new Actions.Repair(this)
 			});
 			Arsenal.Sort();
 		}

@@ -88,7 +88,7 @@ namespace HOA {
 					display.HideSprite();
 					display.Clickable = false;
 				}
-				((TokenDisplay)display).MoveTo(((Token)t).Body.Cell);
+				//((TokenDisplay)display).MoveTo(((Token)t).Body.Cell);
 
 			}
 
@@ -122,11 +122,21 @@ namespace HOA {
 
 		static GameObject Instantiate (Target t) {
 			GameObject prefab;
-			if (t is ExoCell) {prefab = exoPF;}
-			else if (t is Cell) {prefab = cellPF;}
-			else if (t is Token) {prefab = tokenPF;}
+			Vector3 pos;
+			if (t is ExoCell) {
+				prefab = exoPF;
+				pos = PrefabPos(t);
+			}
+			else if (t is Cell) {
+				prefab = cellPF;
+				pos = PrefabPos(t);
+			}
+			else if (t is Token) {
+				prefab = tokenPF;
+				pos = new Vector3(0,0,0);
+			}
 			else {throw new Exception ("TargetDisplay: Can only insantiate on Cell or Token.");}
-			return GameObject.Instantiate (prefab, PrefabPos(t), Quaternion.identity) as GameObject;
+			return GameObject.Instantiate (prefab, pos, Quaternion.identity) as GameObject;
 		}
 
 	}

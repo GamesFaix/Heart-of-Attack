@@ -4,29 +4,26 @@ using UnityEngine;
 
 namespace HOA {
 
-	public class Body{
+	public partial class Body : IDeepCopyToken<Body>{
+
 		protected Token parent;
 
 		public Body() {}
 		public Body(Token t) {parent = t;}
 
-		protected Cell cell;
-		public Cell Cell {
-			get {return cell;} 
-			set {cell = value;}
-		}
+		public Body DeepCopy (Token parent) {return new Body(parent);}
+
+		public Cell Cell {get; set;}
 		
-		public virtual TokenGroup Neighbors(bool cellMates = false) {
-			TokenGroup neighbors = cell.Neighbors().Occupants;
-			if (cellMates) {
-				foreach (Token t in CellMates) {neighbors.Add(t);}
-			}
+		public TokenGroup Neighbors (bool cellMates = false) {
+			TokenGroup neighbors = Cell.Neighbors().Occupants;
+			if (cellMates) {neighbors.Add(CellMates);}
 			return neighbors;
 		}
 		
-		public virtual TokenGroup CellMates {
+		public TokenGroup CellMates {
 			get {
-				TokenGroup cellMates = cell.Occupants;
+				TokenGroup cellMates = Cell.Occupants;
 				cellMates.Remove(parent);
 				return cellMates;
 			}
@@ -34,74 +31,51 @@ namespace HOA {
 
 		public virtual bool CanEnter (Cell newCell) {
 			if (!(newCell is ExoCell)) {
-				if (!newCell.Occupied(parent.Plane.Value) || CanTrample(newCell)) {
+				if (!newCell.Occupied(parent.Plane.Value) 
+				    || CanTrample(parent, newCell)) {
 					return true;
 				}
 			}
 			return false;
 		}
-		
-		bool CanTakePlaceOf (Token t) {
-			Cell otherCell = t.Body.Cell;
-			Token blocker;
-			
-			foreach (EPlane p in parent.Plane.Value) {
-				if (otherCell.Contains(p, out blocker)) {
-					if (blocker != t) {return false;}
-				}
-			}
-			return true;
-		}
 
-		public bool CanSwap (Token other) {
-			if (CanTakePlaceOf(other) && other.Body.CanTakePlaceOf(parent)) {return true;}
-			return false;
-		}
-
-		public bool CanTrample (Cell newCell) {
-			if (parent.Special.Is(EType.TRAM)) {
-				foreach (Token t in newCell.Occupants) {
-					if (t.Special.Is(EType.DEST) && CanTakePlaceOf(t)) {
-						return true;
-					}
-				}
-			}
-			if (parent.Special.Is(EType.KING)) {
-				foreach (Token t in newCell.Occupants) {
-					if (t.Special.Is(EType.HEART) && CanTakePlaceOf(t)) {
-						return true;
-					}
-				}
-			}
-			
-			return false;
-		}
-
-		public virtual bool Enter (Cell newCell) {
+		public bool Enter (Cell newCell) {
 			if (CanEnter(newCell)) {
-				if (cell != default(Cell)) {Exit();}
-				cell = newCell;
-				Trample(newCell);
+				if (Cell != null) {Exit();}
+				Cell = newCell;
+				Trample(parent, newCell);
 				newCell.Enter(parent);
-				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(cell);}
+				EnterSpecial(newCell);
+				if (parent.Display != null) {((TokenDisplay)parent.Display).Enter(Cell);}
 				return true;
 			}	
-			if (newCell == Game.Board.TemplateCell) {
-				cell = newCell;
-				return true;	
-			}
 			return false;
 		}
 
+		public bool MoveTo (Cell newCell) {
+			if (CanEnter(newCell)) {
+				if (Cell != null) {Exit();}
+				Cell = newCell;
+				Trample(parent, newCell);
+				newCell.Enter(parent);
+				EnterSpecial(newCell);
+				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(Cell);}
+				return true;
+			}	
+			return false;
+		}
+
+		protected virtual void EnterSpecial (Cell newCell) {}
+
 		public bool Swap (Token other) {
-			if (CanSwap(other)) {
-				Cell oldCell = cell;
+			if (CanSwap(parent, other)) {
+				Cell oldCell = Cell;
 				Cell newCell = other.Body.Cell;
 
 				Exit();
 				other.Body.Exit();
 
-				cell = newCell;
+				Cell = newCell;
 				newCell.Enter(parent);
 				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(newCell);}
 
@@ -114,25 +88,6 @@ namespace HOA {
 			return false;
 		}
 
-		protected void Trample (Cell newCell) {
-			TokenGroup tokens = newCell.Occupants;
-
-			if (parent.Special.Is(EType.TRAM)) {
-				TokenGroup dest = tokens.OnlyType(EType.DEST);
-				for (int i=dest.Count-1; i>=0; i--) {
-					EffectQueue.Add(new EDestruct(new Source(parent), dest[i]));
-				}
-			}
-			if (parent.Special.Is(EType.KING)) {
-				TokenGroup heart = tokens.OnlyType(EType.HEART);
-				if (heart.Count>0) {
-					EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart[0]));
-				}
-			}
-		}
-		
-		public virtual void Exit () {
-			cell.Exit(parent);
-		}
+		public virtual void Exit () {Cell.Exit(parent);}
 	}
 }

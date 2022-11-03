@@ -7,12 +7,15 @@ namespace HOA {
 		public abstract void Process();
 		public abstract override string ToString();
 	}
+}
 
-	public class ETails : Effect {
-		public override string ToString () {return "Effect - Tails";}
+namespace HOA.Effects {
+
+	public class Miss : Effect {
+		public override string ToString () {return "Effect - Miss";}
 		Token target;
 		
-		public ETails (Source s, Token t) {
+		public Miss (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
@@ -22,11 +25,11 @@ namespace HOA {
 		}
 	}
 
-	public class ESetStat : Effect {
+	public class SetStat : Effect {
 		public override string ToString () {return "Effect - Set Stat";}
 		Unit target; EStat stat; int newValue;
 		
-		public ESetStat (Source s, Unit u, EStat st, int n) {
+		public SetStat (Source s, Unit u, EStat st, int n) {
 			source = s; target = u; stat = st; newValue = n;
 		}
 		public override void Process() {
@@ -34,11 +37,11 @@ namespace HOA {
 		}
 	}	
 		
-	public class EAddStat : Effect {
+	public class AddStat : Effect {
 		public override string ToString () {return "Effect - Add Stat";}
 		Unit target; EStat stat; int addValue;
 		
-		public EAddStat (Source s, Unit u, EStat st, int n) {
+		public AddStat (Source s, Unit u, EStat st, int n) {
 			source = s; target = u; stat = st; addValue = n;
 		}
 		public override void Process() {
@@ -57,11 +60,11 @@ namespace HOA {
 		}
 	}			
 		
-	public class EGetHeart : Effect {
+	public class GetHeart : Effect {
 		public override string ToString () {return "Effect - Get Heart";}
 		Token target;
 
-		public EGetHeart (Source s, Token t) {
+		public GetHeart (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
@@ -69,22 +72,22 @@ namespace HOA {
 			EffectGroup effects = new EffectGroup();
 
 			foreach (Token token in target.Owner.OwnedUnits) {
-				effects.Add(new ESetOwner(source, token, source.Player));
+				effects.Add(new SetOwner(source, token, source.Player));
 			}
 			target.Display.Effect(EEffect.GETHEART);
 			Mixer.Play(SoundLoader.Effect(EEffect.GETHEART));
 			GameLog.Out(source.Player.ToString() + " acquired the "+target.ToString()); 
-			effects.Add(new EKill2 (source, target));
+			effects.Add(new Kill2 (source, target));
 			EffectQueue.Add(effects);
 		}
 	}
 
-	public class ESetOwner : Effect {
+	public class SetOwner : Effect {
 		public override string ToString () {return "Effect - Set Owner";}
 		Token target;
 		Player owner;
 
-		public ESetOwner (Source s, Token t, Player owner) {
+		public SetOwner (Source s, Token t, Player owner) {
 			source = s; target = t; this.owner = owner;
 		}
 
@@ -93,6 +96,26 @@ namespace HOA {
 			target.Display.Effect(EEffect.OWNER);
 			Mixer.Play(SoundLoader.Effect(EEffect.OWNER));
 			GameLog.Out(owner.ToString() + " acquired "+target.ToString()); 
+		}
+	}
+
+	public class Stick : Effect {
+		public override string ToString () {return "Effect - Stick";}
+		Tokens.Web parent;
+		Unit target;
+		
+		public Stick (Source s, Unit u) {
+			source = s; target = u;
+			parent = (Tokens.Web)source.Token; 
+		}
+		public override void Process() {
+			Task move = target.Arsenal.Move;
+			if (move != default(Task)) {
+				parent.Affected.Add(target, move.Aim[0].Range);
+				move.Aim[0].Range = 1;
+				Mixer.Play(SoundLoader.Effect(EEffect.STICK));
+				target.Display.Effect(EEffect.STICK);
+			}
 		}
 	}
 }

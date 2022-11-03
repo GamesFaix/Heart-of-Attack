@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA {
-	public class ECreate : Effect {
+namespace HOA.Effects {
+	public class Create : Effect {
 		public override string ToString () {return "Effect - Create";}
 		EToken child; Cell cell;
 		
-		public ECreate (Source s, EToken newT, Cell c) {
+		public Create (Source s, EToken newT, Cell c) {
 			source = s; child = newT; cell = c;
 		}
 		public override void Process() {
@@ -18,30 +18,30 @@ namespace HOA {
 		}
 	}
 	
-	public class EKill : Effect {
+	public class Kill : Effect {
 		public override string ToString () {return "Effect - Kill";}
 		Token target;
 		
-		public EKill (Source s, Token t) {
+		public Kill (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
 			target.Display.Effect(EEffect.DEATH);
 			Mixer.Play(SoundLoader.Effect(EEffect.DEATH));
 			if (source.Sequence == default(EffectSeq)) {
-				EffectQueue.Add(new EKill2(source, target));
+				EffectQueue.Add(new Kill2(source, target));
 			}
 			else {
-				source.Sequence.AddToNext(new EKill2(source, target));
+				source.Sequence.AddToNext(new Kill2(source, target));
 			}
 		}
 	}
 	
-	public class EDestruct : Effect {
+	public class Destruct : Effect {
 		public override string ToString () {return "Effect - Destruct";}
 		Token target;
 		
-		public EDestruct (Source s, Token t) {
+		public Destruct (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
@@ -49,19 +49,19 @@ namespace HOA {
 			Mixer.Play(SoundLoader.Effect(EEffect.DESTRUCT));
 			
 			if (source.Sequence == default(EffectSeq)) {
-				EffectQueue.Add(new EKill2(source, target));
+				EffectQueue.Add(new Kill2(source, target));
 			}
 			else {
-				source.Sequence.AddToNext(new EKill2(source, target));
+				source.Sequence.AddToNext(new Kill2(source, target));
 			}
 		}
 	}
 	
-	public class EKill2 : Effect {
+	public class Kill2 : Effect {
 		public override string ToString () {return "Effect - Kill2";}
 		Token target;
 		
-		public EKill2 (Source s, Token t) {
+		public Kill2 (Source s, Token t) {
 			source = s; target = t;
 		}
 		public override void Process() {
@@ -69,11 +69,11 @@ namespace HOA {
 		}
 	}
 	
-	public class EReplace : Effect {
+	public class Replace : Effect {
 		public override string ToString () {return "Effect - Replace";}
 		Token target; EToken newToken;
 		
-		public EReplace (Source s, Token t, EToken newT) {
+		public Replace (Source s, Token t, EToken newT) {
 			source = s; target = t; newToken = newT;
 		}
 		public override void Process() {
@@ -83,4 +83,47 @@ namespace HOA {
 		}
 	}
 
+	public class Detonate : EffectSeq {
+		public override string ToString () {return "EffectSeq - Detonate";}
+		Token target;
+		
+		public Detonate (Source s, Token t) {
+			source = s; target = t;
+			
+			list = new List<EffectGroup>();
+			
+			EffectGroup group = new EffectGroup();
+			group.Add(new Detonate1 (new Source(source.Token, this), target));
+			list.Add(group);
+		}
+	}
+	
+	public class Detonate1 : Effect {
+		public override string ToString () {return "Effect - Detonate1";}
+		Token target;
+		
+		public Detonate1 (Source s, Token t) {
+			source = s; target = t;
+		}
+		public override void Process() {
+			Mixer.Play(SoundLoader.Effect(EEffect.DETONATE));
+			target.Display.Effect(EEffect.DETONATE);
+			source.Sequence.AddToNext(new Detonate2(source, target));
+		}
+		
+	}
+	
+	public class Detonate2 : Effect {
+		public override string ToString () {return "Effect - Detonate2";}
+		Token target;
+		
+		public Detonate2 (Source s, Token t) {
+			source = s; target = t;
+			Debug.Log(ToString());
+		}
+		public override void Process() {
+			Debug.Log("processing "+ToString());
+			target.Die(source);
+		}
+	}
 }

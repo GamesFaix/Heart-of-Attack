@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Recyclops : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Recyclops (source, template);
@@ -7,8 +8,8 @@
 		Recyclops(Source s, bool template=false){
 			ID = new ID(this, EToken.RECY, s, false, template);
 			Plane = Plane.Gnd;
-			Special.Add(EType.DEST);
-			Special.Add(EType.REM);
+			Special.Add(ESpecial.DEST);
+			Special.Add(ESpecial.REM);
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(4);
@@ -18,10 +19,10 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new AMovePath(this, 2),
-				new ARage(this, 12),
-				new ARecyExplode(this),
-				new ARecyCannibal(this)
+				new Actions.Move(this, 2),
+				new Actions.Rage(this, 12),
+				new Actions.Burst(this),
+				new Actions.Cannibalize(this)
 			});
 			Arsenal.Sort();
 		}

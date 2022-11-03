@@ -1,13 +1,13 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class AReprMine : Task {
+	public class TimeMine : Task {
 		
 		public override string Desc {get {return "Destroy neighboring destructible." +
 				"\nIf initative is less than 6, initiative +1.";} }
 		
-		public AReprMine (Unit parent) {
+		public TimeMine (Unit parent) {
 			Name = "Time Mine";
 			Weight = 4;
 			Parent = parent;
@@ -19,32 +19,32 @@ namespace HOA {
 			Token t = (Token)targets[0];
 			Cell c = t.Body.Cell;
 			
-			EffectQueue.Add(new EDestruct(new Source(Parent), t));
+			EffectQueue.Add(new Effects.Destruct(new Source(Parent), t));
 			
 			EffectGroup nextEffects = new EffectGroup();
 			
 			if (Parent.IN < 7) {
-				nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.IN, 1));
+				nextEffects.Add(new Effects.AddStat(new Source(Parent), Parent, EStat.IN, 1));
 			}
 			if (Parent.Body.CanEnter(c)) {
-				nextEffects.Add(new EMove(new Source(Parent), Parent, c));
+				nextEffects.Add(new Effects.Move(new Source(Parent), Parent, c));
 			}
 			
 			if (nextEffects.Count > 0) {EffectQueue.Add(nextEffects);}
 		}
 	}
 
-	public class ARecyCannibal : Task {
+	public class Cannibalize : Task {
 		
 		public override string Desc {get {return "Destroy target remains." +
 				"\nHealth +10/10";} } 
 		
-		public ARecyCannibal (Unit par) {
+		public Cannibalize (Unit par) {
 			Name = "Cannibalize";
 			Weight = 4;
 			Price = new Price(1,0);
 			Parent = par;
-			NewAim(new Aim (ETraj.NEIGHBOR, EType.REM));
+			NewAim(new Aim (ETraj.NEIGHBOR, ESpecial.REM));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {

@@ -1,9 +1,8 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-
-	public class AMycoSpore : Task {
+	public class Sporatic : Task {
 		int damage = 12;
 		
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
@@ -14,7 +13,7 @@ namespace HOA {
 						"it takes damage equal to the number of counters, " +
 						"then removes half the counters (rounded up).)";} }
 		
-		public AMycoSpore (Unit u) {
+		public Sporatic (Unit u) {
 			Name = "Sporatic Emission";
 			Weight = 3;
 			
@@ -24,7 +23,7 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ECorrode(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Corrode(new Source(Parent), (Unit)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -42,7 +41,7 @@ namespace HOA {
 		}
 	}
 
-	public class ABeesFatalBlow : Task {
+	public class FatalBlow : Task {
 		int damage = 15;
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
 		
@@ -53,7 +52,7 @@ namespace HOA {
 						"it takes damage equal to the number of counters, " +
 						"then removes half the counters (rounded up).)";} }
 		
-		public ABeesFatalBlow (Unit u) {
+		public FatalBlow (Unit u) {
 			Name = "Fatal Blow";
 			Weight = 4;
 			
@@ -64,9 +63,9 @@ namespace HOA {
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new ECorrode (new Source(Parent), u, damage));
+			EffectQueue.Add(new Effects.Corrode (new Source(Parent), u, damage));
 			
-			EffectQueue.Add(new EKill (new Source(Parent), Parent));
+			EffectQueue.Add(new Effects.Kill (new Source(Parent), Parent));
 		}
 
 		public override void Draw (Panel p) {
@@ -86,7 +85,7 @@ namespace HOA {
 		}
 	}
 
-	public class ARecyExplode : Task {
+	public class Burst : Task {
 		int damage = 12;
 		
 		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
@@ -99,7 +98,7 @@ namespace HOA {
 						"then removes half the counters (rounded up).)";
 			} } 
 		
-		public ARecyExplode (Unit u) {
+		public Burst (Unit u) {
 			Name = "Burst";
 			Weight = 4;
 			
@@ -109,11 +108,11 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			TokenGroup victims = Parent.Body.Neighbors(true).OnlyType(EType.UNIT);
+			TokenGroup victims = Parent.Body.Neighbors(true).OnlyType(ESpecial.UNIT);
 			EffectGroup nextEffects = new EffectGroup();
-			nextEffects.Add(new EKill(new Source(Parent), Parent));
+			nextEffects.Add(new Effects.Kill(new Source(Parent), Parent));
 			foreach (Token t in victims) {
-				nextEffects.Add(new ECorrode(new Source(Parent), (Unit)t, damage));	
+				nextEffects.Add(new Effects.Corrode(new Source(Parent), (Unit)t, damage));	
 			}
 			EffectQueue.Add(nextEffects);
 		}

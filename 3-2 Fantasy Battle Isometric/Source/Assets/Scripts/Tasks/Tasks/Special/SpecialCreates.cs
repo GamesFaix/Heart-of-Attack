@@ -1,23 +1,23 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class ANecrCorpse : Task {
+	public class Exhume : Task {
 
 		public override string Desc {get {return "Create Corpse in target cell.";} }
 
 		public override Token Template {get {return TokenFactory.Template(EToken.CORP);} }
 
-		public ANecrCorpse (Unit par) {
-			Name = "Plant corpse";
+		public Exhume (Unit par) {
+			Name = "Exhume";
 			Weight = 5;
 			Parent = par;
 			Price = Price.Free;
-			NewAim(new Aim(ETraj.FREE, EType.CELL, EPurp.CREATE));
+			NewAim(new Aim(ETraj.FREE, ESpecial.CELL, EPurp.CREATE));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ECreate(new Source(Parent), EToken.CORP, (Cell)targets[0]));
+			EffectQueue.Add(new Effects.Create(new Source(Parent), EToken.CORP, (Cell)targets[0]));
 		}
 
 		public override void Draw (Panel p) {
@@ -33,12 +33,12 @@ namespace HOA {
 		}
 	}
 
-	public class AGargRook : Task {
+	public class CreateROOK : Task {
 		
 		public override string Desc {get {return "Create Rook in "+Parent+"'s cell.";} } 
 		public override Token Template {get {return TokenFactory.Template(EToken.ROOK);} }
 
-		public AGargRook (Unit par) {
+		public CreateROOK (Unit par) {
 			Name = "Build Rook";
 			Weight = 5;
 			Parent = par;
@@ -66,14 +66,14 @@ namespace HOA {
 		}
 	}
 
-	public class ABlacWeb : Task {
+	public class WebShot : Task {
 		int damage = 12;
 		
 		public override string Desc {get {return "Create Web in target cell." +
 				"\nAll Units in target cell take "+damage+" damage.";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.WEBB);} }
 
-		public ABlacWeb (Unit par) {
+		public WebShot (Unit par) {
 			Name = "Web Shot";
 			Weight = 4;
 			Parent = par;
@@ -84,11 +84,11 @@ namespace HOA {
 		protected override void ExecuteMain (TargetGroup targets) {
 			Cell c = (Cell)targets[0];
 			
-			EffectQueue.Add(new ECreate(new Source(Parent), EToken.WEBB, c));
+			EffectQueue.Add(new Effects.Create(new Source(Parent), EToken.WEBB, c));
 			
-			TokenGroup occupants = c.Occupants.OnlyType(EType.UNIT);
+			TokenGroup occupants = c.Occupants.OnlyType(ESpecial.UNIT);
 			foreach (Unit u in occupants) {
-				EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
+				EffectQueue.Add(new Effects.Damage(new Source(Parent), u, damage));
 			}
 		}
 
@@ -105,12 +105,12 @@ namespace HOA {
 		}
 	}
 	
-	public class ABlacLich : Task, IMultiTarget{
+	public class CreateLICH : Task, IMultiTarget{
 		
 		public override string Desc {get {return "Create Lichenthropes in up to two target cells.";} }
 		public override Token Template {get {return TokenFactory.Template(EToken.LICH);} }
 
-		public ABlacLich (Unit par) {
+		public CreateLICH (Unit par) {
 			Name = "Create Lichenthropes";
 			Weight = 5;
 			Parent = par;
@@ -120,9 +120,9 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ECreate(new Source(Parent), EToken.LICH, (Cell)targets[0]));
+			EffectQueue.Add(new Effects.Create(new Source(Parent), EToken.LICH, (Cell)targets[0]));
 			if (targets[1] != null) {
-				EffectQueue.Add(new ECreate(new Source(Parent), EToken.LICH, (Cell)targets[1]));
+				EffectQueue.Add(new Effects.Create(new Source(Parent), EToken.LICH, (Cell)targets[1]));
 			}
 			Targeter.Reset();
 		}

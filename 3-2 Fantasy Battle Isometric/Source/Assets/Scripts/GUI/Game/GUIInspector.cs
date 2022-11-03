@@ -101,7 +101,7 @@ public static class GUIInspector {
 			if (RightClick) {TipInspector.Inspect(ETip.CELL);}
 		}
 		p.ResetX();
-		GUI.Box(p.IconBox, Icons.Special(EType.CELL), p.s);
+		GUI.Box(p.IconBox, Icons.Special(ESpecial.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(50), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);

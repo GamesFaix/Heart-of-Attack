@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Collections\Tuples\Float2.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Collections\Tuples New\float2.cs" Line="44" Column="1" />
+      <File FileName="Assets\Scripts\Collections\Tuples\Int2.cs" Line="35" Column="4" />
+      <File FileName="Assets\Scripts\Collections\Tuples\Index2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Collections\Tuples\Size2.cs" Line="11" Column="5" />
+      <File FileName="Assets\Scripts\Collections\Tuples\Float2.cs" Line="30" Column="36" />
+      <File FileName="Assets\Scripts\Collections\Tuples New\index2.cs" Line="36" Column="1" />
+      <File FileName="Assets\Scripts\Collections\Tuples New\int2.cs" Line="29" Column="12" />
+      <File FileName="Assets\Scripts\Collections\Tuples New\size2.cs" Line="58" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

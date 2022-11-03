@@ -29,7 +29,7 @@ namespace HOA {
 			
 			TargetGroup legal = new TargetGroup();
 			
-			if (aim.Special.Is(EType.CELL)) {
+			if (aim.Special.Is(ESpecial.CELL)) {
 				if (aim.Purpose == EPurp.CREATE) {legal.Add(neighborCells.Occupiable(other));}
 				if (aim.Purpose == EPurp.MOVE) {legal.Add(neighborCells.Occupiable(actor));}
 			}
@@ -45,7 +45,7 @@ namespace HOA {
 		static bool Free (Token actor, Aim aim, Token other) {
 			TargetGroup legal = new TargetGroup();
 			
-			if (aim.Special.Is(EType.CELL)) {
+			if (aim.Special.Is(ESpecial.CELL)) {
 				if (aim.Purpose == EPurp.CREATE) {legal.Add(Game.Board.Cells.Occupiable(other));}
         	    if (aim.Purpose == EPurp.MOVE) {legal.Add(Game.Board.Cells.Occupiable(actor));}
 			}
@@ -58,7 +58,7 @@ namespace HOA {
 		}
 
 		static bool Path (Token actor, Aim aim, Cell center) {
-			if (!aim.Special.Is(EType.CELL)) {
+			if (!aim.Special.Is(ESpecial.CELL)) {
 				TargetGroup legal = new TargetGroup();
 
 				CellGroup thisRad = center.Neighbors();
@@ -98,7 +98,7 @@ namespace HOA {
 			
 			foreach (CellGroup line in star) {
 				
-				if (aim.Special.Is(EType.CELL)) {
+				if (aim.Special.Is(ESpecial.CELL)) {
 					if (aim.Purpose == EPurp.MOVE) {legal.Add(LineUntilStop(line, actor));}
 					if (aim.Purpose == EPurp.CREATE) {legal.Add(LineUntilStop(line, other));}
 				}
@@ -163,7 +163,7 @@ namespace HOA {
 			TargetGroup legal = new TargetGroup();
 			CellGroup square = CellSquare (center, aim.Range, aim.MinRange);
 			
-			if (aim.Special.Is(EType.CELL)) {
+			if (aim.Special.Is(ESpecial.CELL)) {
 				if (aim.Purpose == EPurp.ATTACK) {legal.Add(square);}
 				if (aim.Purpose == EPurp.CREATE) {legal.Add(square.Occupiable(other));}
 				if (aim.Purpose == EPurp.MOVE) {

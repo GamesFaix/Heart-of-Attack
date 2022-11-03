@@ -1,15 +1,15 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class AMonoField : Task {
+	public class DeathField : Task {
 		int range = 2;
 		int damage = 5;
 		
 		public override string Desc {get {return "Do "+damage+" damage to all units within "+range+" cells of "+Parent.ID.Name+". " +
 				"\n"+Parent.ID.Name+" gains Health equal to damage successfully dealt.";} }
 		
-		public AMonoField (Unit u) {
+		public DeathField (Unit u) {
 			Parent = u;
 			Name = "Death Field";
 			Weight = 4;
@@ -19,11 +19,11 @@ namespace HOA {
 		
 		protected override void ExecuteMain (TargetGroup targets) {
 			CellGroup zone = Zone(Parent, range);
-			TokenGroup affected = zone.Occupants.OnlyType(EType.UNIT);
+			TokenGroup affected = zone.Occupants.OnlyType(ESpecial.UNIT);
 			affected.Remove(Parent);
 			
 			foreach (Unit u in affected) {
-				EffectQueue.Add(new ELeech(new Source(Parent), u, damage));
+				EffectQueue.Add(new Effects.Leech(new Source(Parent), u, damage));
 			}
 		}
 		
@@ -47,14 +47,14 @@ namespace HOA {
 		}
 		
 	}
-	public class AGateFeast : Task {
+	public class Feast : Task {
 		
 		int damage = 12;
 		
 		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nGain health equal to damage successfully dealt.";} }
 		
-		public AGateFeast (Unit u) {
+		public Feast (Unit u) {
 			Name = "Feast";
 			Weight = 3;
 			Price = Price.Cheap;
@@ -63,18 +63,18 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ELeech(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
 
-	public class ALichFeed : Task {
+	public class Feed : Task {
 		
 		int damage = 5;
 		
 		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
 				"\nGain health equal to damage successfully dealt.";} }
 		
-		public ALichFeed (Unit u) {
+		public Feed (Unit u) {
 			Name = "Feed";
 			Weight = 3;
 			
@@ -84,10 +84,35 @@ namespace HOA {
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new ELeech(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
 
+	public class MneumonicPlague : Task {
+		
+		int damage = 7;
+		
+		public override string Desc {get {return  "Do "+damage+" damage to all enemy cellmates. " +
+				"\nGain health equal to damage successfully dealt.";} }
+		
+		public MneumonicPlague (Unit u) {
+			Name = "Leech life";
+			Weight = 3;
+			
+			Price = new Price(1,0);
+			NewAim(HOA.Aim.Self());
+			Parent = u;
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup tokens = Parent.Body.CellMates;
+			tokens = tokens.OnlyType(ESpecial.UNIT);
+			tokens = tokens.RemoveOwner(Parent.Owner);
+			foreach (Token t in tokens) {
+				EffectQueue.Add(new Effects.Leech(new Source(Parent), (Unit)t, damage));
+			}
+		}
+	}
 
 
 }

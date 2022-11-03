@@ -40,6 +40,7 @@ namespace HOA {
 				if (GUIInspector.LeftClick) {
 					GUIInspector.Inspected = this;
 					Display.Effect(EEffect.SHOW);
+					CameraPanner.MoveTo(this);
 				}
 //				if (GUIInspector.RightClick) {GUIInspector.ToolTip("Name");}
 			}
@@ -75,8 +76,7 @@ namespace HOA {
 		protected void ScaleLarge () {SpriteScale = new Vector3 (2.5f, 1, 2.5f);}
 		protected void ScaleJumbo () {SpriteScale = new Vector3 (3f, 1, 3f);}
 		protected void ScaleTall () {SpriteScale = new Vector3 (3f, 1, 4.5f);}
-		protected void ScaleQuad () {SpriteScale = new Vector3 (5f, 1, 5f);}
- 
+	
 		//
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = null;}
@@ -92,8 +92,8 @@ namespace HOA {
 			Cell oldCell = Body.Cell;
 			Body.Exit();
 			if (corpse) {CreateRemains(oldCell);}
-			if (Special.Is(EType.KING)) {Owner.Kill();}
-			if (log && !Special.Is(EType.HEART)) {
+			if (Special.Is(ESpecial.KING)) {Owner.Kill();}
+			if (log && !Special.Is(ESpecial.HEART)) {
 				if (s.Token != default(Token)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
 				else {GameLog.Out(this+" has been killed.");}
 			}
@@ -105,7 +105,7 @@ namespace HOA {
 				if (TokenFactory.Create(new Source(this), OnDeath, oldCell, out remains, false)) {
 					GameLog.Out(this+" left "+remains);
 				}
-				if (remains.Special.Is(EType.HEART)) {remains.Owner = Owner;}
+				if (remains.Special.Is(ESpecial.HEART)) {remains.Owner = Owner;}
 			}
 		}
 

@@ -20,34 +20,44 @@ namespace HOA {
 		public static Sensor Instantiate (Token par, Cell c) {return new SensorLava(par, c);}
 
 		protected override bool IsTrigger (Token trigger) {
-			if (trigger is Unit && trigger.Plane.Is(EPlane.GND)) {return true;}
+			if (trigger.Plane.Is(EPlane.GND)) {return true;}
 			return false;
 		}
 
 		protected override void EnterEffects (Token t) {
-			Unit u = (Unit)t;
-			u.timers.Add(new TLava(u, parent));
+			if (t is Unit) {
+				Unit u = (Unit)t;
+				u.timers.Add(new TLava(u, parent));
+			}
 		}
 
 		protected override void ExitEffects (Token t) {
-			Unit u = (Unit)t;
-			for (int i=u.timers.Count-1; i>=0; i--) {
-				Timer timer = u.timers[i];
-				if (timer is TLava) {u.timers.Remove(timer);}
+			if (t is Unit) {
+				Unit u = (Unit)t;
+				for (int i=u.timers.Count-1; i>=0; i--) {
+					Timer timer = u.timers[i];
+					if (timer is TLava) {u.timers.Remove(timer);}
+				}
 			}
 		}
 		
 		protected override void OtherEnterEffects (Token t) {
-			Unit u = (Unit)t;
-			u.timers.Add(new TLava(u, parent));
-			if (Game.Active) {EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 7));}
+			if (t is Unit) {
+				Unit u = (Unit)t;
+				u.timers.Add(new TLava(u, parent));
+			}
+			if (Game.Active && (t is Unit || t.Special.Is(ESpecial.DEST))) {
+				EffectQueue.Interrupt(new Effects.Fire(new Source(parent), t, 7));
+			}
 		}
 		
 		protected override void OtherExitEffects (Token t) {
-			Unit u = (Unit)t;
-			for (int i=u.timers.Count-1; i>=0; i--) {
-				Timer timer = u.timers[i];
-				if (timer is TLava) {u.timers.Remove(timer);}
+			if (t is Unit) {
+				Unit u = (Unit)t;
+				for (int i=u.timers.Count-1; i>=0; i--) {
+					Timer timer = u.timers[i];
+					if (timer is TLava) {u.timers.Remove(timer);}
+				}
 			}
 		}
 		
@@ -110,11 +120,11 @@ namespace HOA {
 		protected override string Desc {get {return "" +
 			"Units in Cell have +2 Initiative";} }
 
-		TimeWell timeWell;
+		Tokens.TimeWell timeWell;
 		
 		SensorTimeWell (Token par, Cell c) {
 			parent = par;
-			timeWell = (TimeWell)par;
+			timeWell = (Tokens.TimeWell)par;
 			Enter(c);
 		}
 
@@ -128,25 +138,25 @@ namespace HOA {
 		protected override void EnterEffects (Token t) {
 			Unit u = (Unit)t;
 			timeWell.Affected.Add(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, 2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, 2));
 		}
 
 		protected override void ExitEffects (Token t) {
  			Unit u = (Unit)t;
 			timeWell.Affected.Remove(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, -2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, -2));
 		}
 		
 		protected override void OtherEnterEffects (Token t) {
 			Unit u = (Unit)t;
 			timeWell.Affected.Add(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, 2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, 2));
 		}
 
 		protected override void OtherExitEffects (Token t) {
 			Unit u = (Unit)t;
 			timeWell.Affected.Remove(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, -2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, -2));
 		}
 		
 		public override string ToString () {
@@ -158,11 +168,11 @@ namespace HOA {
 		protected override string Desc {get {return 
 				"Units in Cell have -2 Initiative.";} }
 
-		TimeSink timeSink;
+		Tokens.TimeSink timeSink;
 		
 		public SensorTimeSink (Token par, Cell c) {
 			parent = par;
-			timeSink = (TimeSink)par;
+			timeSink = (Tokens.TimeSink)par;
 			Enter(c);
 		}
 
@@ -176,25 +186,25 @@ namespace HOA {
 		protected override void EnterEffects (Token t) {
 			Unit u = (Unit)t;
 			timeSink.Affected.Add(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, -2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, -2));
 		}
 		
 		protected override void ExitEffects (Token t) {
 			Unit u = (Unit)t;
 			timeSink.Affected.Remove(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, 2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, 2));
 		}
 		
 		protected override void OtherEnterEffects (Token t) {
 			Unit u = (Unit)t;
 			timeSink.Affected.Add(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, -2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, -2));
 		}
 		
 		protected override void OtherExitEffects (Token t) {
 			Unit u = (Unit)t;
 			timeSink.Affected.Remove(u);
-			EffectQueue.Add(new EAddStat(new Source(parent), u, EStat.IN, 2));
+			EffectQueue.Add(new Effects.AddStat(new Source(parent), u, EStat.IN, 2));
 		}
 		
 		public override string ToString () {return "("+parent.ToString()+")";}
@@ -270,7 +280,7 @@ namespace HOA {
 			if (Game.Active) {
 				int random = DiceCoin.Throw(new Source(parent), EDice.D4);
 				if (random == 1) {
-					EffectQueue.Add(new EReplace(new Source(parent), parent, EToken.WATR));
+					EffectQueue.Add(new Effects.Replace(new Source(parent), parent, EToken.WATR));
 				}
 			}
 		}
@@ -317,7 +327,7 @@ namespace HOA {
 		protected override void OtherEnterEffects (Token t) {
 			Unit u = (Unit)t;
 			u.timers.Add(new TExhaust(u, parent));
-			if (Game.Active) {EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 5));}
+			if (Game.Active) {EffectQueue.Interrupt(new Effects.Damage(new Source(parent), u, 5));}
 		}
 
 		protected override void OtherExitEffects (Token t) {
@@ -363,7 +373,7 @@ namespace HOA {
 		protected override void OtherEnterEffects (Token t) {
 			Unit u = (Unit)t;
 			u.timers.Add(new TCurse(u, parent));
-			if (Game.Active) {EffectQueue.Interrupt(new EDamage(new Source(parent), u, 2));}	
+			if (Game.Active) {EffectQueue.Interrupt(new Effects.Damage(new Source(parent), u, 2));}	
 		}
 
 		protected override void OtherExitEffects (Token t) {
@@ -393,7 +403,7 @@ namespace HOA {
 		protected override bool IsTrigger (Token trigger) {return true;}		
 
 		protected override void OtherEnterEffects (Token t) {
-			if (Game.Active) {EffectQueue.Interrupt(new EDetonate(new Source(t), parent));}
+			if (Game.Active) {EffectQueue.Interrupt(new Effects.Detonate(new Source(t), parent));}
 		}
 
 		public override string ToString () {return "Trigger ("+parent.ToString()+")";}
@@ -405,11 +415,11 @@ namespace HOA {
 				"\nGround and Air Units in Cell have a Move Range of 1."
 				;} }
 
-		Web web;
+		Tokens.Web web;
 		
 		public SensorWeb (Token par, Cell c) {
 			parent = par;
-			web = (Web)par;
+			web = (Tokens.Web)par;
 			planesToStop = Plane.Tall;
 			Enter(c);
 		}
@@ -425,7 +435,7 @@ namespace HOA {
 		}	
 
 		protected override void EnterEffects (Token t) {
-			EffectQueue.Add(new EStick(new Source(parent), (Unit)t));
+			EffectQueue.Add(new Effects.Stick(new Source(parent), (Unit)t));
 		}
 
 		protected override void ExitEffects (Token t) {
@@ -439,7 +449,7 @@ namespace HOA {
 		}
 		
 		protected override void OtherEnterEffects (Token t) {
-			EffectQueue.Add(new EStick(new Source(parent), (Unit)t));
+			EffectQueue.Add(new Effects.Stick(new Source(parent), (Unit)t));
 		}
 
 		protected override void OtherExitEffects (Token t) {
@@ -534,13 +544,13 @@ namespace HOA {
 			if (sender == null) {
 				Token otherAper = null;
 				foreach (Token token in TokenFactory.Tokens) {
-					if (token is Aperture && token != parent) {otherAper = token;}
+					if (token is Tokens.Aperture && token != parent) {otherAper = token;}
 				}
 				if (otherAper != null) {
 					Cell otherCell = otherAper.Body.Cell;
 					if (t.Body.CanEnter(otherCell)) {
 						sender = this;
-						EffectQueue.Add(new ETeleport(new Source(parent), t, otherCell));
+						EffectQueue.Add(new Effects.Teleport(new Source(parent), t, otherCell));
 					}
 				}
 			}
@@ -551,13 +561,13 @@ namespace HOA {
 			if (sender == null) {
 				Token otherAper = null;
 				foreach (Token token in TokenFactory.Tokens) {
-					if (token is Aperture && token != parent) {otherAper = token;}
+					if (token is Tokens.Aperture && token != parent) {otherAper = token;}
 				}
 				if (otherAper != null) {
 					Cell otherCell = otherAper.Body.Cell;
 					if (t.Body.CanEnter(otherCell)) {
 						sender = this;
-						EffectQueue.Add(new ETeleport(new Source(parent), t, otherCell));
+						EffectQueue.Add(new Effects.Teleport(new Source(parent), t, otherCell));
 					}
 				}
 			}

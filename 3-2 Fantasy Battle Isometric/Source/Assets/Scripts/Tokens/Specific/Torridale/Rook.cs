@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class Rook : Unit {
 		public static Token Instantiate (Source source, bool template) {
 			return new Rook (source, template);
@@ -17,8 +18,8 @@
 		protected override void BuildArsenal () {
 			base.BuildArsenal();
 			Arsenal.Add(new Task[]{
-				new ARookMove(this),
-				new ARookVolley(this)
+				new Actions.Rebuild(this),
+				new Actions.Volley(this)
 			});
 			Arsenal.Sort();
 		}

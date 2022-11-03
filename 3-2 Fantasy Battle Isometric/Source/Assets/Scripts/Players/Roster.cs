@@ -29,7 +29,7 @@ namespace HOA {
 		public static void Remove (Player p) {
 			if (players.Contains(p)) {
 				FactionRef.Release(p.Faction);
-				players[0].Capture(p);
+			//	players[0].Capture(p);
 				players.Remove(p);
 			}
 			else {GameLog.Debug("Roster: Does not contain player, cannot remove.");}

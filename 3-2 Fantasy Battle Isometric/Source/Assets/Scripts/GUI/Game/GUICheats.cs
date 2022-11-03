@@ -22,7 +22,7 @@ namespace HOA {
 			if (GUI.Button(p.Box(btnW), "Kill")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
 				Reset();
-				Targeter.Start(new AKillManual());
+				Targeter.Start(new Actions.ManualKill());
 			}
 
 			p.NextLine();
@@ -37,7 +37,7 @@ namespace HOA {
 			if (GUI.Button(p.Box(btnW), "Move")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
 				Reset();
-				Targeter.Start(new AMoveManual());
+				Targeter.Start(new Actions.ManualMove());
 			}
 
 			p.NextLine();
@@ -52,7 +52,7 @@ namespace HOA {
 			if (GUI.Button(p.Box(btnW), "End Turn")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
 				Reset();
-				Targeter.Start(new AEndTurnManual());
+				Targeter.Start(new Actions.ManualEnd());
 			}
 
 			p.NextLine();
@@ -109,7 +109,7 @@ namespace HOA {
 				for (int j=0; j<faction.Count; j++){
 					if (GUI.Button (new Rect(p.x2, p.y2, p.W, btnH), "")) {
 						GUIMaster.PlaySound(EGUISound.CLICK);
-						Targeter.Start(new ACreateManual(TurnQueue.Top, faction[j]));
+						Targeter.Start(new Actions.ManualCreate (TurnQueue.Top, faction[j]));
 					}
 					GUI.Box (p.Box(btnH), Thumbs.CodeToThumb(faction[j]));
 					GUI.Label (p.Box(p.W-btnH), TokenFactory.Template(faction[j]).ID.Name);
@@ -160,9 +160,9 @@ namespace HOA {
 			p.x2 = x3;
 			if (GUI.Button(p.Box(btnW*2), "Select Tokens")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
-				if (signBtn == 0) {Targeter.Start(new AStatSetManual(stat, statValue));}
-				else if (signBtn == 1) {Targeter.Start(new AStatAddManual(stat, statValue));}
-				else {Targeter.Start(new AStatAddManual(stat, 0-statValue));}
+				if (signBtn == 0) {Targeter.Start(new Actions.ManualSet(stat, statValue));}
+				else if (signBtn == 1) {Targeter.Start(new Actions.ManualAdd(stat, statValue));}
+				else {Targeter.Start(new Actions.ManualAdd(stat, 0-statValue));}
 			}
 		}
 
@@ -192,8 +192,8 @@ namespace HOA {
 			p.x2 = x3;
 			if (GUI.Button(p.Box(btnW*2), "Select Tokens")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
-				if (signBtn == 1) {Targeter.Start(new AQueueShiftManual(queueValue));}
-				else if (signBtn == 2) {Targeter.Start(new AQueueShiftManual(0-queueValue));}
+				if (signBtn == 1) {Targeter.Start(new Actions.ManualShift(queueValue));}
+				else if (signBtn == 2) {Targeter.Start(new Actions.ManualShift(0-queueValue));}
 			}
 		}
 
@@ -210,7 +210,7 @@ namespace HOA {
 			p.x2 += btnW;
 			if (GUI.Button(p.Box(btnW), "Select Tokens")) {
 				GUIMaster.PlaySound(EGUISound.CLICK);
-				Targeter.Start(new ASetOwnerManual(newOwner));
+				Targeter.Start(new Actions.ManualOwner(newOwner));
 			}
 		}
 

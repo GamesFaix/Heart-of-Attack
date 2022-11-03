@@ -1,8 +1,8 @@
 ﻿using UnityEngine; 
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class ADemoThrow : Task {
+	public class Throw : Task {
 		
 		public override string Desc {get {return "Do "+damage+" damage to all units in target cell. " +
 				"\nAll units in neighboring cells take 50% damage (rounded down). " +
@@ -12,16 +12,16 @@ namespace HOA {
 		int range = 3;
 		int damage = 10;
 		
-		public ADemoThrow (Unit parent) {
+		public Throw (Unit parent) {
 			Name = "Throw";
 			Weight = 3;
 			Price = new Price(1,1);
 			Parent = parent;
-			NewAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, range));
+			NewAim(new Aim (ETraj.ARC, ESpecial.CELL, EPurp.ATTACK, range));
 		}
 		
 		protected override void ExecuteMain (TargetGroup targets) {
-			EffectQueue.Add(new EExplosion(new Source(Parent), (Cell)targets[0], damage));
+			EffectQueue.Add(new Effects.Explosion(new Source(Parent), (Cell)targets[0], damage));
 		}
 
 		public override void Draw (Panel p) {
@@ -36,6 +36,30 @@ namespace HOA {
 			GUI.Box(box,Icons.EXP(),p.s);
 			p.NudgeX();
 			GUI.Box(p.Box(30),damage.ToString(), p.s);
+		}
+	}
+
+	public class Detonate : Task {
+		
+		public override string Desc {get {return "Destroy all mines on team.";} }
+		
+		public Detonate (Unit u) {
+			Name = "Detonate";
+			Weight = 4;
+			
+			Parent = u;
+			Price = new Price(1,1);
+			NewAim(new Aim(ETraj.GLOBAL, ESpecial.DEST));
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup mines = Parent.Owner.OwnedUnits;
+			for (int i=mines.Count-1; i>=0; i--) {
+				Token t = mines[i];
+				if (t.ID.Code != EToken.MINE) {mines.Remove(t);}
+			}
+			
+			foreach (Token t in mines) {t.Die(new Source(Parent));}
 		}
 	}
 

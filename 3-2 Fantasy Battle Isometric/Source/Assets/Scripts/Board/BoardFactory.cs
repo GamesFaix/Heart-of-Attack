@@ -35,7 +35,7 @@ namespace HOA {
 				Zone zone = spawnZones[zoneIndex];
 				
 				if (zone.RandomLegalCell(temp, out cell)) {
-					heroSpawn.Add(new ECreate (new Source(p), p.King, cell));
+					heroSpawn.Add(new Effects.Create (new Source(p), p.King, cell));
 				}
 				else {
 					Debug.Log("Cannot spawn "+temp+". No legal cells.");

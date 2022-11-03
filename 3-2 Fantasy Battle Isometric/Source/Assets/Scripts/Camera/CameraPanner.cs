@@ -9,8 +9,7 @@ public class CameraPanner : MonoBehaviour {
 	static float zoomMin = 25f;
 	static float rotateSpeed = 0.5f;
 	static float pitchSpeed = 1f;
-//	static float moveSpeed = 0.1f;
-	static float panSpeed = 0.003f;
+	static float panSpeed = 0.01f;
 	static Transform trans;
 	static Transform camTrans {get {return Camera.main.transform;} }
 
@@ -50,35 +49,16 @@ public class CameraPanner : MonoBehaviour {
 		if (Input.GetKey("d")) {Pan(new Int2(1,0));}
 	}
 
-//	static Vector3 endPos;
-	/*void Update () {
-		if (trans.position != endPos) {Move();}
-	}*/
-
 	void Pan (Int2 dir) {
+		endPos = null;
+
 		Vector3 oldPos = trans.position;
 		Vector3 newPos = new Vector3 (oldPos.x, oldPos.y, oldPos.z);
 
-		if (dir.x < 0) {
-			newPos = oldPos + (panSpeed*left);
-//			newPos.x=oldPos.x-panSpeed;
-//			newPos.z=oldPos.z+panSpeed;
-		}
-		if (dir.x > 0) {
-			newPos = oldPos + (panSpeed*right);
-//			newPos.x = oldPos.x+panSpeed;
-//			newPos.z = oldPos.z-panSpeed;
-		}
-		if (dir.y < 0) {
-			newPos = oldPos + (panSpeed*backward);
-//			newPos.x = oldPos.x-panSpeed;
-//			newPos.z = oldPos.z-panSpeed;
-		}
-		if (dir.y > 0) {			
-			newPos = oldPos + (panSpeed*forward);
-//			newPos.x = oldPos.x+panSpeed;
-//			newPos.z = oldPos.z+panSpeed;
-		}
+		if (dir.x < 0) {newPos = oldPos + (panSpeed*left);}
+		if (dir.x > 0) {newPos = oldPos + (panSpeed*right);}
+		if (dir.y < 0) {newPos = oldPos + (panSpeed*backward);}
+		if (dir.y > 0) {newPos = oldPos + (panSpeed*forward);}
 
 		if (newPos.x < Game.Board.Cell(1,1).Location.x) {newPos.x = Game.Board.Cell(1,1).Location.x;}
 		if (newPos.z < Game.Board.Cell(1,1).Location.z) {newPos.z = Game.Board.Cell(1,1).Location.z;}
@@ -128,24 +108,27 @@ public class CameraPanner : MonoBehaviour {
 		return v;
 	}
 
-	/*
-	void Move () {
+	static float moveSpeed = 0.03f;
+	static Vector3? endPos = null;
+	public static void MoveTo (Target t, bool effect=true) {
+		if (t is Cell) {endPos = ((Cell)t).Location;}
+		else if (t is Token) {endPos = ((Token)t).Body.Cell.Location;}
+	}
+
+	void Update () {
+		if (endPos != null) {
+			if (trans.position != endPos) {Move();} 
+			else {endPos = null;}
+		}
+	}
+
+	static void Move () {
 		Vector3 currentPos = trans.position;
-		Vector3 direction = endPos - currentPos;
+		Vector3 direction = (Vector3)endPos - currentPos;
 		Vector3 newPos = currentPos + (direction * moveSpeed);
+		if (Vector3.Distance(newPos, (Vector3)endPos) < 0.5f) {
+			newPos = (Vector3)endPos;
+		}
 		trans.position = newPos;
 	}
-*/
-	/*public static Target Target {get; set;}
-	public static void Focus (Target t, bool effect=true) {
-		Target = t;
-		if (t is Cell) {
-			endPos = ((Cell)t).Location;
-		}
-		if (t is Token) {
-			endPos = ((Token)t).Body.Cell.Location;
-			if (effect) {((Token)t).Display.Effect(EEffect.SHOW);}
-		}
-	}
-	*/
 }

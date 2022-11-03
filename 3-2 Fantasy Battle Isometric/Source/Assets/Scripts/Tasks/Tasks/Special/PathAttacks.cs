@@ -1,21 +1,21 @@
 ﻿using UnityEngine; 
 using System.Collections.Generic;
 
-namespace HOA { 
+namespace HOA.Actions { 
 
-	public class AMartGrow : Task {
+	public class Grow : Task {
 		
 		public override string Desc {get {return 
 			"Switch cells with target Destructible. " +
 			"\nRange +1 per focus.  " +
 			"\n"+Parent+" +1 Focus.";} }
 		
-		public AMartGrow (Unit u) {
+		public Grow (Unit u) {
 			Name = "Grow";
 			Weight = 2;
 			Price = Price.Cheap;
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, EType.DEST, 1));
+			NewAim(new Aim(ETraj.PATH, ESpecial.DEST, 1));
 		}
 		
 		public override void Adjust () {Aim[0].Range += Parent.FP;}
@@ -34,14 +34,14 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
-	public class AMartWhip : Task {
+	public class VineWhip : Task {
 			
 		int damage = 18;
 		
@@ -50,12 +50,12 @@ namespace HOA {
 			"\nRange +1 per focus." +
 			"\nIf target is killed and leaves Remains, switch cells with it's Remains.";} } 
 		
-		public AMartWhip (Unit u) {
+		public VineWhip (Unit u) {
 			Name = "Vine Whip";
 			Weight = 4;
 			Price = new Price(1,1);
 			Parent = u;
-			NewAim(new Aim(ETraj.LINE, EType.UNIT, EPurp.ATTACK, 2));
+			NewAim(new Aim(ETraj.LINE, ESpecial.UNIT, EPurp.ATTACK, 2));
 		}
 		
 		public override void Adjust () {Aim[0].Range += Parent.FP;}
@@ -63,9 +63,9 @@ namespace HOA {
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), u, damage));
 			Token dest;
-			if (u.Body.Cell.Contains(EType.DEST, out dest)) {Parent.Body.Swap(dest);}
+			if (u.Body.Cell.Contains(ESpecial.DEST, out dest)) {Parent.Body.Swap(dest);}
 			UnAdjust();
 		}
 
@@ -75,14 +75,14 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 
-	public class ASmasFlail : Task {
+	public class Flail : Task {
 		int damage = 8;
 		
 		public override string Desc {get {return 
@@ -90,12 +90,12 @@ namespace HOA {
 			"\nRange +1 per focus (Up to +3).  " +
 			"\n"+Parent+" loses all focus.";} }
 		
-		public ASmasFlail (Unit u) {
+		public Flail (Unit u) {
 			Name = "Flail";
 			Weight = 3;
 			Price = Price.Cheap;
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, EType.UNIT, 1));
+			NewAim(new Aim(ETraj.PATH, ESpecial.UNIT, 1));
 		}
 		
 		public override void Adjust () {Aim[0].Range += Mathf.Min(Parent.FP, 3);}
@@ -103,7 +103,7 @@ namespace HOA {
 
 		protected override void ExecuteMain (TargetGroup targets) {
 			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
-			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), (Unit)targets[0], damage));
 			UnAdjust();
 		}
 		public override void Draw (Panel p) {
@@ -112,14 +112,14 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
 	
-	public class ASmasSlam : Task {
+	public class Slam : Task {
 		int damage = 8;
 		
 		public override string Desc {get {return 
@@ -127,12 +127,12 @@ namespace HOA {
 			"\nRange +1 per focus (up to +3).  " +
 			"\n"+Parent+" loses all focus.";} }
 		
-		public ASmasSlam (Unit u) {
+		public Slam (Unit u) {
 			Name = "Slam";
 			Weight = 4;
 			Price = new Price(2,0);
 			Parent = u;
-			NewAim(new Aim(ETraj.PATH, EType.UNIT, 1));
+			NewAim(new Aim(ETraj.PATH, ESpecial.UNIT, 1));
 		}
 		
 		public override void Adjust () {Aim[0].Range += Mathf.Min(Parent.FP, 3);}
@@ -142,12 +142,12 @@ namespace HOA {
 			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
 			
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
+			EffectQueue.Add(new Effects.Damage(new Source(Parent), u, damage));
 			
-			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(EType.UNIT);
+			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(ESpecial.UNIT);
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Unit u2 in neighbors) {
-				nextEffects.Add(new EDamage(new Source(Parent), u2, damage));
+				nextEffects.Add(new Effects.Damage(new Source(Parent), u2, damage));
 			}
 			EffectQueue.Add(nextEffects);
 			UnAdjust();
@@ -159,7 +159,7 @@ namespace HOA {
 			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
 			p.NextLine();
 
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
+			Aim actual = new Aim(ETraj.PATH, ESpecial.CELL, EPurp.MOVE, Aim[0].Range+Mathf.Min(3, Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallWideBox(descH), Desc);	

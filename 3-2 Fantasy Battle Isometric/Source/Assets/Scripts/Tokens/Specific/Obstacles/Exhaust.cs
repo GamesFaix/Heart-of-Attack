@@ -1,4 +1,4 @@
-﻿namespace HOA {
+﻿namespace HOA.Tokens {
 	
 	public class Exhaust : Obstacle {
 		delegate Sensor SensorConstructor ();

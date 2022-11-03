@@ -6,7 +6,7 @@ namespace HOA {
 
 		public TipUnit () {
 			Name = "Unit";
-			Icon = Icons.Special(EType.UNIT);
+			Icon = Icons.Special(ESpecial.UNIT);
 			ETip = ETip.UNIT;
 		}
 

@@ -11,7 +11,7 @@
 		public override Player Owner {get {return Parent.Owner;} }
 
 		public override string ToString () {return ID.FullName+" Alias";}
-		public override string Notes () {return "";}
+		public override string Notes () {return "Alias";}
 		
 	
 	}

@@ -21,7 +21,7 @@ namespace HOA {
 			          "\nthe Damage taken (rounded down)." +
 
 			          "\n\nIf a Unit has a Corrosion Timer, at the " +
-			          "\nend of its turn, it takes Damage equal to " +
+			          "\nend of its turn, it loses Health equal to " +
 			          "\nthe value of the Timer, then Timer's " +
 			          "\nvalue is halved (rounded down)." +
 

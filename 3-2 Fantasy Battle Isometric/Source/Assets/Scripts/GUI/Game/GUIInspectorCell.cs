@@ -8,7 +8,7 @@ namespace HOA {
 		static float iconSize = 30;
 
 		public static void Display (Cell c, Panel p, Panel super) {
-			GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
+			GUI.Box(p.Box(iconSize), Icons.Special(ESpecial.CELL), p.s);
 			p.NudgeX(); p.NudgeY();
 			GUI.Label(p.Box(0.5f), c.ToString(), p.s);
 			p.NextLine();

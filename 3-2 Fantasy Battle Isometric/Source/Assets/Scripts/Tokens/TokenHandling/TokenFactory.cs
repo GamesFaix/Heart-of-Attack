@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HOA.Tokens;
 
 namespace HOA {
 	
@@ -18,8 +19,8 @@ namespace HOA {
 				Register(newToken);
 				InheritOwnership (newToken, source);
 				if (log) {Log(source, newToken, cell);}
-				newToken.Body.Enter(cell);
 				TokenDisplay.Attach(newToken);
+				newToken.Body.Enter(cell);
 				if (newToken.Plane.Is(EPlane.SUNK)) {cell.EnterSunken(newToken);}
 				return true;
 			}
@@ -43,7 +44,7 @@ namespace HOA {
 
 		static void InheritOwnership (Token t, Source s) {
 			if (!FactionRef.Neutral().Contains(t.ID.Code)
-			    && !t.Special.Is(EType.HEART)) {
+			    && !t.Special.Is(ESpecial.HEART)) {
 				t.Owner = s.Player;
 			}
 		}
@@ -143,7 +144,7 @@ namespace HOA {
 			constructors[(int)EToken.MNTN] = Mountain.Instantiate;
 			constructors[(int)EToken.HILL] = Hill.Instantiate;
 			constructors[(int)EToken.ROCK] = Rock.Instantiate;
-			constructors[(int)EToken.TREE] = Tree.Instantiate;
+			constructors[(int)EToken.TREE] = HOA.Tokens.Tree.Instantiate;
 			constructors[(int)EToken.TREE2] = Tree2.Instantiate;
 			constructors[(int)EToken.TREE3] = Tree3.Instantiate;
 			constructors[(int)EToken.TREE4] = Tree4.Instantiate;

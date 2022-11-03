@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HOA {
+namespace HOA.Tokens {
 	
 	public class TimeSink : Obstacle {
 		List<Unit> affected;

@@ -1,4 +1,5 @@
-﻿namespace HOA{
+﻿namespace HOA.Tokens {
+
 	public class OldThreeHands : Unit {
 
 		public static Token Instantiate (Source source, bool template) {
@@ -8,13 +9,13 @@
 		OldThreeHands(Source s, bool template=false){
 			ID = new ID(this, EToken.OLDT, s, true, template);
 			Plane = Plane.Gnd;
-			Special.Add(EType.KING);
+			Special.Add(ESpecial.KING);
 			OnDeath = EToken.HBRA;
 			ScaleJumbo();
 
 			NewHealth(85,2);
 			NewWatch(2);
-			Wallet = new INWallet(this, 3);
+			Wallet = new WalletIN(this, 3);
 			//NewWallet(3);
 			BuildArsenal();
 		}		
@@ -23,14 +24,14 @@
 			base.BuildArsenal();
 
 			Arsenal.Add(new Task[] {
-				new AMovePath(this, 2), 
-				new AVolley(this, 3, 15),
-				new AOldtHour(this),
-				new AOldMinute(this),
-				new AOldtSecond(this),
-				new ACreate(this, Price.Cheap, EToken.REVO),
-				new ACreate(this, new Price(2,0), EToken.PIEC),
-				new ACreate(this, new Price(2,1), EToken.REPR)
+				new Actions.Move(this, 2), 
+				new Actions.Lob(this, 3, 15),
+				new Actions.HourSaviour(this),
+				new Actions.MinuteWaltz(this),
+				new Actions.SecondInCommand(this),
+				new Actions.Create(this, Price.Cheap, EToken.REVO),
+				new Actions.Create(this, new Price(2,0), EToken.PIEC),
+				new Actions.Create(this, new Price(2,1), EToken.REPR)
 			} );
 			Arsenal.Sort();
 		}

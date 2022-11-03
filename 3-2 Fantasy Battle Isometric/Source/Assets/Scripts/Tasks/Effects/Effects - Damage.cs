@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HOA {
-	public class EDamage : Effect {
+namespace HOA.Effects {
+	public class Damage : Effect {
 		public override string ToString () {return "Effect - Damage";}
 		Unit target; int dmg;
 		
-		public EDamage (Source s, Unit u, int n) {
+		public Damage (Source s, Unit u, int n) {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
@@ -21,11 +21,11 @@ namespace HOA {
 		}
 	}
 	
-	public class EPierce : Effect {
+	public class Pierce : Effect {
 		public override string ToString () {return "Effect - Pierce";}
 		Unit target; int dmg;
 		
-		public EPierce (Source s, Unit u, int n) {
+		public Pierce (Source s, Unit u, int n) {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
@@ -34,239 +34,12 @@ namespace HOA {
 			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
 		}
 	}
-	
-	
-	public class EExplosion : EffectSeq {
-		public override string ToString () {return "EffectSeq - Explosion";}
-		Cell target; int dmg;
-		
-		public EExplosion (Source s, Cell c, int n) {
-			source = s; target = c; dmg = n;
-			
-			list = new List<EffectGroup>(){new EffectGroup()};
-			
-			CellGroup affected = new CellGroup();
-			CellGroup thisRad = new CellGroup(target);
-			CellGroup nextRad = new CellGroup();
-			
-			int currentDmg = dmg;
-			
 
-			int i=0;
-			while (currentDmg > 0 && i<=2) {
-				EffectGroup group = new EffectGroup();
-				for (int j=0; j<thisRad.Count; j++) {
-					Cell next = thisRad[j];
-					
-					if (!affected.Contains(next)) {
-						if (next.Occupants.Count > 0) {
-							group.Add(new EExplosion2 (new Source (source.Token, this), next, currentDmg));
-						}
-						else {
-							group.Add(new EExplosionDummy (new Source (source.Token, this), next));
-						}
-						foreach (Cell cell in next.Neighbors()) {nextRad.Add(cell);}
-						affected.Add(next);
-					}
-				}
-				thisRad = nextRad;
-				nextRad = new CellGroup();
-				currentDmg = (int)Mathf.Floor(currentDmg * 0.5f);
-				list.Add(group);
-				i++;
-			}
-		}
-	}
-	
-	public class EExplosionDummy : Effect {
-		public override string ToString () {return "Effect - Explosion Dummy";}
-		Cell cell;
-		
-		public EExplosionDummy (Source s, Cell c) {
-			source = s; 
-			cell = c;
-		}
-		
-		public override void Process() {
-			cell.Display.Effect(EEffect.EXP);
-		}
-	}
-	
-	
-	public class EExplosion2 : Effect {
-		public override string ToString () {return "Effect - Explosion2";}
-		Cell cell; int dmg;
-		
-		public EExplosion2 (Source s, Cell c, int n) {
-			source = s; 
-			cell = c; dmg = n;
-		}
-		
-		public override void Process() {
-			TokenGroup targets = cell.Occupants.OnlyType(Special.UnitDest);
-			
-			foreach (Token t in targets) {
-				if (t.Special.Is(EType.DEST)) {
-					t.Display.Effect(EEffect.EXP);
-					Mixer.Play(SoundLoader.Effect(EEffect.EXP));
-					source.Sequence.AddToNext(new EDestruct(source, t));
-				}
-				
-				else if (t is Unit) {
-					Unit u = (Unit)t;
-					if (u.Damage(source, dmg)) {
-						t.Display.Effect(EEffect.EXP);
-						Mixer.Play(SoundLoader.Effect(EEffect.EXP));
-					}
-					else {
-						t.Display.Effect(EEffect.MISS);
-						Mixer.Play(SoundLoader.Effect(EEffect.MISS));
-					}
-				}
-			}		
-		}
-	}
-	
-	public class EFire : Effect {
-		public override string ToString () {return "Effect - Fire";}
-		Token target; int dmg;
-		
-		public EFire (Source s, Token t, int n) {
-			source = s; target = t; dmg = n;
-		}
-		public override void Process() {
-			EffectGroup nextEffects = new EffectGroup();
-			
-			if (target.Special.Is(EType.DEST)) {
-				nextEffects.Add(new EDestruct(source, target));
-				target.Display.Effect(EEffect.FIRE);
-				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
-			}
-			else if (target is Unit) {
-				Unit u = (Unit)target;
-				if(u.Damage(source, dmg)) {
-					target.Display.Effect(EEffect.FIRE);
-					Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
-				}
-				else {
-					target.Display.Effect(EEffect.MISS);
-					Mixer.Play(SoundLoader.Effect(EEffect.MISS));	
-				}
-			}
-			
-			TokenGroup neighbors = target.Body.Neighbors(true);
-			neighbors.Remove(source.Token);
-			neighbors = neighbors.OnlyType(Special.UnitDest);
-			
-			int newDmg = (int)Mathf.Floor(dmg * 0.5f);
-			foreach (Token t2 in neighbors) {
-				nextEffects.Add(new EFire2(source, t2, newDmg));
-			}
-			
-			EffectQueue.Add(nextEffects);
-		}
-	}
-	
-	public class EFire2 : Effect {
-		public override string ToString () {return "Effect - Fire2";}
-		Token target; int dmg;
-		
-		public EFire2 (Source s, Token t, int n) {
-			source = s; target = t; dmg = n;
-		}
-		public override void Process() {
-			if (target.Special.Is(EType.DEST)) {
-				target.Display.Effect(EEffect.FIRE);
-				Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
-				EffectQueue.Add(new EDestruct (source, target));
-			}
-			
-			else if (target is Unit) {
-				Unit u = (Unit)target;
-				if (u.Damage(source, dmg)) {
-					target.Display.Effect(EEffect.FIRE);
-					Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
-				}
-				else {
-					target.Display.Effect(EEffect.MISS);
-					Mixer.Play(SoundLoader.Effect(EEffect.MISS));
-				}
-			}
-		}
-	}
-	
-	public class ELaser : Effect {
-		public override string ToString () {return "Effect - Laser";}
-		Unit target; int dmg;
-		
-		public ELaser (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			Token Parent = source.Token;
-			int currentDmg = dmg;
-			Cell cell = target.Body.Cell;
-			Int2 direction = Direction.FromCells(cell, Parent.Body.Cell);
-			bool stop = false;
-			
-			TokenGroup targets;
-			
-			while (currentDmg > 0 && !stop) {
-				targets = cell.Occupants;
-				
-				TokenGroup blockers = new TokenGroup (targets);
-				blockers = blockers.OnlyType(EType.OB);
-				blockers = blockers.RemovePlane(EPlane.SUNK);
-				
-				if (blockers.Count > 0) {
-					stop = true; 
-					Debug.Log("obstacle hit");
-				}
-				foreach (Token t in targets.OnlyType(EType.UNIT)) {
-					if (((Unit)t).Damage(source, currentDmg)) {
-						t.Display.Effect(EEffect.LASER);
-						Mixer.Play(SoundLoader.Effect(EEffect.LASER));
-					}
-					else {
-						t.Display.Effect(EEffect.MISS);
-						Mixer.Play(SoundLoader.Effect(EEffect.MISS));
-					}
-				}
-
-				if (targets.Count > 0) {currentDmg = (int)Mathf.Floor(currentDmg*0.5f);}
-
-				Int2 nextIndex = cell.Index - direction;
-
-				if (!Game.Board.HasCell(nextIndex, out cell)) {stop = true;}
-			}
-		}
-	}
-
-	public class ELaser2 : Effect {
-		public override string ToString () {return "Effect - Laser2";}
-		Unit target; int dmg;
-		
-		public ELaser2 (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			if (target.Damage(source, dmg)) {
-				target.Display.Effect(EEffect.LASER);
-				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
-			}
-			else {
-				target.Display.Effect(EEffect.MISS);
-				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
-			}
-		}
-	}
-	
-	
-	public class ELeech : Effect {
+	public class Leech : Effect {
 		public override string ToString () {return "Effect - Leech";}
 		Unit target; int dmg;
 		
-		public ELeech (Source s, Unit u, int n) {
+		public Leech (Source s, Unit u, int n) {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
@@ -287,11 +60,11 @@ namespace HOA {
 		}
 	}
 	
-	public class EDonate : Effect {
+	public class Donate : Effect {
 		public override string ToString () {return "Effect - Donate";}
 		Unit target; int dmg;
 		
-		public EDonate (Source s, Unit u, int n) {
+		public Donate (Source s, Unit u, int n) {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
@@ -306,48 +79,12 @@ namespace HOA {
 			Mixer.Play(SoundLoader.Effect(EEffect.STATDOWN));
 		}
 	}
-	
-	public class ECorrode : Effect {
-		public override string ToString () {return "Effect - Corrode";}
-		Unit target; int dmg;
-		
-		public ECorrode (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			//Debug.Log("effect corrode");
-			int cor = (int)Mathf.Floor(dmg*0.5f);
-			target.Damage(source, dmg);
-			Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
-			target.Display.Effect(EEffect.COR);
-			target.timers.Add(new TCorrosion(target, source.Token, cor));
-		}
-	}
-	
-	public class ECorrode2 : Effect {
-		public override string ToString () {return "Effect - Corrode2";}
-		Unit target; int dmg;
-		
-		public ECorrode2 (Source s, Unit u, int n) {
-			source = s; target = u; dmg = n;
-		}
-		public override void Process() {
-			if (target.Damage(source, dmg)) {
-				Mixer.Play(SoundLoader.Effect(EEffect.CORRODE));
-				target.Display.Effect(EEffect.CORRODE);
-			}
-			else {
-				Mixer.Play(SoundLoader.Effect(EEffect.MISS));
-				target.Display.Effect(EEffect.MISS);
-			}
-		}
-	}
-	
-	public class EShock : Effect {
+
+	public class Shock : Effect {
 		public override string ToString () {return "Effect - Shock";}
 		Unit target; int dmg; int stun;
 		
-		public EShock (Source s, Unit u, int n, int st) {
+		public Shock (Source s, Unit u, int n, int st) {
 			source = s; target = u; dmg = n; stun = st;
 		}
 		public override void Process() {
@@ -357,12 +94,12 @@ namespace HOA {
 		}
 	}
 	
-	public class ERage : Effect {
+	public class Rage : Effect {
 		public override string ToString () {return "Effect - Rage";}
 		
 		Unit target; int dmg;
 		
-		public ERage (Source s, Unit u, int n) {
+		public Rage (Source s, Unit u, int n) {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
@@ -378,6 +115,20 @@ namespace HOA {
 			Parent.Damage(source, (int)Mathf.Floor(dmg*0.5f));
 			Parent.Display.Effect(EEffect.DMG);
 			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
+		}
+	}
+
+	public class Waterlog : Effect {
+		public override string ToString () {return "Effect - Waterlog";}
+		Unit target; int dmg;
+		
+		public Waterlog (Source s, Unit u, int n) {
+			source = s; target = u; dmg = n;
+		}
+		public override void Process() {
+			target.Damage(source, dmg);
+			Mixer.Play(SoundLoader.Effect(EEffect.WATERLOG));
+			target.Display.Effect(EEffect.WATERLOG);
 		}
 	}
 }
