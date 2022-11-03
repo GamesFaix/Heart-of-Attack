@@ -9,7 +9,7 @@ namespace HOA {
 		static Dictionary<EStat, Texture2D> stats;
 		static Dictionary<EPlane, Texture2D> planes;
 		static Dictionary<EType, Texture2D> types;
-		static Dictionary<ETraj, Texture2D> aims;
+		static Dictionary<ETraj, Texture2D> trajectories;
 
 		static Texture2D skip, onDeath, timer;
 
@@ -39,32 +39,32 @@ namespace HOA {
 			AddType (EType.OB, "OBSTACLE");
 			AddType (EType.CELL, "CELL");
 
-			aims = new Dictionary<ETraj, Texture2D>();
-			AddAim (ETraj.NEIGHBOR, "NEIGHBOR"); 
-			AddAim (ETraj.PATH, "PATH"); 
-			AddAim (ETraj.LINE, "LINE");
-			AddAim (ETraj.ARC, "ARC"); 
-			AddAim (ETraj.FREE, "FREE"); 
-			AddAim (ETraj.GLOBAL, "GLB"); 
-			AddAim (ETraj.SELF, "SELF");
+			trajectories = new Dictionary<ETraj, Texture2D>();
+			AddTraj (ETraj.NEIGHBOR, "NEIGHBOR"); 
+			AddTraj (ETraj.PATH, "PATH"); 
+			AddTraj (ETraj.LINE, "LINE");
+			AddTraj (ETraj.ARC, "ARC"); 
+			AddTraj (ETraj.FREE, "FREE"); 
+			AddTraj (ETraj.GLOBAL, "GLB"); 
+			AddTraj (ETraj.SELF, "SELF");
 
-			skip = Resources.Load("Icons/SKIP") as Texture2D;
-			onDeath = Resources.Load("Icons/ONDEATH") as Texture2D;
-			timer = Resources.Load("Icons/TIMER") as Texture2D;
+			skip = LoadFile("Stats/SKIP");
+			onDeath = LoadFile("ONDEATH");
+			timer = LoadFile("TIMER");
 
 		}
 
-		static Texture2D LoadFile (string name) {return (Resources.Load("Icons/"+name) as Texture2D);}
+		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Icons/"+name) as Texture2D);}
 
-		static void AddStat (EStat s, string fileName) {stats.Add(s, LoadFile(fileName));}
-		static void AddPlane (EPlane p, string fileName) {planes.Add(p, LoadFile(fileName));}
-		static void AddType (EType s, string fileName) {types.Add(s, LoadFile(fileName));}
-		static void AddAim (ETraj a, string fileName) {aims.Add(a, LoadFile(fileName));}
+		static void AddStat (EStat s, string fileName) {stats.Add(s, LoadFile("Stats/"+fileName));}
+		static void AddPlane (EPlane p, string fileName) {planes.Add(p, LoadFile("Planes/"+fileName));}
+		static void AddType (EType s, string fileName) {types.Add(s, LoadFile("Types/"+fileName));}
+		static void AddTraj (ETraj a, string fileName) {trajectories.Add(a, LoadFile("Trajectories/"+fileName));}
 
 		public static Texture2D Stat(EStat s) {return stats[s];}
 		public static Texture2D Plane(EPlane p) {return planes[p];}
 		public static Texture2D Type(EType s) {return types[s];}
-		public static Texture2D Aim(ETraj a) {return aims[a];}
+		public static Texture2D Traj(ETraj a) {return trajectories[a];}
 
 		public static Texture2D SKIP() {return skip;}
 		public static Texture2D ONDEATH() {return onDeath;}

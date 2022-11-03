@@ -5,12 +5,6 @@ namespace HOA {
 
 	public static class Map {
 
-		static Texture2D[] cellTexs;
-
-		public static Texture2D CellTex (int n) {
-			return cellTexs[n];
-		}
-
 		public static void Blank(int n) {
 			Board.New(n);
 		}
@@ -24,8 +18,6 @@ namespace HOA {
 		public static void Map1 () {
 			Board.New(10);
 			
-			cellTexs = new Texture2D[2] {ImageLoader.cells[4], ImageLoader.cells[5]};
-
 			terrain = new EffectGroup();
 
 			Spawn(EToken.MNTN, 5,5); 
@@ -69,8 +61,7 @@ namespace HOA {
 		}
 
 		public static void Map2 () {
-			cellTexs = new Texture2D[2] {ImageLoader.cells[2], ImageLoader.cells[3]};
-
+		
 			Board.New(10);
 			terrain = new EffectGroup();
 
@@ -108,7 +99,6 @@ namespace HOA {
 
 		public static void Map3 () {
 			Board.New(10);
-			cellTexs = new Texture2D[2] {ImageLoader.cells[6], ImageLoader.cells[7]};
 			terrain = new EffectGroup();
 
 			Spawn(EToken.WATR, 5,4);

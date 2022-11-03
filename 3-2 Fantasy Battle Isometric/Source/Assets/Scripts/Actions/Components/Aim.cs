@@ -154,8 +154,8 @@ namespace HOA {
 			float iconSize = p.LineH;
 
 			Rect iconBox = p.Box(iconSize);
-			if (Icons.Aim(trajectory) != default(Texture2D)) {
-				GUI.Box(iconBox, Icons.Aim(trajectory), p.s);
+			if (Icons.Traj(trajectory) != default(Texture2D)) {
+				GUI.Box(iconBox, Icons.Traj(trajectory), p.s);
 				if (GUIInspector.ShiftMouseOver(iconBox)) {
 					GUIInspector.Tip = GUIToolTips.Trajectory(trajectory);
 				}

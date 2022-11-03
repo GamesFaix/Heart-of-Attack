@@ -29,7 +29,7 @@ namespace HOA {
 		}
 		static void Add (EToken code, string fileName) {thumbnails.Add(code, LoadFile(fileName));}
 
-		static Texture2D LoadFile (string name) {return (Resources.Load("Thumbnails/"+name) as Texture2D);}
+		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Sprites/"+name) as Texture2D);}
 
 		public static Texture2D CodeToThumb (EToken code) {return thumbnails[code];}
 	}

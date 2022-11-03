@@ -7,9 +7,9 @@ namespace HOA {
 		static GameObject cellPF = Resources.Load("Prefabs/CellPrefab") as GameObject;
 		static GameObject spritePF = Resources.Load("Prefabs/SpritePrefab") as GameObject;
 //		static GameObject effectPF = Resources.Load("Prefabs/EffectPrefab") as GameObject;
-		static Texture2D legalHighlight = Resources.Load("Textures/legal") as Texture2D;
-		static Texture2D whiteCell = Resources.Load("Textures/mc grass") as Texture2D;
-		static Texture2D blackCell = Resources.Load("Textures/mc dirt") as Texture2D;
+		static Texture2D legalHighlight = Resources.Load("Images/Textures/legal") as Texture2D;
+		static Texture2D whiteCell = Resources.Load("Images/Textures/Cell/mc grass") as Texture2D;
+		static Texture2D blackCell = Resources.Load("Images/Textures/Cell/mc dirt") as Texture2D;
 
 		static GameObject parent;
 		public static GameObject Parent {get {return parent;} }

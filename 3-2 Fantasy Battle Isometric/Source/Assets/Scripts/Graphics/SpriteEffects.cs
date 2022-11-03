@@ -39,7 +39,7 @@ namespace HOA {
 
 		static void Add (EEffect e, string fileName) {effects.Add(e, LoadFile(fileName));}
 
-		static Texture2D LoadFile (string name) {return (Resources.Load("Effects/"+name) as Texture2D);}
+		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Effects/"+name) as Texture2D);}
 
 		public static Texture2D Effect (EEffect e) {return effects[e];}
 	}

@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Aim(ETraj.PATH));
+			GUI.Box(iconBox, Icons.Traj(ETraj.PATH));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Path", p.s);
 			p.NudgeY();

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 namespace HOA {
 	
 	public static class BorderFactory {
-		
+
+		static GameObject borderPF = Resources.Load("Prefabs/BorderPrefab") as GameObject;
+
+
 		public static GameObject parent;
 		
 		public static void Generate (int count) {
@@ -15,9 +18,7 @@ namespace HOA {
 		
 		public static void Reset () {GameObject.Destroy(parent);}
 
-		static GameObject borderPF;
 		static void CreateParent() {
-			borderPF = Resources.Load("Prefabs/BorderPrefab") as GameObject;
 			parent = GameObject.Instantiate(borderPF, new Vector3(0,0,0), Quaternion.identity) as GameObject;
 			parent.renderer.enabled = false;
 			parent.name = "Border Parent";

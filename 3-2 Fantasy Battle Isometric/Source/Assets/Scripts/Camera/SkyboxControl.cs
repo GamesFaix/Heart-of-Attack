@@ -4,7 +4,7 @@ using System.Collections;
 public class SkyboxControl : MonoBehaviour {
 
 	public void SetTexture (string fileName) {
-		Texture2D tex = Resources.Load("Textures/"+fileName) as Texture2D;
+		Texture2D tex = Resources.Load("Images/Textures/Skybox/"+fileName) as Texture2D;
 
 		Skybox s = gameObject.GetComponent("Skybox") as Skybox;
 		Material m = s.material;
