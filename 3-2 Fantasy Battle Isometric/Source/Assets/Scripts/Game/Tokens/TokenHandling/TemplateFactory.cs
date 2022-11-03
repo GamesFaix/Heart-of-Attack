@@ -28,7 +28,7 @@ namespace HOA {
 		}
 		
 		public static Token Template (Token t) {
-			return templates[t.Code];
+			return templates[t.ID.Code];
 		}
 	
 		

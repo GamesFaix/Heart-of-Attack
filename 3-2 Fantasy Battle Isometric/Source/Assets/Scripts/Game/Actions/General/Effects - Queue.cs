@@ -46,13 +46,13 @@ namespace HOA {
 		public override void Process() {
 			if (slots > 0) {
 				TurnQueue.MoveUp(target, slots);
-				target.SpriteEffect(EEffect.STATUP);
+				target.Display.Effect(EEffect.STATUP);
 				
 				Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
 			}
 			if (slots < 0) {
 				TurnQueue.MoveDown(target, 0-slots); 
-				target.SpriteEffect(EEffect.STATDOWN);
+				target.Display.Effect(EEffect.STATDOWN);
 				Mixer.Play(SoundLoader.Effect(EEffect.STATDOWN));	
 			}
 		}

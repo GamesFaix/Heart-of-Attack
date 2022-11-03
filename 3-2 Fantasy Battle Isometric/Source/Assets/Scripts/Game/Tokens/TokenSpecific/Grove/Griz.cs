@@ -4,8 +4,8 @@ using UnityEngine;
 namespace HOA{
 	public class GrizzlyElder : Unit {
 		public GrizzlyElder(Source s, bool template=false){
-			NewLabel(EToken.GRIZ, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.GRIZ, s, false, template);
+			plane = Plane.Gnd;
 			ScaleSmall();
 
 			NewHealth(25);
@@ -29,7 +29,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim (new Aim(EAim.NEIGHBOR, EClass.UNIT));
+			AddAim (new Aim(ETraj.NEIGHBOR, EClass.UNIT));
 			aim[0].TeamOnly = true;
 			aim[0].IncludeSelf = false;
 			magnitude = n;

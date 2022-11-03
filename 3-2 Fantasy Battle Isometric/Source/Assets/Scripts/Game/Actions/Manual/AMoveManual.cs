@@ -7,7 +7,7 @@ namespace HOA {
 
 		public AMoveManual (Token t) {
 			weight = 1;
-			AddAim( new Aim (EAim.FREE, EClass.CELL, EPurpose.MOVE));
+			AddAim( new Aim (ETraj.FREE, EClass.CELL, EPurp.MOVE));
 			actor = TurnQueue.Top;
 			childTemplate = t;
 			

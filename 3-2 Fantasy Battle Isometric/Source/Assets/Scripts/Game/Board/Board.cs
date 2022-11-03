@@ -85,7 +85,7 @@ namespace HOA {
 			while (remainingCells.Count > 0){
 			//	Debug.Log("remaining cells "+remainingCells.Count);
 				Cell cell = remainingCells.Random();
-				if (!t.CanEnter(cell)) {
+				if (!t.Body.CanEnter(cell)) {
 					remainingCells.Remove(cell);}
 				else {
 					outCell = cell;

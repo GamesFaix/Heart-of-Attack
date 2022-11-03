@@ -32,14 +32,14 @@ namespace HOA {
 
 		}
 
-		public static ETip AimType (EAim a) {
-			if (a == EAim.SELF) {return ETip.SELF;}
-			else if (a == EAim.NEIGHBOR) {return ETip.NEIGHBOR;}
-			else if (a == EAim.PATH) {return ETip.PATH;}
-			else if (a == EAim.LINE) {return ETip.LINE;}
-			else if (a == EAim.ARC) {return ETip.ARC;}
-			else if (a == EAim.FREE) {return ETip.FREE;}
-			else if (a == EAim.GLOBAL) {return ETip.GLOBAL;}
+		public static ETip AimType (ETraj a) {
+			if (a == ETraj.SELF) {return ETip.SELF;}
+			else if (a == ETraj.NEIGHBOR) {return ETip.NEIGHBOR;}
+			else if (a == ETraj.PATH) {return ETip.PATH;}
+			else if (a == ETraj.LINE) {return ETip.LINE;}
+			else if (a == ETraj.ARC) {return ETip.ARC;}
+			else if (a == ETraj.FREE) {return ETip.FREE;}
+			else if (a == ETraj.GLOBAL) {return ETip.GLOBAL;}
 			return ETip.NONE;
 
 		}

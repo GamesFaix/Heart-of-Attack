@@ -12,7 +12,7 @@ namespace HOA {
 		public override void Process() {
 			Token newToken;
 			TokenFactory.Add(child, source, cell, out newToken);
-			newToken.SpriteEffect(EEffect.BIRTH);
+			newToken.Display.Effect(EEffect.BIRTH);
 			
 			Mixer.Play(SoundLoader.Effect(EEffect.BIRTH));
 		}
@@ -26,7 +26,7 @@ namespace HOA {
 			source = s; target = t;
 		}
 		public override void Process() {
-			target.SpriteEffect(EEffect.DEATH);
+			target.Display.Effect(EEffect.DEATH);
 			Mixer.Play(SoundLoader.Effect(EEffect.DEATH));
 			if (source.Sequence == default(EffectSeq)) {
 				EffectQueue.Add(new EKill2(source, target));
@@ -45,7 +45,7 @@ namespace HOA {
 			source = s; target = t;
 		}
 		public override void Process() {
-			target.SpriteEffect(EEffect.DESTRUCT);
+			target.Display.Effect(EEffect.DESTRUCT);
 			Mixer.Play(SoundLoader.Effect(EEffect.DESTRUCT));
 			
 			if (source.Sequence == default(EffectSeq)) {
@@ -77,7 +77,7 @@ namespace HOA {
 			source = s; target = t; newToken = newT;
 		}
 		public override void Process() {
-			Cell cell = target.Cell;
+			Cell cell = target.Body.Cell;
 			target.Die(source, false, false);
 			TokenFactory.Add(newToken, source, cell, false);
 		}

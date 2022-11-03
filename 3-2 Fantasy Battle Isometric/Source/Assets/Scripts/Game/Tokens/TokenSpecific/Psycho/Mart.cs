@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace HOA{
 	public class MartianManTrap : Unit {
 		public MartianManTrap(Source s, bool template=false){
-			NewLabel(EToken.MART, s, false, template);
-			BuildTrample();
+			id = new ID(this, EToken.MART, s, false, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.TRAM);
 			ScaleLarge();
 			NewHealth(70);
 			NewWatch(4);
@@ -41,7 +42,7 @@ namespace HOA{
 		public override void Adjust () {
 			int bonus = actor.FP;
 			for (int i=0; i<bonus; i++) {
-				aim.Add(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
+				aim.Add(new Aim (ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE));
 			}
 		}
 		
@@ -52,7 +53,7 @@ namespace HOA{
 		
 		void ResetAim () {
 			aim = new List<Aim>();
-			AddAim(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
+			AddAim(new Aim (ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE));
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
@@ -68,7 +69,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, range+actor.FP);
+			Aim actual = new Aim(ETraj.PATH, EClass.CELL, EPurp.MOVE, range+actor.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -86,7 +87,7 @@ namespace HOA{
 			price = Price.Cheap;
 			actor = u;
 			
-			AddAim(new Aim(EAim.PATH, EClass.DEST, 1));
+			AddAim(new Aim(ETraj.PATH, EClass.DEST, 1));
 
 			name = "Grow";
 			desc = "Switch cells with target Destructible.  \nRange +1 per focus.  \n"+actor+" +1 Focus.";
@@ -100,7 +101,7 @@ namespace HOA{
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.DEST, 1);
+			aim[0] = new Aim(ETraj.PATH, EClass.DEST, 1);
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
@@ -108,7 +109,7 @@ namespace HOA{
 			actor.AddStat(new Source(actor), EStat.FP, 1, false);
 
 			Token t = (Token)targets[0];
-			actor.Swap(t);
+			actor.Body.Swap(t);
 
 			UnAdjust();
 			Targeter.Reset();
@@ -124,7 +125,7 @@ namespace HOA{
 			price = new Price(1,1);
 			actor = u;
 			
-			AddAim(new Aim(EAim.LINE, EClass.UNIT, EPurpose.ATTACK, 2));
+			AddAim(new Aim(ETraj.LINE, EClass.UNIT, EPurp.ATTACK, 2));
 			damage = 18;
 
 			name = "Vine Whip";
@@ -139,17 +140,16 @@ namespace HOA{
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.UNIT, 2);
+			aim[0] = new Aim(ETraj.PATH, EClass.UNIT, 2);
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
 			Unit u = (Unit)targets[0];
-			Cell c = u.Cell;
 			EffectQueue.Add(new EDamage(new Source(actor), u, damage));
 			Token dest;
-			if (c.Contains(EClass.DEST, out dest)) {
+			if (u.Body.Cell.Contains(EClass.DEST, out dest)) {
 				actor.Body.Swap(dest);
 			}
 

@@ -7,7 +7,7 @@ namespace HOA {
 			weight = 0;
 			actor = u;
 			price = Price.Free;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "End turn";
 			desc = "";

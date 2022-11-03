@@ -5,8 +5,8 @@ namespace HOA {
 
 	public class Mountain : Obstacle {
 		public Mountain(Source s, bool template=false){
-			NewLabel(EToken.MNTN, s, false, template);
-			BuildTall();	
+			id = new ID(this, EToken.MNTN, s, false, template);
+			plane = Plane.Tall;	
 			ScaleTall();
 			Neutralize();
 		}
@@ -15,8 +15,7 @@ namespace HOA {
 
 	public class Hill : Obstacle {
 		public Hill(Source s, bool template=false){
-			NewLabel(EToken.HILL, s, false, template);
-			BuildStandard();
+			id = new ID(this, EToken.HILL, s, false, template);
 			ScaleLarge();
 			Neutralize();
 		}
@@ -25,9 +24,8 @@ namespace HOA {
 
 	public class Rock : Obstacle {
 		public Rock(Source s, bool template=false){
-			NewLabel(EToken.ROCK, s, false, template);
-			BuildStandard();
-			AddDest();	
+			id = new ID(this, EToken.ROCK, s, false, template);
+			type.Add(EClass.DEST);	
 			ScaleMedium();
 			Neutralize();
 		}
@@ -36,9 +34,8 @@ namespace HOA {
 
 	public class Tree : Obstacle {
 		public Tree(Source s, bool template=false){
-			NewLabel(EToken.TREE, s, false, template);
-			BuildStandard();
-			AddDest();	
+			id = new ID(this, EToken.TREE, s, false, template);
+			type.Add(EClass.DEST);	
 			ScaleMedium();
 			Neutralize();
 		}
@@ -47,9 +44,9 @@ namespace HOA {
 
 	public class Corpse : Obstacle {
 		public Corpse(Source s, bool template=false){
-			NewLabel(EToken.CORP, s, false, template);
-			BuildStandard();
-			AddRem();	
+			id = new ID(this, EToken.CORP, s, false, template);
+			type.Add(EClass.DEST);
+			type.Add(EClass.REM);
 			ScaleMedium();
 			Neutralize();
 		}

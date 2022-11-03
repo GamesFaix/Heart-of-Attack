@@ -42,7 +42,7 @@ namespace HOA {
 			Token actor = currentAction.Actor;
 			Aim aim = currentAction.Aim[currentStep];
 			Token child = currentAction.ChildTemplate;
-			Cell start = actor.Cell;
+			Cell start = actor.Body.Cell;
 
 			AllowPass (currentAction, currentStep);
 
@@ -51,7 +51,7 @@ namespace HOA {
 				ITargetable last = targets[index];
 
 				if (last is Cell) {start = (Cell)last;}
-				if (last is Token) {start = ((Token)last).Cell;}
+				if (last is Token) {start = ((Token)last).Body.Cell;}
 
 				if (start.StopToken(actor)) {
 					FinishStep();
@@ -61,7 +61,7 @@ namespace HOA {
 			}
 
 			if (currentAction is ITeleport && currentStep > 0) {
-				start = currentAction.Actor.Cell;
+				start = currentAction.Actor.Body.Cell;
 				actor = (Token)targets[0];
 
 			}
@@ -69,7 +69,7 @@ namespace HOA {
 
 			//Debug.Log(start);
 
-			if (aim.AimType == EAim.SELF) {FinishStep();}
+			if (aim.AimType == ETraj.SELF) {FinishStep();}
 			else if (currentAction is AMoveAren) {
 				Legalizer.FindArenMove (actor, aim);
 			}

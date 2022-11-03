@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Monolith : Unit {
 		public Monolith(Source s, bool template=false){
-			NewLabel(EToken.MONO, s, true, template);
+			id = new ID(this, EToken.MONO, s, true, template);
 			//sprite = new HOA.Sprite(this);
-			BuildTall();
-			AddKing();
-			OnDeath = EToken.HBLO;
+			plane = Plane.Tall;
+			type.Add(EClass.KING);
+			onDeath = EToken.HBLO;
 			ScaleTall();
 			NewHealth(100);
 			NewWatch(2);
@@ -26,7 +26,7 @@ namespace HOA{
 			arsenal.Add(new AMonoReanimate(new Price(1,0), this));
 			arsenal.Add(new ACreate(new Price(2,1), this, EToken.NECR));
 
-			Aim aim = new Aim(EAim.ARC, EClass.CELL, EPurpose.CREATE, 3,3);
+			Aim aim = new Aim(ETraj.ARC, EClass.CELL, EPurp.CREATE, 3,3);
 			arsenal.Add(new ACreate(new Price(1,2), this, EToken.MOUT, aim));
 			arsenal.Sort();
 		}		
@@ -41,7 +41,7 @@ namespace HOA{
 			price = new Price(1,2);
 			actor = u;
 			
-			AddAim(new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2));
+			AddAim(new Aim (ETraj.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2));
 			damage = 20;
 			
 			name = "Eternal Flame";
@@ -63,7 +63,7 @@ namespace HOA{
 					Token next = thisRad[j];
 					
 					if (!affected.Contains(next)) {		
-						next.SpriteEffect(EEffect.FIRE);
+						next.Display.Effect(EEffect.FIRE);
 						AEffects.DamageDest(new Source(actor), next, dmg);
 						
 						foreach (Token t in next.Neighbors(true)) {
@@ -88,7 +88,7 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EClass.REM));
+			AddAim(new Aim (ETraj.NEIGHBOR, EClass.REM));
 
 			//Token childTemplate = TemplateFactory.Template(EToken.RECY);
 			
@@ -112,19 +112,19 @@ namespace HOA{
 			weight = 4;
 			price = new Price(1,1);
 			actor = u;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			damage = 5;
 			range = 2;
 
 			name = "Death Field";
-			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.Name+". \n"+actor.Name+" gains Health equal to damage successfully dealt.";
+			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.ID.Name+". \n"+actor.ID.Name+" gains Health equal to damage successfully dealt.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
 			CellGroup zone = Zone(actor, range);
-			TokenGroup affected = zone.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup affected = zone.Occupants.OnlyType(EClass.UNIT);
 			affected.Remove(actor);
 
 			foreach (Unit u in affected) {
@@ -134,10 +134,12 @@ namespace HOA{
 		}
 
 		CellGroup Zone (Token actor, int range) {
-			int startX = actor.Cell.X-range;
-			int endX = actor.Cell.X+range;
-			int startY = actor.Cell.Y-range;
-			int endY = actor.Cell.Y+range;
+			Cell start = actor.Body.Cell;
+
+			int startX = start.X-range;
+			int endX = start.X+range;
+			int startY = start.Y-range;
+			int endY = start.Y+range;
 
 			CellGroup cells = new CellGroup();
 			Cell cell;
@@ -159,7 +161,7 @@ namespace HOA{
 			price = new Price(1,0);
 			actor = par;
 
-			Aim newAim = new Aim (EAim.NEIGHBOR, EClass.UNIT);
+			Aim newAim = new Aim (ETraj.NEIGHBOR, EClass.UNIT);
 			newAim.TeamOnly = true;
 			AddAim(newAim);
 			

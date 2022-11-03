@@ -5,8 +5,8 @@ namespace HOA {
 	
 	public class Katandroid : Unit {
 		public Katandroid(Source s, bool template=false){
-			NewLabel(EToken.KATA, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.KATA, s, false, template);
+			plane = Plane.Gnd;
 			ScaleSmall();
 			NewHealth(25);
 			NewWatch(5);	
@@ -37,7 +37,7 @@ namespace HOA {
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 6);
 			for (int i=0; i<bonus; i++) {
-				aim.Add(new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE));
+				aim.Add(new Aim (ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE));
 			}
 		}
 		
@@ -63,7 +63,7 @@ namespace HOA {
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, Mathf.Min(6, actor.FP));
+			Aim actual = new Aim(ETraj.PATH, EClass.CELL, EPurp.MOVE, Mathf.Min(6, actor.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -82,7 +82,7 @@ namespace HOA {
 		public AKataSpin (Price p, Unit u, int d) {
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.NEIGHBOR, EClass.UNIT));
+			AddAim(new Aim (ETraj.NEIGHBOR, EClass.UNIT));
 			
 			damage = d;
 			name = "Laser Spin";
@@ -95,19 +95,19 @@ namespace HOA {
 			u.Damage(new Source(actor), damage);
 			
 			int newDmg = (int)Mathf.Floor(damage*0.5f);
-			TokenGroup cellMates = u.CellMates;
-			if (cellMates.OnlyClass(EClass.UNIT).Count == 1) {
-				Unit next = (Unit)cellMates.OnlyClass(EClass.UNIT)[0];
+			TokenGroup cellMates = u.Body.CellMates;
+			if (cellMates.OnlyType(EClass.UNIT).Count == 1) {
+				Unit next = (Unit)cellMates.OnlyType(EClass.UNIT)[0];
 				next.Damage(new Source(actor), newDmg);
 				//select direction
 				
 			}
-			else if (cellMates.OnlyClass(EClass.UNIT).Count > 1) {
+			else if (cellMates.OnlyType(EClass.UNIT).Count > 1) {
 				
 				
 			}
 			
-			else if (cellMates.OnlyClass(EClass.UNIT).Count > 0) {
+			else if (cellMates.OnlyType(EClass.UNIT).Count > 0) {
 				//end
 				
 			}

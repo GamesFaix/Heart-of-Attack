@@ -3,8 +3,8 @@
 namespace HOA{
 	public class PriestOfNaja : Unit {
 		public PriestOfNaja(Source s, bool template=false){
-			NewLabel(EToken.PRIE, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.PRIE, s, false, template);
+			plane = Plane.Gnd;
 			ScaleLarge();
 			NewHealth(50,2);
 			NewWatch(4);

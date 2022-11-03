@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Beesassin : Unit {
 		public Beesassin(Source s, bool template=false){
-			NewLabel(EToken.BEES, s, false, template);
-			BuildAir();
+			id = new ID(this, EToken.BEES, s, false, template);
+			plane = Plane.Air;
 			ScaleSmall();
 			NewHealth(25);
 			NewWatch(5);

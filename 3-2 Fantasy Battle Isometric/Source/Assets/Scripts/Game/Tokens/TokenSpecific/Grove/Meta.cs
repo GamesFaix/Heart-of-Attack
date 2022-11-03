@@ -3,9 +3,11 @@
 namespace HOA{
 	public class Metaterrainean : Unit {
 		public Metaterrainean(Source s, bool template=false){
-			NewLabel(EToken.META, s, false, template);
-			BuildTrample();
-			OnDeath = EToken.ROCK;
+			id = new ID(this, EToken.META, s, false, template);
+			plane = Plane.Air;
+			type.Add(EClass.TRAM);
+			onDeath = EToken.ROCK;
+
 			ScaleLarge();
 			NewHealth(50);
 			NewWatch(1);
@@ -24,7 +26,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, EClass.DEST));
+			AddAim(new Aim(ETraj.NEIGHBOR, EClass.DEST));
 			
 			name = "Consume Terrain";
 			desc = "Destroy neighboring non-Remains destructible.\n"+actor+" gains 12 health.";
@@ -36,7 +38,7 @@ namespace HOA{
 			Token t = (Token)targets[0];
 			t.Die(new Source(actor));
 			actor.AddStat(new Source(actor), EStat.HP, 12);
-			actor.SpriteEffect(EEffect.STATUP);
+			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}

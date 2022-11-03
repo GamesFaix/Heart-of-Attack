@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Panopticannon : Unit {
 		public Panopticannon(Source s, bool template=false){
-			NewLabel(EToken.PANO, s, false, template);
-			BuildTrample();
+			id = new ID(this, EToken.PANO, s, false, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.TRAM);
 			ScaleLarge();
 			health = new HealthPano(this, 65);
 			NewWatch(1);
@@ -35,7 +36,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 3, 2));
+			AddAim(new Aim(ETraj.ARC, EClass.UNIT, 3, 2));
 			damage = d;
 			
 			name = "Cannon";
@@ -49,7 +50,7 @@ namespace HOA{
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EClass.UNIT, 3, 2);
+			aim[0] = new Aim(ETraj.ARC, EClass.UNIT, 3, 2);
 		}
 
 		public override void Execute (List<ITargetable> targets) {
@@ -66,7 +67,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 3, 2));
+			AddAim(new Aim(ETraj.ARC, EClass.UNIT, 3, 2));
 			damage = d;
 			
 			name = "Armor Pierce";
@@ -79,7 +80,7 @@ namespace HOA{
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EClass.UNIT, 4, 3);
+			aim[0] = new Aim(ETraj.ARC, EClass.UNIT, 4, 3);
 		}
 
 		public override void Execute (List<ITargetable> targets) {

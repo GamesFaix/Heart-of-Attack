@@ -14,7 +14,7 @@ namespace HOA {
 
 			Token instance = GUISelectors.Instance;
 			string btnLabel = "Kill ";
-			if (instance != default(Token)) {btnLabel += instance.FullName;}
+			if (instance != default(Token)) {btnLabel += instance.ToString();}
 
 			p.y2 += 5;
 			if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){ 

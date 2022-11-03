@@ -4,9 +4,10 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Recyclops : Unit {
 		public Recyclops(Source s, bool template=false){
-			NewLabel(EToken.RECY, s, false, template);
-			BuildGround();
-			AddRem();
+			id = new ID(this, EToken.RECY, s, false, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.DEST);
+			type.Add(EClass.REM);
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(4);
@@ -28,7 +29,7 @@ namespace HOA{
 			weight = 4;
 			price = new Price(1,0);
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EClass.REM));
+			AddAim(new Aim (ETraj.NEIGHBOR, EClass.REM));
 			
 			name = "Cannibalize";
 			desc = "Destroy target remains.\nHealth +10/10";
@@ -51,7 +52,7 @@ namespace HOA{
 		public ARecyExplode (Unit u) {
 			weight = 4;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			
 			damage = 12;
@@ -62,7 +63,7 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TokenGroup victims = actor.Neighbors(true).OnlyClass(EClass.UNIT);
+			TokenGroup victims = actor.Body.Neighbors(true).OnlyType(EClass.UNIT);
 			EffectGroup nextEffects = new EffectGroup();
 			nextEffects.Add(new EKill(new Source(actor), actor));
 			foreach (Token t in victims) {

@@ -3,9 +3,9 @@
 namespace HOA{
 	public class Lichenthrope : Unit {
 		public Lichenthrope(Source s, bool template=false){
-			NewLabel(EToken.LICH, s, false, template);
-			BuildGround();
-			AddCorpseless();
+			id = new ID(this, EToken.LICH, s, false, template);
+			plane = Plane.Gnd;
+			onDeath = EToken.NONE;
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(5);
@@ -28,13 +28,13 @@ namespace HOA{
 		public AEvolve (Price p, Unit par, EToken chi) {
 			weight = 4;
 			price = p;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			actor = par;
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 			
-			name = chiTemplate.Name;
+			name = chiTemplate.ID.Name;
 			desc = "Transform "+actor+" into a "+name+".  \n(New "+name+" is added to the end of the Queue and does not retain any of "+actor+"'s attributes.)";
 		}
 		

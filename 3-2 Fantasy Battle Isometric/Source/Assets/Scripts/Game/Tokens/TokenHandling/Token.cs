@@ -5,6 +5,42 @@ namespace HOA {
 
 	public abstract class Token : ITargetable{
 
+		protected ID id;
+		public ID ID {get {return id;} }
+
+		public override string ToString () {return id.FullName;}
+		public abstract string Notes ();
+
+		public Player Owner {
+			get {return id.Owner;} 
+			set {id.Owner = value;}
+		}
+
+		//templates
+		protected bool isTemplate = false;
+		public void BuildTemplate () {isTemplate = true;}
+		public bool IsTemplate () {return isTemplate;}
+		public Token Template () {
+			if (IsTemplate()) {return this;}
+			return TemplateFactory.Template(id.Code);
+		}
+
+		//
+		protected Plane plane;
+		public Plane Plane {get {return plane;} }
+		
+		protected Type type;
+		public Type Type {get {return type;} }
+		
+		protected EToken onDeath = EToken.NONE;
+		public EToken OnDeath {
+			get {return onDeath;}
+			set {onDeath = value;}
+		}
+		protected Body body;
+		public Body Body {get {return body;} }
+
+		//graphics
 		Vector3 scale = new Vector3 (2.5f, 1, 2.5f);
 		public Vector3 SpriteScale {
 			get {return scale;}
@@ -16,92 +52,13 @@ namespace HOA {
 		protected void ScaleJumbo () {SpriteScale = new Vector3 (3f, 1, 3f);}
 		protected void ScaleTall () {SpriteScale = new Vector3 (3f, 1, 4.5f);}
 		protected void ScaleQuad () {SpriteScale = new Vector3 (5f, 1, 5f);}
-
-		protected bool isTemplate = false;
-		public void BuildTemplate () {isTemplate = true;}
-		public bool IsTemplate () {return isTemplate;}
-		public Token Template () {
-			if (IsTemplate()) {return this;}
-			return TemplateFactory.Template(Code);
-		}
-		
-		protected Label label;
-		protected Body body;
-	//	protected HOA.Sprite sprite;
-			
-		protected void NewLabel (EToken code, Source s, bool unique=false, bool template=false) {label = new Label(this, code, s, unique, template);}
-		protected void NewBody (EPlane p, EClass s) {body = new Body(this, p, s);}
-		protected void NewBody (EPlane p, List<EClass> s) {body = new Body(this, p, s);}
-		protected void NewBody (List<EPlane> p, EClass s) {body = new Body(this, p, s);}
-		protected void NewBody (List<EPlane> p, List<EClass> s) {body = new Body(this, p, s);}	
-
-		public Body Body {get {return body;} }
-		
-		public abstract string Notes ();
-		//name/instance
-		public override string ToString () {return label.FullName;}
-		public string FullName {get {return label.FullName;} }
-		public EToken Code {get {return label.Code;} }
-		public string CodeInst {get {return label.CodeInst;} }
-		public string Name {get {return label.Name;} }
-		public char Instance {get {return label.Instance;} }
-		public bool Unique {get {return label.Unique;} }
-		//possession
-		public Player Owner {
-			get {return label.Owner;} 
-			set {label.Owner = value;}
-		}
-		//graphics
+ 
 		TokenDisplay display = default(TokenDisplay);
 		public TokenDisplay Display {
 			get {return display;}
 			set {display = value;}
 		}
-		public Texture2D Sprite {
-			get {
-				if (Display != default(TokenDisplay)) {
-					return Display.Sprite;
-				} 
-				return default(Texture2D);
-			}
-		}
-		public void SpriteEffect (EEffect e) {
-			if (Display != default(TokenDisplay)) {
-				Display.Effect(e);
-			}
-		}
-
-		//plane
-		public List<EPlane> Plane {get {return body.Plane;} }
-		public void SetPlane (EPlane p) {body.SetPlane(p);}
-		public void SetPlane (List<EPlane> p) {body.SetPlane(p);}
-		public bool IsPlane (EPlane p) {return body.IsPlane(p);}
-		//special
-		public void SetClass (EClass c) {body.SetClass(c);}
-		public void SetClass (List<EClass> c) {body.SetClass(c);}
-		public void AddClass (EClass c) {body.AddClass(c);}
-		public void RemoveClass (EClass c) {body.RemoveClass(c);}
-		public bool IsClass (EClass c) {return body.IsClass(c);}
-		//on death
-		public EToken OnDeath {
-			get {return body.OnDeath;}
-			set {body.OnDeath = value;}
-		}
-		
-		//location
-		public TokenGroup Neighbors (bool cellMates = false) {return body.Neighbors(cellMates);}
-		public TokenGroup CellMates {get {return body.CellMates;} }
-		public Cell Cell {get {return body.Cell;} }
-		public bool CanEnter (Cell cell) {return body.CanEnter(cell);}
-		public bool CanTrample (Cell cell) {return body.CanTrample(cell);}
-		public bool Enter (Cell cell) {
-			bool e = body.Enter(cell);
-			if (e && Display != null) {Display.MoveTo(cell);}
-			return e;
-		}
-		public void Exit () {body.Exit();}
-		public bool Swap (Token other) {return body.Swap(other);}
-		
+		//
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 
@@ -117,11 +74,11 @@ namespace HOA {
 			if (top) {TurnQueue.PrepareNewTop(TurnQueue.Top);} 
 
 			TokenFactory.Remove(this);
-			Cell oldCell = Cell;
-			Exit();
+			Cell oldCell = Body.Cell;
+			Body.Exit();
 			if (corpse) {CreateRemains(oldCell);}
-			if (IsClass(EClass.KING)) {Owner.Kill();}
-			if (log && !IsClass(EClass.HEART)) {
+			if (Type.Is(EClass.KING)) {Owner.Kill();}
+			if (log && !Type.Is(EClass.HEART)) {
 				if (s.Token != default(Token)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
 				else {GameLog.Out(this+" has been killed.");}
 			}
@@ -133,7 +90,7 @@ namespace HOA {
 				if (TokenFactory.Add(OnDeath, new Source(this), oldCell, out remains, false)) {
 					GameLog.Out(this+" left "+remains);
 				}
-				if (remains.IsClass(EClass.HEART)) {
+				if (remains.Type.Is(EClass.HEART)) {
 					remains.Owner = Owner;
 
 				}

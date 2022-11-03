@@ -3,8 +3,8 @@
 namespace HOA{
 	public class Piecemaker : Unit {
 		public Piecemaker(Source s, bool template=false){
-			NewLabel(EToken.PIEC, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.PIEC, s, false, template);
+			plane = Plane.Gnd;
 			ScaleMedium();
 
 			NewHealth(35,3);
@@ -28,7 +28,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 2));
+			AddAim(new Aim(ETraj.ARC, EClass.UNIT, 2));
 			magnitude = n;
 			
 			name = "Heal";

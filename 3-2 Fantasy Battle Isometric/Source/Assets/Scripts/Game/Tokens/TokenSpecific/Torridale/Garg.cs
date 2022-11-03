@@ -3,10 +3,10 @@
 namespace HOA{
 	public class Gargoliath : Unit {
 		public Gargoliath(Source s, bool template=false){
-			NewLabel(EToken.GARG, s, true, template);
-			BuildAir();
-			AddKing();
-			OnDeath = EToken.HSTO;
+			id = new ID(this, EToken.GARG, s, true, template);
+			plane = Plane.Air;
+			type.Add(EClass.KING);
+			onDeath = EToken.HSTO;
 			ScaleJumbo();
 			NewHealth(75);
 			NewWatch(3);
@@ -29,18 +29,17 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Land";
 			desc = "Becomes trampling ground unit. \nMove range -2 \nDefense +2\nForget 'Create Rook' \nLearn 'Tail Whip'";
 		}
 
 		public override bool Restrict () {
-			Cell c = actor.Cell;
-			if (!c.Contains(EPlane.GND)) {return false;}
+			if (!actor.Body.Cell.Contains(EPlane.GND)) {return false;}
 			Token t;
-			if (c.Contains(EPlane.GND, out t)) {
-				if (t.IsClass(EClass.DEST)) {return false;}
+			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
+				if (t.Type.Is(EClass.DEST)) {return false;}
 			}
 			return true;
 
@@ -48,17 +47,16 @@ namespace HOA{
 
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			Cell c = actor.Cell;
 			Token t;
-			if (c.Contains(EPlane.GND, out t)) {
-				if (t.IsClass(EClass.DEST)) {
+			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
+				if (t.Type.Is(EClass.DEST)) {
 					t.Die(new Source(actor));
 				}
 			}
 			
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 2));
-			actor.SetPlane(EPlane.GND);
-			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
+			actor.Plane.Set(EPlane.GND);
+			actor.Type.Set(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is AGargLand) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is AGargRook) {actor.Arsenal().Remove(a);} }
@@ -67,7 +65,7 @@ namespace HOA{
 			actor.Arsenal().Add(new AGargTailWhip(new Price(1,1), actor,10));
 			actor.Arsenal().Sort();
 			
-			actor.SpriteEffect(EEffect.STATUP);
+			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -76,22 +74,21 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Take Flight";
 			desc = "Becomes air unit. \nMove range +2\nDefense -2\nForget 'Tail Whip'\nLearn 'Create Rook'";
 		}
 		public override bool Restrict () {
-			Cell c = actor.Cell;
-			if (c.Contains(EPlane.AIR)) {return true;}
+			if (actor.Body.Cell.Contains(EPlane.AIR)) {return true;}
 			return false;
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -2));
-			actor.SetPlane(EPlane.AIR);
-			actor.SetClass(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
+			actor.Plane.Set(EPlane.AIR);
+			actor.Type.Set(new List<EClass> {EClass.UNIT, EClass.KING, EClass.TRAM});
 			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {	if (a is AGargFly) {actor.Arsenal().Remove(a);} }
 			foreach (Action a in actor.Arsenal()) {if (a is AGargTailWhip) {actor.Arsenal().Remove(a);} }
@@ -100,7 +97,7 @@ namespace HOA{
 			actor.Arsenal().Add(new AGargRook(new Price(1,1),actor));
 			actor.Arsenal().Sort();
 			
-			actor.SpriteEffect(EEffect.STATUP);
+			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -113,7 +110,7 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			damage = d;
 			
 			name = "Tail Whip";
@@ -122,8 +119,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TokenGroup neighbors = actor.Neighbors(false);
-			neighbors = neighbors.OnlyClass(EClass.UNIT);
+			TokenGroup neighbors = actor.Body.Neighbors(false);
+			neighbors = neighbors.OnlyType(EClass.UNIT);
 			foreach (Token t in neighbors) {
 				Unit u = (Unit)t;
 				EffectQueue.Add(new EDamage(new Source(actor), u, damage));
@@ -142,17 +139,16 @@ namespace HOA{
 			template = TemplateFactory.Template(EToken.ROOK);
 			price = p;
 			
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
-			name = template.Name;
+			name = template.ID.Name;
 			desc = "Create "+name+" in "+actor+"'s cell.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
-			Cell c = actor.Cell;
-			if (!c.Occupied(EPlane.GND)) {
+			if (!actor.Body.Cell.Occupied(EPlane.GND)) {
 				Charge();
-				TokenFactory.Add(EToken.ROOK, new Source(actor), c);
+				TokenFactory.Add(EToken.ROOK, new Source(actor), actor.Body.Cell);
 			}
 			Targeter.Reset();
 		}

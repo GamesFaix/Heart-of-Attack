@@ -9,7 +9,7 @@ namespace HOA {
 		static Dictionary<EStat, Texture2D> stats;
 		static Dictionary<EPlane, Texture2D> planes;
 		static Dictionary<EClass, Texture2D> classes;
-		static Dictionary<EAim, Texture2D> aims;
+		static Dictionary<ETraj, Texture2D> aims;
 
 		static Texture2D skip, onDeath, timer;
 
@@ -38,14 +38,14 @@ namespace HOA {
 			AddClass (EClass.UNIT, "UNIT");
 			AddClass (EClass.CELL, "CELL");
 
-			aims = new Dictionary<EAim, Texture2D>();
-			AddAim (EAim.NEIGHBOR, "NEIGHBOR"); 
-			AddAim (EAim.PATH, "PATH"); 
-			AddAim (EAim.LINE, "LINE");
-			AddAim (EAim.ARC, "ARC"); 
-			AddAim (EAim.FREE, "FREE"); 
-			AddAim (EAim.GLOBAL, "GLB"); 
-			AddAim (EAim.SELF, "SELF");
+			aims = new Dictionary<ETraj, Texture2D>();
+			AddAim (ETraj.NEIGHBOR, "NEIGHBOR"); 
+			AddAim (ETraj.PATH, "PATH"); 
+			AddAim (ETraj.LINE, "LINE");
+			AddAim (ETraj.ARC, "ARC"); 
+			AddAim (ETraj.FREE, "FREE"); 
+			AddAim (ETraj.GLOBAL, "GLB"); 
+			AddAim (ETraj.SELF, "SELF");
 
 			skip = Resources.Load("Icons/SKIP") as Texture2D;
 			onDeath = Resources.Load("Icons/ONDEATH") as Texture2D;
@@ -58,12 +58,12 @@ namespace HOA {
 		static void AddStat (EStat s, string fileName) {stats.Add(s, LoadFile(fileName));}
 		static void AddPlane (EPlane p, string fileName) {planes.Add(p, LoadFile(fileName));}
 		static void AddClass (EClass s, string fileName) {classes.Add(s, LoadFile(fileName));}
-		static void AddAim (EAim a, string fileName) {aims.Add(a, LoadFile(fileName));}
+		static void AddAim (ETraj a, string fileName) {aims.Add(a, LoadFile(fileName));}
 
 		public static Texture2D Stat(EStat s) {return stats[s];}
 		public static Texture2D Plane(EPlane p) {return planes[p];}
 		public static Texture2D Class(EClass s) {return classes[s];}
-		public static Texture2D Aim(EAim a) {return aims[a];}
+		public static Texture2D Aim(ETraj a) {return aims[a];}
 
 		public static Texture2D SKIP() {return skip;}
 		public static Texture2D ONDEATH() {return onDeath;}

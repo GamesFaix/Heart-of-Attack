@@ -55,9 +55,9 @@ namespace HOA {
 		void HideSprite () {spritePlane.renderer.enabled = false;}
 
 		public void EnterSunken (Token t) {
-			if (t.Sprite != default(Texture2D)) {
+			if (t.Display != default(TokenDisplay)) {
 				ShowSprite();
-				spritePlane.renderer.material.SetTexture("_MainTex", t.Sprite);
+				spritePlane.renderer.material.SetTexture("_MainTex", t.Display.Sprite);
 			}
 		}
 		public void ExitSunken () {HideSprite();}

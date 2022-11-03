@@ -18,8 +18,8 @@ namespace HOA {
 			if (a == default(Aim)) {a = HOA.Aim.Create();}
 			AddAim(a);
 
-			name = "Create "+childTemplate.Name;
-			desc = "Create "+childTemplate.Name+" in target cell.";
+			name = "Create "+childTemplate.ID.Name;
+			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {

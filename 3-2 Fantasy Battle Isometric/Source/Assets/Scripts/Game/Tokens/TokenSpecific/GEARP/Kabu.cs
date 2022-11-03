@@ -5,10 +5,11 @@ namespace HOA {
 	public class Kabutomachine : Unit {
 	
 		public Kabutomachine(Source s, bool template=false){
-			NewLabel(EToken.KABU, s, true, template);
-			BuildAir();
-			AddKing();
-			OnDeath = EToken.HSIL;
+			id = new ID(this, EToken.KABU, s, true, template);
+			plane = Plane.Air;
+			type.Add(EClass.KING);
+			onDeath = EToken.HSIL;
+
 			ScaleJumbo();
 			NewHealth(75);
 			NewWatch(4);
@@ -46,8 +47,8 @@ namespace HOA {
 
 			int dmg = damage;
 			Unit u = (Unit)targets[0];
-			Cell cell = u.Cell;
-			int[] direction = Direction.FromCells(cell, actor.Cell);
+			Cell cell = u.Body.Cell;
+			int[] direction = Direction.FromCells(cell, actor.Body.Cell);
 			bool stop = false;
 			
 			TokenGroup affected;
@@ -56,7 +57,7 @@ namespace HOA {
 				affected = cell.Occupants;
 
 				TokenGroup blockers = new TokenGroup (affected);
-				blockers = blockers.OnlyClass(EClass.OB);
+				blockers = blockers.OnlyType(EClass.OB);
 				blockers = blockers.RemovePlane(EPlane.SUNK);
 				
 				if (blockers.Count > 0) {
@@ -64,9 +65,9 @@ namespace HOA {
 					Debug.Log("obstacle hit");
 				}
 
-				foreach (Token t in affected.OnlyClass(EClass.UNIT)) {
+				foreach (Token t in affected.OnlyType(EClass.UNIT)) {
 					((Unit)t).Damage(new Source(actor), dmg);
-					t.SpriteEffect(EEffect.LASER);
+					t.Display.Effect(EEffect.LASER);
 				}
 				//if (targets.Count > 0) {dmg = (int)Mathf.Floor(dmg*0.5f);}
 				
@@ -85,9 +86,9 @@ namespace HOA {
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 5));
+			AddAim(new Aim(ETraj.ARC, EClass.UNIT, 5));
 			aim[0].TeamOnly = true;
-			AddAim(new Aim(EAim.ARC, EClass.CELL, EPurpose.MOVE, 5));
+			AddAim(new Aim(ETraj.ARC, EClass.CELL, EPurp.MOVE, 5));
 			
 			name = "Warp Drive";
 			desc = "Move target teammate (including self) to target cell.\n"+aim[1].ToString();

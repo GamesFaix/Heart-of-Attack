@@ -5,8 +5,8 @@ namespace HOA{
 	
 	public class RevolvingTom : Unit {
 		public RevolvingTom(Source s, bool template=false){
-			NewLabel(EToken.REVO, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.REVO, s, false, template);
+			plane = Plane.Gnd;
 			ScaleSmall();
 
 			NewHealth(30);

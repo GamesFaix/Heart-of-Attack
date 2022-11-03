@@ -3,8 +3,9 @@
 namespace HOA{
 	public class TalonedScout : Unit {
 		public TalonedScout(Source s, bool template=false){
-			NewLabel(EToken.TALO, s, false, template);
-			BuildAir();
+			id = new ID(this, EToken.TALO, s, false, template);
+			plane = Plane.Air;
+
 			ScaleMedium();
 			NewHealth(45);
 			NewWatch(4);
@@ -29,7 +30,7 @@ namespace HOA{
 			damage = 15;
 			
 			name = "Arctic Gust";
-			desc = "Do "+damage+" damage target Unit.\nTarget's Move range -2 until end of its next turn.\nTarget's neighbors and cellmates' Move range -1 until end of their next turn.\n("+actor.Name+"'s Move range is not affected.)";
+			desc = "Do "+damage+" damage target Unit.\nTarget's Move range -2 until end of its next turn.\nTarget's neighbors and cellmates' Move range -1 until end of their next turn.\n("+actor.ID.Name+"'s Move range is not affected.)";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
@@ -48,7 +49,7 @@ namespace HOA{
 				u.timers.Add(new TFreeze(u, actor, move, 2));
 			}				
 
-			TokenGroup neighborUnits = u.Neighbors().OnlyClass(EClass.UNIT);
+			TokenGroup neighborUnits = u.Body.Neighbors().OnlyType(EClass.UNIT);
 
 			foreach (Token t in neighborUnits) {
 				u = (Unit)t;
@@ -64,7 +65,7 @@ namespace HOA{
 
 					u.timers.Add(new TFreeze(u, actor, move, 1));
 
-					u.SpriteEffect(EEffect.STATDOWN);
+					u.Display.Effect(EEffect.STATDOWN);
 				}
 			}
 			Targeter.Reset();

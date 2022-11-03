@@ -5,10 +5,10 @@ using UnityEngine;
 namespace HOA{
 	public class ArenaNonSensus : Unit {
 		public ArenaNonSensus(Source s, bool template=false){
-			NewLabel(EToken.AREN, s, false, template);
+			id = new ID(this, EToken.AREN, s, false, template);
 			body = new BodyAren(this);
-			BuildStandard();
-			AddCorpseless();
+			plane = Plane.Eth;
+			onDeath = EToken.NONE;
 
 			ScaleQuad();
 			NewHealth(55,3);
@@ -28,9 +28,6 @@ namespace HOA{
 
 		public BodyAren (Token t){
 			parent = t;
-			SetPlane(EPlane.ETH);
-			SetClass(EClass.UNIT);
-			OnDeath = EToken.NONE;
 		}
 
 		CellGroup cells;
@@ -68,7 +65,7 @@ namespace HOA{
 			CellGroup block;
 			if (FourBlock(newCell, out block)) {
 				foreach (Cell c in block) {
-					if (c.Occupied(Plane) && !cells.Contains(c)) {return false;}
+					if (c.Occupied(parent.Plane.Value) && !cells.Contains(c)) {return false;}
 				}
 				return true;
 			}
@@ -166,7 +163,7 @@ namespace HOA{
 			
 			range = r;
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
@@ -187,7 +184,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, range);
+			Aim actual = new Aim(ETraj.PATH, EClass.CELL, EPurp.MOVE, range);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -206,7 +203,7 @@ namespace HOA{
 		public AArenLeech (Unit u) {
 			weight = 3;
 			price = new Price(1,0);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			name = "Leech life";
 			desc = "Do "+damage+" damage to all enemy cellmates. \nGain health equal to damage successfully dealt.";
@@ -214,8 +211,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TokenGroup tokens = actor.CellMates;
-			tokens = tokens.OnlyClass(EClass.UNIT);
+			TokenGroup tokens = actor.Body.CellMates;
+			tokens = tokens.OnlyType(EClass.UNIT);
 			tokens = tokens.RemoveOwner(actor.Owner);
 			foreach (Token t in tokens) {
 				EffectQueue.Add(new ELeech(new Source(actor), (Unit)t, damage));
@@ -231,7 +228,7 @@ namespace HOA{
 		public AArenDonate (Unit u) {
 			weight = 3;
 			price = new Price(1,0);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			name = "Donate life";
 			desc = "All friendly cellmates +"+damage+" health. \nLose health equal to health successfully given.";
@@ -239,8 +236,8 @@ namespace HOA{
 		
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
-			TokenGroup tokens = actor.CellMates;
-			tokens = tokens.OnlyClass(EClass.UNIT);
+			TokenGroup tokens = actor.Body.CellMates;
+			tokens = tokens.OnlyType(EClass.UNIT);
 			tokens = tokens.OnlyOwner(actor.Owner);
 			foreach (Token t in tokens) {
 				EffectQueue.Add(new EDonate(new Source(actor), (Unit)t, damage));

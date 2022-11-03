@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Smashbuckler : Unit {
 		public Smashbuckler(Source s, bool template=false){
-			NewLabel(EToken.SMAS, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.SMAS, s, false, template);
+			plane = Plane.Gnd;
 			ScaleSmall();
 			NewHealth(30);
 			NewWatch(3);
@@ -27,7 +27,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.PATH, EClass.UNIT, 1));
+			AddAim(new Aim(ETraj.PATH, EClass.UNIT, 1));
 			damage = 8;
 			
 			name = "Flail";
@@ -42,7 +42,7 @@ namespace HOA{
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.UNIT, 1);
+			aim[0] = new Aim(ETraj.PATH, EClass.UNIT, 1);
 		}
 
 		public override void Execute (List<ITargetable> targets) {
@@ -63,7 +63,7 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(new Aim(EAim.PATH, EClass.UNIT, 1));
+			AddAim(new Aim(ETraj.PATH, EClass.UNIT, 1));
 			damage = 8;
 			
 			name = "Slam";
@@ -77,7 +77,7 @@ namespace HOA{
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EClass.UNIT, 1);
+			aim[0] = new Aim(ETraj.PATH, EClass.UNIT, 1);
 		}
 
 		public override void Execute (List<ITargetable> targets) {
@@ -86,11 +86,11 @@ namespace HOA{
 		
 			Unit u = (Unit)targets[0];
 			u.Damage(new Source(actor), damage);
-			u.SpriteEffect(EEffect.DMG);
-			TokenGroup neighbors = u.Neighbors(true).OnlyClass(EClass.UNIT);
+			u.Display.Effect(EEffect.DMG);
+			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(EClass.UNIT);
 			foreach (Unit u2 in neighbors) {
 				u2.Damage(new Source(actor), damage);
-				u2.SpriteEffect(EEffect.DMG);
+				u2.Display.Effect(EEffect.DMG);
 			}
 			UnAdjust();
 			Targeter.Reset();

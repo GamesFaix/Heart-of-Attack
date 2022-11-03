@@ -4,14 +4,14 @@ namespace HOA {
 
 	public class Aim {
 
-		EAim aimType;
-		public EAim AimType {get {return aimType;} }
+		ETraj aimType;
+		public ETraj AimType {get {return aimType;} }
 
 		List<EClass> targetClass = new List<EClass>();
 		public List<EClass> TargetClass {get {return targetClass;} }
 
-		EPurpose purpose;
-		public EPurpose Purpose {get {return purpose;} }
+		EPurp purpose;
+		public EPurp Purpose {get {return purpose;} }
 
 		int range;
 		public int Range {get {return range;} }
@@ -40,23 +40,23 @@ namespace HOA {
 			set {noKings = value;}
 		}
 
-		public Aim (EAim a, EClass tc, int r=0, int rMin=0) {
+		public Aim (ETraj a, EClass tc, int r=0, int rMin=0) {
 			aimType = a;
 			targetClass = new List<EClass> {tc};
-			purpose = EPurpose.ATTACK;
+			purpose = EPurp.ATTACK;
 			range = r;
 			minRange = rMin;
 		}
 
-		public Aim (EAim a, List<EClass> tc, int r=0, int rMin=0) {
+		public Aim (ETraj a, List<EClass> tc, int r=0, int rMin=0) {
 			aimType = a;
 			targetClass = tc;
-			purpose = EPurpose.ATTACK;
+			purpose = EPurp.ATTACK;
 			range = r;
 			minRange = rMin;
 		}
 
-		public Aim (EAim a, EClass tc, EPurpose p, int r=0, int rMin=0) {
+		public Aim (ETraj a, EClass tc, EPurp p, int r=0, int rMin=0) {
 			aimType = a;
 			targetClass = new List<EClass> {tc};
 			purpose = p;
@@ -64,7 +64,7 @@ namespace HOA {
 			minRange = rMin;
 		}
 		
-		public Aim (EAim a, List<EClass> tc, EPurpose p, int r=0, int rMin=0) {
+		public Aim (ETraj a, List<EClass> tc, EPurp p, int r=0, int rMin=0) {
 			aimType = a;
 			targetClass = tc;
 			purpose = p;
@@ -85,14 +85,14 @@ namespace HOA {
 		string AimTypeString {
 			get {
 				switch (aimType) {
-					case EAim.CELLMATE: return "Cellmate";
-					case EAim.NEIGHBOR: return "Neighbor";
-					case EAim.PATH: return "Path";
-					case EAim.LINE: return "Line";
-					case EAim.ARC: return "Arc";
-					case EAim.FREE: return "Free";
-					case EAim.SELF: return "Self";
-					case EAim.GLOBAL: return "Global";
+					case ETraj.CELLMATE: return "Cellmate";
+					case ETraj.NEIGHBOR: return "Neighbor";
+					case ETraj.PATH: return "Path";
+					case ETraj.LINE: return "Line";
+					case ETraj.ARC: return "Arc";
+					case ETraj.FREE: return "Free";
+					case ETraj.SELF: return "Self";
+					case ETraj.GLOBAL: return "Global";
 					default: return "Other";
 				}
 			}
@@ -100,8 +100,8 @@ namespace HOA {
 
 		string RangeString {
 			get {
-				if (aimType == EAim.PATH || aimType == EAim.LINE) {return range+"";}	
-				else if (aimType == EAim.ARC) {
+				if (aimType == ETraj.PATH || aimType == ETraj.LINE) {return range+"";}	
+				else if (aimType == ETraj.ARC) {
 					if (minRange > 0) {return minRange+"-"+range;}
 					return range+"";
 				}
@@ -162,35 +162,35 @@ namespace HOA {
 		}
 
 		public static Aim Self {
-			get {return new Aim (EAim.SELF, new List<EClass>());}
+			get {return new Aim (ETraj.SELF, new List<EClass>());}
 		}
 
 		///
 		public static Aim MovePath (int r) {
-			return new Aim (EAim.PATH, EClass.CELL, EPurpose.MOVE, r);	
+			return new Aim (ETraj.PATH, EClass.CELL, EPurp.MOVE, r);	
 		}
 		public static Aim MoveLine (int r) {
-			return new Aim (EAim.LINE, EClass.CELL, EPurpose.MOVE, r);	
+			return new Aim (ETraj.LINE, EClass.CELL, EPurp.MOVE, r);	
 		}
 		public static Aim MoveArc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EClass.CELL, EPurpose.MOVE, r, mr);
+			return new Aim (ETraj.ARC, EClass.CELL, EPurp.MOVE, r, mr);
 		}
 
 		public static Aim Create () {
-			return new Aim (EAim.NEIGHBOR, EClass.CELL, EPurpose.CREATE);
+			return new Aim (ETraj.NEIGHBOR, EClass.CELL, EPurp.CREATE);
 		}
 		public static Aim CreateArc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EClass.CELL, EPurpose.CREATE, r, mr);
+			return new Aim (ETraj.ARC, EClass.CELL, EPurp.CREATE, r, mr);
 		}
 		
 		public static Aim Melee () {
-			return new Aim (EAim.NEIGHBOR, EClass.UNIT);
+			return new Aim (ETraj.NEIGHBOR, EClass.UNIT);
 		}
 		public static Aim Shoot (int n) {
-			return new Aim (EAim.LINE, EClass.UNIT, n);
+			return new Aim (ETraj.LINE, EClass.UNIT, n);
 		}
 		public static Aim Arc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EClass.UNIT, r, mr);
+			return new Aim (ETraj.ARC, EClass.UNIT, r, mr);
 		}
 
 	}

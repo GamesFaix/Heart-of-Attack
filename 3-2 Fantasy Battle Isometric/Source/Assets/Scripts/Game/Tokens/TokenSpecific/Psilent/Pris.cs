@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace HOA{
 	public class PrismGuard : Unit {
 		public PrismGuard(Source s, bool template=false){
-			NewLabel(EToken.PRIS, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.PRIS, s, false, template);
+			plane = Plane.Gnd;
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(3);
@@ -15,16 +15,16 @@ namespace HOA{
 			arsenal.Add(new APrisRefract(new Price(1,1), this, Aim.Shoot(3), 12));
 			arsenal.Sort();
 		}		
-		public override string Notes () {return "Actions targetting "+Name+" have a 50% of missing.";}
+		public override string Notes () {return "Actions targetting "+id.Name+" have a 50% of missing.";}
 		
 		public override void Select (Source s) {
 			int flip = DiceCoin.Throw(s, EDice.COIN);
 			if (flip == 1) {
-				SpriteEffect(EEffect.HEADS);
+				Display.Effect(EEffect.HEADS);
 				GUISelectors.Instance = this;
 			}
 			else {
-				GameLog.Out(s.ToString()+" tried to target "+FullName+" and missed.");
+				GameLog.Out(s.ToString()+" tried to target "+ToString()+" and missed.");
 				EffectQueue.Add(new ETails(new Source(this), this));
 			}
 		}
@@ -52,22 +52,22 @@ namespace HOA{
 			int flip = DiceCoin.Throw(new Source(actor), EDice.COIN);
 
 			if (flip == 1) {
-				actor.SpriteEffect(EEffect.HEADS);
+				actor.Display.Effect(EEffect.HEADS);
 				Unit u = (Unit)targets[0];
 
 				int dmg = damage;
-				Cell cell = u.Cell;
-				int[] direction = Direction.FromCells(cell, actor.Cell);
+				Cell cell = u.Body.Cell;
+				int[] direction = Direction.FromCells(cell, actor.Body.Cell);
 				bool stop = false;
 				
 				TokenGroup affected;
 				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
 				while (dmg > 0 && !stop) {
 					affected = cell.Occupants;
-					if (affected.OnlyClass(EClass.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}
-					foreach(Token t in affected.OnlyClass(EClass.UNIT)) {
+					if (affected.OnlyType(EClass.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}
+					foreach(Token t in affected.OnlyType(EClass.UNIT)) {
 						((Unit)t).Damage(new Source(actor), dmg);
-						t.SpriteEffect(EEffect.LASER);
+						t.Display.Effect(EEffect.LASER);
 					}
 					if (targets.Count > 0) {dmg = (int)Mathf.Floor(dmg*0.5f);}
 					

@@ -16,7 +16,7 @@ namespace HOA {
 			source = s; target = t;
 		}
 		public override void Process() {
-			target.SpriteEffect(EEffect.TAILS);
+			target.Display.Effect(EEffect.TAILS);
 			Mixer.Play(SoundLoader.Effect(EEffect.TAILS));
 
 		}
@@ -44,11 +44,11 @@ namespace HOA {
 		public override void Process() {
 
 			if (addValue > 0) {
-				target.SpriteEffect(EEffect.STATUP);
+				target.Display.Effect(EEffect.STATUP);
 				Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
 			}
 			if (addValue < 0) {
-				target.SpriteEffect(EEffect.STATDOWN);
+				target.Display.Effect(EEffect.STATDOWN);
 				Mixer.Play(SoundLoader.Effect(EEffect.STATDOWN));			
 			}
 
@@ -66,7 +66,7 @@ namespace HOA {
 		}
 		public override void Process() {
 			source.Player.Capture(target.Owner);
-			target.SpriteEffect(EEffect.GETHEART);
+			target.Display.Effect(EEffect.GETHEART);
 			Mixer.Play(SoundLoader.Effect(EEffect.GETHEART));
 			GameLog.Out(source.Player.ToString() + " acquired the "+target.ToString()); 
 			EffectQueue.Add(new EKill2 (source, target));

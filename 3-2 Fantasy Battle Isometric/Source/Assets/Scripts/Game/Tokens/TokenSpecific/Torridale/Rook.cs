@@ -4,14 +4,14 @@ using UnityEngine;
 namespace HOA{
 	public class Rook : Unit {
 		public Rook(Source s, bool template=false){
-			NewLabel(EToken.ROOK, s, false, template);
-			BuildGround();
-			OnDeath = EToken.ROCK;
+			id = new ID(this, EToken.ROOK, s, false, template);
+			plane = Plane.Gnd;
+			onDeath = EToken.ROCK;
 			ScaleMedium();
 			NewHealth(20,3);
 			NewWatch(3);
 
-			Aim aim = new Aim(EAim.ARC, EClass.UNIT, EPurpose.ATTACK, 2, 2);
+			Aim aim = new Aim(ETraj.ARC, EClass.UNIT, EPurp.ATTACK, 2, 2);
 			arsenal.Add(new ARookVolley(Price.Cheap, this, aim, 12));
 			arsenal.Add(new ARookMove(this));
 			arsenal.Sort();
@@ -40,15 +40,15 @@ namespace HOA{
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EClass.UNIT, EPurpose.ATTACK, 2, 2);
+			aim[0] = new Aim(ETraj.ARC, EClass.UNIT, EPurp.ATTACK, 2, 2);
 		}
 
 		public override bool Restrict () {
-			TokenGroup neighbors = actor.Neighbors(true);
+			TokenGroup neighbors = actor.Body.Neighbors(true);
 			for (int i=neighbors.Count-1; i>=0; i--) {
 				Token t = neighbors[i];
 				if (t.Owner == actor.Owner 
-				    && t.Code != EToken.ROOK) {
+				    && t.ID.Code != EToken.ROOK) {
 					return false;
 				}
 			}
@@ -77,7 +77,7 @@ namespace HOA{
 			desc = "Move "+actor+" to target cell.";
 
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
@@ -96,7 +96,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, range);
+			Aim actual = new Aim(ETraj.PATH, EClass.CELL, EPurp.MOVE, range);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;

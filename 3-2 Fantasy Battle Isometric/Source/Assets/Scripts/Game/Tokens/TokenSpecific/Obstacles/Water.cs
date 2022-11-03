@@ -5,12 +5,12 @@ namespace HOA {
 
 	public class Water : Obstacle {
 		public Water(Source s, bool template=false){
-			NewLabel(EToken.WATR, s, false, template);
-			//sprite = new HOA.Sprite(this);
+			id = new ID(this, EToken.WATR, s, false, template);
+			plane = Plane.Sunk;
 			body = new BodyWater(this);	
 			Neutralize();
 		}
-		public override string Notes () {return "Ground units may not move through "+FullName+".\nGround Units sharing "+FullName+"'s Cell take 5 damage at the end of their turn.";}
+		public override string Notes () {return "Ground units may not move through "+id.Name+".\nGround Units sharing "+id.Name+"'s Cell take 5 damage at the end of their turn.";}
 	}
 
 	public class BodyWater : Body{
@@ -18,9 +18,6 @@ namespace HOA {
 		
 		public BodyWater(Token t){
 			parent = t;
-			SetPlane(EPlane.SUNK);
-			SetClass(EClass.OB);
-			OnDeath = EToken.NONE;
 		}
 		
 		public override bool Enter (Cell newCell) {
@@ -60,7 +57,7 @@ namespace HOA {
 		}
 		
 		public override void Enter (Cell c) {
-			TokenGroup occupants = c.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup occupants = c.Occupants.OnlyType(EClass.UNIT);
 			occupants = occupants.OnlyPlane(EPlane.GND);
 
 			foreach (Token t in occupants) {
@@ -71,7 +68,7 @@ namespace HOA {
 			}
 		}
 		public override void Exit () {
-			TokenGroup cellUnits = cell.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup cellUnits = cell.Occupants.OnlyType(EClass.UNIT);
 			cellUnits = cellUnits.OnlyPlane(EPlane.GND);
 			
 			foreach (Unit u in cellUnits) {
@@ -84,7 +81,7 @@ namespace HOA {
 		}
 		
 		public override void OtherEnter (Token t) {
-			if (t is Unit && t.IsPlane(EPlane.GND)) {
+			if (t is Unit && t.Plane.Is(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TWater(u, parent));
 			}
@@ -133,7 +130,7 @@ namespace HOA {
 		public override void Process() {
 			target.Damage(source, dmg);
 			Mixer.Play(SoundLoader.Effect(EEffect.WATERLOG));
-			target.SpriteEffect(EEffect.WATERLOG);
+			target.Display.Effect(EEffect.WATERLOG);
 		}
 	}
 

@@ -12,7 +12,7 @@ namespace HOA {
 			weight = 3;
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.ARC, EClass.CELL, EPurpose.ATTACK, r));
+			AddAim(new Aim (ETraj.ARC, EClass.CELL, EPurp.ATTACK, r));
 			damage = d;
 			
 			name = n;

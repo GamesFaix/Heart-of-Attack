@@ -8,13 +8,13 @@ namespace HOA {
 		public Dictionary<Unit, Action> Affected {get {return affected;} }
 
 		public Web(Source s, bool template=false){
-			NewLabel(EToken.WEBB, s, false, template);
-			//sprite = new HOA.Sprite(this);
+			id = new ID(this, EToken.WEBB, s, false, template);
+			plane = Plane.Sunk;
 			body = new BodyWeb(this);	
 			Neutralize();
 			affected = new Dictionary<Unit, Action>();
 		}
-		public override string Notes () {return "Ground and Air units may not move through "+FullName+".\nUnits sharing "+FullName+"'s Cell have a Move Range of 1.";}
+		public override string Notes () {return "Ground and Air units may not move through "+id.Name+".\nUnits sharing "+id.Name+"'s Cell have a Move Range of 1.";}
 	
 		public override void Die (Source s, bool corpse=true, bool log=true) {
 			BodyWeb bw = (BodyWeb)body;
@@ -22,7 +22,7 @@ namespace HOA {
 			
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			TokenFactory.Remove(this);
-			Exit();
+			Body.Exit();
 			if (log) {GameLog.Out(s.Token+" destroyed "+this+".");}
 		}
 	
@@ -33,9 +33,6 @@ namespace HOA {
 		
 		public BodyWeb(Token t){
 			parent = t;
-			SetPlane(EPlane.SUNK);
-			SetClass(new List<EClass>{EClass.OB, EClass.DEST});
-			OnDeath = EToken.NONE;
 		}
 		
 		public override bool Enter (Cell newCell) {
@@ -145,7 +142,7 @@ namespace HOA {
 					target.Arsenal().Sort();
 
 					Mixer.Play(SoundLoader.Effect(EEffect.STICK));
-					target.SpriteEffect(EEffect.STICK);
+					target.Display.Effect(EEffect.STICK);
 					return;
 				}
 			}

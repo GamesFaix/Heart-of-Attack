@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Mine : Obstacle {
 		public Mine(Source s, bool template=false){
-			NewLabel(EToken.MINE, s, false, template);
-			//sprite = new HOA.Sprite(this);
+			id = new ID(this, EToken.MINE, s, false, template);
+
+			plane = Plane.Sunk;
 			body = new BodyMine(this);
 		}
 		public override string Notes () {return "If any Token enters Mine's Cell or a neighboring Cell, destroy Mine.\nWhen Mine is destroyed, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";}
@@ -16,15 +17,15 @@ namespace HOA{
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 			TokenFactory.Remove(this);
 //			Cell oldCell = Cell;
-			Exit();
-			if (log && !IsClass(EClass.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
+			Body.Exit();
+			if (log && !Type.Is(EClass.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
 			/*if (s.Sequence != default(EffectSeq)) {
 				Debug.Log("valid sequence");
 				s.Sequence.AddToNext(new EExplosion(s, Cell, 12));
 			}
 			else {
 		*/
-				EffectQueue.Interrupt(new EExplosion(new Source(this), Cell, 12));
+			EffectQueue.Interrupt(new EExplosion(new Source(this), Body.Cell, 12));
 		//	}
 			BodyMine bodyMine = (BodyMine)body;
 			bodyMine.DestroySensors();
@@ -36,9 +37,6 @@ namespace HOA{
 		
 		public BodyMine(Token t){
 			parent = t;
-			SetPlane(EPlane.SUNK);
-			SetClass(new List<EClass> {EClass.OB, EClass.DEST});
-			OnDeath = EToken.NONE;
 			sensors = new List<Sensor>();
 		}
 		
@@ -125,7 +123,7 @@ namespace HOA{
 		}
 		public override void Process() {
 			Mixer.Play(SoundLoader.Effect(EEffect.DETONATE));
-			target.SpriteEffect(EEffect.DETONATE);
+			target.Display.Effect(EEffect.DETONATE);
 			source.Sequence.AddToNext(new EDetonate2(source, target));
 		}
 

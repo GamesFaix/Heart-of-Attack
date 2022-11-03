@@ -16,10 +16,10 @@ namespace HOA {
 			childTemplate = TemplateFactory.Template(child);
 			price = new Price(0,0);
 			
-			AddAim(new Aim(EAim.FREE, EClass.CELL, EPurpose.CREATE));
+			AddAim(new Aim(ETraj.FREE, EClass.CELL, EPurp.CREATE));
 			
-			name = "Manual Create "+childTemplate.Name;
-			desc = "Create "+childTemplate.Name+" in any cell.";
+			name = "Manual Create "+childTemplate.ID.Name;
+			desc = "Create "+childTemplate.ID.Name+" in any cell.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {

@@ -10,7 +10,7 @@ namespace HOA {
 		
 		public AMoveLine (Unit u, int r) {
 			weight = 1;
-			AddAim(new Aim(EAim.LINE, EClass.CELL, EPurpose.MOVE, r));
+			AddAim(new Aim(ETraj.LINE, EClass.CELL, EPurp.MOVE, r));
 			actor = u;
 			
 			name = "Move";
@@ -24,13 +24,13 @@ namespace HOA {
 
 			CellGroup line = new CellGroup();
 
-			int[] dir = Direction.FromCells(actor.Cell, endCell);
+			int[] dir = Direction.FromCells(actor.Body.Cell, endCell);
 			//Debug.Log("direction: "+dir[0]+","+dir[1]);
 
-			int length = Length(actor.Cell, endCell);
+			int length = Length(actor.Body.Cell, endCell);
 			//Debug.Log("length: "+length);
 
-			Cell c = actor.Cell;
+			Cell c = actor.Body.Cell;
 
 			for (int i=0; i<length; i++) {
 				int x = c.X + dir[0];

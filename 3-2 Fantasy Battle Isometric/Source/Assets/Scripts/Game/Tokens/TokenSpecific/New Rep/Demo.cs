@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Demolitia : Unit {
 		public Demolitia(Source s, bool template=false){
-			NewLabel(EToken.DEMO, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.DEMO, s, false, template);
+			plane = Plane.Gnd;
+
 			ScaleSmall();
 			health = new HealthDemo(this, 30);
 			NewWatch(3);
@@ -63,7 +64,7 @@ namespace HOA{
 		}
 		
 		public override void Activate () {
-			EffectQueue.Add(new EExplosion(new Source(source), parent.Cell, 10));
+			EffectQueue.Add(new EExplosion(new Source(source), parent.Body.Cell, 10));
 			//AEffects.Explosion(new Source(source), parent.Cell, 10);
 		}
 	}

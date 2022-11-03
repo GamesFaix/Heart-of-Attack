@@ -15,48 +15,15 @@ namespace HOA {
 		protected void NewWallet (int f=2) {wallet = new Wallet(this, f);}
 		protected void NewWatch (int i=0) {watch = new Watch(this, i);}
 		protected void NewArsenal () {arsenal = new Arsenal(this);}
-		
-		protected void BuildStandard () {
-			//sprite = new HOA.Sprite(this);
-			OnDeath = EToken.CORP;
+
+		public Unit () {
+			body = new Body(this);
+			type = new Type(EClass.UNIT);
+			onDeath = EToken.CORP;
 			NewWallet();
 			NewArsenal();
 			arsenal.Add(new AFocus(this));
-		//	if (!IsTemplate()) {AttachPrefab();}
 		}
-		protected void AddCorpseless () {
-			OnDeath = EToken.NONE;
-		}
-		protected void BuildGround () {
-			NewBody(EPlane.GND, EClass.UNIT);
-			BuildStandard();
-		}
-		protected void BuildAir () {
-			NewBody(EPlane.AIR, EClass.UNIT);
-			BuildStandard();
-		}
-		protected void BuildEth () {
-			NewBody(EPlane.ETH, EClass.UNIT);
-			BuildStandard();
-			AddCorpseless();
-		}		
-		protected void BuildTrample () {
-			NewBody(EPlane.GND, new List<EClass> {EClass.UNIT, EClass.TRAM});
-			BuildStandard();
-		}
-		protected void BuildTall () {
-			NewBody(new List<EPlane> {EPlane.GND, EPlane.AIR}, EClass.UNIT);
-		}
-		protected void AddKing () {
-			AddClass(EClass.KING);
-			NewWallet(3);
-		}
-		protected void AddRem () {
-			AddClass(EClass.DEST);
-			AddClass(EClass.REM);
-		}
-
-
 
 		public int SetStat (Source s, EStat stat, int n, bool log=true) {
 			switch (stat) {

@@ -3,8 +3,9 @@
 namespace HOA{
 	public class Necrochancellor : Unit {
 		public Necrochancellor(Source s, bool template=false){
-			NewLabel(EToken.NECR, s, false, template);
-			BuildEth();
+			id = new ID(this, EToken.NECR, s, false, template);
+			plane = Plane.Eth;
+			onDeath = EToken.NONE;
 			ScaleMedium();
 			NewHealth(30,5);
 			NewWatch(3);
@@ -47,7 +48,7 @@ namespace HOA{
 			}
 			else {
 				u.Damage(new Source(actor), damage);
-				u.SpriteEffect(EEffect.DMG);
+				u.Display.Effect(EEffect.DMG);
 				Targeter.Reset();
 			}
 		}
@@ -61,10 +62,10 @@ namespace HOA{
 			childTemplate = TemplateFactory.Template(EToken.CORP);
 			price = Price.Free;
 			
-			AddAim(new Aim(EAim.FREE, EClass.CELL, EPurpose.CREATE));
+			AddAim(new Aim(ETraj.FREE, EClass.CELL, EPurp.CREATE));
 			
 			name = "Plant corpse";
-			desc = "Create "+childTemplate.Name+" in target cell.";
+			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
@@ -82,7 +83,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,1);
-			AddAim(new Aim(EAim.ARC, EClass.REM, range));
+			AddAim(new Aim(ETraj.ARC, EClass.REM, range));
 			AddAim(HOA.Aim.MoveArc(range));
 			
 			name = "Defile";

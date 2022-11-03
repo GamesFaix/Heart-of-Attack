@@ -35,7 +35,7 @@ public class GUIQueue : MonoBehaviour {
 				p.NudgeX();
 				if (GUI.Button(p.Box(nameW), "", p.s)) {
 					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspected = u;}
-					else if (Input.GetMouseButtonUp(0)) {u.SpriteEffect(EEffect.SHOW);}
+					else if (Input.GetMouseButtonUp(0)) {u.Display.Effect(EEffect.SHOW);}
 				}
 				p.ResetX(); p.NudgeX();
 				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);

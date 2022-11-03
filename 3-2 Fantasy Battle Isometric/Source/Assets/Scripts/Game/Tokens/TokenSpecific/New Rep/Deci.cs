@@ -4,10 +4,12 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Decimatrix : Unit {
 		public Decimatrix(Source s, bool template=false){
-			NewLabel(EToken.DECI, s, true);
-			BuildTrample();
-			AddKing();
-			OnDeath = EToken.HSTE;
+			id = new ID(this, EToken.DECI, s, true);
+			plane = Plane.Gnd;
+			type.Add(EClass.TRAM);
+			type.Add(EClass.KING);
+			onDeath = EToken.HSTE;
+
 			ScaleJumbo();
 			health = new HealthPano(this, 85);
 			NewWatch(2);
@@ -18,7 +20,7 @@ namespace HOA{
 			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 15));
 			arsenal.Add(new APanoPierce(new Price(1,1), this, 15));
 			arsenal.Add(new ADeciMortar(new Price(1,2), this, 2, 3, 18));
-			//Aim fireAim = new Aim (EAim.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2);
+			//Aim fireAim = new Aim (ETraj.LINE, new List<EClass> {EClass.UNIT, EClass.DEST}, 2);
 			//arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
 			//arsenal.Add(new ADeciFortify(this));
 
@@ -60,7 +62,7 @@ namespace HOA{
 		void ResetAim () {
 			aim = new List<Aim>();
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EClass.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EClass.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
@@ -79,7 +81,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EClass.CELL, EPurpose.MOVE, Mathf.Max(0, range-actor.FP));
+			Aim actual = new Aim(ETraj.PATH, EClass.CELL, EPurp.MOVE, Mathf.Max(0, range-actor.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -100,7 +102,7 @@ namespace HOA{
 			
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Fortify";
 			desc = "Health +10/10\nDefense + 1\nAttack range +1\nAttack damage +4\nForget 'Move'\nLearn 'Mortar'";
@@ -119,7 +121,7 @@ namespace HOA{
 			actor.Arsenal().Add(new ADeciMortar(new Price(1,2), actor, 3, 5, 14));
 			actor.Arsenal().Add(new ADeciMobilize(actor));
 			actor.Arsenal().Sort();
-			actor.SpriteEffect(EEffect.STATUP);
+			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -128,7 +130,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Mobilize";
 			desc = "Health -10/10\nDefense -1\nAttack range -1\nAttack damage -4\nLearn 'Move'\nForget 'Mortar'";
@@ -148,7 +150,7 @@ namespace HOA{
 			actor.Arsenal().Add(new ADeciFortify(actor));
 			actor.Arsenal().Sort();
 			
-			actor.SpriteEffect(EEffect.STATUP);
+			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -160,7 +162,7 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.ARC, EClass.CELL, EPurpose.ATTACK, r, mr));
+			AddAim(new Aim (ETraj.ARC, EClass.CELL, EPurp.ATTACK, r, mr));
 			damage = d;
 			
 			name = "Mortar";
@@ -173,7 +175,7 @@ namespace HOA{
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EClass.UNIT, 3, 2);
+			aim[0] = new Aim(ETraj.ARC, EClass.UNIT, 3, 2);
 		}
 
 		public override void Execute (List<ITargetable> targets) {

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace HOA{
 	public class OldThreeHands : Unit {
 		public OldThreeHands(Source s, bool template=false){
-			NewLabel(EToken.OLDT, s, true, template);
-			BuildGround();
-			AddKing();
-			OnDeath = EToken.HBRA;
+			id = new ID(this, EToken.OLDT, s, true, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.KING);
+			onDeath = EToken.HBRA;
 			ScaleJumbo();
 
 			NewHealth(85,2);
@@ -16,7 +16,7 @@ namespace HOA{
 			//arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			arsenal.Add(new AMovePath(this, 2));
 
-			Aim attackAim = new Aim (EAim.ARC, EClass.UNIT, 3);
+			Aim attackAim = new Aim (ETraj.ARC, EClass.UNIT, 3);
 			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.REVO));
 			arsenal.Add(new ACreate(new Price(2,0), this, EToken.PIEC));
@@ -50,7 +50,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.GLOBAL, EClass.UNIT));
+			AddAim(new Aim(ETraj.GLOBAL, EClass.UNIT));
 			
 			name = "Hour Saviour";
 			desc = "All teammates shift up one slot in the Queue.";
@@ -75,7 +75,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.FREE, EClass.UNIT));
+			AddAim(new Aim(ETraj.FREE, EClass.UNIT));
 
 			name = "Hour Saviour";
 			desc = "Target Unit shifts to the bottom of the Queue";
@@ -100,7 +100,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.GLOBAL, EClass.UNIT));
+			AddAim(new Aim(ETraj.GLOBAL, EClass.UNIT));
 			
 			name = "Minute Waltz";
 			desc = "Shuffle the Queue.";
@@ -119,7 +119,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.FREE, EClass.UNIT));
+			AddAim(new Aim(ETraj.FREE, EClass.UNIT));
 			aim[0].IncludeSelf = false;
 			
 			name = "Second in Command";

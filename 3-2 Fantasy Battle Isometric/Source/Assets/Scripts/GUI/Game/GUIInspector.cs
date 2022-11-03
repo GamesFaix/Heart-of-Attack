@@ -101,8 +101,8 @@ public class GUIInspector : MonoBehaviour {
 	}
 
 	void Name (Token t, Panel p, Panel super) {
-		FancyText.Highlight(p.FullBox, t.FullName, p.s, t.Owner.Colors);
-		if (GUI.Button (p.FullBox, "", p.s)) {t.SpriteEffect(EEffect.SHOW);}
+		FancyText.Highlight(p.FullBox, t.ToString(), p.s, t.Owner.Colors);
+		if (GUI.Button (p.FullBox, "", p.s)) {t.Display.Effect(EEffect.SHOW);}
 		if (ShiftMouseOver(p.FullBox)) {ToolTip("Name");}
 	}
 	void OnDeath (Token t, Panel p, Panel super) {
@@ -122,12 +122,12 @@ public class GUIInspector : MonoBehaviour {
 		GUI.Box(p.FullBox, "");
 		GUI.Box(p.Box(iconSize), Icons.Class(EClass.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
-		GUI.Label (p.Box(iconSize*2), t.Cell.ToString(), p.s);
+		GUI.Label (p.Box(iconSize*2), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);
 		if (ShiftMouseOver(p.FullBox)) {
 			tip = ETip.CELL;
 		}
-		if (GUI.Button(p.FullBox, "", p.s) && Input.GetMouseButtonUp(1)) {Inspected = t.Cell;}
+		if (GUI.Button(p.FullBox, "", p.s) && Input.GetMouseButtonUp(1)) {Inspected = t.Body.Cell;}
 	}
 
 	void Plane (Token t, Panel p, Panel super) {
@@ -135,22 +135,22 @@ public class GUIInspector : MonoBehaviour {
 		Rect box;
 		string str = "";
 
-		if (t.IsPlane(EPlane.SUNK)) {
+		if (t.Plane.Is(EPlane.SUNK)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Plane(EPlane.SUNK), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Sunken";}
 		}	
-		if (t.IsPlane(EPlane.GND)) {
+		if (t.Plane.Is(EPlane.GND)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Plane(EPlane.GND), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Ground";}
 		}	
-		if (t.IsPlane(EPlane.AIR)) {
+		if (t.Plane.Is(EPlane.AIR)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Plane(EPlane.AIR), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Air";}
 		}	
-		if (t.IsPlane(EPlane.ETH)) {
+		if (t.Plane.Is(EPlane.ETH)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Plane(EPlane.ETH), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {str = "Ethereal";}
@@ -162,35 +162,35 @@ public class GUIInspector : MonoBehaviour {
 		Rect box;
 		string str = "";
 
-		if (t.IsClass(EClass.KING)) {
+		if (t.Type.Is(EClass.KING)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Class(EClass.KING), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.KING;
 			}
 		}	
-		if (t.IsClass(EClass.HEART)) {
+		if (t.Type.Is(EClass.HEART)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Class(EClass.HEART), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)){
 				tip = ETip.HEART;
 			}
 		}
-		if (t.IsClass(EClass.DEST)) {
+		if (t.Type.Is(EClass.DEST)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Class(EClass.DEST), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.DEST;
 			}
 		}
-		if (t.IsClass(EClass.REM)) {
+		if (t.Type.Is(EClass.REM)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Class(EClass.REM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.REM;
 			}
 		}
-		if (t.IsClass(EClass.TRAM)) {
+		if (t.Type.Is(EClass.TRAM)) {
 			box = p.Box(iconSize);
 			GUI.Box(box, Icons.Class(EClass.TRAM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
@@ -438,9 +438,9 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(0.5f);
-			FancyText.Highlight(box, t.FullName, p.s, t.Owner.Colors);
+			FancyText.Highlight(box, t.ToString(), p.s, t.Owner.Colors);
 			if (GUI.Button (box, "", p.s)) {
-				if (Input.GetMouseButtonUp(0)) {t.SpriteEffect(EEffect.SHOW);}
+				if (Input.GetMouseButtonUp(0)) {t.Display.Effect(EEffect.SHOW);}
 				if (Input.GetMouseButtonUp(1)) {Inspected = t;}
 			}
 			p.NudgeY(false);
@@ -451,9 +451,9 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(0.5f);
-			FancyText.Highlight(box, t.FullName, p.s, t.Owner.Colors);
+			FancyText.Highlight(box, t.ToString(), p.s, t.Owner.Colors);
 			if (GUI.Button (box, "", p.s)) {
-				if (Input.GetMouseButtonUp(0)) {t.SpriteEffect(EEffect.SHOW);}
+				if (Input.GetMouseButtonUp(0)) {t.Display.Effect(EEffect.SHOW);}
 				if (Input.GetMouseButtonUp(1)) {Inspected = t;}
 			}
 			p.NudgeY(false);
@@ -464,9 +464,9 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(0.5f);
-			FancyText.Highlight(box, t.FullName, p.s, t.Owner.Colors);
+			FancyText.Highlight(box, t.ToString(), p.s, t.Owner.Colors);
 			if (GUI.Button (box, "", p.s)) {
-				if (Input.GetMouseButtonUp(0)) {t.SpriteEffect(EEffect.SHOW);}
+				if (Input.GetMouseButtonUp(0)) {t.Display.Effect(EEffect.SHOW);}
 				if (Input.GetMouseButtonUp(1)) {Inspected = t;}
 			}
 			p.NudgeY(false);
@@ -477,9 +477,9 @@ public class GUIInspector : MonoBehaviour {
 			p.NudgeX();
 			p.NudgeY();
 			box = p.Box(0.5f);
-			FancyText.Highlight(box, t.FullName, p.s, t.Owner.Colors);
+			FancyText.Highlight(box, t.ToString(), p.s, t.Owner.Colors);
 			if (GUI.Button (box, "", p.s)) {
-				if (Input.GetMouseButtonUp(0)) {t.SpriteEffect(EEffect.SHOW);}
+				if (Input.GetMouseButtonUp(0)) {t.Display.Effect(EEffect.SHOW);}
 				if (Input.GetMouseButtonUp(1)) {Inspected = t;}
 			}
 			p.NudgeY(false);

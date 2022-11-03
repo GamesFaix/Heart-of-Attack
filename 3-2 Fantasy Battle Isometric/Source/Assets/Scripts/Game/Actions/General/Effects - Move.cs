@@ -12,12 +12,12 @@ namespace HOA {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
-			Cell oldCell = target.Cell;
+			Cell oldCell = target.Body.Cell;
 		//	target.SpriteMove(cell);
-			target.Enter(cell);
-			Cell newCell = target.Cell;
-			if (target.IsPlane(EPlane.GND)) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
-			else if (target.IsPlane(EPlane.AIR)) {Mixer.Play(SoundLoader.Effect(EEffect.FLY));}
+			target.Body.Enter(cell);
+			Cell newCell = target.Body.Cell;
+			if (target.Plane.Is(EPlane.GND)) {Mixer.Play(SoundLoader.Effect(EEffect.WALK));}
+			else if (target.Plane.Is(EPlane.AIR)) {Mixer.Play(SoundLoader.Effect(EEffect.FLY));}
 			
 			GameLog.Out (target+" moved from "+oldCell+" to "+newCell+".");
 		}
@@ -31,9 +31,9 @@ namespace HOA {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
-			Cell oldCell = target.Cell;
+			Cell oldCell = target.Body.Cell;
 			
-			target.SpriteEffect(EEffect.BURROW);
+			target.Display.Effect(EEffect.BURROW);
 			Mixer.Play(SoundLoader.Effect(EEffect.BURROW));
 			EffectQueue.Add(new EBurrow2(source, target, cell));
 			
@@ -50,8 +50,8 @@ namespace HOA {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
-			target.Enter(cell);
-			target.SpriteEffect(EEffect.BURROW);
+			target.Body.Enter(cell);
+			target.Display.Effect(EEffect.BURROW);
 			Mixer.Play(SoundLoader.Effect(EEffect.BURROW));
 		}
 	}	
@@ -64,9 +64,9 @@ namespace HOA {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
-			Cell oldCell = target.Cell;
+			Cell oldCell = target.Body.Cell;
 			
-			target.SpriteEffect(EEffect.TELEPORT);
+			target.Display.Effect(EEffect.TELEPORT);
 			Mixer.Play(SoundLoader.Effect(EEffect.TELEPORT));
 			EffectQueue.Add(new ETeleport2(source, target, cell));
 			
@@ -83,8 +83,8 @@ namespace HOA {
 			source = s; target = t; cell = c;
 		}
 		public override void Process() {
-			target.Enter(cell);
-			target.SpriteEffect(EEffect.TELEPORT);
+			target.Body.Enter(cell);
+			target.Display.Effect(EEffect.TELEPORT);
 			Mixer.Play(SoundLoader.Effect(EEffect.TELEPORT));
 		}
 	}	
@@ -99,7 +99,7 @@ namespace HOA {
 		public override void Process() {
 		//	target.SpriteMove(other.Cell);
 		//	other.SpriteMove(target.Cell);
-			target.Swap(other);
+			target.Body.Swap(other);
 			GameLog.Out (target+" swapped places with "+other+".");
 		}
 	}	
@@ -112,8 +112,8 @@ namespace HOA {
 			source = s; target = t; range = r; damage = d;
 		}
 		public override void Process() {
-			Cell actorCell = source.Token.Cell;
-			Cell start = target.Cell;
+			Cell actorCell = source.Token.Body.Cell;
+			Cell start = target.Body.Cell;
 
 			int[] dir = Direction.FromCells(actorCell, start);
 
@@ -135,7 +135,7 @@ namespace HOA {
 			int totalDamage = 0;
 			int totalCells = 0;
 			foreach (Cell c in line) {
-				if (target.CanEnter(c)) {
+				if (target.Body.CanEnter(c)) {
 					EffectQueue.Add(new EMove(source, target, c));
 					totalDamage += damage;
 					totalCells++;

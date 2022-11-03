@@ -3,10 +3,10 @@
 namespace HOA{
 	public class DreamReaver : Unit {
 		public DreamReaver(Source s, bool template=false){
-			NewLabel(EToken.DREA, s, true, template);
-			BuildAir();
-			AddKing();
-			OnDeath = EToken.HGLA;
+			id = new ID(this, EToken.DREA, s, true, template);
+			plane = Plane.Air;
+			type.Add(EClass.KING);
+			onDeath = EToken.HGLA;
 			ScaleJumbo();
 			NewHealth(75,2);
 			NewWatch(3);
@@ -30,10 +30,10 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.ARC, EClass.UNIT, 5));
+			AddAim(new Aim(ETraj.ARC, EClass.UNIT, 5));
 			aim[0].EnemyOnly = true;
 			aim[0].NoKings = true;
-			AddAim(new Aim(EAim.ARC, EClass.CELL, EPurpose.MOVE, 5));
+			AddAim(new Aim(ETraj.ARC, EClass.CELL, EPurp.MOVE, 5));
 			
 			name = "Teleport Enemy";
 			desc = "Move target enemy (exluding Attack Kings) to target cell.\n"+aim[1].ToString();

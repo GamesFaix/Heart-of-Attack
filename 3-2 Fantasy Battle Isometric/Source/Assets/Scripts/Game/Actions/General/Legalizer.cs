@@ -6,16 +6,16 @@ namespace HOA {
 		
 		public static void Find (Token actor, Aim a, Cell start=default(Cell), Token other=default(Token)) {
 			//GUISelectors.Reset();
-			if (start == default(Cell)) {start = actor.Cell;}
+			if (start == default(Cell)) {start = actor.Body.Cell;}
 
 			switch (a.AimType) {
-				case EAim.CELLMATE: FindCellmate(start, actor, a, other); break;
-				case EAim.NEIGHBOR: FindNeighbor(start, actor, a, other); break;
-				case EAim.PATH: FindPath(start, actor, a, other); break;
-				case EAim.LINE: FindLine(start, actor, a, other); break;
-				case EAim.ARC: FindArc(start, actor, a, other); break;
-				case EAim.GLOBAL: FindGlobal(actor, a, other); break;
-				case EAim.FREE: FindFree(actor, a, other); break;
+				case ETraj.CELLMATE: FindCellmate(start, actor, a, other); break;
+				case ETraj.NEIGHBOR: FindNeighbor(start, actor, a, other); break;
+				case ETraj.PATH: FindPath(start, actor, a, other); break;
+				case ETraj.LINE: FindLine(start, actor, a, other); break;
+				case ETraj.ARC: FindArc(start, actor, a, other); break;
+				case ETraj.GLOBAL: FindGlobal(actor, a, other); break;
+				case ETraj.FREE: FindFree(actor, a, other); break;
 				default: break;
 			}
 		}
@@ -27,7 +27,7 @@ namespace HOA {
 			foreach (Cell c in block) {neighbors.Add(c.Neighbors());}
 
 			foreach (Cell c in neighbors) {
-				if (actor.CanEnter(c)) {
+				if (actor.Body.CanEnter(c)) {
 					c.Legalize();
 				}
 			}
@@ -40,8 +40,8 @@ namespace HOA {
 		static void FindNeighbor (Cell start, Token actor, Aim a, Token other) {
 			if (!a.TargetClass.Contains(EClass.CELL)) {NeighborTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.CREATE) {NeighborCellCreate(start, other);}
-				if (a.Purpose == EPurpose.MOVE) {NeighborCellMove(start, actor);}
+				if (a.Purpose == EPurp.CREATE) {NeighborCellCreate(start, other);}
+				if (a.Purpose == EPurp.MOVE) {NeighborCellMove(start, actor);}
 
 			}
 		}
@@ -49,7 +49,7 @@ namespace HOA {
 		static void NeighborTokens (Cell start, Token actor, Aim a) {
 			TokenGroup targets = start.Neighbors(true).Occupants;
 			targets.Add(start.Occupants);
-			targets = targets.OnlyClass(a.TargetClass);
+			targets = targets.OnlyType(a.TargetClass);
 			targets = Restrict(targets, actor, a);
 			foreach (Token t in targets) {t.Legalize();}
 		}
@@ -57,7 +57,7 @@ namespace HOA {
 		static void NeighborCellCreate (Cell start, Token other) {
 			CellGroup neighbors = start.Neighbors(true);
 			foreach (Cell c in neighbors) {
-				if (other.CanEnter(c)) {
+				if (other.Body.CanEnter(c)) {
 					c.Legalize();
 				}
 			}
@@ -66,7 +66,7 @@ namespace HOA {
 		static void NeighborCellMove (Cell start, Token actor) {
 			CellGroup neighbors = start.Neighbors();
 			foreach (Cell c in neighbors) {
-				if (actor.CanEnter(c)) {
+				if (actor.Body.CanEnter(c)) {
 					c.Legalize();
 				}
 			}
@@ -76,7 +76,7 @@ namespace HOA {
 		static void FindPath (Cell start, Token actor, Aim a, Token other) {
 			if (!a.TargetClass.Contains(EClass.CELL)) {PathTokens (start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.MOVE) {PathCellMove (start, actor, a);}
+				if (a.Purpose == EPurp.MOVE) {PathCellMove (start, actor, a);}
 		
 			}
 		}
@@ -106,7 +106,7 @@ namespace HOA {
 								nextRad.Add(next);
 							}
 							TokenGroup targets = next.Occupants;
-							targets = targets.OnlyClass(a.TargetClass);
+							targets = targets.OnlyType(a.TargetClass);
 							targets = Restrict(targets, actor, a);
 							foreach (Token t in targets) {t.Legalize();}
 						}
@@ -137,9 +137,9 @@ namespace HOA {
 						int checkY =  toCheck[j].Y + dir[1];					
 					
 						if (Board.HasCell(checkX, checkY, out next)) {
-							if (actor.CanEnter(next)) {
+							if (actor.Body.CanEnter(next)) {
 								if (!legal.Contains(next)) {
-									if ( ! (actor.IsClass(EClass.TRAM) && next.Contains(EClass.DEST))) {
+									if ( ! (actor.Type.Is(EClass.TRAM) && next.Contains(EClass.DEST))) {
 
 										if (!Stop(actor, next)) {
 
@@ -164,7 +164,7 @@ namespace HOA {
 		static void FindLine (Cell start, Token actor, Aim a, Token other) {
 			if (!a.TargetClass.Contains(EClass.CELL)) {LineTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.MOVE) {LineCellMove(start, actor, a);}
+				if (a.Purpose == EPurp.MOVE) {LineCellMove(start, actor, a);}
 		
 			}
 		}
@@ -185,7 +185,7 @@ namespace HOA {
 							last = next;
 						}
 						TokenGroup targets = next.Occupants;
-						targets = targets.OnlyClass(a.TargetClass);
+						targets = targets.OnlyType(a.TargetClass);
 						targets = Restrict(targets, actor, a);
 						foreach (Token t in targets) {
 							//Debug.Log(t.ToString() +" is a legal target");
@@ -209,10 +209,10 @@ namespace HOA {
 					int checkY = last.Y + dir[1];					
 					
 					if (Board.HasCell(checkX, checkY, out next)) {
-						if (actor.CanEnter(next)) {
+						if (actor.Body.CanEnter(next)) {
 							legal.Add(next);
 							next.Legalize();
-							if ( ! (actor.IsClass(EClass.TRAM) && next.Contains(EClass.DEST))) {
+							if ( ! (actor.Type.Is(EClass.TRAM) && next.Contains(EClass.DEST))) {
 								if (!Stop(actor, next)) {
 									last = next;
 								}
@@ -228,9 +228,9 @@ namespace HOA {
 		static void FindArc (Cell start, Token actor, Aim a, Token other) {
 			if (!a.TargetClass.Contains(EClass.CELL)) {ArcTokens(start, actor, a);}
 			else {
-				if (a.Purpose == EPurpose.ATTACK) {ArcCellAttack(start, actor, a);}
-				if (a.Purpose == EPurpose.CREATE) {ArcCellCreate(start, actor, a, other);}
-				if (a.Purpose == EPurpose.MOVE) {ArcCellMove(start, actor, a, other);}
+				if (a.Purpose == EPurp.ATTACK) {ArcCellAttack(start, actor, a);}
+				if (a.Purpose == EPurp.CREATE) {ArcCellCreate(start, actor, a, other);}
+				if (a.Purpose == EPurp.MOVE) {ArcCellMove(start, actor, a, other);}
 			}
 			
 		}
@@ -261,7 +261,7 @@ namespace HOA {
 
 			foreach (Cell c in legalCells) {
 				TokenGroup targets = c.Occupants;
-				targets = targets.OnlyClass(a.TargetClass);
+				targets = targets.OnlyType(a.TargetClass);
 				targets = Restrict(targets, actor, a);
 				foreach (Token t in targets) {t.Legalize();}
 			}
@@ -280,12 +280,12 @@ namespace HOA {
 					Cell c;
 					if (Board.HasCell(x, y, out c)) {
 						if (other == default(Token)) {
-							if (actor.CanEnter(c)) {
+							if (actor.Body.CanEnter(c)) {
 								c.Legalize();
 							}	
 						}
 						else {
-							if (other.CanEnter(c)) {
+							if (other.Body.CanEnter(c)) {
 								c.Legalize();
 							}
 
@@ -307,7 +307,7 @@ namespace HOA {
 				for (int y=top; y<=bottom; y++) {
 					Cell c;
 					if (Board.HasCell(x, y, out c)) {
-						if (child.CanEnter(c)) {
+						if (child.Body.CanEnter(c)) {
 							c.Legalize();
 						}	
 					}
@@ -357,9 +357,9 @@ namespace HOA {
 			//Debug.Log("legalizer.findFree/ actor:"+actor+" / aim:"+a+" / other:"+other);
 			if (!a.TargetClass.Contains(EClass.CELL)) {FreeTokens(actor,a);}
 			else {
-				if (a.Purpose == EPurpose.CREATE) {FreeCellCreate(actor, a, other);}
+				if (a.Purpose == EPurp.CREATE) {FreeCellCreate(actor, a, other);}
 
-				if (a.Purpose == EPurpose.MOVE) {FreeCellMove(actor, a, other);}
+				if (a.Purpose == EPurp.MOVE) {FreeCellMove(actor, a, other);}
 
 
 			}
@@ -370,7 +370,7 @@ namespace HOA {
 			foreach (Token t in TokenFactory.Tokens) {
 				targets.Add(t);
 			}
-			targets = targets.OnlyClass(a.TargetClass);
+			targets = targets.OnlyType(a.TargetClass);
 			targets = Restrict(targets, actor, a);
 			foreach (Token t in targets) {
 				t.Legalize();
@@ -381,7 +381,7 @@ namespace HOA {
 			//Debug.Log("legalizer.FreeCellCreate");
 			//Debug.Log("free create "+other);
 			foreach (Cell c in Board.Cells) {
-				if (other.CanEnter(c) && !c.IsLegal()) {
+				if (other.Body.CanEnter(c) && !c.IsLegal()) {
 				//	Debug.Log("legalizing "+c);
 					c.Legalize();}
 			}
@@ -389,7 +389,7 @@ namespace HOA {
 		static void FreeCellMove (Token actor, Aim a, Token other) {
 			//Debug.Log("legalizer.FreeCellCreate");
 			foreach (Cell c in Board.Cells) {
-				if (other.CanEnter(c)) {
+				if (other.Body.CanEnter(c)) {
 					//	Debug.Log("legalizing "+c);
 					c.Legalize();}
 			}
@@ -414,7 +414,7 @@ namespace HOA {
 			if (a.NoKings) {
 				for (int i=restricted.Count-1; i>=0; i--) {
 					Token t = restricted[i];
-					if (t.IsClass(EClass.KING)) {restricted.Remove(t);}
+					if (t.Type.Is(EClass.KING)) {restricted.Remove(t);}
 				}
 			}
 			if (!a.IncludeSelf) {restricted.Remove(actor);}

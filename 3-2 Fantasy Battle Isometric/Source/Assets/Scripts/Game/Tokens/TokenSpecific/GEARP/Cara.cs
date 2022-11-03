@@ -5,7 +5,7 @@ namespace HOA {
 
 	public class CarapaceInvader : Unit {
 		public CarapaceInvader(Source s, bool template=false){
-			NewLabel(EToken.CARA, s, false, template);
+			id = new ID(this, EToken.CARA, s, false, template);
 			//sprite = new HOA.Sprite(this);
 			body = new BodyCara(this);
 			ScaleMedium();
@@ -31,8 +31,8 @@ namespace HOA {
 			if (this == TurnQueue.Top) {TurnQueue.Advance();}
 			TurnQueue.Remove((Unit)this);
 			TokenFactory.Remove(this);
-			Cell oldCell = Cell;
-			Exit();
+			Cell oldCell = Body.Cell;
+			Body.Exit();
 			if (corpse) {CreateRemains(oldCell);}
 			if (log) {GameLog.Out(s.Token+" killed "+this+".");}
 		}	
@@ -43,9 +43,6 @@ namespace HOA {
 		
 		public BodyCara(Token t){
 			parent = t;
-			SetPlane(EPlane.GND);
-			SetClass(EClass.UNIT);
-			OnDeath = EToken.CORP;
 			sensors = new List<Sensor>();
 		}
 		
@@ -101,7 +98,7 @@ namespace HOA {
 			weight = 4;
 			
 			price = p;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			
 			damage = d;
@@ -115,10 +112,10 @@ namespace HOA {
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 
-			TokenGroup cellMates = actor.Cell.Occupants;
-			TokenGroup neighbors = actor.Cell.Neighbors().Occupants;
+			TokenGroup cellMates = actor.Body.Cell.Occupants;
+			TokenGroup neighbors = actor.Body.Cell.Neighbors().Occupants;
 			foreach (Token t in neighbors) {cellMates.Add(t);}
-			cellMates = cellMates.OnlyClass(EClass.UNIT);
+			cellMates = cellMates.OnlyType(EClass.UNIT);
 
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Token t in cellMates) {

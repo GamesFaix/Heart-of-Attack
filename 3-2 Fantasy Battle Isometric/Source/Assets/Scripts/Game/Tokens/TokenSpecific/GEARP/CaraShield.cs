@@ -43,7 +43,7 @@ namespace HOA {
 		public override int DEF {
 			get {
 				int d = original.DEF + ((Unit)sensor.Parent).DEF;
-				if (parent.Code == EToken.CARA) {d = Mathf.Min(d, 5);}
+				if (parent.ID.Code == EToken.CARA) {d = Mathf.Min(d, 5);}
 				return d;
 			}
 			set {original.DEF = value;}
@@ -99,9 +99,9 @@ namespace HOA {
 		
 		public override void Enter (Cell c) {
 			cell = c;
-			TokenGroup cellUnits = cell.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup cellUnits = cell.Occupants.OnlyType(EClass.UNIT);
 			foreach (Unit u in cellUnits) {
-				if (u.Code != EToken.CARA 
+				if (u.ID.Code != EToken.CARA 
 				    && u.Owner == parent.Owner) {
 					HealthCaraShield shield = new HealthCaraShield(this, u);
 					u.health = shield;
@@ -118,7 +118,7 @@ namespace HOA {
 		
 		public override void OtherEnter (Token t) {
 			if (t is Unit 
-			    && t.Code != EToken.CARA
+			    && t.ID.Code != EToken.CARA
 			    && t.Owner == parent.Owner) {
 				Unit u = (Unit)t;
 				HealthCaraShield shield = new HealthCaraShield(this, u);

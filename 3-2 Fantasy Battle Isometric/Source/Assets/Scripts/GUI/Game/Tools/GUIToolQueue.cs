@@ -52,7 +52,7 @@ namespace HOA {
 				Token instance = GUISelectors.Instance;
 				
 				string btnLabel = "Shift ";
-				if (instance != default(Token)) {btnLabel += instance.FullName;}
+				if (instance != default(Token)) {btnLabel += instance.ToString();}
 				btnLabel += magnitude;
 
 				if (GUI.Button(p.LineBox, btnLabel) || Input.GetKeyUp("space")){

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace HOA {
 	public class Mawth : Unit {
 		public Mawth(Source s, bool template=false){
-			NewLabel(EToken.MAWT, s, false, template);
-			BuildAir();
+			id = new ID(this, EToken.MAWT, s, false, template);
+			plane = Plane.Air;
 			ScaleLarge();
 			NewHealth(55);
 			NewWatch(3);
@@ -36,7 +36,7 @@ namespace HOA {
 		public override void Adjust () {
 			int shots = Mathf.Min(actor.FP, 3);
 			for (int i=0; i<shots; i++) {
-				AddAim(new Aim(EAim.LINE, EClass.CELL, EPurpose.MOVE, range));
+				AddAim(new Aim(ETraj.LINE, EClass.CELL, EPurp.MOVE, range));
 			}
 		}
 		
@@ -48,7 +48,7 @@ namespace HOA {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0);
 
-			Cell start = actor.Cell;
+			Cell start = actor.Body.Cell;
 
 			for (int i=0; i<targets.Count; i++) {
 				Cell endCell = (Cell)targets[i];
@@ -96,7 +96,7 @@ namespace HOA {
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 
-			Aim a = new Aim(EAim.LINE, EClass.CELL, EPurpose.MOVE);
+			Aim a = new Aim(ETraj.LINE, EClass.CELL, EPurp.MOVE);
 			a.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -160,12 +160,12 @@ namespace HOA {
 		}
 		public override void Process() {
 			EffectGroup nextEffects = new EffectGroup();
-			TokenGroup targets = cell.Occupants.OnlyClass(new List<EClass> {EClass.UNIT, EClass.DEST});
+			TokenGroup targets = cell.Occupants.OnlyType(new List<EClass> {EClass.UNIT, EClass.DEST});
 			
 			foreach (Token t in targets) {
-				t.SpriteEffect(EEffect.EXP);
+				t.Display.Effect(EEffect.EXP);
 				Mixer.Play(SoundLoader.Effect(EEffect.EXP));
-				if (t.IsClass(EClass.DEST)) {
+				if (t.Type.Is(EClass.DEST)) {
 					source.Sequence.AddToNext(new EDestruct(source, t));
 				}
 				

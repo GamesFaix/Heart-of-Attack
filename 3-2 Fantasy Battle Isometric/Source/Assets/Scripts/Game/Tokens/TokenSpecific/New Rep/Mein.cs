@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace HOA{
 	public class MeinSchutz : Unit {
 		public MeinSchutz(Source s, bool template=false){
-			NewLabel(EToken.MEIN, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.MEIN, s, false, template);
+			plane = Plane.Gnd;
+
 			ScaleMedium();
 			NewHealth(40);
 			NewWatch(4);
@@ -25,7 +26,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.GLOBAL, EClass.DEST));
+			AddAim(new Aim(ETraj.GLOBAL, EClass.DEST));
 			
 			name = "Detonate";
 			desc = "Destroy all mines on team.";
@@ -36,7 +37,7 @@ namespace HOA{
 			TokenGroup mines = actor.Owner.OwnedUnits;
 			for (int i=mines.Count-1; i>=0; i--) {
 				Token t = mines[i];
-				if (t.Code != EToken.MINE) {mines.Remove(t);}
+				if (t.ID.Code != EToken.MINE) {mines.Remove(t);}
 			}
 			
 			foreach (Token t in mines) {t.Die(new Source(actor));}

@@ -73,8 +73,8 @@ public class CameraPanner : MonoBehaviour {
 			endPos = ((Cell)t).Location;
 		}
 		if (t is Token) {
-			endPos = ((Token)t).Cell.Location;
-			((Token)t).SpriteEffect(EEffect.SHOW);
+			endPos = ((Token)t).Body.Cell.Location;
+			((Token)t).Display.Effect(EEffect.SHOW);
 		}
 	}
 }

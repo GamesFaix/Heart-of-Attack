@@ -120,8 +120,8 @@ namespace HOA {
 		}
 
 		static void PrintAdvance (Unit oldTop, Unit newTop) {
-			string oldName = oldTop.FullName;
-			string newName = Top.FullName;
+			string oldName = oldTop.ToString();
+			string newName = Top.ToString();
 			string oldPlayer = oldTop.Owner.ToString();
 			GameLog.Out(oldPlayer+" ended "+oldName+"'s turn. "+newName+" ATTACK!");
 		}

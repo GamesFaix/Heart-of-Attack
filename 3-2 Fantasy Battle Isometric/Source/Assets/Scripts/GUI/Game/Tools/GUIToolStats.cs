@@ -47,7 +47,7 @@ namespace HOA {
 			Token instance = GUISelectors.Instance;
 			
 			string label = "";
-			if (instance != default(Token)) {label += instance.FullName;}
+			if (instance != default(Token)) {label += instance.ToString();}
 			label += " "+statLabels[statBtn]+" "+signLabels[signBtn]+" "+magnitude;
 		
 			if (GUI.Button(p.LineBox, label) || Input.GetKeyUp("space")){

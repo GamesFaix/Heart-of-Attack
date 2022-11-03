@@ -41,8 +41,8 @@ namespace HOA {
 					pos.z += (float)(Board.CellSize/2);
 					pos.y -= 20;
 				}
-				if (token.IsPlane(EPlane.AIR) || token.IsPlane(EPlane.ETH)) {
-					if (token.IsPlane(EPlane.GND)) {pos.y += 5;}
+				if (token.Plane.Is(EPlane.AIR) || token.Plane.Is(EPlane.ETH)) {
+					if (token.Plane.Is(EPlane.GND)) {pos.y += 5;}
 					else {pos.y +=20;}
 				}
 				gameObject.transform.position = pos;

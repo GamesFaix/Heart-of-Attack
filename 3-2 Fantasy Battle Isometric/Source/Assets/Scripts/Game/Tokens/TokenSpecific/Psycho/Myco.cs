@@ -3,8 +3,8 @@
 namespace HOA{
 	public class Mycolonist : Unit {
 		public Mycolonist(Source s, bool template=false){
-			NewLabel(EToken.MYCO, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.MYCO, s, false, template);
+			plane = Plane.Gnd;
 			ScaleMedium();
 			NewHealth(40);
 			NewWatch(2);
@@ -27,7 +27,7 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.ARC, EClass.DEST, 2));
+			AddAim(new Aim (ETraj.ARC, EClass.DEST, 2));
 			
 			name = "Seed";
 			desc = "Replace target non-Remains destructible with Lichenthrope.";

@@ -4,10 +4,12 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Ultratherium : Unit {
 		public Ultratherium(Source s, bool template=false){
-			NewLabel(EToken.ULTR, s, true, template);
-			BuildTrample();
-			AddKing();
-			OnDeath = EToken.HFIR;
+			id = new ID(this, EToken.ULTR, s, true, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.TRAM);
+			type.Add(EClass.KING);
+			onDeath = EToken.HFIR;
+
 			ScaleJumbo();
 			NewHealth(80);
 			NewWatch(2);
@@ -32,7 +34,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, EClass.DEST));
+			AddAim(new Aim(ETraj.NEIGHBOR, EClass.DEST));
 			AddAim(HOA.Aim.Arc(range));
 			damage = dmg;
 			
@@ -58,12 +60,12 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EClass.DEST));
+			AddAim(new Aim (ETraj.NEIGHBOR, EClass.DEST));
 			
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 			
-			name = chiTemplate.Name;
+			name = chiTemplate.ID.Name;
 			desc = "Replace target non-remains destructible with "+name+".";
 		}
 		

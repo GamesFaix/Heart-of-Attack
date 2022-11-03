@@ -23,7 +23,7 @@ namespace HOA {
 
 		public Vector3 Location {get {return display.gameObject.transform.position;} }
 
-		public void SpriteEffect (EEffect e) {Display.Effect(e);}
+//		public void SpriteEffect (EEffect e) {Display.Effect(e);}
 
 		Token[] tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		
@@ -58,7 +58,7 @@ namespace HOA {
 		}
 		public bool Contains (EClass s) {
 			foreach (Token t in Occupants) {
-				if (t.IsClass(s)) {return true;}
+				if (t.Type.Is(s)) {return true;}
 			}
 			return false;
 		}
@@ -66,7 +66,7 @@ namespace HOA {
 		public bool Contains (EClass c, out Token occupant){
 			occupant = default(Token);
 			foreach (Token t in Occupants) {
-				if (t.IsClass(c)) {
+				if (t.Type.Is(c)) {
 					occupant = t;
 					return true;
 				}
@@ -76,7 +76,7 @@ namespace HOA {
 
 		public bool Contains (EPlane p) {
 			foreach (Token t in Occupants) {
-				if (t.IsPlane(p)) {return true;}
+				if (t.Plane.Is(p)) {return true;}
 			}
 			return false;
 		}
@@ -84,7 +84,7 @@ namespace HOA {
 		public bool Contains (EPlane p, out Token occupant){
 			occupant = default(Token);
 			foreach (Token t in Occupants) {
-				if (t.IsPlane(p)) {
+				if (t.Plane.Is(p)) {
 					occupant = t;
 					return true;
 				}
@@ -98,11 +98,10 @@ namespace HOA {
 		}
 		
 		public void Enter (Token t) {
-			List<EPlane> planes = t.Plane;
-			foreach (EPlane p in planes) {
+			foreach (EPlane p in t.Plane.Value) {
 				tokens[(int)p] = t;
 			}
-			if (t.IsPlane(EPlane.SUNK)) {EnterSunken(t);}
+			if (t.Plane.Is(EPlane.SUNK)) {EnterSunken(t);}
 
 			for (int i=sensors.Count-1; i>=0; i--) {
 				Sensor s = sensors[i];
@@ -117,7 +116,7 @@ namespace HOA {
 				if (tokens[i] == t) {tokens[i] = default(Token);}	
 			}
 
-			if (t.IsPlane(EPlane.SUNK)) {ExitSunken();}
+			if (t.Plane.Is(EPlane.SUNK)) {ExitSunken();}
 
 			foreach (Sensor s in sensors) {s.OtherExit(t);}
 		}
@@ -172,10 +171,10 @@ namespace HOA {
 		}
 
 		public bool StopToken (Token t) {
-			foreach (EPlane p in t.Plane) {
+			foreach (EPlane p in t.Plane.Value) {
 				if (Stop(p)) {return true;}
 			}
-			if (t.CanTrample(this)) {return true;}
+			if (t.Body.CanTrample(this)) {return true;}
 			return false;
 		}
 

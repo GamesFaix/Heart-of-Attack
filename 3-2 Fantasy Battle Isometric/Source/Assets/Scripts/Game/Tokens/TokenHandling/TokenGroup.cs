@@ -33,51 +33,51 @@ namespace HOA {
 		public TokenGroup OnlyPlane(EPlane p){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (t.IsPlane(p)) {filtered.Add(t);}
+				if (t.Plane.Is(p)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
 		public TokenGroup RemovePlane(EPlane p){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (!t.IsPlane(p)) {filtered.Add(t);}
+				if (!t.Plane.Is(p)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
 
-		public TokenGroup OnlyClass(EClass c){
+		public TokenGroup OnlyType(EClass c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (t.IsClass(c)) {filtered.Add(t);}
+				if (t.Type.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup OnlyClass(List<EClass> cs){
+		public TokenGroup OnlyType(List<EClass> cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				foreach (EClass c in cs) {
-					if (t.IsClass(c)) {filtered.Add(t);}
+					if (t.Type.Is(c)) {filtered.Add(t);}
 				}
 			}
 			return filtered;
 		}
 
 
-		public TokenGroup RemoveClass(EClass c){
+		public TokenGroup RemoveType(EClass c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (!t.IsClass(c)) {filtered.Add(t);}
+				if (!t.Type.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup RemoveClass(List<EClass> cs){
+		public TokenGroup RemoveType(List<EClass> cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {filtered.Add(t);}
 
 			for (int i=filtered.Count-1; i>=0; i--) {
 				Token t = filtered[i];
 				foreach (EClass c in cs) {
-					if (t.IsClass(c)) {filtered.Remove(t);}
+					if (t.Type.Is(c)) {filtered.Remove(t);}
 				}
 			}
 			return filtered;
@@ -88,7 +88,7 @@ namespace HOA {
 			get {
 				CellGroup cells = new CellGroup();
 				foreach (Token t in list) {
-					cells.Add(t.Cell);
+					cells.Add(t.Body.Cell);
 				}
 				return cells;
 			}

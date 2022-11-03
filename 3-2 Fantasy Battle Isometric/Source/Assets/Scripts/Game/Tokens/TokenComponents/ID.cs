@@ -4,17 +4,30 @@ using UnityEngine;
 
 namespace HOA {
 
-	public class Label {
-		EToken code;
-		string name = "";
-		bool unique;
-		char instance;
-		string fullName;
+	public class ID {
 		Player owner;
-		//Token parent;
+		public Player Owner {
+			get {return owner;} 
+			set {owner = value;}
+		}
 
-		public Label (Token t, EToken c, Source s, bool uni=false, bool temp=false){
-		//	parent = t;
+		EToken code;
+		public EToken Code {get {return code;} }
+
+		string name = "";
+		public string Name {get {return name;} }
+		char instance;
+		public char Instance {get {return instance;} }
+		string fullName;
+		public string FullName {get {return fullName;} }
+
+		public string CodeInst {get {return code.ToString()+" "+instance;} }
+
+		bool unique;
+		public bool Unique {get {return unique;} }
+
+
+		public ID (Token t, EToken c, Source s, bool uni=false, bool temp=false){
 			owner = s.Player;
 			code = c;
 			name = TokenRef.CodeToString(code);
@@ -35,23 +48,11 @@ namespace HOA {
 			}
 		}
 		
-		public char Instance {get {return instance;} }
-		public string Name {get {return name;} }
-		public string FullName {get {return fullName;} }
-		public EToken Code {get {return code;} }
-		public string CodeInst {get {return code.ToString()+" "+instance;} }
-		public bool Unique {get {return unique;} }
-		
-		public Player Owner {
-			get {return owner;} 
-			set {owner = value;}
-		}
-
 		char NextAvailableInstance(){
 			List<Token> likeTokens = new List<Token>();
 			
 			foreach (Token t in TokenFactory.Tokens){
-				if(t.Name == name) {likeTokens.Add(t);}				
+				if(t.ID.Name == name) {likeTokens.Add(t);}				
 			}		
 			
 			bool[] letterTaken = new bool[10] {
@@ -59,16 +60,16 @@ namespace HOA {
 				false, false, false, false, false};
 			
 			foreach (Token t in likeTokens){
-				if (t.Instance == 'A'){letterTaken[0] = true;}
-				if (t.Instance == 'B'){letterTaken[1] = true;}	
-				if (t.Instance == 'C'){letterTaken[2] = true;}
-				if (t.Instance == 'D'){letterTaken[3] = true;}
-				if (t.Instance == 'E'){letterTaken[4] = true;}
-				if (t.Instance == 'F'){letterTaken[5] = true;}
-				if (t.Instance == 'G'){letterTaken[6] = true;}
-				if (t.Instance == 'H'){letterTaken[7] = true;}
-				if (t.Instance == 'I'){letterTaken[8] = true;}
-				if (t.Instance == 'J'){letterTaken[9] = true;}
+				if (t.ID.Instance == 'A'){letterTaken[0] = true;}
+				if (t.ID.Instance == 'B'){letterTaken[1] = true;}	
+				if (t.ID.Instance == 'C'){letterTaken[2] = true;}
+				if (t.ID.Instance == 'D'){letterTaken[3] = true;}
+				if (t.ID.Instance == 'E'){letterTaken[4] = true;}
+				if (t.ID.Instance == 'F'){letterTaken[5] = true;}
+				if (t.ID.Instance == 'G'){letterTaken[6] = true;}
+				if (t.ID.Instance == 'H'){letterTaken[7] = true;}
+				if (t.ID.Instance == 'I'){letterTaken[8] = true;}
+				if (t.ID.Instance == 'J'){letterTaken[9] = true;}
 			}
 			if (letterTaken[0] == false){return 'A';}
 			if (letterTaken[1] == false){return 'B';}

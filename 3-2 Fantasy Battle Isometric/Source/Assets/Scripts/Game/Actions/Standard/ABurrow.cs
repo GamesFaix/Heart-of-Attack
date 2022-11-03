@@ -9,7 +9,7 @@ namespace HOA {
 		
 		public ABurrow (Unit u, int r, int mr=0) {
 			weight = 1;
-			AddAim(new Aim(EAim.ARC, EClass.CELL, EPurpose.MOVE, r, mr));
+			AddAim(new Aim(ETraj.ARC, EClass.CELL, EPurp.MOVE, r, mr));
 			actor = u;
 			
 			name = "Burrow";

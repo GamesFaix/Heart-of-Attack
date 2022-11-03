@@ -1,8 +1,10 @@
 ﻿namespace HOA{
 	public class MouthOfTheUnderworld : Unit {
 		public MouthOfTheUnderworld(Source s, bool template=false){
-			NewLabel(EToken.MOUT, s, false, template);
-			BuildTrample();
+			id = new ID(this, EToken.MOUT, s, false, template);
+			plane = Plane.Gnd;
+			type.Add(EClass.TRAM);
+
 			ScaleLarge();
 			NewHealth(30);
 			NewWatch(4);

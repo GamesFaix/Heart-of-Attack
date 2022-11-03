@@ -5,12 +5,12 @@ namespace HOA {
 	
 	public class Lava : Obstacle {
 		public Lava(Source s, bool template=false){
-			NewLabel(EToken.LAVA, s, false, template);
-			//sprite = new HOA.Sprite(this);
+			id = new ID(this, EToken.LAVA, s, false, template);
+			plane = Plane.Sunk;
 			body = new BodyLava(this);	
 			Neutralize();
 		}
-		public override string Notes () {return "Ground units may not move through "+FullName+".\nGround Units take 7 damage upon entering "+FullName+"'s Cell.\nGround Units sharing "+FullName+"'s Cell take 7 damage at the end of their turn.";}
+		public override string Notes () {return "Ground units may not move through "+id.Name+".\nGround Units take 7 damage upon entering "+id.Name+"'s Cell.\nGround Units sharing "+id.Name+"'s Cell take 7 damage at the end of their turn.";}
 	}
 	
 	public class BodyLava : Body{
@@ -18,9 +18,6 @@ namespace HOA {
 		
 		public BodyLava(Token t){
 			parent = t;
-			SetPlane(EPlane.SUNK);
-			SetClass(EClass.OB);
-			OnDeath = EToken.NONE;
 		}
 		
 		public override bool Enter (Cell newCell) {
@@ -57,7 +54,7 @@ namespace HOA {
 		public override void Enter (Cell c) {
 			c.SetStop(EPlane.GND, true);
 
-			TokenGroup occupants = c.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup occupants = c.Occupants.OnlyType(EClass.UNIT);
 			occupants = occupants.OnlyPlane(EPlane.GND);
 			
 			foreach (Token t in occupants) {
@@ -70,7 +67,7 @@ namespace HOA {
 		public override void Exit () {
 			cell.SetStop(EPlane.GND, false);
 
-			TokenGroup cellUnits = cell.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup cellUnits = cell.Occupants.OnlyType(EClass.UNIT);
 			cellUnits = cellUnits.OnlyPlane(EPlane.GND);
 			
 			foreach (Unit u in cellUnits) {
@@ -83,7 +80,7 @@ namespace HOA {
 		}
 		
 		public override void OtherEnter (Token t) {
-			if (t is Unit && t.IsPlane(EPlane.GND)) {
+			if (t is Unit && t.Plane.Is(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
 				EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 7));
@@ -134,7 +131,7 @@ namespace HOA {
 		public override void Process() {
 			target.Damage(source, dmg);
 			Mixer.Play(SoundLoader.Effect(EEffect.INCINERATE));
-			target.SpriteEffect(EEffect.INCINERATE);
+			target.Display.Effect(EEffect.INCINERATE);
 		}
 	}
 	

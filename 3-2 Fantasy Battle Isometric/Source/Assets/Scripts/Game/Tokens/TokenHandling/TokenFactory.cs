@@ -32,7 +32,7 @@ namespace HOA {
 
 		public static bool Add(EToken code, Source s, Cell c, out Token t, bool log=true) {
 			t = MakeToken(code, s);
-			if (t.CanEnter(c)) {
+			if (t.Body.CanEnter(c)) {
 				tokens.Add(t);
 				if (t is Unit) {TurnQueue.Add((Unit)t);}
 
@@ -41,9 +41,9 @@ namespace HOA {
 				if (log && s.Player != Roster.Neutral) {
 					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
 				}
-				t.Enter(c);
+				t.Body.Enter(c);
 				AttachPrefab (t);
-				if (t.IsPlane(EPlane.SUNK)) {c.EnterSunken(t);}
+				if (t.Plane.Is(EPlane.SUNK)) {c.EnterSunken(t);}
 
 				return true;
 			}
@@ -127,22 +127,22 @@ namespace HOA {
 		}
 		
 		static void InheritOwnership (Token t, Source s) {
-			if (!FactionRef.Neutral().Contains(t.Code)
-			    && !t.IsClass(EClass.HEART)) {
+			if (!FactionRef.Neutral().Contains(t.ID.Code)
+			    && !t.Type.Is(EClass.HEART)) {
 				t.Owner = s.Player;
 			}
 		}
 
 		static void AttachPrefab (Token t) {
-			GameObject prefab = GameObject.Instantiate (tokenPF, t.Cell.Location, Quaternion.identity) as GameObject;
+			GameObject prefab = GameObject.Instantiate (tokenPF, t.Body.Cell.Location, Quaternion.identity) as GameObject;
 			TokenDisplay td = prefab.GetComponent("TokenDisplay") as TokenDisplay;
 			AttachPlanes (td);
 			td.Token = t;
 			t.Display = td;
 			td.gameObject.transform.eulerAngles = new Vector3 (45, 225, 0);
-			td.Sprite = Thumbs.CodeToThumb(t.Code);
-			td.MoveTo(t.Cell);
-			if (t.IsPlane(EPlane.SUNK)) {t.Display.HideSprite();}
+			td.Sprite = Thumbs.CodeToThumb(t.ID.Code);
+			td.MoveTo(t.Body.Cell);
+			if (t.Plane.Is(EPlane.SUNK)) {t.Display.HideSprite();}
 			
 			prefab.transform.localScale = t.SpriteScale;
 		}

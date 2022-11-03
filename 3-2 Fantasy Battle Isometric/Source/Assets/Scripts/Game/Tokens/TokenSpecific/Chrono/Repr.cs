@@ -3,8 +3,8 @@ using System.Collections.Generic;
 namespace HOA{
 	public class Reprospector : Unit {
 		public Reprospector(Source s, bool template=false){
-			NewLabel(EToken.REPR, s, false, template);
-			BuildGround();
+			id = new ID(this, EToken.REPR, s, false, template);
+			plane = Plane.Gnd;
 			ScaleLarge();
 
 			NewHealth(55);
@@ -25,7 +25,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, new List<EClass> {EClass.DEST, EClass.REM}));
+			AddAim(new Aim(ETraj.NEIGHBOR, new List<EClass> {EClass.DEST, EClass.REM}));
 			
 			name = "Time Mine";
 			desc = "Destroy neighboring destructible.\nIf initative is less than 6, initiative +1.";
@@ -34,7 +34,7 @@ namespace HOA{
 		public override void Execute (List<ITargetable> targets) {
 			Charge();
 			Token t = (Token)targets[0];
-			Cell c = t.Cell;
+			Cell c = t.Body.Cell;
 
 			EffectQueue.Add(new EKill(new Source(actor), t));
 
@@ -43,7 +43,7 @@ namespace HOA{
 			if (actor.IN < 7) {
 				nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.IN, 1));
 			}
-			if (actor.CanEnter(c)) {
+			if (actor.Body.CanEnter(c)) {
 				nextEffects.Add(new EMove(new Source(actor), actor, c));
 			}
 
@@ -65,7 +65,7 @@ namespace HOA{
 			damage = 15;
 			
 			name = "Time Slam";
-			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.\n"+actor.Name+" switches cells with target, if legal.";
+			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.\n"+actor.ID.Name+" switches cells with target, if legal.";
 		}
 		
 		public override void Execute (List<ITargetable> targets) {
@@ -115,7 +115,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.ARC, EClass.CELL, EPurpose.ATTACK, 2));
+			AddAim(new Aim(ETraj.ARC, EClass.CELL, EPurp.ATTACK, 2));
 			damage = 10;
 			
 			name = "Time Bomb";
@@ -130,12 +130,12 @@ namespace HOA{
 
 			EffectGroup nextEffects = new EffectGroup();
 
-			TokenGroup affected = c.Occupants.OnlyClass(EClass.UNIT);
+			TokenGroup affected = c.Occupants.OnlyType(EClass.UNIT);
 			foreach (Unit u in affected) {
 				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -2));
 				u.timers.Add(new TBomb(u, actor, 2));
 			}
-			affected = c.Neighbors().Occupants.OnlyClass(EClass.UNIT);
+			affected = c.Neighbors().Occupants.OnlyType(EClass.UNIT);
 			foreach (Unit u in affected) {
 				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -1));
 				u.timers.Add(new TBomb(u, actor, 1));

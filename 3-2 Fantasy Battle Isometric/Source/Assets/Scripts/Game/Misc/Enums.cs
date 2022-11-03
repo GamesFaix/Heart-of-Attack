@@ -18,8 +18,8 @@
 	public enum EClass {UNIT, OB, KING, TRAM, DEST, REM, HEART, CELL}
 	public enum EStat {HP, MHP, DEF, IN, AP, FP, STUN, COR}
 
-	public enum EAim {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
-	public enum EPurpose {MOVE, CREATE, ATTACK, OTHER}
+	public enum ETraj {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
+	public enum EPurp {MOVE, CREATE, ATTACK, OTHER}
 
 	public enum ELog {IN, OUT, IO, DEBUG};
 	
