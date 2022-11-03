@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Gatecreeper : Unit {
-		public Gatecreeper(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Gatecreeper (source, template);
+		}
+
+		Gatecreeper(Source s, bool template=false){
 			ID = new ID(this, EToken.GATE, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

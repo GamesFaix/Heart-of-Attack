@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace HOA{
+﻿namespace HOA{
 	public class Conflagragon : Unit {
-		public Conflagragon(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Conflagragon (source, template);
+		}
+
+		Conflagragon(Source s, bool template=false){
 			ID = new ID(this, EToken.CONF, s, false, template);
 			Plane = Plane.Air;
 			OnDeath = EToken.ASHE;

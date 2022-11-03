@@ -6,7 +6,7 @@ namespace HOA {
 
 		public override string Desc {get {return "Create Corpse in target cell.";} }
 
-		public override Token Template {get {return TemplateFactory.Template(EToken.CORP);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.CORP);} }
 
 		public ANecrCorpse (Unit par) {
 			Name = "Plant corpse";
@@ -36,7 +36,7 @@ namespace HOA {
 	public class AGargRook : Task {
 		
 		public override string Desc {get {return "Create Rook in "+Parent+"'s cell.";} } 
-		public override Token Template {get {return TemplateFactory.Template(EToken.ROOK);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.ROOK);} }
 
 		public AGargRook (Unit par) {
 			Name = "Build Rook";
@@ -49,7 +49,7 @@ namespace HOA {
 		protected override void ExecuteMain (TargetGroup targets) {
 			if (!Parent.Body.Cell.Occupied(EPlane.GND)) {
 				Charge();
-				TokenFactory.Add(EToken.ROOK, new Source(Parent), Parent.Body.Cell);
+				TokenFactory.Create(new Source(Parent), EToken.ROOK, Parent.Body.Cell);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace HOA {
 		
 		public override string Desc {get {return "Create Web in target cell." +
 				"\nAll Units in target cell take "+damage+" damage.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.WEBB);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.WEBB);} }
 
 		public ABlacWeb (Unit par) {
 			Name = "Web Shot";
@@ -108,7 +108,7 @@ namespace HOA {
 	public class ABlacLich : Task, IMultiTarget{
 		
 		public override string Desc {get {return "Create Lichenthropes in up to two target cells.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.LICH);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.LICH);} }
 
 		public ABlacLich (Unit par) {
 			Name = "Create Lichenthropes";
@@ -141,4 +141,37 @@ namespace HOA {
 			GUI.Label(p.TallWideBox(descH), Desc);	
 		}
 	}
+	/*
+	public class APiecAper : Task {
+		public override string Desc {get {return "Create Aperture in target cell.";} }
+		public override Token Template {get {return TemplateFactory.Template(EToken.APER);} }
+		
+		public APieceAper (Unit par) {
+			Name = "Open Aperture";
+			Weight = 4;
+			Parent = par;
+			Price = new Price(1,1);
+			NewAim(HOA.Aim.CreateArc(3));
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			Cell c = (Cell)targets[0];
+			
+			EffectQueue.Add(new ECreate(new Source(Parent), EToken.APER, c));
+			
+		}
+		
+		public override void Draw (Panel p) {
+			GUI.Label(p.LineBox, Name, p.s);
+			DrawPrice(new Panel(p.Box(150), p.LineH, p.s));
+			if (Used) {GUI.Label(p.Box(150), "Used this turn.");}
+			p.NextLine();
+			
+			DrawAim(0, p.LinePanel);
+			Template.DisplayThumbNameTemplate(p.LinePanel);
+			float descH = (p.H-(p.LineH*2))/p.H;
+			GUI.Label(p.TallWideBox(descH), Desc);	
+		}
+	}
+	*/
 }

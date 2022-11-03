@@ -1,6 +1,11 @@
 ﻿namespace HOA{
 	public class OldThreeHands : Unit {
-		public OldThreeHands(Source s, bool template=false){
+
+		public static Token Instantiate (Source source, bool template) {
+			return new OldThreeHands (source, template);
+		}
+
+		OldThreeHands(Source s, bool template=false){
 			ID = new ID(this, EToken.OLDT, s, true, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.KING);

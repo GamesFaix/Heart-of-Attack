@@ -1,6 +1,10 @@
 namespace HOA{
 	public class Reprospector : Unit {
-		public Reprospector(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Reprospector (source, template);
+		}
+
+		Reprospector(Source s, bool template=false){
 			ID = new ID(this, EToken.REPR, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleLarge();

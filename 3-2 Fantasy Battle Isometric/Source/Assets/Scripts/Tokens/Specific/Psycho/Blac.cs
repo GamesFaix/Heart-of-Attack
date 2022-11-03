@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class BlackWinnow : Unit {
-		public BlackWinnow(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new BlackWinnow (source, template);
+		}
+
+		BlackWinnow(Source s, bool template=false){
 			ID = new ID(this, EToken.BLAC, s, true, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.KING);

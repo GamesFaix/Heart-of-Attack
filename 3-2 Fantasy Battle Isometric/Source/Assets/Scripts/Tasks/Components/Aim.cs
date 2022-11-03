@@ -93,7 +93,11 @@ namespace HOA {
 		public static Aim Create () {return new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.CREATE);}
 		public static Aim CreateArc (int r, int mr=0) {return new Aim (ETraj.ARC, EType.CELL, EPurp.CREATE, r, mr);}
 		public static Aim Melee () {return new Aim (ETraj.NEIGHBOR, EType.UNIT);}
-		public static Aim Shoot (int n) {return new Aim (ETraj.LINE, EType.UNIT, n);}
+		public static Aim Shoot (int n) {
+			Aim a = new Aim (ETraj.LINE, EType.UNIT, n);
+			a.IncludeSelf = false;
+			return a;
+		}
 		public static Aim Arc (int r, int mr=0) {return new Aim (ETraj.ARC, EType.UNIT, r, mr);}
 	}
 }

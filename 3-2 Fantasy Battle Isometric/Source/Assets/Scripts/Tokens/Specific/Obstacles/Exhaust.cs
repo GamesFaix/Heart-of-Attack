@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HOA {
+﻿namespace HOA {
 	
 	public class Exhaust : Obstacle {
 		delegate Sensor SensorConstructor ();
 
-		public Exhaust(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Exhaust (source, template);
+		}
+
+		Exhaust(Source s, bool template=false){
 			ID = new ID(this, EToken.EXHA, s, false, template);
 			Plane = Plane.Sunk;
 

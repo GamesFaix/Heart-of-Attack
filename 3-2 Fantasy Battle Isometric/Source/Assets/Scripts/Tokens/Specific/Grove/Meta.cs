@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Metaterrainean : Unit {
-		public Metaterrainean(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Metaterrainean (source, template);
+		}
+
+		Metaterrainean(Source s, bool template=false){
 			ID = new ID(this, EToken.META, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

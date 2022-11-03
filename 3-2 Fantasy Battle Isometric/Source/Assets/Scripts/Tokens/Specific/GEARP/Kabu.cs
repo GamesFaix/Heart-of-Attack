@@ -1,7 +1,10 @@
 namespace HOA {
 	public class Kabutomachine : Unit {
-	
-		public Kabutomachine(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Kabutomachine (source, template);
+		}
+
+		Kabutomachine(Source s, bool template=false){
 			ID = new ID(this, EToken.KABU, s, true, template);
 			Plane = Plane.Air;
 			Special.Add(EType.KING);

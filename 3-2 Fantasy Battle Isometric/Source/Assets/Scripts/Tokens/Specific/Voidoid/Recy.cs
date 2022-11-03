@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Recyclops : Unit {
-		public Recyclops(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Recyclops (source, template);
+		}
+
+		Recyclops(Source s, bool template=false){
 			ID = new ID(this, EToken.RECY, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.DEST);

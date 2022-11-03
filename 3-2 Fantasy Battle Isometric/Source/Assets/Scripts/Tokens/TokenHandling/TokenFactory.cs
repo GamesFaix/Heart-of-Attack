@@ -6,34 +6,21 @@ namespace HOA {
 	
 	public static class TokenFactory {
 
-		static TokenGroup tokens = new TokenGroup();
-		
-		public static TokenGroup Tokens {get {return tokens;} }
+		public static TokenGroup Tokens {get; private set;}
 
-		/*
-		public static bool Contains (Token token) {
-			if (tokens.Contains(token)) {return true;}
-			else {return false;}
-		}
-		*/
+		public static void Remove (Token token) {Tokens.Remove(token);}
 
-		public static void Remove (Token token) {tokens.Remove(token);}
+		//Creation
+		public static bool Create (Source source, EToken code, Cell cell, out Token newToken, bool log=true) {
+			newToken = Instantiate(source, code);
 
-		public static bool Add(EToken code, Source s, Cell c, out Token t, bool log=true) {
-			t = MakeToken(code, s);
-			if (t.Body.CanEnter(c)) {
-				tokens.Add(t);
-				if (t is Unit) {TurnQueue.Add((Unit)t);}
-
-				InheritOwnership (t, s);
-
-				if (log && s.Player != Roster.Neutral) {
-					GameLog.Out(s+" created " +t+" in cell "+c.ToString()+".");
-				}
-				t.Body.Enter(c);
-				/*if (!t.Plane.Is(EPlane.SUNK)) {*/TokenDisplay.Attach(t);//}
-				if (t.Plane.Is(EPlane.SUNK)) {c.EnterSunken(t);}
-
+			if (newToken.Body.CanEnter(cell)) {
+				Register(newToken);
+				InheritOwnership (newToken, source);
+				if (log) {Log(source, newToken, cell);}
+				newToken.Body.Enter(cell);
+				TokenDisplay.Attach(newToken);
+				if (newToken.Plane.Is(EPlane.SUNK)) {cell.EnterSunken(newToken);}
 				return true;
 			}
 			else {
@@ -42,113 +29,160 @@ namespace HOA {
 			}	
 		}
 		
-		public static bool Add(EToken code, Source s, Cell c, bool log=true) {
-			Token t;
-			return Add(code, s, c, out t, log);
+		public static bool Create (Source source, EToken code, Cell cell, bool log=true) {
+			Token newToken;
+			return Create(source, code, cell, out newToken, log);
 		}
 
-		static Token MakeToken (EToken code, Source s){
-			switch(code){
-				case EToken.KATA: return new Katandroid(s);
-				case EToken.CARA: return new CarapaceInvader(s);
-				case EToken.MAWT: return new Mawth(s);
-				case EToken.KABU: return new Kabutomachine(s);
-				case EToken.HSIL: return new SiliconHOA(s);
-		
-				case EToken.DEMO: return new Demolitia(s);
-				case EToken.MEIN: return new MeinSchutz(s);
-				case EToken.MINE: return new Mine(s);
-				case EToken.PANO: return new Panopticannon(s);
-				case EToken.DECI: return new Decimatrix(s);
-				case EToken.HSTE: return new SteelHOA(s);
-	
-				case EToken.ROOK: return new Rook(s);
-				case EToken.SMAS: return new Smashbuckler(s);
-				case EToken.CONF: return new Conflagragon(s);
-				case EToken.ASHE: return new Ashes(s);	
-				case EToken.BATT: return new BatteringRambuchet(s);
-				case EToken.GARG: return new Gargoliath(s);	
-				case EToken.HSTO: return new StoneHOA(s);
-	
-				case EToken.GRIZ: return new GrizzlyElder(s);
-				case EToken.TALO: return new TalonedScout(s);
-				case EToken.META: return new Metaterrainean(s);
-				case EToken.ULTR: return new Ultratherium(s);
-				case EToken.HFIR: return new FirHOA(s);
-	
-				case EToken.REVO: return new RevolvingTom(s);
-				case EToken.PIEC: return new Piecemaker(s);
-				case EToken.APER: return new Aperture(s);
-				case EToken.REPR: return new Reprospector(s);
-				case EToken.OLDT: return new OldThreeHands(s);
-				case EToken.HBRA: return new BrassHOA(s);
-	
-				case EToken.LICH: return new Lichenthrope(s);
-				case EToken.BEES: return new Beesassin(s);
-				case EToken.MYCO: return new Mycolonist(s);
-				case EToken.MART: return new MartianManTrap(s);
-				case EToken.BLAC: return new BlackWinnow(s);
-				case EToken.WEBB: return new Web(s);
-				case EToken.HSLK: return new SilkHOA(s);
-	
-				case EToken.PRIS: return new PrismGuard(s);
-				case EToken.AREN: return new ArenaNonSensus(s);
-				case EToken.PRIE: return new PriestOfNaja(s);
-				case EToken.DREA: return new DreamReaver(s);
-				case EToken.HGLA: return new GlassHOA(s);
-	
-				case EToken.RECY: return new Recyclops(s);
-				case EToken.NECR: return new Necrochancellor(s);
-				case EToken.GATE: return new Gatecreeper(s);
-				case EToken.MONO: return new Monolith(s);
-				case EToken.HBLO: return new BloodHOA(s);
-	
-				case EToken.MNTN: return new Mountain(s);
-				case EToken.HILL: return new Hill(s);
-				case EToken.ROCK: return new Rock(s);
-				case EToken.TREE: return new HOA.Tree(s);
-				case EToken.CORP: return new Corpse(s);
-				case EToken.WATR: return new Water(s);
-				case EToken.LAVA: return new Lava(s);
+		static Token Instantiate (Source source, EToken code) {return constructors[(int)code](source, false);}
 
-				case EToken.TREE2: return new Tree2(s);
-				case EToken.TREE3: return new Tree3(s);
-				case EToken.TREE4: return new Tree4(s);
-				case EToken.HOUS: return new House(s);
-				case EToken.COTT: return new Cottage(s);
-				case EToken.TEMP: return new Temple(s);
-				case EToken.PYRA: return new Pyramid(s);
-				case EToken.ANTE: return new Antenna(s);
-				case EToken.PYLO: return new Pylon(s);
-				case EToken.HOLE: return new Hole(s);
-				case EToken.EXHA: return new Exhaust(s);
-				case EToken.ICE: return new Ice(s);
-				case EToken.TARG: return new Targ(s);
-				case EToken.RAMP: return new Rampart(s);
-				case EToken.CURS: return new Curse(s);
-				case EToken.TSNK: return new TimeSink(s);
-				case EToken.TWEL: return new TimeWell(s);
-
-
-
-				default: return default(Token);
-			}
+		static void Register (Token newToken) {
+			Tokens.Add(newToken);
+			if (newToken is Unit) {TurnQueue.Add((Unit)newToken);}
 		}
-		
+
 		static void InheritOwnership (Token t, Source s) {
 			if (!FactionRef.Neutral().Contains(t.ID.Code)
 			    && !t.Special.Is(EType.HEART)) {
 				t.Owner = s.Player;
 			}
 		}
+		static void Log (Source source, Token newToken, Cell cell) {
+			if (source.Player != Roster.Neutral) {
+				GameLog.Out(source+" created "+newToken+" in cell "+cell+".");
+			}
+		}
 
-		public static void ClearLegal () {tokens.Legalize(false);}
+		//Resetting
+		public static void ClearLegal () {Tokens.Legalize(false);}
 
 		public static void Reset() {
-			for (int i=tokens.Count-1; i>=0; i--) {
-				tokens[i].Die(new Source(), false, false);
+			if (Tokens != null) {
+				for (int i=Tokens.Count-1; i>=0; i--) {
+					Tokens[i].Die(new Source(), false, false);
+				}
 			}
-			tokens = new TokenGroup();
+			Tokens = new TokenGroup();
 		}
+
+		//Templates
+		static Token[] templates;
+		public static Token Template (EToken code) {return templates[(int)code];}
+		public static Token Template (Token t) {return Template(t.ID.Code);}
+
+		//Setup
+		public static void Setup () {
+			LoadConstructors();
+			MakeTemplates();
+		}
+
+		delegate Token TokenConstructor(Source source, bool template);
+		static TokenConstructor[] constructors;
+
+		static void LoadConstructors () {
+			int tokenCount = Enum.GetValues(typeof(EToken)).Length;
+			constructors = new TokenConstructor[tokenCount];
+			
+			constructors[(int)EToken.NONE] = NullToken;
+
+			constructors[(int)EToken.KATA] = Katandroid.Instantiate;
+			constructors[(int)EToken.CARA] = CarapaceInvader.Instantiate;
+			constructors[(int)EToken.MAWT] = Mawth.Instantiate;
+			constructors[(int)EToken.KABU] = Kabutomachine.Instantiate;
+			
+			constructors[(int)EToken.DEMO] = Demolitia.Instantiate;
+			constructors[(int)EToken.MEIN] = MeinSchutz.Instantiate;
+			constructors[(int)EToken.MINE] = Mine.Instantiate;
+			constructors[(int)EToken.PANO] = Panopticannon.Instantiate;
+			constructors[(int)EToken.DECI] = Decimatrix.Instantiate;
+			
+			constructors[(int)EToken.SMAS] = Smashbuckler.Instantiate;
+			constructors[(int)EToken.ROOK] = Rook.Instantiate;
+			constructors[(int)EToken.CONF] = Conflagragon.Instantiate;
+			constructors[(int)EToken.ASHE] = Ashes.Instantiate;
+			constructors[(int)EToken.BATT] = BatteringRambuchet.Instantiate;
+			constructors[(int)EToken.GARG] = Gargoliath.Instantiate;
+			
+			constructors[(int)EToken.GRIZ] = GrizzlyElder.Instantiate;
+			constructors[(int)EToken.TALO] = TalonedScout.Instantiate;
+			constructors[(int)EToken.META] = Metaterrainean.Instantiate;
+			constructors[(int)EToken.ULTR] = Ultratherium.Instantiate;
+			
+			constructors[(int)EToken.REVO] = RevolvingTom.Instantiate;
+			constructors[(int)EToken.PIEC] = Piecemaker.Instantiate;
+			constructors[(int)EToken.APER] = Aperture.Instantiate;
+			constructors[(int)EToken.REPR] = Reprospector.Instantiate;
+			constructors[(int)EToken.OLDT] = OldThreeHands.Instantiate;
+			
+			constructors[(int)EToken.LICH] = Lichenthrope.Instantiate;
+			constructors[(int)EToken.WEBB] = Web.Instantiate;
+			constructors[(int)EToken.BEES] = Beesassin.Instantiate;
+			constructors[(int)EToken.MYCO] = Mycolonist.Instantiate;
+			constructors[(int)EToken.MART] = MartianManTrap.Instantiate;
+			constructors[(int)EToken.BLAC] = BlackWinnow.Instantiate;
+			
+			constructors[(int)EToken.PRIS] = PrismGuard.Instantiate;
+			constructors[(int)EToken.AREN] = ArenaNonSensus.Instantiate;
+			constructors[(int)EToken.PRIE] = PriestOfNaja.Instantiate;
+			constructors[(int)EToken.DREA] = DreamReaver.Instantiate;
+			
+			constructors[(int)EToken.RECY] = Recyclops.Instantiate;
+			constructors[(int)EToken.NECR] = Necrochancellor.Instantiate;
+			constructors[(int)EToken.GATE] = Gatecreeper.Instantiate;
+			constructors[(int)EToken.MONO] = Monolith.Instantiate;
+			
+			constructors[(int)EToken.HSIL] = SiliconHOA.Instantiate;
+			constructors[(int)EToken.HSTE] = SteelHOA.Instantiate;
+			constructors[(int)EToken.HSTO] = StoneHOA.Instantiate;
+			constructors[(int)EToken.HFIR] = FirHOA.Instantiate;
+			constructors[(int)EToken.HBRA] = BrassHOA.Instantiate;
+			constructors[(int)EToken.HSLK] = SilkHOA.Instantiate;
+			constructors[(int)EToken.HGLA] = GlassHOA.Instantiate;
+			constructors[(int)EToken.HBLO] = BloodHOA.Instantiate;
+			
+			constructors[(int)EToken.MNTN] = Mountain.Instantiate;
+			constructors[(int)EToken.HILL] = Hill.Instantiate;
+			constructors[(int)EToken.ROCK] = Rock.Instantiate;
+			constructors[(int)EToken.TREE] = Tree.Instantiate;
+			constructors[(int)EToken.TREE2] = Tree2.Instantiate;
+			constructors[(int)EToken.TREE3] = Tree3.Instantiate;
+			constructors[(int)EToken.TREE4] = Tree4.Instantiate;
+			constructors[(int)EToken.HOUS] = House.Instantiate;
+			constructors[(int)EToken.COTT] = Cottage.Instantiate;
+			constructors[(int)EToken.CORP] = Corpse.Instantiate;
+			
+			constructors[(int)EToken.LAVA] = Lava.Instantiate;
+			constructors[(int)EToken.WATR] = Water.Instantiate;
+			constructors[(int)EToken.ICE] = Ice.Instantiate;
+			constructors[(int)EToken.EXHA] = Exhaust.Instantiate;
+			constructors[(int)EToken.HOLE] = Hole.Instantiate;
+			constructors[(int)EToken.ANTE] = Antenna.Instantiate;
+			constructors[(int)EToken.PYLO] = Pylon.Instantiate;
+			
+			constructors[(int)EToken.PYRA] = Pyramid.Instantiate;
+			constructors[(int)EToken.TEMP] = Temple.Instantiate;
+			constructors[(int)EToken.CURS] = Curse.Instantiate;
+			constructors[(int)EToken.TARG] = Targ.Instantiate;
+			constructors[(int)EToken.TWEL] = TimeWell.Instantiate;
+			constructors[(int)EToken.TSNK] = TimeSink.Instantiate;
+			constructors[(int)EToken.RAMP] = Rampart.Instantiate;
+		}
+
+		static Token NullToken (Source source, bool template) {return null;}
+
+		static void MakeTemplates () {
+			int tokenCount = Enum.GetValues(typeof(EToken)).Length;
+
+			templates = new Token[tokenCount];
+
+			templates[0] = null;
+
+			for (int i=1; i< tokenCount; i++) {
+				Token template = constructors[i](Source.Neutral, true);
+				template.Owner = Roster.Neutral;
+				template.IsTemplate = true;
+				templates[i] = template;
+			}
+		}		
 	}
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace HOA{
+﻿namespace HOA{
 	public class BatteringRambuchet : Unit {
-		public BatteringRambuchet(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new BatteringRambuchet (source, template);
+		}
+
+		BatteringRambuchet(Source s, bool template=false){
 			ID = new ID(this, EToken.BATT, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

@@ -1,10 +1,11 @@
-﻿
-using System.Collections.Generic;
-
-namespace HOA {
+﻿namespace HOA {
 	
 	public class Curse : Obstacle {
-		public Curse(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Curse (source, template);
+		}
+
+		Curse(Source s, bool template=false){
 			ID = new ID(this, EToken.CURS, s, false, template);
 			Plane = Plane.Sunk;
 			Body = new BodySensor9(this, SensorCurse.Instantiate);	

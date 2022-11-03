@@ -2,7 +2,11 @@
 
 namespace HOA{
 	public class PrismGuard : Unit {
-		public PrismGuard(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new PrismGuard (source, template);
+		}
+
+		PrismGuard(Source s, bool template=false){
 			ID = new ID(this, EToken.PRIS, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();

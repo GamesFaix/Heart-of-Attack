@@ -11,7 +11,7 @@ namespace HOA {
 		public ACreate (Unit parent, Price p, EToken child) {
 			Parent = parent;
 			this.child = child;
-			Template = TemplateFactory.Template(child);
+			Template = TokenFactory.Template(child);
 			Name = "Create "+Template.ID.Name;
 
 			Weight = 5;

@@ -11,7 +11,7 @@ namespace HOA {
 		}
 		public override void Process() {
 			Token newToken;
-			if (TokenFactory.Add(child, source, cell, out newToken)) {
+			if (TokenFactory.Create(source, child, cell, out newToken)) {
 				newToken.Display.Effect(EEffect.BIRTH);
 				Mixer.Play(SoundLoader.Effect(EEffect.BIRTH));
 			}
@@ -79,7 +79,7 @@ namespace HOA {
 		public override void Process() {
 			Cell cell = target.Body.Cell;
 			target.Die(source, false, false);
-			TokenFactory.Add(newToken, source, cell, false);
+			TokenFactory.Create(source, newToken, cell, false);
 		}
 	}
 

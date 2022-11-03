@@ -19,6 +19,7 @@ namespace HOA {
 			Board = board;
 			Index = index;
 			CellDisplay.Attach(this);
+			links = new CellGroup();
 		}
 
 		public Vector3 Location {get {return Display.gameObject.transform.position;} }
@@ -131,7 +132,16 @@ namespace HOA {
 			if (sensors.Contains(s)) {sensors.Remove(s);}
 			else {GameLog.Debug("Attempt to remove invalid sensor from cell.");}
 		}
-		
+
+		CellGroup links;
+
+		public void AddLink (Cell cell) {
+			links.Add(cell);
+		}
+		public void RemoveLink (Cell cell) {
+			links.Remove(cell);
+		}
+
 		public CellGroup Neighbors(bool self=false) {
 			CellGroup neighbors = new CellGroup();
 			
@@ -144,6 +154,7 @@ namespace HOA {
 				}
 			}
 			if (self) {neighbors.Add(this);}
+			neighbors.Add(links);
 			return neighbors;
 		}
 

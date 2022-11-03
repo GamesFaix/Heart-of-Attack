@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace HOA{
 	public class Demolitia : Unit {
-		public Demolitia(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Demolitia (source, template);
+		}
+
+		Demolitia(Source s, bool template=false){
 			ID = new ID(this, EToken.DEMO, s, false, template);
 			Plane = Plane.Gnd;
 

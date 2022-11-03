@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace HOA {
 
@@ -510,5 +511,61 @@ namespace HOA {
 		}
 		
 		public override string ToString () {return "Shield ("+parent.ToString()+")";}
+	}
+
+	public class SensorAper : Sensor {
+		static SensorAper sender = null;
+
+		protected override string Desc {get {return 
+				"Stops all Tokens."
+				;} }
+		
+		SensorAper (Token par, Cell c) {
+			parent = par;	
+			planesToStop = new Plane (new List<EPlane>() {EPlane.GND, EPlane.AIR, EPlane.ETH});
+			Enter(c);
+		}
+		
+		public static Sensor Instantiate (Token par, Cell c) {return new SensorAper(par, c);}
+		
+		protected override bool IsTrigger (Token trigger) {return true;}
+
+		protected override void EnterEffects (Token t) {
+			if (sender == null) {
+				Token otherAper = null;
+				foreach (Token token in TokenFactory.Tokens) {
+					if (token is Aperture && token != parent) {otherAper = token;}
+				}
+				if (otherAper != null) {
+					Cell otherCell = otherAper.Body.Cell;
+					if (t.Body.CanEnter(otherCell)) {
+						sender = this;
+						EffectQueue.Add(new ETeleport(new Source(parent), t, otherCell));
+					}
+				}
+			}
+			else {sender = null;}
+		}
+
+		protected override void OtherEnterEffects (Token t) {
+			if (sender == null) {
+				Token otherAper = null;
+				foreach (Token token in TokenFactory.Tokens) {
+					if (token is Aperture && token != parent) {otherAper = token;}
+				}
+				if (otherAper != null) {
+					Cell otherCell = otherAper.Body.Cell;
+					if (t.Body.CanEnter(otherCell)) {
+						sender = this;
+						EffectQueue.Add(new ETeleport(new Source(parent), t, otherCell));
+					}
+				}
+			}
+			else {sender = null;}
+		}
+
+		public override string ToString () {
+			return "("+parent.ToString()+")";
+		}
 	}
 }

@@ -46,7 +46,6 @@ namespace HOA {
 			QueueStunner.Find(units);
 
 			Unit oldTop = Top;
-			Unit oldBtm = Bottom;
 
 			TimerTick(oldTop);
 
@@ -111,9 +110,9 @@ namespace HOA {
 				int index = units.IndexOf(oldTop);
 				if (index > 1) {
 					Unit other = units[index-1];
-					int oldTopRandom = Random.Range(1,i);
-					int otherRandom = Random.Range(1,other.IN);
-					if (oldTopRandom >= otherRandom) {
+					int oldTopRandom = Random.Range(0,i);
+					int otherRandom = Random.Range(0,other.IN);
+					if (oldTopRandom > otherRandom) {
 						MoveUp(oldTop,1,false);
 						i--;
 					}

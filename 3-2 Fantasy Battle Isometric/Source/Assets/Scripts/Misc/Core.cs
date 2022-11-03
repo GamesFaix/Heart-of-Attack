@@ -25,7 +25,7 @@ public class Core : MonoBehaviour {
 		ImageLoader.Load();
 		SoundLoader.Load();
 		Map.LoadMaps();
-		TemplateFactory.MakeTemplates();
+		TokenFactory.Setup();
 		gameObject.AddComponent("EffectQueue");
 		gameObject.AddComponent("GameWorldCursor");
 		SetupMusic();

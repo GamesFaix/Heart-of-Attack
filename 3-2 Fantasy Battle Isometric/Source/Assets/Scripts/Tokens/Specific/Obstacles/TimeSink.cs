@@ -1,13 +1,16 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HOA {
 	
 	public class TimeSink : Obstacle {
 		List<Unit> affected;
 		public List<Unit> Affected {get {return affected;} }
-		
-		public TimeSink(Source s, bool template=false){
+
+		public static Token Instantiate (Source source, bool template) {
+			return new TimeSink (source, template);
+		}
+
+		TimeSink(Source s, bool template=false){
 			ID = new ID(this, EToken.TSNK, s, false, template);
 			Plane = Plane.Sunk;
 			Body = new BodySensor1(this, SensorTimeSink.Instantiate);		

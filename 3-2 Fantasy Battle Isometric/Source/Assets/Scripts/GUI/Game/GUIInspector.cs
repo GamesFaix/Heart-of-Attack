@@ -82,7 +82,7 @@ public static class GUIInspector {
 		t.Special.Display(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		if (!t.IsTemplate()) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
+		if (!t.IsTemplate) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
 
 
 		p.NextLine();

@@ -12,7 +12,7 @@ namespace HOA {
 		public ACreateManual (Unit parent, EToken child) {
 			Parent = parent;
 			this.child = child;
-			Template = TemplateFactory.Template(child);
+			Template = TokenFactory.Template(child);
 			Name = "Manual Create "+Template.ID.Name;
 
 			Weight = 5;

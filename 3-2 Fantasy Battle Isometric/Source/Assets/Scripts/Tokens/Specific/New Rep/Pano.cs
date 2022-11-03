@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Panopticannon : Unit {
-		public Panopticannon(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Panopticannon (source, template);
+		}
+
+		Panopticannon(Source s, bool template=false){
 			ID = new ID(this, EToken.PANO, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

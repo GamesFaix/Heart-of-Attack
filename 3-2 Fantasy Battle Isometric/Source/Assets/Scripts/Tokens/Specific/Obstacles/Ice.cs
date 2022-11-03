@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace HOA {
+﻿namespace HOA {
 	
 	public class Ice : Obstacle {
-		public Ice(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Ice (source, template);
+		}
+
+		Ice(Source s, bool template=false){
 			ID = new ID(this, EToken.ICE, s, false, template);
 			Plane = Plane.Sunk;
 			Body = new BodySensor1(this, SensorIce.Instantiate);	

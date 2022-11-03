@@ -1,10 +1,11 @@
-﻿
-using System.Collections.Generic;
-
-namespace HOA {
+﻿namespace HOA {
 	
 	public class Targ : Obstacle {
-		public Targ(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Targ (source, template);
+		}
+
+		Targ(Source s, bool template=false){
 			ID = new ID(this, EToken.TARG, s, false, template);
 			Plane = Plane.Sunk;
 			Body = new BodySensor1(this, SensorTarg.Instantiate);	

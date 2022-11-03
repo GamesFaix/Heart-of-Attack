@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-
-namespace HOA {
+﻿namespace HOA {
 	
 	public class Katandroid : Unit {
-		public Katandroid(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Katandroid (source, template);
+		}
+
+		Katandroid(Source s, bool template=false){
 			ID = new ID(this, EToken.KATA, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();

@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Ashes : Unit {
-		public Ashes(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Ashes (source, template);
+		}
+
+		Ashes(Source s, bool template=false){
 			ID = new ID(this, EToken.ASHE, s, false, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.DEST);

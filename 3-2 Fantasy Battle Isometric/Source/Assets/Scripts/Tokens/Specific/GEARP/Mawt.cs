@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace HOA {
 	public class Mawth : Unit {
-		public Mawth(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Mawth (source, template);
+		}
+
+		Mawth (Source s, bool template=false){
 			ID = new ID(this, EToken.MAWT, s, false, template);
 			Plane = Plane.Air;
 			ScaleLarge();

@@ -14,7 +14,7 @@ namespace HOA {
 		public AEvolve (Unit u, Price p, EToken chi) {
 			Parent = u;
 			child = chi;
-			Template = TemplateFactory.Template(child);
+			Template = TokenFactory.Template(child);
 			Name = "Evolve to "+ChildName;
 			Weight = 4;
 			Price = p;
@@ -42,7 +42,7 @@ namespace HOA {
 		
 		public override string Desc {get {return "Transform "+Parent+" into a Conflagragon." +
 				"\n(New Conflagragon starts with "+Parent+"'s health.)";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.CONF);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.CONF);} }
 
 		public AAsheArise (Unit par) {
 			Name = "Arise";
@@ -62,7 +62,7 @@ namespace HOA {
 			int hp = ((Unit)Parent).HP;
 			Parent.Die(new Source(Parent), false, false);
 			Token newToken;
-			TokenFactory.Add(EToken.CONF, new Source(Parent), Parent.Body.Cell, out newToken, false);
+			TokenFactory.Create(new Source(Parent), EToken.CONF, Parent.Body.Cell, out newToken, false);
 			((Unit)newToken).SetStat(new Source(Parent), EStat.HP, hp);
 		}
 
@@ -82,7 +82,7 @@ namespace HOA {
 	public class AMonoReanimate : Task {
 		
 		public override string Desc {get {return "Replace target remains with Recyclops.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.RECY);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.RECY);} }
 
 		public AMonoReanimate (Unit par, Price p) {
 			Name = "Recycle Recyclops";
@@ -112,7 +112,7 @@ namespace HOA {
 	public class AUltrCreateMeta : Task {
 		
 		public override string Desc {get {return "Replace target non-remains destructible with Metaterrainean.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.META);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.META);} }
 
 		public AUltrCreateMeta (Unit parent) {
 			Name = "Animate Metaterrainean";
@@ -142,7 +142,7 @@ namespace HOA {
 	
 	public class AMycoSeed : Task {
 		public override string Desc {get {return "Replace target non-Remains destructible with Lichenthrope.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.LICH);} }
+		public override Token Template {get {return TokenFactory.Template(EToken.LICH);} }
 
 		public AMycoSeed (Unit par) {
 			Name = "Seed";

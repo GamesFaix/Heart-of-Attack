@@ -1,7 +1,11 @@
 ﻿namespace HOA{
 	
 	public class RevolvingTom : Unit {
-		public RevolvingTom(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new RevolvingTom (source, template);
+		}
+
+		RevolvingTom(Source s, bool template=false){
 			ID = new ID(this, EToken.REVO, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();

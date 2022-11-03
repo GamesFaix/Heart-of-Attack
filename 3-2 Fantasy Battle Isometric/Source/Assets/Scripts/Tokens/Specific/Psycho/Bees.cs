@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Beesassin : Unit {
-		public Beesassin(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Beesassin (source, template);
+		}
+
+		Beesassin(Source s, bool template=false){
 			ID = new ID(this, EToken.BEES, s, false, template);
 			Plane = Plane.Air;
 			ScaleSmall();

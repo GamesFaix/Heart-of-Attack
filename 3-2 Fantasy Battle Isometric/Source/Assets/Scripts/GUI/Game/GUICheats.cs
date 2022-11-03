@@ -112,7 +112,7 @@ namespace HOA {
 						Targeter.Start(new ACreateManual(TurnQueue.Top, faction[j]));
 					}
 					GUI.Box (p.Box(btnH), Thumbs.CodeToThumb(faction[j]));
-					GUI.Label (p.Box(p.W-btnH), TemplateFactory.Template(faction[j]).ID.Name);
+					GUI.Label (p.Box(p.W-btnH), TokenFactory.Template(faction[j]).ID.Name);
 					p.NextLine();
 				}
 			}

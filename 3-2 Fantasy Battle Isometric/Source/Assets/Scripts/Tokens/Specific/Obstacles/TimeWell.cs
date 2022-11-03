@@ -1,13 +1,16 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HOA {
 	
 	public class TimeWell : Obstacle {
 		List<Unit> affected;
 		public List<Unit> Affected {get {return affected;} }
-		
-		public TimeWell(Source s, bool template=false){
+
+		public static Token Instantiate (Source source, bool template) {
+			return new TimeWell (source, template);
+		}
+
+		TimeWell(Source s, bool template=false){
 			ID = new ID(this, EToken.TWEL, s, false, template);
 			Plane = Plane.Sunk;
 			Body = new BodySensor1(this, SensorTimeWell.Instantiate);	

@@ -2,7 +2,11 @@
 namespace HOA {
 	
 	public class SiliconHOA : Obstacle {
-		public SiliconHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new SiliconHOA (source, template);
+		}
+
+		SiliconHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSIL, s, true, template);
 			BuildHeart();
 		}
@@ -10,7 +14,10 @@ namespace HOA {
 	}
 	
 	public class SteelHOA : Obstacle {
-		public SteelHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new SteelHOA (source, template);
+		}
+		SteelHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSTE, s, true, template);
 			BuildHeart();
 		}
@@ -18,7 +25,10 @@ namespace HOA {
 	}
 	
 	public class StoneHOA : Obstacle {
-		public StoneHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new StoneHOA (source, template);
+		}
+		StoneHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSTO, s, true, template);
 			BuildHeart();
 		}
@@ -26,7 +36,10 @@ namespace HOA {
 	}
 	
 	public class FirHOA : Obstacle {
-		public FirHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new FirHOA (source, template);
+		}
+		FirHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HFIR, s, true, template);
 			BuildHeart();
 		}
@@ -34,7 +47,10 @@ namespace HOA {
 	}
 		
 	public class BrassHOA : Obstacle {
-		public BrassHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new BrassHOA (source, template);
+		}
+		BrassHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HBRA, s, true, template);
 			BuildHeart();
 		}
@@ -42,7 +58,10 @@ namespace HOA {
 	}
 	
 	public class SilkHOA : Obstacle {
-		public SilkHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new SilkHOA (source, template);
+		}
+		SilkHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HSLK, s, true, template);
 			BuildHeart();		
 		}
@@ -50,7 +69,10 @@ namespace HOA {
 	}
 	
 	public class GlassHOA : Obstacle {
-		public GlassHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new GlassHOA (source, template);
+		}
+		GlassHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HGLA, s, true, template);
 			BuildHeart();
 		}
@@ -58,7 +80,10 @@ namespace HOA {
 	}	
 	
 	public class BloodHOA : Obstacle {
-		public BloodHOA(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new BloodHOA (source, template);
+		}
+		BloodHOA(Source s, bool template=false){
 			ID = new ID(this, EToken.HBLO, s, true, template);
 			BuildHeart();
 		}

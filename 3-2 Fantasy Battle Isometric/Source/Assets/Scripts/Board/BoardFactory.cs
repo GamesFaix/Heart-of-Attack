@@ -30,7 +30,7 @@ namespace HOA {
 			
 			foreach (Player p in Roster.Players()) {
 				Cell cell;
-				Token temp = TemplateFactory.Template(p.King);
+				Token temp = TokenFactory.Template(p.King);
 				
 				Zone zone = spawnZones[zoneIndex];
 				

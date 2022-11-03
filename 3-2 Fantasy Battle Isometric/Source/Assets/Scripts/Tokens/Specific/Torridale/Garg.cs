@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace HOA{
+﻿namespace HOA{
 
 	public class Gargoliath : Unit {
-		public Gargoliath(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Gargoliath (source, template);
+		}
+
+		Gargoliath(Source s, bool template=false){
 			ID = new ID(this, EToken.GARG, s, true, template);
 			Plane = Plane.Air;
 			Special.Add(EType.KING);

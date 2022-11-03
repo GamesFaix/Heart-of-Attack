@@ -2,7 +2,11 @@
 
 namespace HOA{
 	public class DreamReaver : Unit {
-		public DreamReaver(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new DreamReaver (source, template);
+		}
+
+		DreamReaver(Source s, bool template=false){
 			ID = new ID(this, EToken.DREA, s, true, template);
 			Plane = Plane.Air;
 			Special.Add(EType.KING);

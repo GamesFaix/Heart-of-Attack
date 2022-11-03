@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Decimatrix : Unit {
-		public Decimatrix(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Decimatrix (source, template);
+		}
+
+		Decimatrix(Source s, bool template=false){
 			ID = new ID(this, EToken.DECI, s, true);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

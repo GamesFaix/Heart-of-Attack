@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Monolith : Unit {
-		public Monolith(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Monolith (source, template);
+		}
+
+		Monolith(Source s, bool template=false){
 			ID = new ID(this, EToken.MONO, s, true, template);
 			Plane = Plane.Tall;
 			Special.Add(EType.KING);

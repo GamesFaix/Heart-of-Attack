@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Piecemaker : Unit {
-		public Piecemaker(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Piecemaker (source, template);
+		}
+
+		Piecemaker(Source s, bool template=false){
 			ID = new ID(this, EToken.PIEC, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleMedium();

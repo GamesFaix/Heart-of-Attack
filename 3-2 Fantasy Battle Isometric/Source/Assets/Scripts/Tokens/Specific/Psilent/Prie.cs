@@ -2,7 +2,11 @@ using System.Collections.Generic;
 
 namespace HOA{
 	public class PriestOfNaja : Unit {
-		public PriestOfNaja(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new PriestOfNaja (source, template);
+		}
+
+		PriestOfNaja(Source s, bool template=false){
 			ID = new ID(this, EToken.PRIE, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleLarge();

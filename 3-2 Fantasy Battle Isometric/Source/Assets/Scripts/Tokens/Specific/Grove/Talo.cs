@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class TalonedScout : Unit {
-		public TalonedScout(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new TalonedScout (source, template);
+		}
+
+		TalonedScout(Source s, bool template=false){
 			ID = new ID(this, EToken.TALO, s, false, template);
 			Plane = Plane.Air;
 			ScaleMedium();

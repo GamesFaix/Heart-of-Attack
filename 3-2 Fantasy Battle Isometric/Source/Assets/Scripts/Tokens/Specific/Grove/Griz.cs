@@ -1,6 +1,11 @@
 ﻿namespace HOA{
 	public class GrizzlyElder : Unit {
-		public GrizzlyElder(Source s, bool template=false){
+
+		public static Token Instantiate (Source source, bool template) {
+			return new GrizzlyElder (source, template);
+		}
+
+		GrizzlyElder(Source s, bool template=false){
 			ID = new ID(this, EToken.GRIZ, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();

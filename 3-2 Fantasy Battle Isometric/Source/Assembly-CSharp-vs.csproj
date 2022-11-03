@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{D38422E7-535C-32AE-A6D4-0852B71E6DD6}</ProjectGuid>
+	<ProjectGuid>{D4D69846-817B-A28E-2860-5E8A42CB5B2B}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -97,8 +97,6 @@
      <Compile Include="Assets\Scripts\GUI\Game\GUIInspectorTask.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIQueue.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\NewTips\Tip.cs" />
-     <Compile Include="Assets\Scripts\GUI\Game\NewTips\TipInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\General\TipDamage.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\General\TipToken.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Special\TipCell.cs" />
@@ -118,9 +116,11 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipPlane.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipSensor.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Tip.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipCOR.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipEXP.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFIR.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipArc.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipFree.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipLine.cs" />
@@ -172,49 +172,51 @@
      <Compile Include="Assets\Scripts\Tasks\Interfaces\IMultiTarget.cs" />
      <Compile Include="Assets\Scripts\Tasks\Interfaces\ITeleport.cs" />
      <Compile Include="Assets\Scripts\Tasks\Legalizer.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\ACreateManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AEndTurnManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AKillManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AMoveManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AQueueShiftManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\ASetOwnerManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AStatAddManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Manual\AStatSetManual.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\AElectric.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\ATime.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\ATimers.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Corrosive.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Explosive.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Fire.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Heals.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Lasers.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Leech.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Morphs.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\MultiTarget.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\PathAttacks.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Radial.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Replace.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\ScalingRange.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\SpecialCreates.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\SpecialMoves.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\StatBoost.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Special\Teleports.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\ACreate.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\ACreateArc.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AEnd.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AFocus.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AMoveLine.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AMovePath.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\ARage.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AShoot.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\ASting.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AStrike.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\AVolley.cs" />
-     <Compile Include="Assets\Scripts\Tasks\Standard\IMove.cs" />
      <Compile Include="Assets\Scripts\Tasks\Targeter.cs" />
      <Compile Include="Assets\Scripts\Tasks\Task.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\ACreateManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AEndTurnManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AKillManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AMoveManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AQueueShiftManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\ASetOwnerManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AStatAddManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Manual\AStatSetManual.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\AElectric.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\ATime.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\ATimers.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Corrosive.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Explosive.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Fire.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Heals.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Lasers.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Leech.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Morphs.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\MultiTarget.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\PathAttacks.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Radial.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Replace.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\ScalingRange.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\SpecialCreates.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\SpecialMoves.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\StatBoost.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Special\Teleports.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\ACreate.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\ACreateArc.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AEnd.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AFocus.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AMoveLine.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AMovePath.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\ARage.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AShoot.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\ASting.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AStrike.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\AVolley.cs" />
+     <Compile Include="Assets\Scripts\Tasks\Tasks\Standard\IMove.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Arsenal.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Body.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\BodyAper.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\BodyAren.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\BodySensor1.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\BodySensor9.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Health.cs" />
@@ -260,6 +262,7 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\TimeWell.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Water.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Aren.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\ArenAlias.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Drea.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Prie.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Pris.cs" />
@@ -279,8 +282,8 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Monolith.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Necr.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Recy.cs" />
+     <Compile Include="Assets\Scripts\Tokens\TokenHandling\Alias.cs" />
      <Compile Include="Assets\Scripts\Tokens\TokenHandling\Obstacle.cs" />
-     <Compile Include="Assets\Scripts\Tokens\TokenHandling\TemplateFactory.cs" />
      <Compile Include="Assets\Scripts\Tokens\TokenHandling\Token.cs" />
      <Compile Include="Assets\Scripts\Tokens\TokenHandling\TokenFactory.cs" />
      <Compile Include="Assets\Scripts\Tokens\TokenHandling\TokenRef.cs" />

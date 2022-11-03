@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\Token.cs">
+    <Files>
+      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\Token.cs" Line="78" Column="2" />
+      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\TokenHandling\TokenFactory.cs" Line="1" Column="1" />
+      <File FileName="..\q42 - templates and aliases\Assets\Scripts\Tokens\Specific\Chrono\Piec.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

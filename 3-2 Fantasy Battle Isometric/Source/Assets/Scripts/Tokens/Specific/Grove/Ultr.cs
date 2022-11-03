@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Ultratherium : Unit {
-		public Ultratherium(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Ultratherium (source, template);
+		}
+
+		Ultratherium(Source s, bool template=false){
 			ID = new ID(this, EToken.ULTR, s, true, template);
 			Plane = Plane.Gnd;
 			Special.Add(EType.TRAM);

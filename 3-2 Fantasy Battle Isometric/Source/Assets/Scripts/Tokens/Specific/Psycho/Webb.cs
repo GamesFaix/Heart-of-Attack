@@ -7,7 +7,11 @@ namespace HOA {
 		Dictionary<Unit, int> affected;
 		public Dictionary<Unit, int> Affected {get {return affected;} }
 
-		public Web(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Web (source, template);
+		}
+
+		Web(Source s, bool template=false){
 			ID = new ID(this, EToken.WEBB, s, false, template);
 			Plane = Plane.Sunk;
 			Special.Add(EType.DEST);

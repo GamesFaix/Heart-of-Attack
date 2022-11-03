@@ -66,12 +66,13 @@ namespace HOA {
 				Parent = (Token)targets[0];
 			}
 
-			if (Pending is AMoveAren) {Legalizer.FindArenMove (Parent, aim);}
-			else if (aim.Trajectory == ETraj.RADIAL) {
+			if (aim.Trajectory == ETraj.RADIAL) {
 				Token target1 = (Token)targets[step-1];
-				Legalizer.Find(Parent, aim, target1.Body.Cell);
+				if (!Legalizer.Find(Parent, aim, target1.Body.Cell)) {NoLegalTargets();}
 			}
-			else {Legalizer.Find(Parent, aim, start, child);}
+			else {
+				if (!Legalizer.Find(Parent, aim, start, child)) {NoLegalTargets();}
+			}
 		}
 
 		static void FinishStep () {
@@ -93,6 +94,11 @@ namespace HOA {
 		public static void Execute () {
 			if (Passable || Ready) {Pending.Execute(targets);}
 			else {GameLog.Out("Please finish selecting targets.");}
+		}
+
+		static void NoLegalTargets () {
+			GameLog.Out("No legal targets.");
+			Reset();
 		}
 
 		public static string PendingString () {

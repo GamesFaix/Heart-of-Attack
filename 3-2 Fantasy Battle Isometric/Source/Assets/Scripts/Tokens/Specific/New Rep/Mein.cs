@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace HOA{
 	public class MeinSchutz : Unit {
-		public MeinSchutz(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new MeinSchutz (source, template);
+		}
+
+		MeinSchutz(Source s, bool template=false){
 			ID = new ID(this, EToken.MEIN, s, false, template);
 			Plane = Plane.Gnd;
 

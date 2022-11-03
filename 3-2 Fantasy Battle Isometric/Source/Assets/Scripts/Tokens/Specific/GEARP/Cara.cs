@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-
-namespace HOA {
+﻿namespace HOA {
 
 	public class CarapaceInvader : Unit {
-		public CarapaceInvader(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new CarapaceInvader (source, template);
+		}
+
+		CarapaceInvader(Source s, bool template=false){
 			ID = new ID(this, EToken.CARA, s, false, template);
 			Plane = Plane.Gnd;
 			Body = new BodySensor9(this, SensorCaraShield.Instantiate);

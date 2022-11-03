@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace HOA{
 	public class Mine : Obstacle {
-		public Mine(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Mine (source, template);
+		}
+
+		Mine(Source s, bool template=false){
 			ID = new ID(this, EToken.MINE, s, false, template);
 			Special.Add(EType.DEST);
 			Plane = Plane.Sunk;

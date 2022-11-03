@@ -11,7 +11,7 @@ namespace HOA {
 		public ACreateArc (Unit parent, Price p, EToken chi, int range, int minRange=0) {
 			Parent = parent;
 			child = chi;
-			Template = TemplateFactory.Template(child);
+			Template = TokenFactory.Template(child);
 			Name = "Create "+Template.ID.Name;
 
 			Weight = 5;

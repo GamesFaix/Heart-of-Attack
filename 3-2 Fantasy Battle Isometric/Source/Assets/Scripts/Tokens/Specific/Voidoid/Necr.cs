@@ -2,7 +2,11 @@
 
 namespace HOA{
 	public class Necrochancellor : Unit {
-		public Necrochancellor(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Necrochancellor (source, template);
+		}
+
+		Necrochancellor(Source s, bool template=false){
 			ID = new ID(this, EToken.NECR, s, false, template);
 			Plane = Plane.Eth;
 			OnDeath = EToken.NONE;

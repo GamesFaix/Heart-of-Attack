@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Mycolonist : Unit {
-		public Mycolonist(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Mycolonist (source, template);
+		}
+
+		Mycolonist(Source s, bool template=false){
 			ID = new ID(this, EToken.MYCO, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleMedium();

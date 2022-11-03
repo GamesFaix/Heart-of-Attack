@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Lichenthrope : Unit {
-		public Lichenthrope(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Lichenthrope (source, template);
+		}
+
+		Lichenthrope(Source s, bool template=false){
 			ID = new ID(this, EToken.LICH, s, false, template);
 			Plane = Plane.Gnd;
 			OnDeath = EToken.NONE;

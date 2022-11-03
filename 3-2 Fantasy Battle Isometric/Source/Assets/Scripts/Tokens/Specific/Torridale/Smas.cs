@@ -1,6 +1,10 @@
 ﻿namespace HOA{
 	public class Smashbuckler : Unit {
-		public Smashbuckler(Source s, bool template=false){
+		public static Token Instantiate (Source source, bool template) {
+			return new Smashbuckler (source, template);
+		}
+
+		Smashbuckler(Source s, bool template=false){
 			ID = new ID(this, EToken.SMAS, s, false, template);
 			Plane = Plane.Gnd;
 			ScaleSmall();
