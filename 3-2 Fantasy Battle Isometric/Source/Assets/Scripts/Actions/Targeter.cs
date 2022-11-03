@@ -7,8 +7,8 @@ namespace HOA {
 		static bool ready;
 		public static bool Ready {get {return ready;}}
 
-		static Action currentAction;
-		static List<ITarget> targets;
+		static Task currentAction;
+		static TargetGroup targets;
 		static int steps;
 		static int currentStep;
 
@@ -16,8 +16,8 @@ namespace HOA {
 		public static bool Passable { get {return passable;} }
 
 
-		public static void Find (Action a) {
-			if (currentAction != default(Action)) {Reset();}
+		public static void Find (Task a) {
+			if (currentAction != default(Task)) {Reset();}
 			a.Adjust();
 
 			if (a.Legal()) {
@@ -26,32 +26,32 @@ namespace HOA {
 
 				currentAction = a;
 			
-				targets = new List<ITarget>();
+				targets = new TargetGroup();
 
 				steps = a.Aim.Count;
 				currentStep = 0;
 
 				StartStep (currentStep);
 			}
-			else {GameLog.Out("Action cannot be performed. (Unaffordable, used, or restricted.)");}
+			else {GameLog.Out("Task cannot be performed. (Unaffordable, used, or restricted.)");}
 		}
 
 		static void StartStep (int n) {
-			Token actor = currentAction.Actor;
+			Token Parent = currentAction.Parent;
 			Aim aim = currentAction.Aim[currentStep];
-			Token child = currentAction.ChildTemplate;
-			Cell start = actor.Body.Cell;
+			Token child = currentAction.Template;
+			Cell start = Parent.Body.Cell;
 
 			AllowPass (currentAction, currentStep);
 
 			if (currentAction is IMultiMove && currentStep > 0) {
 				int index = targets.Count-1;
-				ITarget last = targets[index];
+				Target last = targets[index];
 
 				if (last is Cell) {start = (Cell)last;}
 				if (last is Token) {start = ((Token)last).Body.Cell;}
 
-				if (start.StopToken(actor)) {
+				if (start.StopToken(Parent)) {
 					FinishStep();
 					return;
 				}
@@ -59,8 +59,8 @@ namespace HOA {
 			}
 
 			if (currentAction is ITeleport && currentStep > 0) {
-				start = currentAction.Actor.Body.Cell;
-				actor = (Token)targets[0];
+				start = currentAction.Parent.Body.Cell;
+				Parent = (Token)targets[0];
 
 			}
 
@@ -69,25 +69,25 @@ namespace HOA {
 
 			if (aim.Trajectory == ETraj.SELF) {FinishStep();}
 			else if (currentAction is AMoveAren) {
-				Legalizer.FindArenMove (actor, aim);
+				Legalizer.FindArenMove (Parent, aim);
 			}
 			else {
 				//Debug.Log(aim);
 				//if (child!= default(Token)) {Debug.Log(child.ToString());}
-				Legalizer.Find(actor, aim, start, child); 
+				Legalizer.Find(Parent, aim, start, child); 
 			}
 
 		}
 
-		public static void Select (ITarget t) {
-			if (t.IsLegal()) {
+		public static void Select (Target t) {
+			if (t.Legal) {
 				targets.Add(t);
 				//Debug.Log("new target selected: "+t.ToString());
 				FinishStep();
 			}
 		}
 
-		static void AllowPass (Action a, int n) {
+		static void AllowPass (Task a, int n) {
 			if (a is IMultiMove) {
 				if (n >= ((IMultiMove)a).Optional()) {passable = true;}
 			}
@@ -119,15 +119,15 @@ namespace HOA {
 
 		}
 
-		public static Action Pending () {
+		public static Task Pending () {
 			return currentAction;
 		}
 		public static string PendingString () {
 			string str = "";
-			if (currentAction != default(Action)) {
+			if (currentAction != default(Task)) {
 				str = currentAction.Name;
-				foreach (ITarget t in targets) {
-					if (t != default(ITarget)) {
+				foreach (Target t in targets) {
+					if (t != default(Target)) {
 						str += "\n"+t.ToString();
 					}
 				}
@@ -138,8 +138,8 @@ namespace HOA {
 
 		public static void Reset () {
 			currentAction.UnAdjust();
-			currentAction = default(Action);
-			targets = default(List<ITarget>);
+			currentAction = default(Task);
+			targets = new TargetGroup();
 			ready = false;
 			steps = 0;
 			currentStep =0;

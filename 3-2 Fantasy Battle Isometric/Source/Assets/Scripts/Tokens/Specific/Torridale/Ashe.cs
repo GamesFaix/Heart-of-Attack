@@ -11,46 +11,45 @@ namespace HOA{
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(5);
-
-			arsenal.Add(new AAsheArise(new Price(2,0), this));
+			BuildArsenal();
+		}	
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
 			arsenal.Remove("Focus");
+			arsenal.Add(new AAsheArise(this));
 			arsenal.Sort();
-		}		
+		}
+
 		public override string Notes () {return "";}
 	}	
 	
-	public class AAsheArise : Action {
-		
-		Token chiTemplate;
-		
-		public AAsheArise (Price p, Unit par) {
-			weight = 4;
-			price = p;
+	public class AAsheArise : Task {
+
+		public override string Desc {get {return "Transform "+Parent+" into a Conflagragon." +
+				"\n(New Conflagragon starts with "+Parent+"'s health.)";} }
+
+		public AAsheArise (Unit par) {
+			Name = "Arise";
+			Weight = 4;
+
+			Price = new Price(2,0);
 			AddAim(HOA.Aim.Self());
 			
-			actor = par;
-			chiTemplate = TemplateFactory.Template(EToken.CONF);
-			
-			name = chiTemplate.ID.Name;
-			desc = "Transform "+actor+" into a "+name+"." +
-				"\n(New "+name+" starts with "+actor+"'s health.)";
+			Parent = par;
 		}
 
 		public override bool Restrict () {
-			Cell c = actor.Body.Cell;
+			Cell c = Parent.Body.Cell;
 			if (c.Contains(EPlane.AIR)) {return true;}
 			return false;
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-
-			int hp = ((Unit)actor).HP;
-			actor.Die(new Source(actor), false, false);
+		protected override void ExecuteMain (TargetGroup targets) {
+			int hp = ((Unit)Parent).HP;
+			Parent.Die(new Source(Parent), false, false);
 			Token newToken;
-			TokenFactory.Add(EToken.CONF, new Source(actor), actor.Body.Cell, out newToken, false);
-			((Unit)newToken).SetStat(new Source(actor), EStat.HP, hp);
-			Targeter.Reset();
+			TokenFactory.Add(EToken.CONF, new Source(Parent), Parent.Body.Cell, out newToken, false);
+			((Unit)newToken).SetStat(new Source(Parent), EStat.HP, hp);
 		}
 	}
 }

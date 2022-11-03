@@ -11,98 +11,98 @@ namespace HOA{
 			NewHealth(75);
 			NewWatch(3); 
 			NewWallet(3);
-			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new ACorrode("Bite", Price.Cheap, this, Aim.Melee(), 15));
-			arsenal.Add(new ABlacLich(this));
-			arsenal.Add(new ABlacWeb(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal ();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 3),
+				new ASting(this, 15),
+				new ABlacLich(this),
+				new ABlacWeb(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class ABlacWeb : Action {
-		
-		
-		Cell cell;
-		EToken child;
-		
+	public class ABlacWeb : Task {
+		int damage = 12;
+
+		public override string Desc {get {return "Create Web in target cell." +
+				"\nAll Units in target cell take "+damage+" damage.";} }
+
 		public ABlacWeb (Unit par) {
-			weight = 4;
-			actor = par;
-			childTemplate = TemplateFactory.Template(EToken.WEBB);
-			price = new Price(1,1);
-			
+			Name = "Web Shot";
+			Weight = 4;
+			Parent = par;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.CreateArc(3));
-			
-			name = "Web Shot";
-			desc = "Create "+childTemplate.ID.Name+" in target cell.\nAll Units in target cell take 12 damage.";
+			Template = TemplateFactory.Template(EToken.WEBB);
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Cell c = (Cell)targets[0];
 
-			EffectQueue.Add(new ECreate(new Source(actor), EToken.WEBB, c));
+			EffectQueue.Add(new ECreate(new Source(Parent), EToken.WEBB, c));
 
 			TokenGroup occupants = c.Occupants.OnlyType(EType.UNIT);
 			foreach (Unit u in occupants) {
-				EffectQueue.Add(new EDamage(new Source(actor), u, 12));
+				EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
 			}
-			Targeter.Reset();
-
 		}
 	}
 
-	public class ABlacLich : Action{
-		
+	public class ABlacLich : Task{
+
+		public override string Desc {get {return "Create Lichenthropes in up to two target cells.";} }
+
 		public ABlacLich (Unit par) {
-			weight = 5;
-			actor = par;
-			childTemplate = TemplateFactory.Template(EToken.LICH);
-			price = Price.Cheap;
+			Name = "Create Lichenthropes";
+			Weight = 5;
+
+			Parent = par;
+			Template = TemplateFactory.Template(EToken.LICH);
+			Price = Price.Cheap;
 			
 			AddAim(HOA.Aim.Create());
-
-			name = "Create "+childTemplate.ID.Name+"s";
-			desc = "Create "+childTemplate.ID.Name+" in up to two target cells.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ECreate(new Source(Parent), EToken.LICH, (Cell)targets[0]));
 
-			CellGroup cg = actor.Body.Cell.Neighbors();
+			CellGroup cg = Parent.Body.Cell.Neighbors();
 			bool second = false;
 			foreach (Cell c in cg) {
-				if (childTemplate.Body.CanEnter(c)) {second = true;}
+				if (Template.Body.CanEnter(c)) {second = true;}
 			}
 			if (second) {
-				Targeter.Find(new ABlacLich2(actor));
+				Targeter.Find(new ABlacLich2(Parent));
 			}
 			else {Targeter.Reset();}
 		}
-
+		protected override void ExecuteFinish() {}
 	}
 
-	public class ABlacLich2 : Action{
-		
+	public class ABlacLich2 : Task{
+
+		public override string Desc {get {return "Create Lichenthrope in target cell.";} }
+
 		public ABlacLich2 (Unit par) {
-			weight = 5;
-			actor = par;
-			childTemplate = TemplateFactory.Template(EToken.LICH);
-			price = Price.Free;
+			Name = "Create another Lichenthrope";
+			Weight = 5;
+
+			Parent = par;
+			Template = TemplateFactory.Template(EToken.LICH);
+			Price = Price.Free;
 			
 			AddAim(HOA.Aim.Create());
-
-			
-			name = "Create another "+childTemplate.ID.Name;
-			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ECreate(new Source(Parent), EToken.LICH, (Cell)targets[0]));
 		}
 		
 	}

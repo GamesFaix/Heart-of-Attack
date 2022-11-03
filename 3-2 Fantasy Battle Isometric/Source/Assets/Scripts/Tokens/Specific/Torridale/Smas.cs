@@ -9,37 +9,40 @@ namespace HOA{
 			ScaleSmall();
 			NewHealth(30);
 			NewWatch(3);
-			
-			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new ASmasFlail(Price.Cheap, this));
-			arsenal.Add(new ASmasSlam(new Price(2,0), this));
-			arsenal.Sort();
+			BuildArsenal();	
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 3),
+				new ASmasFlail(this),
+				new ASmasSlam(this)
+			});
+			arsenal.Sort();
+		}
 		
 		public override string Notes () {return "";}
 	}	
 
-	public class ASmasFlail : Action {
-		int damage;
-		
-		public ASmasFlail (Price p, Unit u) {
-			weight = 3;
-			price = p;
-			actor = u;
-			
-			ResetAim();
-			damage = 8;
-			
-			name = "Flail";
-			desc = "Do "+damage+" damage to target unit.  " +
+	public class ASmasFlail : Task {
+		int damage = 8;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit.  " +
 				"\nRange +1 per focus (Up to +3).  " +
-				"\n"+actor+" loses all focus.";
-			
+				"\n"+Parent+" loses all focus.";} }
+
+		public ASmasFlail (Unit u) {
+			Name = "Flail";
+			Weight = 3;
+			Price = Price.Cheap;
+			Parent = u;
+			ResetAim();
 		}
 
 		public override void Adjust () {
 			Debug.Log("adjusting");
-			int bonus = Mathf.Min(actor.FP, 3);
+			int bonus = Mathf.Min(Parent.FP, 3);
 			aim = new List<HOA.Aim>();
 			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1+bonus));
 		}
@@ -53,37 +56,31 @@ namespace HOA{
 			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			actor.SetStat(new Source(actor), EStat.FP, 0, false);
-			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
+		protected override void ExecuteMain (TargetGroup targets) {
+			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
+			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
 			UnAdjust();
-			Targeter.Reset();
 		}
 	}
 
-	public class ASmasSlam : Action {
-		int range;
-		int damage;
-		
-		public ASmasSlam (Price p, Unit u) {
-			weight = 4;
-			
-			price = p;
-			actor = u;
-			ResetAim();
-			damage = 8;
-			
-			name = "Slam";
-			desc = "Do "+damage+" damage to target unit and each of its neighbors and cellmates.  " +
+	public class ASmasSlam : Task {
+		int damage = 8;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit and each of its neighbors and cellmates.  " +
 				"\nRange +1 per focus (up to +3).  " +
-				"\n"+actor+" loses all focus.";
-			
+				"\n"+Parent+" loses all focus.";} }
+
+		public ASmasSlam (Unit u) {
+			Name = "Slam";
+			Weight = 4;
+			Price = new Price(2,0);
+			Parent = u;
+			ResetAim();
 		}
 
 		public override void Adjust () {
 			Debug.Log("adjusting");
-			int bonus = Mathf.Min(actor.FP, 3);
+			int bonus = Mathf.Min(Parent.FP, 3);
 			aim = new List<HOA.Aim>();
 			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1+bonus));
 		}
@@ -97,22 +94,19 @@ namespace HOA{
 			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			actor.SetStat(new Source(actor), EStat.FP, 0, false);
+		protected override void ExecuteMain (TargetGroup targets) {
+			Parent.SetStat(new Source(Parent), EStat.FP, 0, false);
 		
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage(new Source(actor), u, damage));
+			EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
 
 			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(EType.UNIT);
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Unit u2 in neighbors) {
-				nextEffects.Add(new EDamage(new Source(actor), u2, damage));
+				nextEffects.Add(new EDamage(new Source(Parent), u2, damage));
 			}
 			EffectQueue.Add(nextEffects);
 			UnAdjust();
-			Targeter.Reset();
 		}
 	}
 }
-	

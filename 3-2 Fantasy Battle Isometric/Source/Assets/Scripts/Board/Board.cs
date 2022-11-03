@@ -105,7 +105,7 @@ namespace HOA {
 		
 		public static void ClearLegal () {
 			foreach (Cell cell in cells) {
-				cell.Legalize(false);
+				cell.Legal = false;
 			}
 		}
 	}

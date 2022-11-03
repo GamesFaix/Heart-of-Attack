@@ -6,22 +6,15 @@ namespace HOA {
 
 	public class Aim {
 
-		ETraj trajectory;
-		public ETraj Trajectory {get {return trajectory;} }
+		public ETraj Trajectory {get; private set;}
+		public Special Special {get; private set;}
+		public EPurp Purpose {get; private set;}
 
-		Type type;
-		public Type Type {get {return type;} }
-
-		EPurp purpose;
-		public EPurp Purpose {get {return purpose;} }
-
-		int range;
-		public int Range {get {return range;} }
-		int minRange;
-		public int MinRange {get {return minRange;} }
+		public int Range {get; set;}
+		public int MinRange {get; set;}
 
 		bool teamOnly = false;
-		public bool TeamOnly { 
+		public bool TeamOnly {
 			get {return teamOnly;} 
 			set {teamOnly = value;}
 		}
@@ -42,43 +35,43 @@ namespace HOA {
 		}
 
 		public Aim (ETraj a) {
-			trajectory = a;
-			type = default(Type);
-			purpose = EPurp.ATTACK;
-			range = 0;
-			minRange = 0;
+			Trajectory = a;
+			Special = default(Special);
+			Purpose = EPurp.ATTACK;
+			Range = 0;
+			MinRange = 0;
 		}
 
 		public Aim (ETraj a, EType tc, int r=0, int rMin=0) {
-			trajectory = a;
-			type = new Type(tc);
-			purpose = EPurp.ATTACK;
-			range = r;
-			minRange = rMin;
+			Trajectory = a;
+			Special = new Special(tc);
+			Purpose = EPurp.ATTACK;
+			Range = r;
+			MinRange = rMin;
 		}
 
-		public Aim (ETraj a, Type t, int r=0, int rMin=0) {
-			trajectory = a;
-			type = t;
-			purpose = EPurp.ATTACK;
-			range = r;
-			minRange = rMin;
+		public Aim (ETraj a, Special t, int r=0, int rMin=0) {
+			Trajectory = a;
+			Special = t;
+			Purpose = EPurp.ATTACK;
+			Range = r;
+			MinRange = rMin;
 		}
 
 		public Aim (ETraj a, EType tc, EPurp p, int r=0, int rMin=0) {
-			trajectory = a;
-			type = new Type(tc);
-			purpose = p;
-			range = r;
-			minRange = rMin;
+			Trajectory = a;
+			Special = new Special(tc);
+			Purpose = p;
+			Range = r;
+			MinRange = rMin;
 		}
 
-		public Aim (ETraj a, Type t, EPurp p, int r=0, int rMin=0) {
-			trajectory = a;
-			type = t;
-			purpose = p;
-			range = r;
-			minRange = rMin;
+		public Aim (ETraj a, Special t, EPurp p, int r=0, int rMin=0) {
+			Trajectory = a;
+			Special = t;
+			Purpose = p;
+			Range = r;
+			MinRange = rMin;
 		}
 
 		public override string ToString () {
@@ -91,7 +84,7 @@ namespace HOA {
 		}
 		string AimTypeString {
 			get {
-				switch (trajectory) {
+				switch (Trajectory) {
 					case ETraj.CELLMATE: return "Cellmate";
 					case ETraj.NEIGHBOR: return "Neighbor";
 					case ETraj.PATH: return "Path";
@@ -107,41 +100,41 @@ namespace HOA {
 
 		string RangeString {
 			get {
-				if (trajectory == ETraj.PATH || trajectory == ETraj.LINE) {return range+"";}	
-				else if (trajectory == ETraj.ARC) {
-					if (minRange > 0) {return minRange+"-"+range;}
-					return range+"";
+				if (Trajectory == ETraj.PATH || Trajectory == ETraj.LINE) {return Range+"";}	
+				else if (Trajectory == ETraj.ARC) {
+					if (MinRange > 0) {return MinRange+"-"+Range;}
+					return Range+"";
 				}
 				return "";
 			}
 		}
 		string TargetString {
 			get {
-				if (type.Is(EType.CELL)) {return "Cell";}
+				if (Special.Is(EType.CELL)) {return "Cell";}
 
-				else if (type.Is(EType.UNIT) 
-					&& type.Is(EType.DEST)) {
+				else if (Special.Is(EType.UNIT) 
+					&& Special.Is(EType.DEST)) {
 					return "Unit or Destructible";
 				}
-				else if (type.Is(EType.UNIT)) {return "Unit";}
-				else if (type.Is(EType.DEST) 
-				    && !type.Is(EType.REM)) {
+				else if (Special.Is(EType.UNIT)) {return "Unit";}
+				else if (Special.Is(EType.DEST) 
+				    && !Special.Is(EType.REM)) {
 					return "Destructible (non-Remains)";
 				}
-				else if (type.Is(EType.DEST)
-				    && type.Is(EType.REM)) {
+				else if (Special.Is(EType.DEST)
+				    && Special.Is(EType.REM)) {
 					return "Destructible";
 				}
-				else if (type.Is(EType.REM)) {return "Remains";}
+				else if (Special.Is(EType.REM)) {return "Remains";}
 				return "";
 			}
 		}
 		Texture2D[] TargetIcon {
 			get {
-				if (type != default(Type)) {
-					Texture2D[] texs = new Texture2D[type.Count];
+				if (Special != default(Special)) {
+					Texture2D[] texs = new Texture2D[Special.Count];
 					for (int i=0; i<texs.Length; i++) {
-						texs[i] = Icons.Type(type[i]);
+						texs[i] = Icons.Special(Special[i]);
 					}
 					return texs;
 				}
@@ -154,10 +147,10 @@ namespace HOA {
 			float iconSize = p.LineH;
 
 			Rect iconBox = p.Box(iconSize);
-			if (Icons.Traj(trajectory) != default(Texture2D)) {
-				GUI.Box(iconBox, Icons.Traj(trajectory), p.s);
+			if (Icons.Traj(Trajectory) != default(Texture2D)) {
+				GUI.Box(iconBox, Icons.Traj(Trajectory), p.s);
 				if (GUIInspector.ShiftMouseOver(iconBox)) {
-					GUIInspector.Tip = GUIToolTips.Trajectory(trajectory);
+					GUIInspector.Tip = GUIToolTips.Trajectory(Trajectory);
 				}
 			}
 			if (RangeString != "") {

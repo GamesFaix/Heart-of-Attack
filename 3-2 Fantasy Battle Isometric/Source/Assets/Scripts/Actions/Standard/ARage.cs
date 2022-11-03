@@ -3,25 +3,24 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public class ARage : Action {
+	public class ARage : Task {
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+				"\n"+Parent+" takes 50% damage (rounded down)."; } }
+		
 		int damage;
 		
-		public ARage (Price p, Unit u, Aim a, int d) {
-			weight = 3;
-			
-			price = p;
-			AddAim(a);
+		public ARage (Unit parent, int d) {
+			Parent = parent;
+			Name = "Rage";
+			Weight = 3;
+			Price = Price.Cheap;
+			AddAim(HOA.Aim.Melee());
 			damage = d;
-			actor = u;
-			
-			name = "Rage";
-			desc = "Do "+d+" damage to target unit. \n"+actor+" takes 50% damage (rounded down).";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new ERage(new Source(actor), (Unit)targets[0], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ERage(new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
 }

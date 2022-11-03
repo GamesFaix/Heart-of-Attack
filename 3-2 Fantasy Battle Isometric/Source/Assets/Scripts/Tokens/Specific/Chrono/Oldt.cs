@@ -13,20 +13,25 @@ namespace HOA{
 			NewHealth(85,2);
 			watch = new WatchOldt(this, 2);
 			NewWallet(3);
-
-			arsenal.Add(new AMovePath(this, 2));
-
-			Aim attackAim = new Aim (ETraj.ARC, EType.UNIT, 3);
-			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
-
-			arsenal.Add(new ACreate(Price.Cheap, this, EToken.REVO));
-			arsenal.Add(new ACreate(new Price(2,0), this, EToken.PIEC));
-			arsenal.Add(new ACreate(new Price(2,1), this, EToken.REPR));
-			arsenal.Add(new AOldtHour(this));
-			arsenal.Add(new AOldMinute(this));
-			arsenal.Add(new AOldtSecond(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+
+			arsenal.Add(new Task[] {
+				new AMovePath(this, 2), 
+				new AVolley(this, 3, 15),
+				new AOldtHour(this),
+				new AOldMinute(this),
+				new AOldtSecond(this),
+				new ACreate(this, Price.Cheap, EToken.REVO),
+				new ACreate(this, new Price(2,0), EToken.PIEC),
+				new ACreate(this, new Price(2,1), EToken.REPR)
+			} );
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "Initiative +1 per Focus (up to +8).";}
 	}
 
@@ -45,71 +50,65 @@ namespace HOA{
 		}
 	}
 
-	public class AOldtHour : Action {
-		
-		public AOldtHour (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(0,2);
-			AddAim(new Aim(ETraj.FREE, EType.UNIT));
+	public class AOldtHour : Task {
 
-			name = "Hour Saviour";
-			desc = "Target Unit shifts to the bottom of the Queue";
+		public override string Desc {get {return "Target Unit shifts to the bottom of the Queue";} }
+
+		public AOldtHour (Unit parent) {
+			Parent = parent;
+			Name = "Hour Saviour";
+			Weight = 4;
+			Price = new Price(0,2);
+			AddAim(new Aim(ETraj.FREE, EType.UNIT));
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
 
 			int last = TurnQueue.Count-1;
 			int current = TurnQueue.IndexOf(u);
 			int magnitude = 0-(last-current);
 
-			EffectQueue.Add(new EShift(new Source(actor), u, magnitude));
-			Targeter.Reset();
+			EffectQueue.Add(new EShift(new Source(Parent), u, magnitude));
 		}
 	}
 
-	public class AOldMinute : Action {
+	public class AOldMinute : Task {
+		public override string Desc {get {return "Shuffle the Queue." +
+					"\n(End "+Parent.ID.Name+"'s turn.)";} }
 		
-		public AOldMinute (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
-			AddAim(new Aim(ETraj.GLOBAL, EType.UNIT));
-			
-			name = "Minute Waltz";
-			desc = "Shuffle the Queue.";
+		public AOldMinute (Unit parent) {
+			Parent = parent;
+			Name = "Minute Waltz";
+			Weight = 4;
+
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Self());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EShuffle(new Source(actor)));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EShuffle(new Source(Parent)));
+			EffectQueue.Add(new EAdvance(new Source(Parent), false));
 		}
 	}
 
-	public class AOldtSecond : Action {
+	public class AOldtSecond : Task {
+		public override string Desc {get {return "Target unit takes the next turn." +
+				"\n(Cannot target self.)";} }
 		
-		public AOldtSecond (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(0,2);
+		public AOldtSecond (Unit parent) {
+			Parent = parent;
+			Name = "Second in Command";
+			Weight = 4;
+			Price = new Price(0,2);
 			AddAim(new Aim(ETraj.FREE, EType.UNIT));
 			aim[0].IncludeSelf = false;
-			
-			name = "Second in Command";
-			desc = "Target unit takes the next turn." +
-				"\n(Cannot target self.)";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
 			int magnitude = TurnQueue.IndexOf(u) - 1;
-
-			EffectQueue.Add(new EShift (new Source(actor), u, magnitude));
-			Targeter.Reset();
+			EffectQueue.Add(new EShift (new Source(Parent), u, magnitude));
 		}
 	}
 }

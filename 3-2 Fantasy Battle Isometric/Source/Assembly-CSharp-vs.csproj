@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{0BE4A55F-FB59-E292-DCFF-16795EB017AF}</ProjectGuid>
+	<ProjectGuid>{356CDCC2-10C2-82F0-F7A2-35808BFF7C64}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,7 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Actions\Action.cs" />
      <Compile Include="Assets\Scripts\Actions\Components\Aim.cs" />
      <Compile Include="Assets\Scripts\Actions\Components\Price.cs" />
      <Compile Include="Assets\Scripts\Actions\EffectQueue.cs" />
@@ -60,27 +59,24 @@
      <Compile Include="Assets\Scripts\Actions\Interfaces\IMultiTarget.cs" />
      <Compile Include="Assets\Scripts\Actions\Interfaces\ITeleport.cs" />
      <Compile Include="Assets\Scripts\Actions\Legalizer.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AAttack.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AAttackFir.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ABurrow.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ACorrode.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreate.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\ACreateArc.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ACreateManual.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ADonate.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AEnd.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AFocus.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AGrenade.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AKnock.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ALaser.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\ALeech.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMoveLine.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMoveManual.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AMovePath.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ARage.cs" />
-     <Compile Include="Assets\Scripts\Actions\Standard\AShock.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\AShoot.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\ASting.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\AStrike.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\AVolley.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\IMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Targeter.cs" />
+     <Compile Include="Assets\Scripts\Actions\Task.cs" />
+     <Compile Include="Assets\Scripts\Actions\TaskRef.cs" />
      <Compile Include="Assets\Scripts\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Board\BorderFactory.cs" />
      <Compile Include="Assets\Scripts\Board\Cell.cs" />
@@ -151,8 +147,6 @@
      <Compile Include="Assets\Scripts\Graphics\TargetDisplay.cs" />
      <Compile Include="Assets\Scripts\Graphics\Thumbs.cs" />
      <Compile Include="Assets\Scripts\Interfaces\ISource.cs" />
-     <Compile Include="Assets\Scripts\Interfaces\ITarget.cs" />
-     <Compile Include="Assets\Scripts\Interfaces\ITargetDisplay.cs" />
      <Compile Include="Assets\Scripts\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Misc\DiceCoin.cs" />
      <Compile Include="Assets\Scripts\Misc\Enums.cs" />
@@ -161,6 +155,7 @@
      <Compile Include="Assets\Scripts\Misc\QueueStunner.cs" />
      <Compile Include="Assets\Scripts\Misc\RandomSync.cs" />
      <Compile Include="Assets\Scripts\Misc\Source.cs" />
+     <Compile Include="Assets\Scripts\Misc\Target.cs" />
      <Compile Include="Assets\Scripts\Misc\TurnQueue.cs" />
      <Compile Include="Assets\Scripts\Players\Faction.cs" />
      <Compile Include="Assets\Scripts\Players\FactionRef.cs" />
@@ -176,6 +171,7 @@
      <Compile Include="Assets\Scripts\Tokens\Components\ID.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Plane.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Components\Stat.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Timer.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\TokenDisplay.cs" />
      <Compile Include="Assets\Scripts\Tokens\Components\Type.cs" />
@@ -214,14 +210,15 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Mart.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Myco.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Webb.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Webb2.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Ashe.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Batt.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Conf.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Garg.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Rook.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Smas.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Gate.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Monolith.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Mout.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Necr.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Voidoid\Recy.cs" />
      <Compile Include="Assets\Scripts\Tokens\TokenHandling\Obstacle.cs" />

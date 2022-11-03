@@ -18,13 +18,13 @@ namespace HOA {
 		}
 			
 		public void Legalize (bool b=true) {
-			foreach (Cell c in list) {c.Legalize(b);}	
+			foreach (Cell c in list) {c.Legal = b;}	
 		}
 		
 		public CellGroup Legal () {
 			CellGroup legal = new CellGroup();
 			foreach (Cell c in list) {
-				if (c.IsLegal()) {legal.Add(c);}
+				if (c.Legal) {legal.Add(c);}
 			}
 			return legal;
 		}
@@ -32,14 +32,14 @@ namespace HOA {
 		public CellGroup Illegal () {
 			CellGroup illegal = new CellGroup();
 			foreach (Cell c in list) {
-				if (!c.IsLegal()) {illegal.Add(c);}
+				if (!c.Legal) {illegal.Add(c);}
 			}
 			return illegal;
 		}
 
 		public CellGroup Occupiable (Token t) {
 			CellGroup occupiable = new CellGroup();
-				foreach (Cell c in list) {
+			foreach (Cell c in list) {
 				if (t.Body.CanEnter(c)) {
 					occupiable.Add(c);
 				}

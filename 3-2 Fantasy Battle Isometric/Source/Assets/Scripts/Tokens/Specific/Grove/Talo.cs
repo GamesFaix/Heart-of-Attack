@@ -1,88 +1,83 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using System;
 
 namespace HOA{
 	public class TalonedScout : Unit {
 		public TalonedScout(Source s, bool template=false){
 			id = new ID(this, EToken.TALO, s, false, template);
 			plane = Plane.Air;
-
 			ScaleMedium();
 			NewHealth(35);
 			NewWatch(4);
-
-			arsenal.Add(new AMovePath(this, 6));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 12));
-			arsenal.Add(new ATaloGust(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 6),
+				new AStrike(this, 12),
+				new ATaloGust(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class ATaloGust : Action {
+	public class ATaloGust : Task {
 
-		int damage;
-		
-		public ATaloGust (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
-			AddAim(HOA.Aim.Melee());
-			damage = 15;
-			
-			name = "Arctic Gust";
-			desc = "Do "+damage+" damage target Unit." +
+		public override string Desc {get {return "Do "+damage+" damage target Unit." +
 				"\nTarget's Move range -2 until end of its next turn." +
-				"\nTarget's neighbors and cellmates' Move range -1 until end of their next turn." +
-				"\n("+actor.ID.Name+"'s Move range is not affected.)";
+					"\nTarget's neighbors and cellmates' Move range -1 until end of their next turn." +
+						"\n("+Parent.ID.Name+"'s Move range is not affected.)";} }
+
+		int damage = 15;
+		
+		public ATaloGust (Unit parent) {
+			Parent = parent;
+			Name = "Arctic Gust";
+			Weight = 4;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Melee());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
-			if ((u.Arsenal()[0]) is AMove) {
-				AMove move = (AMove)u.Arsenal()[0];
-				Aim oldAim = move.Aim[0];
-				Aim newAim = new Aim(oldAim.Trajectory, oldAim.Type, oldAim.Purpose, oldAim.Range-2);
-
-				u.Arsenal().Remove(move);
-				u.Arsenal().Add(new AMove(u, newAim));
-				u.Arsenal().Sort();
-
-				u.timers.Add(new TFreeze(u, actor, move, 2));
+			EffectQueue.Add(new EDamage (new Source(Parent), u, damage));
+			if (u.Arsenal().Move != default(Task)) {
+				Task move = u.Arsenal().Move;
+				Aim aim = move.Aim[0];
+				aim.Range -= 2;
+				u.timers.Add(new TFreeze(u, Parent, move, 2));
 			}				
 
 			TokenGroup neighborUnits = u.Body.Neighbors().OnlyType(EType.UNIT);
 
 			foreach (Token t in neighborUnits) {
 				u = (Unit)t;
-				if (u != actor
-				&& (u.Arsenal()[0]) is AMove) {
-					AMove move = (AMove)u.Arsenal()[0];
-					Aim oldAim = move.Aim[0];
-					Aim newAim = new Aim(oldAim.Trajectory, oldAim.Type, oldAim.Purpose, oldAim.Range-1);
+				if (u != Parent
+				&& (u.Arsenal().Move != default(Task))) {
+					Task move = u.Arsenal().Move;
+					Aim aim = move.Aim[0];
+					aim.Range -= 1;
 
-					u.Arsenal().Remove(move);
-					u.Arsenal().Add(new AMove(u, newAim));
-					u.Arsenal().Sort();
-
-					u.timers.Add(new TFreeze(u, actor, move, 1));
-
+					u.timers.Add(new TFreeze(u, Parent, move, 1));
 					u.Display.Effect(EEffect.STATDOWN);
 				}
 			}
-			Targeter.Reset();
 		}
 	}
 	public class TFreeze : Timer {
-		
-		AMove move;
 
-		public TFreeze (Unit par, Token s, AMove m, int n) {
+		int amount;
+
+		public TFreeze (Unit par, Token s, Task m, int n) {
 			parent = par;
 			turns = 1;
-			
-			move = m;
+
+			amount = n;
 
 			name = "Arctic Gusted";
 			desc = parent.ToString()+"'s Move range reduced until end of its next turn.";
@@ -91,11 +86,10 @@ namespace HOA{
 		
 		public override void Activate () {
 
-			if ((parent.Arsenal()[0]) is AMove) {
-				AMove oldMove = (AMove)parent.Arsenal()[0];
-				parent.Arsenal().Remove(oldMove);
-				parent.Arsenal().Add(move);
-				parent.Arsenal().Sort();
+			if (parent.Arsenal().Move != default(Task)) {
+				Task move = parent.Arsenal().Move;
+				Aim aim = move.Aim[0];
+				aim.Range += amount;
 			}
 		}
 	}

@@ -10,37 +10,43 @@ namespace HOA{
 			ScaleLarge();
 			NewHealth(70);
 			NewWatch(4);
+			BuildArsenal();
+		}	
 
-			foreach(Action a in arsenal) {
-				if (a is AFocus) {arsenal.Remove(a);}
-			}
-			arsenal.Add(new AMartMove(this));
-			arsenal.Add(new AMartGrow(this));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 12));
-			arsenal.Add(new AMartWhip(this));
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Remove("Focus");
+			arsenal.Add(new Task[]{
+				new AMartMove(this),
+				new AMartGrow(this),
+				new AStrike(this, 12),
+				new AMartWhip(this)
+			});
 			arsenal.Sort();
-		}		
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class AMartMove : Action, IMultiMove {
+	public class AMartMove : Task, IMultiMove {
 		Cell target;
 		int range = 1;
 		public int Optional () {return 1;}
 
+		public override string Desc {get {return "Range +1 per focus.";} }
+
 		public AMartMove (Unit u) {
-			weight = 1;
-			actor = u;
-			price = new Price(1,0);
-			name = "Move";
-			desc = "Range +1 per focus.";
-			
+			Name = "Move";
+			Weight = 1;
+
+			Parent = u;
+			Price = Price.Cheap;
+
 			ResetAim();
-			
 		}
 		
 		public override void Adjust () {
-			int bonus = actor.FP;
+			int bonus = Parent.FP;
 			for (int i=0; i<bonus; i++) {
 				aim.Add(new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE));
 			}
@@ -48,7 +54,6 @@ namespace HOA{
 		
 		public override void UnAdjust () {
 			ResetAim();
-
 		}
 		
 		void ResetAim () {
@@ -56,12 +61,10 @@ namespace HOA{
 			AddAim(new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE));
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			foreach (ITarget target in targets) {
-				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+		protected override void ExecuteMain (TargetGroup targets) {
+			foreach (Target target in targets) {
+				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
 			}
-			Targeter.Reset();
 		}
 		
 		public override void Draw (Panel p) {
@@ -69,96 +72,89 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range+actor.FP);
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range+Parent.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc());	
-			
-			
+			GUI.Label(p.TallBox(descH), Desc);	
 		}
 	}
-	public class AMartGrow : Action {
+
+	public class AMartGrow : Task {
+
+		public override string Desc {get {return "Switch cells with target Destructible. " +
+				"\nRange +1 per focus.  " +
+					"\n"+Parent+" +1 Focus.";} }
 
 		public AMartGrow (Unit u) {
-			weight = 2;
-			price = Price.Cheap;
-			actor = u;
+			Name = "Grow";
+			Weight = 2;
+
+			Price = Price.Cheap;
+			Parent = u;
 			
 			AddAim(new Aim(ETraj.PATH, EType.DEST, 1));
-
-			name = "Grow";
-			desc = "Switch cells with target Destructible. " +
-				"\nRange +1 per focus.  " +
-				"\n"+actor+" +1 Focus.";
-			
 		}
 		
 		public override void Adjust () {
 			Debug.Log("adjusting");
-			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
+			int bonus = Parent.FP;
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
 			aim[0] = new Aim(ETraj.PATH, EType.DEST, 1);
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			actor.AddStat(new Source(actor), EStat.FP, 1, false);
+		protected override void ExecuteMain (TargetGroup targets) {
+			Parent.AddStat(new Source(Parent), EStat.FP, 1, false);
 
 			Token t = (Token)targets[0];
-			actor.Body.Swap(t);
+			Parent.Body.Swap(t);
 
 			UnAdjust();
-			Targeter.Reset();
 		}
 	}
 
-	public class AMartWhip : Action {
+	public class AMartWhip : Task {
 
-		int damage;
+		int damage = 18;
+
+		public override string Desc {get {return "Do "+damage+" damage target Unit." +
+				"\nRange +1 per focus." +
+					"\nIf target is killed and leaves Remains, switch cells with it's Remains.";} } 
 
 		public AMartWhip (Unit u) {
-			weight = 4;
-			price = new Price(1,1);
-			actor = u;
+			Name = "Vine Whip";
+			Weight = 4;
+
+			Price = new Price(1,1);
+			Parent = u;
 			
 			AddAim(new Aim(ETraj.LINE, EType.UNIT, EPurp.ATTACK, 2));
-			damage = 18;
-
-			name = "Vine Whip";
-			desc = "Do "+damage+" damage target Unit." +
-				"\nRange +1 per focus." +
-				"\nIf target is killed and leaves Remains, switch cells with it's Remains.";
-			
 		}
 		
 		public override void Adjust () {
 			Debug.Log("adjusting");
-			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
+			int bonus = Parent.FP;
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
 			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 2);
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage(new Source(actor), u, damage));
+			EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
 			Token dest;
 			if (u.Body.Cell.Contains(EType.DEST, out dest)) {
-				actor.Body.Swap(dest);
+				Parent.Body.Swap(dest);
 			}
 
 			UnAdjust();
-			Targeter.Reset();
 		}
 	}
 }

@@ -9,36 +9,42 @@ namespace HOA{
 
 			NewHealth(35,3);
 			NewWatch(1); 
+			BuildArsenal();
 
-			arsenal.Add(new AMovePath(this, 4));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 10));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.APER, Aim.CreateArc(2)));
-			arsenal.Add(new APiecHeal(new Price(0,2), this, 10));
-			arsenal.Sort();
-			
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[] {
+				new AMovePath(this, 4),
+				new AStrike(this, 10),
+				new ACreateArc(this, new Price(1,1), EToken.APER, 2),
+				new APiecHeal(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class APiecHeal : Action {
+	public class APiecHeal : Task {
+
+		public override string Desc {get {return "Target unit gains "+magnitude+" health." +
+				"\n(Can target self.)";} }
+
+		int magnitude = 10;
 		
-		int magnitude;
-		
-		public APiecHeal (Price p, Unit u, int n) {
-			weight = 4;
-			actor = u;
-			price = p;
+		public APiecHeal (Unit u) {
+			Name = "Heal";
+			Weight = 4;
+
+			Parent = u;
+			Price = new Price(0,2);
 			AddAim(new Aim(ETraj.ARC, EType.UNIT, 2));
-			magnitude = n;
-			
-			name = "Heal";
-			desc = "Target unit gains "+magnitude+" health.\n(Can target self.)";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EAddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EAddStat(new Source(Parent), (Unit)targets[0], EStat.HP, magnitude));
 		}
 	}
 }

@@ -10,33 +10,40 @@ namespace HOA{
 			ScaleMedium();
 			NewHealth(20,3);
 			NewWatch(3);
-
-			Aim aim = new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2);
-			arsenal.Add(new ARookVolley(Price.Cheap, this, aim, 12));
-			arsenal.Add(new ARookMove(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new ARookMove(this),
+				new ARookVolley(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class ARookVolley : Action {
+	public class ARookVolley : Task {
 		
-		int damage;
-		
-		public ARookVolley (Price p, Unit u, Aim a, int d) {
-			weight = 3;
-			actor = u;
-			price = p;
-			AddAim(a);
-			damage = d;
-			
-			name = "Volley";
-			desc = "Do "+d+" damage to target unit.\nMay only be used if neighboring or sharing cell with non-Rook teammate.\nRange +1 per focus (up to 3).";
+		int damage = 12;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit." +
+				"\nMay only be used if neighboring or sharing cell with non-Rook teammate." +
+				"\nRange +1 per focus (up to 3).";} }
+
+		public ARookVolley (Unit u) {
+			Name = "Volley";
+			Weight = 3;
+			Parent = u;
+			Price = Price.Cheap;
+			AddAim(new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2));
 		}
 
 		public override void Adjust () {
-			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
+			int bonus = Mathf.Min(Parent.FP, 3);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
@@ -44,10 +51,10 @@ namespace HOA{
 		}
 
 		public override bool Restrict () {
-			TokenGroup neighbors = actor.Body.Neighbors(true);
+			TokenGroup neighbors = Parent.Body.Neighbors(true);
 			for (int i=neighbors.Count-1; i>=0; i--) {
 				Token t = neighbors[i];
-				if (t.Owner == actor.Owner 
+				if (t.Owner == Parent.Owner 
 				    && t.ID.Code != EToken.ROOK) {
 					return false;
 				}
@@ -55,40 +62,33 @@ namespace HOA{
 			return true;
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-
-			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
 		}
-
 	}
 	
-	public class ARookMove : Action, IMultiMove {
-		Cell target;
+	public class ARookMove : Task, IMultiMove {
 		int range = 2;
 		public int Optional () {return 1;}
 
+		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+
 		public ARookMove (Unit u) {
-			weight = 1;
-			actor = u;
-			price = new Price(0,2);
-			name = "Rebuild";
-			desc = "Move "+actor+" to target cell.";
+			Name = "Rebuild";
+			Weight = 1;
+			Parent = u;
+			Price = new Price(0,2);
 
 			for (int i=0; i<range; i++) {
 				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
-				//Debug.Log(a);
 			}
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			foreach (ITarget target in targets) {
-				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+		protected override void ExecuteMain (TargetGroup targets) {
+			foreach (Target target in targets) {
+				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
 			}
-			Targeter.Reset();
 		}
 		
 		public override void Draw (Panel p) {
@@ -102,9 +102,7 @@ namespace HOA{
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc());	
-			
-			
+			GUI.Label(p.TallBox(descH), Desc);	
 		}
 	}
 }

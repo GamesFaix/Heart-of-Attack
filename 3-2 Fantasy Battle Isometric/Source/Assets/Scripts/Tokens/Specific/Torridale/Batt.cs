@@ -9,16 +9,59 @@ namespace HOA{
 			ScaleLarge();
 			NewHealth(65);
 			NewWatch(1);
-			
-			arsenal.Add(new AMovePath(this, 2));
-			arsenal.Add(new AAttack("Ram", Price.Cheap, this, Aim.Melee(), 16));
+			BuildArsenal();
+		}
 
-			arsenal.Add(new AAttack("Fling", new Price(1,1), this, Aim.Arc(3), 16));
-			
-			Aim fireAim = new Aim (ETraj.ARC, Type.UnitDest, 3);
-			arsenal.Add(new AAttackFir("Cocktail", new Price(1,2), this, fireAim, 20));	
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 2),
+				new AStrike(this, 16),
+				new ABattFling(this),
+				new ABattCocktail(this)
+			});
 			arsenal.Sort();
-		}		
+		}
+
 		public override string Notes () {return "";}
 	}	
+
+	public class ABattFling : Task {
+		
+		int damage = 16;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit.";} }
+
+		public ABattFling (Unit u) {
+			Name = "Fling";
+			Weight = 3;
+			Parent = u;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Arc(3));
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EDamage (new Source(Parent), (Unit)targets[0], damage));
+		}
+	}
+
+	public class ABattCocktail : Task {
+		int damage = 20;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+				"\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
+					"\nDestroy all destructible tokens that would take damage.";} }
+
+		public ABattCocktail (Unit u) {
+			Name = "Cocktail";
+			Weight = 3;
+			Price = new Price(1,2);
+			AddAim(new HOA.Aim(ETraj.ARC, Special.UnitDest, 3));
+			Parent = u;
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EFire(new Source(Parent), (Token)targets[0], damage));
+		}
+	}
 }

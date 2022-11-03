@@ -22,7 +22,7 @@ public class Group<t> : IEnumerable<t>, ICollection<t>, IList<t>{
 	public int Count {get {return list.Count;} }
 	public bool IsReadOnly {get {return false;} }
 
-	public void Add (t item) {if (!Contains(item)) {list.Add(item);} }
+	public virtual void Add (t item) {if (!Contains(item)) {list.Add(item);} }
 	public void Add (IEnumerable<t> collection) {foreach (t item in collection) {Add(item);} }
 	public bool Remove (t item) {
 		if (Contains(item)) {

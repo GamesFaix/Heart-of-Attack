@@ -18,7 +18,7 @@ namespace HOA{
 			TokenFactory.Remove(this);
 //			Cell oldCell = Cell;
 			Body.Exit();
-			if (log && !Type.Is(EType.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
+			if (log && !Special.Is(EType.HEART)) {GameLog.Out(s.ToString()+" destroyed "+this+".");}
 			/*if (s.Sequence != default(EffectSeq)) {
 				Debug.Log("valid sequence");
 				s.Sequence.AddToNext(new EExplosion(s, Cell, 12));

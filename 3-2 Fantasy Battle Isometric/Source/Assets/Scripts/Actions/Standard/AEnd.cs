@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 
 namespace HOA {
-	public class AEnd : Action {
-		
-		public AEnd (Unit u) {
-			weight = 0;
-			actor = u;
-			price = Price.Free;
+	public class AEnd : Task {
+
+		public override string Desc {get {return "";} }
+
+		public AEnd (Unit parent) {
+			Parent = parent;
+			Name = "End turn";
+			Weight = 0;
+			Price = Price.Free;
 			AddAim(HOA.Aim.Self());
-			
-			name = "End turn";
-			desc = "";
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			EffectQueue.Add(new EAdvance(new Source(actor)));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EAdvance(new Source(Parent)));
 		}
 	}
 }

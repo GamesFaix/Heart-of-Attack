@@ -3,35 +3,29 @@ using System.Collections.Generic;
 
 namespace HOA {
 	
-	public class AMovePath : Action, IMultiMove {
+	public class AMovePath : Task, IMultiMove {
 
-
-		Cell target;
+		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+		
 		int range;
 		public int Optional () {return 1;}
 
-		public AMovePath (Unit u, int r) {
-			weight = 1;
-			actor = u;
-			name = "Move";
-			desc = "Move "+actor+" to target cell.";
-
+		public AMovePath (Unit parent, int r) {
+			Parent = parent;
+			Name = "Move";
+			Weight = 1;
 			range = r;
 			for (int i=0; i<range; i++) {
 				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
-				//Debug.Log(a);
 			}
-
-
+			Price = Price.Cheap;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			foreach (ITarget target in targets) {
-				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+		protected override void ExecuteMain (TargetGroup targets) {
+			foreach (Target target in targets) {
+				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
 			}
-			Targeter.Reset();
 		}
 
 		public override void Draw (Panel p) {
@@ -45,9 +39,7 @@ namespace HOA {
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc());	
-			
-			
+			GUI.Label(p.TallBox(descH), Desc);	
 		}
 	}
 }

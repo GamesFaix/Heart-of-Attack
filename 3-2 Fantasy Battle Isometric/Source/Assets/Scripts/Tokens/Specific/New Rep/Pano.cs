@@ -10,12 +10,19 @@ namespace HOA{
 			ScaleLarge();
 			health = new HealthPano(this, 65);
 			NewWatch(1);
+			BuildArsenal();
+		}	
 
-			arsenal.Add(new AMovePath(this, 1));
-			arsenal.Add(new APanoCannon(Price.Cheap, this, 12));
-			arsenal.Add(new APanoPierce(new Price(1,2), this, 20));
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[] {
+				new AMovePath(this, 1),
+				new APanoCannon(this, Price.Cheap, 12),
+				new APanoPierce(this, new Price(1,2), 20),
+			});
 			arsenal.Sort();
-		}		
+		}
+
 		public override string Notes () {return "Defense +1 per Focus (up to +2).";}
 	}	
 
@@ -28,67 +35,66 @@ namespace HOA{
 		}
 	}
 
-	public class APanoCannon : Action {
-		int damage;
-		
-		public APanoCannon (Price p, Unit u, int d) {
-			weight = 3;
-			price = p;
-			actor = u;
+	public class APanoCannon : Task {
+
+		int damage = 12;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit.  " +
+				"\nMax range +1 per focus (up to +3).";} }
+
+		public APanoCannon (Unit u, Price p, int damage) {
+			Name = "Cannon";
+			Weight = 3;
+
+			Price = p;
+			Parent = u;
 			
 			AddAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
-			damage = d;
-			
-			name = "Cannon";
-			desc = "Do "+d+" damage to target unit.  " +
-				"\nMax range +1 per focus (up to +3).";
-			
+			this.damage = damage;
 		}
 
 		public override void Adjust () {
-			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
+			int bonus = Mathf.Min(Parent.FP, 3);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus, aim[0].MinRange);
 		}
 
 		public override void UnAdjust () {
 			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
-	public class APanoPierce : Action {
-		int damage;
-		
-		public APanoPierce (Price p, Unit u, int d) {
-			weight = 4;
-			price = p;
-			actor = u;
+	public class APanoPierce : Task {
+
+		int damage = 12;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit (ignore defense).  " +
+				"\nMax range +1 per focus (up to +3)."; } }
+
+		public APanoPierce (Unit u, Price p, int damage) {
+			Name = "Armor Pierce";
+			Weight = 4;
+
+			Price = p;
+			Parent = u;
 			
 			AddAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
-			damage = d;
-			
-			name = "Armor Pierce";
-			desc = "Do "+d+" damage to target unit (ignore defense).  " +
-				"\nMax range +1 per focus (up to +3).";
+			this.damage = damage;
 		}
 
 		public override void Adjust () {
-			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
+			int bonus = Mathf.Min(Parent.FP, 3);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus, aim[0].MinRange);
 		}
 
 		public override void UnAdjust () {
 			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 4, 3);
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EPierce (new Source(actor), (Unit)targets[0], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EPierce (new Source(Parent), (Unit)targets[0], damage));
 		}
 	}
 }

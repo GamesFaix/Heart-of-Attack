@@ -10,38 +10,44 @@ namespace HOA{
 			ScaleMedium();
 			NewHealth(40);
 			NewWatch(4);
-
-			arsenal.Add(new AMovePath(this, 5));
-			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 12));
-			arsenal.Add(new ACreate(new Price(0,1), this, EToken.MINE));
-			arsenal.Add(new AMeinDetonate(new Price(1,1), this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 5),
+				new AShoot(this, 2, 12),
+				new ACreate(this, new Price(0,1), EToken.MINE),
+				new AMeinDetonate(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class AMeinDetonate : Action {
-		
-		public AMeinDetonate (Price p, Unit u) {
-			weight = 4;
-			actor = u;
-			price = p;
+	public class AMeinDetonate : Task {
+
+		public override string Desc {get {return "Destroy all mines on team.";} }
+
+		public AMeinDetonate (Unit u) {
+			Name = "Detonate";
+			Weight = 4;
+
+			Parent = u;
+			Price = new Price(1,1);
 			AddAim(new Aim(ETraj.GLOBAL, EType.DEST));
-			
-			name = "Detonate";
-			desc = "Destroy all mines on team.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			TokenGroup mines = actor.Owner.OwnedUnits;
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup mines = Parent.Owner.OwnedUnits;
 			for (int i=mines.Count-1; i>=0; i--) {
 				Token t = mines[i];
 				if (t.ID.Code != EToken.MINE) {mines.Remove(t);}
 			}
 			
-			foreach (Token t in mines) {t.Die(new Source(actor));}
-			Targeter.Reset();
+			foreach (Token t in mines) {t.Die(new Source(Parent));}
 		}
 	}
 }

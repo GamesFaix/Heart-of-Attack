@@ -11,64 +11,68 @@ namespace HOA{
 			NewHealth(75,2);
 			NewWatch(3);
 			NewWallet(3);
-
-			arsenal.Add(new AMovePath(this, 4));
-			arsenal.Add(new ADreaBeam(this));
-
-			arsenal.Add(new ACreate(Price.Cheap, this, EToken.PRIS));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.AREN));
-			arsenal.Add(new ACreate(new Price(1,2), this, EToken.PRIE));
-			arsenal.Add(new ADreaTeleport(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 4),
+				new ADreaBeam(this),
+				new ADreaTeleport(this),
+
+				new ACreate(this, Price.Cheap, EToken.PRIS),
+				new ACreate(this, new Price(1,1), EToken.AREN),
+				new ACreate(this, new Price(1,2), EToken.PRIE)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class ADreaTeleport : Action, ITeleport {
-		Aim aim2;
-		
+	public class ADreaTeleport : Task, ITeleport {
+		public override string Desc {get {return "Move target enemy (exluding Attack Kings) to target cell." +
+				"\n"+aim[1].ToString();} }
+
 		public ADreaTeleport (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
 			AddAim(new Aim(ETraj.ARC, EType.UNIT, 5));
 			aim[0].EnemyOnly = true;
 			aim[0].NoKings = true;
 			AddAim(new Aim(ETraj.ARC, EType.CELL, EPurp.MOVE, 5));
-			
-			name = "Teleport Enemy";
-			desc = "Move target enemy (exluding Attack Kings) to target cell.\n"+aim[1].ToString();
+
+			Name = "Teleport Enemy";
+			Weight = 4;
+			Parent = u;
+			Price = new Price(1,1);
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new ETeleport(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ETeleport(new Source(Parent), (Unit)targets[0], (Cell)targets[1]));
 		}
 	}
 
-	public class ADreaBeam : Action {
+	public class ADreaBeam : Task {
 		
 		int damage = 12;
-		
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit." +
+				"\nTarget loses all Focus.";} } 
+
 		public ADreaBeam (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
+			Name = "Psi Beam";
+			Weight = 4;
+
+			Parent = u;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.Shoot(3));
 
-			name = "Psi Beam";
-			desc = "Do "+damage+" damage to target unit.\nTarget loses all Focus.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
-			EffectQueue.Add(new EAddStat (new Source(actor), u, EStat.FP, 0-u.FP));
-
-			//AEffects.Damage (new Source(actor), (Unit)targets[0], damage);
-			Targeter.Reset();
+			EffectQueue.Add(new EDamage (new Source(Parent), u, damage));
+			EffectQueue.Add(new EAddStat (new Source(Parent), u, EStat.FP, 0-u.FP));
 		}
 	}
 }

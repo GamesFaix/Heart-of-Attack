@@ -87,7 +87,7 @@ namespace HOA {
 						//Debug.Log("instance selected");
 					}
 					p.ResetX();
-					GUI.Box(box, t.Display.spriteCard.Tex, p.s);
+					GUI.Box(box, t.Display.Sprite, p.s);
 //					t.Draw(box);
 					
 					p.y2 += btnW;
@@ -109,14 +109,14 @@ namespace HOA {
 
 
 		static bool LegalCellSelection () {
-			if (cell != default(Cell) && cell.IsLegal()) {
+			if (cell != default(Cell) && cell.Legal) {
 				return true;
 			}
 			return false;
 		}
 		
 		static bool LegalInstanceSelection () {
-			if (instance !=default(Token) && instance.IsLegal()) {
+			if (instance !=default(Token) && instance.Legal) {
 				return true;	
 			}
 			return false;

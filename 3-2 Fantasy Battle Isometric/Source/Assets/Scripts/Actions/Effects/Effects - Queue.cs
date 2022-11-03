@@ -5,12 +5,15 @@ namespace HOA {
 
 	public class EAdvance : Effect {		
 		public override string ToString () {return "Effect - Advance";}
-		
-		public EAdvance (Source s) {
+
+		bool log;
+
+		public EAdvance (Source s, bool log=true) {
 			source = s;
+			this.log = log;
 		}
 		public override void Process() {
-			TurnQueue.Advance();
+			TurnQueue.Advance(log);
 			Mixer.Play(SoundLoader.Effect(EEffect.ADVANCE));
 		}
 	}	

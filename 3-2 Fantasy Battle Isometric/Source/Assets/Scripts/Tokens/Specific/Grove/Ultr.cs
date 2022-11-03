@@ -14,91 +14,88 @@ namespace HOA{
 			NewHealth(80);
 			NewWatch(2);
 			NewWallet(3);
-			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
-			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 16));
-			arsenal.Add(new AUltrBlast(this));
-			arsenal.Add(new ACreate(Price.Cheap, this, EToken.GRIZ));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.TALO));
-			arsenal.Add(new AUltrCreateMeta(new Price(1,2), this, EToken.META));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 3),
+				new AStrike(this, 16),
+				new AUltrThrow(this),
+				new AUltrBlast(this),
+				new ACreate(this, Price.Cheap, EToken.GRIZ),
+				new ACreate(this, new Price(1,1), EToken.TALO),
+				new AUltrCreateMeta(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}	
 
-	public class AUltrThrow : Action {
-		int damage;
+	public class AUltrThrow : Task {
+
+		public override string Desc {get {return "Destroy target non-Remains destructible." +
+				"\n"+aim[1].ToString()+"" +
+					"\nDo "+damage+" damage to target unit.";} } 
+
+		int damage = 16;
 		Aim aim2;
 		
-		public AUltrThrow (Price p, Unit u, int range, int dmg) {
-			weight = 4;
-			actor = u;
-			price = p;
+		public AUltrThrow (Unit parent) {
 			AddAim(new Aim(ETraj.NEIGHBOR, EType.DEST));
-			AddAim(HOA.Aim.Arc(range));
-			damage = dmg;
-			
-			name = "Throw Terrain";
-			desc = "Destroy target non-Remains destructible.\n"+aim[1].ToString()+"\nDo "+damage+" damage to target unit.";
-		}
+			AddAim(HOA.Aim.Arc(3));
+
+			Name = "Throw Terrain";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(1,1);
+		} 
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EKill (new Source(actor), (Token)targets[0]));
-			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[1], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EKill (new Source(Parent), (Token)targets[0]));
+			EffectQueue.Add(new EDamage(new Source(Parent), (Unit)targets[1], damage));
 		}
 	}
 
-	public class AUltrCreateMeta : Action {
-		
-		Cell cell;
-		EToken child;
-		Token chiTemplate;
-		
-		public AUltrCreateMeta (Price p, Unit par, EToken chi) {
-			weight = 5;
-			price = p;
-			actor = par;
+	public class AUltrCreateMeta : Task {
+
+		public override string Desc {get {return "Replace target non-remains destructible with Metaterrainean.";} }
+
+		public AUltrCreateMeta (Unit parent) {
+			Name = "Animate Metaterrainean";
+			Weight = 5;
+			Price = new Price(1,2);
+			Parent = parent;
 			AddAim(new Aim (ETraj.NEIGHBOR, EType.DEST));
-			
-			child = chi;
-			chiTemplate = TemplateFactory.Template(child);
-			
-			name = chiTemplate.ID.Name;
-			desc = "Replace target non-remains destructible with "+name+".";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], child));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.META));
 		}
 	}
 
-	public class AUltrBlast : Action {
+	public class AUltrBlast : Task {
+
+		public override string Desc {get {return "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.";} }
+
+		int damage = 20;
 		
-		int damage;
-		
-		public AUltrBlast (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
+		public AUltrBlast (Unit parent) {
+			Name = "Ice Blast";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.Shoot(2));
-			damage = 20;
-			
-			name = "Ice Blast";
-			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
+			EffectQueue.Add(new EDamage (new Source(Parent), u, damage));
 
-			u.AddStat (new Source(actor), EStat.IN, -2);
-			u.timers.Add(new TBlast(u, actor));
-			Targeter.Reset();
+			u.AddStat (new Source(Parent), EStat.IN, -2);
+			u.timers.Add(new TBlast(u, Parent));
 		}
 	}
 	public class TBlast : Timer {

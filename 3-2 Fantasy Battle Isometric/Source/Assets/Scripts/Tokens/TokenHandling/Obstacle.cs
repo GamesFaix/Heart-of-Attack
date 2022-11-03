@@ -7,13 +7,13 @@ namespace HOA {
 
 		public Obstacle () {
 			body = new Body(this);
-			type = new Type(EType.OB);
+			type = new Special(EType.OB);
 			plane = Plane.Gnd;
 		}
 
 		protected void BuildHeart () {
 			plane = Plane.Tall;
-			type = new Type(new List<EType> {EType.OB, EType.HEART});
+			type = new Special(new List<EType> {EType.OB, EType.HEART});
 			Neutralize();
 		}
 

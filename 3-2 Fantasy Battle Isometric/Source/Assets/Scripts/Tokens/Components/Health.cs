@@ -3,9 +3,7 @@
 namespace HOA {
 	
 	public class Health{
-		protected int hp;
-		protected int max;
-		protected int def;
+		protected int hp, max, def;
 		protected Unit parent;
 		
 		public Health () {}

@@ -6,13 +6,13 @@ public class GUIInspector : MonoBehaviour {
 
 	static Panel panel;
 	
-	static ITarget inspected = default(ITarget);
+	static Target inspected = default(Target);
 
-	public static ITarget Inspected {
+	public static Target Inspected {
 		get {return inspected;}
 		set {
 			inspected = value;
-			inspectedAction = default(Action);
+			inspectedAction = default(Task);
 			CameraPanner.Focus(inspected);
 		}
 	}
@@ -22,7 +22,7 @@ public class GUIInspector : MonoBehaviour {
 	float iconSize = 30;
 	float internalH = 0;
 			
-	static Action inspectedAction =  default(Action);
+	static Task inspectedAction =  default(Task);
 	static ETip tip;			
 	public static ETip Tip {set {tip = value;}}
 
@@ -120,7 +120,7 @@ public class GUIInspector : MonoBehaviour {
 	}
 	void Cell (Token t, Panel p, Panel super) {
 		GUI.Box(p.FullBox, "");
-		GUI.Box(p.Box(iconSize), Icons.Type(EType.CELL), p.s);
+		GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(iconSize*2), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);
@@ -162,37 +162,37 @@ public class GUIInspector : MonoBehaviour {
 		Rect box;
 		string str = "";
 
-		if (t.Type.Is(EType.KING)) {
+		if (t.Special.Is(EType.KING)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Type(EType.KING), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Special(EType.KING), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.KING;
 			}
 		}	
-		if (t.Type.Is(EType.HEART)) {
+		if (t.Special.Is(EType.HEART)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Type(EType.HEART), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Special(EType.HEART), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)){
 				tip = ETip.HEART;
 			}
 		}
-		if (t.Type.Is(EType.DEST)) {
+		if (t.Special.Is(EType.DEST)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Type(EType.DEST), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Special(EType.DEST), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.DEST;
 			}
 		}
-		if (t.Type.Is(EType.REM)) {
+		if (t.Special.Is(EType.REM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Type(EType.REM), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Special(EType.REM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.REM;
 			}
 		}
-		if (t.Type.Is(EType.TRAM)) {
+		if (t.Special.Is(EType.TRAM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Type(EType.TRAM), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Special(EType.TRAM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.TRAM;
 			}
@@ -355,7 +355,7 @@ public class GUIInspector : MonoBehaviour {
 			p.NextLine();
 		}
 
-		foreach (Action a in u.Arsenal()) {
+		foreach (Task a in u.Arsenal()) {
 			p.NudgeX();
 
 			box = p.Box(btnW);
@@ -381,11 +381,11 @@ public class GUIInspector : MonoBehaviour {
 		}
 
 
-		Action(new Panel(new Rect (p.X+btnW+10, p.Y, p.W-btnW-25, p.LineH*9), p.LineH, p.s));
+		Task(new Panel(new Rect (p.X+btnW+10, p.Y, p.W-btnW-25, p.LineH*9), p.LineH, p.s));
 
 		p.NextLine();
 
-		if (Targeter.Pending() != default(Action)) {
+		if (Targeter.Pending() != default(Task)) {
 			p.NudgeX(); p.NudgeY();
 			GUI.Label(p.TallBox(3), "Pending: \n"+Targeter.PendingString());
 
@@ -417,15 +417,15 @@ public class GUIInspector : MonoBehaviour {
 		}
 	}
 
-	void Action (Panel p) {
+	void Task (Panel p) {
 		GUI.Box (p.FullBox, "");
-		if (inspectedAction != default(Action)) {
+		if (inspectedAction != default(Task)) {
 			inspectedAction.Draw(p);
 		}
 	}
 
 	void Cell (Cell c, Panel p, Panel super) {
-		GUI.Box(p.Box(iconSize), Icons.Type(EType.CELL), p.s);
+		GUI.Box(p.Box(iconSize), Icons.Special(EType.CELL), p.s);
 		p.NudgeX(); p.NudgeY();
 		GUI.Label(p.Box(0.5f), c.ToString(), p.s);
 		p.NextLine();

@@ -63,7 +63,7 @@ namespace HOA {
 
 		public static Texture2D Stat(EStat s) {return stats[s];}
 		public static Texture2D Plane(EPlane p) {return planes[p];}
-		public static Texture2D Type(EType s) {return types[s];}
+		public static Texture2D Special(EType s) {return types[s];}
 		public static Texture2D Traj(ETraj a) {return trajectories[a];}
 
 		public static Texture2D SKIP() {return skip;}

@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Type(EType.HEART));
+			GUI.Box(iconBox, Icons.Special(EType.HEART));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Heart of Attack", p.s);
 			p.NudgeY();

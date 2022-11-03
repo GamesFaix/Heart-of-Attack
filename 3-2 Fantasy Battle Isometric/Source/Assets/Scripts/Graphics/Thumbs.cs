@@ -17,7 +17,7 @@ namespace HOA {
 			Add(EToken.REVO, "REVO"); Add(EToken.PIEC, "PIEC"); Add(EToken.APER, "APER"); Add(EToken.REPR, "REPR"); Add(EToken.OLDT, "OLDT");
 			Add(EToken.LICH, "LICH"); Add(EToken.BEES, "BEES"); Add(EToken.MYCO, "MYCO"); Add(EToken.MART, "MART"); Add(EToken.BLAC, "BLAC"); Add(EToken.WEBB, "WEBB");
 			Add(EToken.PRIS, "PRIS"); Add(EToken.AREN, "AREN"); Add(EToken.PRIE, "PRIE"); Add(EToken.DREA, "DREA");
-			Add(EToken.RECY, "RECY"); Add(EToken.NECR, "NECR"); Add(EToken.MOUT, "MOUT"); Add(EToken.MONO, "MONO");
+			Add(EToken.RECY, "RECY"); Add(EToken.NECR, "NECR"); Add(EToken.GATE, "MOUT"); Add(EToken.MONO, "MONO");
 
 			Add(EToken.HSIL, "HSIL"); Add(EToken.HSTE, "HSTE"); Add(EToken.HSTO, "HSTO"); Add(EToken.HFIR, "HFIR"); 
 			Add(EToken.HBRA, "HBRA"); Add(EToken.HSLK, "HSLK"); Add(EToken.HGLA, "HGLA"); Add(EToken.HBLO, "HBLO");

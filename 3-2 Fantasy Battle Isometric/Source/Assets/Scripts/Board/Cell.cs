@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HOA {
 	
-	public class Cell : ITarget {
+	public class Cell : Target {
 		int x, y;
 		public int X {get {return x;} }
 		public int Y {get {return y;} }
@@ -16,17 +16,7 @@ namespace HOA {
 			if (x>0) {CellDisplay.Attach(this);}
 		}
 
-		CellDisplay display;
-		public CellDisplay Display {
-			get {return display;}
-			set {display = value;}
-		}
-		public ITargetDisplay TargetDisplay() {return display;}
-
-
-		public Vector3 Location {get {return display.gameObject.transform.position;} }
-
-//		public void SpriteEffect (EEffect e) {Display.Effect(e);}
+		public Vector3 Location {get {return Display.gameObject.transform.position;} }
 
 		Token[] tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		
@@ -61,7 +51,7 @@ namespace HOA {
 		}
 		public bool Contains (EType s) {
 			foreach (Token t in Occupants) {
-				if (t.Type.Is(s)) {return true;}
+				if (t.Special.Is(s)) {return true;}
 			}
 			return false;
 		}
@@ -69,7 +59,7 @@ namespace HOA {
 		public bool Contains (EType c, out Token occupant){
 			occupant = default(Token);
 			foreach (Token t in Occupants) {
-				if (t.Type.Is(c)) {
+				if (t.Special.Is(c)) {
 					occupant = t;
 					return true;
 				}
@@ -112,7 +102,7 @@ namespace HOA {
 			}
 		}
 
-		public void EnterSunken (Token t) {Display.EnterSunken(t);}
+		public void EnterSunken (Token t) {((CellDisplay)Display).EnterSunken(t);}
 
 		public void Exit (Token t) {
 			for (int i=0; i<=3; i++){
@@ -124,7 +114,7 @@ namespace HOA {
 			foreach (Sensor s in sensors) {s.OtherExit(t);}
 		}
 
-		void ExitSunken () {Display.ExitSunken();}
+		void ExitSunken () {((CellDisplay)Display).ExitSunken();}
 
 		public void Clear () {
 			tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
@@ -152,16 +142,6 @@ namespace HOA {
 			}
 			if (self) {neighbors.Add(this);}
 			return neighbors;
-		}
-
-		//ITarget
-		public void Select (Source s) {GUISelectors.Cell = this;}
-		bool legal = false;
-		public bool IsLegal() {return legal;}
-		public void Legalize (bool l=true) {
-			legal = l;
-			if (legal) {Display.legalCard.Show();}
-			else {Display.legalCard.Hide();}
 		}
 
 		bool[] stop = new bool[4];

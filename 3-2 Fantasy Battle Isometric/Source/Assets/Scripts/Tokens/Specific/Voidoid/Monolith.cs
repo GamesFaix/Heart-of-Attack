@@ -13,34 +13,34 @@ namespace HOA{
 			NewHealth(100);
 			NewWatch(2);
 			NewWallet(3);
-			
-			NewArsenal();
-			arsenal.Add(new AFocus(this));
-			arsenal.Add(new AMovePath(this, 4));
-			arsenal.Add(new ARage(Price.Cheap, this, Aim.Melee(), 20));
-			
-			//arsenal.Add(new AMonoFlame(this));
-			arsenal.Add(new AMonoField(this));
-			arsenal.Add(new AMonoAltar(this));
+			BuildArsenal();
+		}	
 
-			arsenal.Add(new ACreate(new Price(1,0), this, EToken.RECY));
-			arsenal.Add(new AMonoReanimate(new Price(1,0), this));
-			arsenal.Add(new ACreate(new Price(2,1), this, EToken.NECR));
-
-			Aim aim = new Aim(ETraj.ARC, EType.CELL, EPurp.CREATE, 3,3);
-			arsenal.Add(new ACreate(new Price(1,2), this, EToken.MOUT, aim));
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 4),
+				new ARage(this, 20),
+				new AMonoField(this),
+				new AMonoAltar(this),
+				new ACreate(this, new Price(1,0), EToken.RECY),
+				new AMonoReanimate(this, new Price(1,0)),
+				new ACreate(this, new Price(2,1), EToken.NECR),
+				new ACreateArc(this, new Price(1,2), EToken.GATE, 3,3)
+			});
 			arsenal.Sort();
-		}		
+		}
+
 		public override string Notes () {return "";}
 	}
 	/*
-	public class AMonoFlame : Action {
+	public class AMonoFlame : Task {
 		int damage;
 		
 		public AMonoFlame (Unit u) {
 			weight = 4;
-			price = new Price(1,2);
-			actor = u;
+			Price = new Price(1,2);
+			Parent = u;
 			
 			AddAim(new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2));
 			damage = 20;
@@ -49,11 +49,11 @@ namespace HOA{
 			desc = "Do "+damage+" damage to target unit. \nTarget's neighbors and cellmates take 50% damage (rounded down). \nDamage continues spreading until less than 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
+		public override void Execute (TargetGroup targets) {
 			Charge();
 			Token tar = (Token)targets[0];
 
-			TokenGroup affected = new TokenGroup(actor);
+			TokenGroup affected = new TokenGroup(Parent);
 			TokenGroup thisRad = new TokenGroup(tar);
 			TokenGroup nextRad = new TokenGroup();
 			
@@ -65,7 +65,7 @@ namespace HOA{
 					
 					if (!affected.Contains(next)) {		
 						next.Display.Effect(EEffect.FIRE);
-						AEffects.DamageDest(new Source(actor), next, dmg);
+						AEffects.DamageDest(new Source(Parent), next, dmg);
 						
 						foreach (Token t in next.Neighbors(true)) {
 							nextRad.Add(t);
@@ -83,60 +83,50 @@ namespace HOA{
 	}
 	*/
 
-	public class AMonoReanimate : Action {
+	public class AMonoReanimate : Task {
 
-		public AMonoReanimate (Price p, Unit par) {
-			weight = 5;
-			price = p;
-			actor = par;
+		public override string Desc {get {return "Replace target remains with Recyclops.";} }
+
+		public AMonoReanimate (Unit par, Price p) {
+			Name = "Recycle Recyclops";
+			Weight = 5;
+			Price = p;
+			Parent = par;
 			AddAim(new Aim (ETraj.NEIGHBOR, EType.REM));
-
-			//Token childTemplate = TemplateFactory.Template(EToken.RECY);
-			
-			name = "Recycle Recyclops";
-			desc = "Replace target remains with Recyclops.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], EToken.RECY));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.RECY));
 		}
 	}
 
-	public class AMonoField : Action {
-		
-		int range;
-		int damage;
-		
-		public AMonoField (Unit u) {
-			weight = 4;
-			price = new Price(1,1);
-			actor = u;
-			AddAim(HOA.Aim.Self());
-			damage = 5;
-			range = 2;
+	public class AMonoField : Task {
+		int range = 2;
+		int damage = 5;
 
-			name = "Death Field";
-			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.ID.Name+". " +
-				"\n"+actor.ID.Name+" gains Health equal to damage successfully dealt.";
+		public override string Desc {get {return "Do "+damage+" damage to all units within "+range+" cells of "+Parent.ID.Name+". " +
+				"\n"+Parent.ID.Name+" gains Health equal to damage successfully dealt.";} }
+
+		public AMonoField (Unit u) {
+			Parent = u;
+			Name = "Death Field";
+			Weight = 4;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Self());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-
-			CellGroup zone = Zone(actor, range);
+		protected override void ExecuteMain (TargetGroup targets) {
+			CellGroup zone = Zone(Parent, range);
 			TokenGroup affected = zone.Occupants.OnlyType(EType.UNIT);
-			affected.Remove(actor);
+			affected.Remove(Parent);
 
 			foreach (Unit u in affected) {
-				EffectQueue.Add(new ELeech(new Source(actor), u, damage));
+				EffectQueue.Add(new ELeech(new Source(Parent), u, damage));
 			}
-			Targeter.Reset();
 		}
 
-		CellGroup Zone (Token actor, int range) {
-			Cell start = actor.Body.Cell;
+		CellGroup Zone (Token Parent, int range) {
+			Cell start = Parent.Body.Cell;
 
 			int startX = start.X-range;
 			int endX = start.X+range;
@@ -156,29 +146,26 @@ namespace HOA{
 
 	}
 
-	public class AMonoAltar : Action {
-		
-		public AMonoAltar (Unit par) {
-			weight = 4;
-			price = new Price(1,0);
-			actor = par;
+	public class AMonoAltar : Task {
 
+		public override string Desc {get {return "Destroy neighboring teammate." +
+				"\nInitiative +4 for next 2 turns.";} }
+
+		public AMonoAltar (Unit par) {
+			Name = "Blood Altar ";
+			Weight = 4;
+			Price = new Price(1,0);
+			Parent = par;
 			Aim newAim = new Aim (ETraj.NEIGHBOR, EType.UNIT);
 			newAim.TeamOnly = true;
 			AddAim(newAim);
-			
-			name = "Blood Altar ";
-			desc = "Destroy neighboring teammate." +
-				"\nInitiative +4 for next 2 turns.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EKill(new Source(actor), (Token)targets[0]));
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EKill(new Source(Parent), (Token)targets[0]));
 
-			actor.AddStat (new Source(actor), EStat.IN, 4);
-			actor.timers.Add(new TAltar(actor));
-			Targeter.Reset();
+			Parent.AddStat (new Source(Parent), EStat.IN, 4);
+			Parent.timers.Add(new TAltar(Parent));
 		}
 	}
 	public class TAltar : Timer {
@@ -190,7 +177,6 @@ namespace HOA{
 			
 			name = "Blood Altaration";
 			desc = parent.ToString()+" Initiative +4 for 2 turns.";
-			
 		}
 		
 		public override void Activate () {

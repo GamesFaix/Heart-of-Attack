@@ -6,51 +6,51 @@ namespace HOA {
 	
 	public static class Legalizer {
 		
-		public static void Find (Token actor, Aim a, Cell start=default(Cell), Token other=default(Token)) {
+		public static void Find (Token Parent, Aim a, Cell start=default(Cell), Token other=default(Token)) {
 			//GUISelectors.Reset();
-			if (start == default(Cell)) {start = actor.Body.Cell;}
+			if (start == default(Cell)) {start = Parent.Body.Cell;}
 
 			switch (a.Trajectory) {
-				case ETraj.NEIGHBOR: Neighbor(start, actor, a, other); break;
-				case ETraj.LINE: Line(start, actor, a, other); break;
-				case ETraj.ARC: Arc(start, actor, a, other); break;
-				case ETraj.FREE: Free(actor, a, other); break;
+				case ETraj.NEIGHBOR: Neighbor(start, Parent, a, other); break;
+				case ETraj.LINE: Line(start, Parent, a, other); break;
+				case ETraj.ARC: Arc(start, Parent, a, other); break;
+				case ETraj.FREE: Free(Parent, a, other); break;
 				case ETraj.CELLMATE: Debug.Log("Cellmate targeting no longer active."); break;
-				case ETraj.PATH: Path(start, actor,a); break;//Debug.Log("Path aim no longer active."); break;
+				case ETraj.PATH: Path(start, Parent,a); break;//Debug.Log("Path aim no longer active."); break;
 				case ETraj.GLOBAL: Debug.Log("Global aim no longer active."); break;
 				default: break;
 			}
 		}
 
-		static void Neighbor (Cell start, Token actor, Aim a, Token other) {
+		static void Neighbor (Cell start, Token Parent, Aim a, Token other) {
 			CellGroup neighborCells = start.Neighbors(true);
 			if (a.Purpose == EPurp.MOVE) {neighborCells.Remove(start);}
 			
 			TargetGroup legal = new TargetGroup();
 			
-			if (a.Type.Is(EType.CELL)) {
+			if (a.Special.Is(EType.CELL)) {
 				if (a.Purpose == EPurp.CREATE) {legal.Add(neighborCells.Occupiable(other));}
-				if (a.Purpose == EPurp.MOVE) {legal.Add(neighborCells.Occupiable(actor));}
+				if (a.Purpose == EPurp.MOVE) {legal.Add(neighborCells.Occupiable(Parent));}
 			}
-			else {legal.Add(neighborCells.Occupants.Restrict(actor, a));}
+			else {legal.Add(neighborCells.Occupants.Restrict(Parent, a));}
 			
 			legal.Legalize();
 		}
 
-		static void Free (Token actor, Aim a, Token other) {
+		static void Free (Token Parent, Aim a, Token other) {
 			TargetGroup legal = new TargetGroup();
 			
-			if (a.Type.Is(EType.CELL)) {
+			if (a.Special.Is(EType.CELL)) {
 				if (a.Purpose == EPurp.CREATE) {legal.Add(Board.Cells.Occupiable(other));}
-        	    if (a.Purpose == EPurp.MOVE) {legal.Add(Board.Cells.Occupiable(actor));}
+        	    if (a.Purpose == EPurp.MOVE) {legal.Add(Board.Cells.Occupiable(Parent));}
 			}
-	        else {legal.Add(TokenFactory.Tokens.Restrict(actor, a));}
+	        else {legal.Add(TokenFactory.Tokens.Restrict(Parent, a));}
 			
 			legal.Legalize();
 		}
 
-		static void Path (Cell start, Token actor, Aim a) {
-			if (!a.Type.Is(EType.CELL)) {
+		static void Path (Cell start, Token Parent, Aim a) {
+			if (!a.Special.Is(EType.CELL)) {
 				
 				
 				TargetGroup legal = new TargetGroup();
@@ -62,7 +62,7 @@ namespace HOA {
 				for (int i=1; i<=a.Range; i++) {
 
 					foreach (Cell c in thisRad) {
-						legal.Add(c.Occupants.Restrict(actor, a));
+						legal.Add(c.Occupants.Restrict(Parent, a));
 						marked.Add(c);
 
 						if (c.Occupants.Count==0 ||
@@ -84,21 +84,21 @@ namespace HOA {
 
 		}
 
-		static void Line (Cell start, Token actor, Aim a, Token other) {
+		static void Line (Cell start, Token Parent, Aim a, Token other) {
 			List<CellGroup> star = CellStar(start, a.Range);
 			
 			TargetGroup legal = new TargetGroup();
 			
 			foreach (CellGroup line in star) {
 				
-				if (a.Type.Is(EType.CELL)) {
-					if (a.Purpose == EPurp.MOVE) {legal.Add(LineUntilStop(line, actor));}
+				if (a.Special.Is(EType.CELL)) {
+					if (a.Purpose == EPurp.MOVE) {legal.Add(LineUntilStop(line, Parent));}
 					if (a.Purpose == EPurp.CREATE) {legal.Add(LineUntilStop(line, other));}
 				}
 				
 				else {
 					foreach (Cell c in LineUntilToken(line)) {
-						legal.Add(c.Occupants.Restrict(actor, a));
+						legal.Add(c.Occupants.Restrict(Parent, a));
 					}
 					legal.Add(start.Occupants);
 				}
@@ -128,12 +128,12 @@ namespace HOA {
 			return star;
 		}
 		
-		static CellGroup LineUntilStop (CellGroup line, Token actor) {
+		static CellGroup LineUntilStop (CellGroup line, Token Parent) {
 			CellGroup legal = new CellGroup();
 			foreach (Cell c in line) {
-				if (actor.Body.CanEnter(c)) {legal.Add(c);}
+				if (Parent.Body.CanEnter(c)) {legal.Add(c);}
 				else {break;}
-				if (c.StopToken(actor)) {break;}
+				if (c.StopToken(Parent)) {break;}
 			}
 			return legal;
 		}
@@ -149,19 +149,20 @@ namespace HOA {
 			return legal;
 		}
 
-		static void Arc (Cell start, Token actor, Aim a, Token other) {
+		static void Arc (Cell start, Token Parent, Aim a, Token other) {
+
 			TargetGroup legal = new TargetGroup();
 			CellGroup square = CellSquare (start, a.Range, a.MinRange);
 			
-			if (a.Type.Is(EType.CELL)) {
+			if (a.Special.Is(EType.CELL)) {
 				if (a.Purpose == EPurp.ATTACK) {legal.Add(square);}
 				if (a.Purpose == EPurp.CREATE) {legal.Add(square.Occupiable(other));}
 				if (a.Purpose == EPurp.MOVE) {
-					if (other == default(Token)) {legal.Add(square.Occupiable(actor));}
+					if (other == default(Token)) {legal.Add(square.Occupiable(Parent));}
 					else {legal.Add(square.Occupiable(other));}
 				}
 			}
-			else {legal.Add(square.Occupants.Restrict(actor, a));}
+			else {legal.Add(square.Occupants.Restrict(Parent, a));}
 			legal.Legalize();
 		}
 		
@@ -188,15 +189,15 @@ namespace HOA {
 			return ring;
 		}
 
-		public static void FindArenMove (Token actor, Aim a) {
-			CellGroup block = ((ArenaNonSensus)actor).Cells;
+		public static void FindArenMove (Token Parent, Aim a) {
+			CellGroup block = ((ArenaNonSensus)Parent).Cells;
 
 			CellGroup neighbors = new CellGroup();
 			foreach (Cell c in block) {neighbors.Add(c.Neighbors());}
 
 			foreach (Cell c in neighbors) {
-				if (actor.Body.CanEnter(c)) {
-					c.Legalize();
+				if (Parent.Body.CanEnter(c)) {
+					c.Legal = true;
 				}
 			}
 		}

@@ -10,7 +10,7 @@ namespace HOA {
 		void OnGUI(){
 
 			if (Input.GetMouseButtonUp(0)){
-				ITarget target = ClosestLegalTargetToCamera();
+				Target target = ClosestLegalTargetToCamera();
 				if (target != null) {
 					Targeter.Select(target);
 					GUIMaster.PlaySound(EGUISound.TARGET);
@@ -18,11 +18,13 @@ namespace HOA {
 			}
 
 			if (Input.GetMouseButtonUp(1)) { 
-				ITarget target = null;
+				Target target = null;
 				if (Input.GetKey("left shift") || Input.GetKey("right shift")){
 					target = ClosestCellToCamera();
 				}
-				else {target = ClosestTokenToCamera();}
+				else {
+					target = ClosestTokenToCamera();
+				}
 
 				if (target != null) {
 					GUIInspector.Inspected = target;
@@ -31,14 +33,14 @@ namespace HOA {
 			}
 		}
 
-		ITarget ClosestLegalTargetToCamera () {
+		Target ClosestLegalTargetToCamera () {
 			return ClosestTarget(TargetsFromCamToMouse().Legal());
 		}
 
-		ITarget ClosestCellToCamera () {
+		Target ClosestCellToCamera () {
 			return ClosestTarget(TargetsFromCamToMouse().Cells());
 		}
-		ITarget ClosestTokenToCamera () {
+		Target ClosestTokenToCamera () {
 			return ClosestTarget(TargetsFromCamToMouse().Tokens());
 		}
 
@@ -61,24 +63,28 @@ namespace HOA {
 		TargetGroup TargetableGameObjects (GameObject[] objects) {
 			TargetGroup targets = new TargetGroup();
 			foreach (GameObject g in objects) {
-				ITargetDisplay display = null;
+				TargetDisplay display = null;
 				if (g.GetComponent("CellDisplay")) {
-					display = g.GetComponent("CellDisplay") as ITargetDisplay;
+					display = g.GetComponent("CellDisplay") as TargetDisplay;
+					Cell c = (Cell)display.Parent;
+					targets.Add(c);
+					Token sunk;
+					if (c.Contains(EPlane.SUNK, out sunk)) {targets.Add(sunk);}
 				}
 				if (g.GetComponent("TokenDisplay")) {
-					display = g.GetComponent("TokenDisplay") as ITargetDisplay;
+					display = g.GetComponent("TokenDisplay") as TargetDisplay;
+					targets.Add(display.Parent);
 				}
-				if (display != null) {targets.Add(display.Target());}
 			}
 			return targets;
 		}
 
-		ITarget ClosestTarget (TargetGroup targets) {
+		Target ClosestTarget (TargetGroup targets) {
 			float shortestDist = 100000;
-			ITarget closest = null;
+			Target closest = null;
 
-			foreach (ITarget t in targets) {
-				GameObject go = t.TargetDisplay().GO();
+			foreach (Target t in targets) {
+				GameObject go = t.Display.GO;
 
 				float dist = Vector3.Distance(go.transform.position, Camera.main.transform.position);
 				if (dist < shortestDist) {

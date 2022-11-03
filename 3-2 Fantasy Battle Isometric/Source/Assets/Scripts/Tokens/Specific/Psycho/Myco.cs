@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace HOA{
 	public class Mycolonist : Unit {
@@ -8,35 +9,83 @@ namespace HOA{
 			ScaleMedium();
 			NewHealth(40);
 			NewWatch(2);
-			
-			arsenal.Add(new AMovePath(this, 2));
-			arsenal.Add(new ACorrode("Spore cloud", new Price(1,0), this, Aim.Arc(2), 12));
-			arsenal.Add(new ADonate(new Price(1,0), this, Aim.Melee(), 6));
-			arsenal.Add(new AMycoSeed(new Price(1,1), this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 2),
+				new AMycoSpore(this),
+				new AMycoDonate(this),
+				new AMycoSeed(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
-	
-	public class AMycoSeed : Action {
-		
-		Cell cell;
-		Token template;
-		
-		public AMycoSeed (Price p, Unit par) {
-			weight = 5;
-			price = p;
-			actor = par;
-			AddAim(new Aim (ETraj.ARC, EType.DEST, 2));
+
+	public class AMycoSpore : Task {
+		int damage = 12;
+
+		int Cor {get {return (int)Mathf.Floor(damage*0.5f);} }
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+				"\nTarget recieves "+Cor+" corrosion counters." +
+					"\n(If a unit has corrosion counters, at the beginning of its turn " +
+						"it takes damage equal to the number of counters, " +
+						"then removes half the counters (rounded up).)";} }
+
+		public AMycoSpore (Unit u) {
+			Name = "Sporatic Emission";
+			Weight = 3;
 			
-			name = "Seed";
-			desc = "Replace target non-Remains destructible with Lichenthrope.";
+			Price = Price.Cheap;
+			AddAim(HOA.Aim.Arc(2));
+			Parent = u;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], EToken.LICH));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ECorrode(new Source(Parent), (Unit)targets[0], damage));
+		}
+	}
+
+	public class AMycoDonate : Task {
+		
+		int damage = 6;
+
+		public override string Desc {get {return "Target unit gains "+damage+" health. " +
+				"\n"+Parent+" takes damage equal to health successfully gained.";} }
+
+		public AMycoDonate (Unit u) {
+			Name = "Donate Life";
+			Weight = 4;
+			
+			Price = Price.Cheap;
+			AddAim(HOA.Aim.Melee());
+			Parent = u;
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EDonate(new Source(Parent), (Unit)targets[0], damage));
+		}
+	}
+	
+	public class AMycoSeed : Task {
+		public override string Desc {get {return "Replace target non-Remains destructible with Lichenthrope.";} }
+
+		public AMycoSeed (Unit par) {
+			Name = "Seed";
+			Weight = 5;
+
+			Price = new Price(1,1);
+			Parent = par;
+			AddAim(new Aim (ETraj.ARC, EType.DEST, 2));
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EReplace(new Source(Parent), (Token)targets[0], EToken.LICH));
 		}
 	}
 }

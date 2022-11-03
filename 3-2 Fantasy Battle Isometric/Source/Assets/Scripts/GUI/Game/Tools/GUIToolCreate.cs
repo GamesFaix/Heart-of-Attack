@@ -19,7 +19,7 @@ namespace HOA {
 				Targeter.Find(new ACreateManual(TurnQueue.Top, token));
 			}
 
-			if (Targeter.Pending() != default(Action)) {
+			if (Targeter.Pending() != default(Task)) {
 				if (GUI.Button(p.LineBox, Targeter.Pending().ToString())
 				    || Input.GetKeyUp ("space")) {
 					Targeter.Execute();

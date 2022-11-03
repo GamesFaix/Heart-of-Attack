@@ -14,42 +14,44 @@ namespace HOA{
 			health = new HealthPano(this, 85);
 			NewWatch(2);
 			NewWallet(3);
-			arsenal.Add(new ADeciMove(this));
-
-
-			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 15));
-			arsenal.Add(new APanoPierce(new Price(1,1), this, 15));
-			arsenal.Add(new ADeciMortar(new Price(2,1), this, 2, 3, 18));
-			//Aim fireAim = new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2);
-			//arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
-			//arsenal.Add(new ADeciFortify(this));
-
-			arsenal.Add(new ACreate(new Price(1,0), this, EToken.DEMO));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.MEIN));
-			arsenal.Add(new ACreate(new Price(2,2), this, EToken.PANO));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new ADeciMove(this),
+				new AShoot(this, 3, 15),
+				new APanoPierce(this, new Price(1,1), 15),
+				new ADeciMortar(this),
+				//new ADeciFortify(this),
+				new ACreate(this, new Price(1,0), EToken.DEMO),
+				new ACreate(this, new Price(1,1), EToken.MEIN),
+				new ACreate(this, new Price(2,2), EToken.PANO)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
 	}
 
-	public class ADeciMove : Action, IMultiMove {
-		Cell target;
+	public class ADeciMove : Task, IMultiMove {
+
+		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+
 		int range = 3;
 		public int Optional () {return 1;}
 		
-		public ADeciMove (Unit u) {
-			weight = 1;
-			actor = u;
-			name = "Move";
-			desc = "Move "+actor+" to target cell.";
-			
+		public ADeciMove (Unit parent) {
+			Name = "Move";
+			Weight = 1;
+			Parent = parent;
 			ResetAim();
-			
-			
+			Price = Price.Cheap;
 		}
 
 		public override void Adjust () {
-			int bonus = actor.FP;
+			int bonus = Parent.FP;
 			for (int i=0; i<bonus; i++) {
 				aim.Remove(aim[aim.Count-1]);
 			}
@@ -68,12 +70,10 @@ namespace HOA{
 			}
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			foreach (ITarget target in targets) {
-				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+		protected override void ExecuteMain (TargetGroup targets) {
+			foreach (Target target in targets) {
+				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
 			}
-			Targeter.Reset();
 		}
 		
 		public override void Draw (Panel p) {
@@ -81,123 +81,111 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, range-actor.FP));
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, range-Parent.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc());	
-			
-			
+			GUI.Label(p.TallBox(descH), Desc);	
 		}
 
 
 	}
 
 
-	public class ADeciFortify : Action {
-		public ADeciFortify (Unit u) {
-			weight = 4;
-			
-			actor = u;
-			price = new Price(1,1);
-			AddAim(HOA.Aim.Self());
-			
-			name = "Fortify";
-			desc = "Health +10/10" +
+	public class ADeciFortify : Task {
+
+		public override string Desc {get {return "Health +10/10" +
 				"\nDefense + 1" +
-				"\nAttack range +1" +
-				"\nAttack damage +4" +
-				"\nForget 'Move'" +
-				"\nLearn 'Mortar'";
-		}
-		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+					"\nAttack range +1" +
+						"\nAttack damage +4" +
+						"\nForget 'Move'" +
+						"\nLearn 'Mortar'";} }
 
-			EffectGroup nextEffects = new EffectGroup();
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.MHP, 10));
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.HP, 10));
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 1));
-			EffectQueue.Add(nextEffects);
-
-			actor.Arsenal().Remove("Move");
-			actor.Arsenal().Replace("Shoot", new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(4), 22));
-			actor.Arsenal().Replace("Fortify", new ADeciMobilize(actor));
-			actor.Arsenal().Add(new ADeciMortar(new Price(1,2), actor, 3, 5, 14));
-			actor.Arsenal().Sort();
-
-			//actor.Display.Effect(EEffect.STATUP);
-			Targeter.Reset();
-		}
-	}
-	public class ADeciMobilize : Action {
-		public ADeciMobilize (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
+		public ADeciFortify (Unit parent) {
+			Name = "Fortify";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.Self());
-			
-			name = "Mobilize";
-			desc = "Health -10/10" +
-				"\nDefense -1" +
-				"\nAttack range -1" +
-				"\nAttack damage -4" +
-				"\nLearn 'Move'" +
-				"\nForget 'Mortar'";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-
+		protected override void ExecuteMain (TargetGroup targets) {
 			EffectGroup nextEffects = new EffectGroup();
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.MHP, -10));
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.HP, -10));
-			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -1));
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.MHP, 10));
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.HP, 10));
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.DEF, 1));
 			EffectQueue.Add(nextEffects);
 
-			actor.Arsenal().Add(new AMove(actor, HOA.Aim.MovePath(2)));
-			actor.Arsenal().Replace("Shoot", new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(3), 18));
-			actor.Arsenal().Replace("Mobilize", new ADeciFortify(actor));
-			actor.Arsenal().Remove("Mortar");
-			actor.Arsenal().Sort();
-			
-			Targeter.Reset();
+			Parent.Arsenal().Remove("Move");
+			Parent.Arsenal().Replace("Shoot", new AShoot(Parent, 4, 22));
+			Parent.Arsenal().Replace("Fortify", new ADeciMobilize(Parent));
+			Parent.Arsenal().Add(new ADeciMortar(Parent));
+			Parent.Arsenal().Sort();
 		}
 	}
-	public class ADeciMortar : Action {
-		int minRange, range, damage;
+	public class ADeciMobilize : Task {
+
+		public override string Desc {get {return "Health -10/10" +
+				"\nDefense -1" +
+					"\nAttack range -1" +
+						"\nAttack damage -4" +
+						"\nLearn 'Move'" +
+						"\nForget 'Mortar'";} }
+
+		public ADeciMobilize (Unit parent) {
+			Name = "Mobilize";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Self());
+		}
 		
-		public ADeciMortar (Price p, Unit u, int mr, int r, int d) {
-			weight = 4;
-			
-			price = p;
-			actor = u;
-			AddAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, r, mr));
-			damage = d;
-			
-			name = "Mortar";
-			desc = "Do "+d+" damage to all units in target cell. " +
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectGroup nextEffects = new EffectGroup();
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.MHP, -10));
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.HP, -10));
+			nextEffects.Add(new EAddStat(new Source(Parent), Parent, EStat.DEF, -1));
+			EffectQueue.Add(nextEffects);
+
+			Parent.Arsenal().Add(new ADeciMove(Parent));
+			Parent.Arsenal().Replace("Shoot", new AShoot(Parent, 3, 18));
+			Parent.Arsenal().Replace("Mobilize", new ADeciFortify(Parent));
+			Parent.Arsenal().Remove("Mortar");
+			Parent.Arsenal().Sort();
+		}
+	}
+	public class ADeciMortar : Task {
+
+		public override string Desc {get {return "Do "+damage+" damage to all units in target cell. " +
 				"\nAll units in neighboring cells take 50% damage (rounded down). " +
-				"\nDamage continues to spread outward with 50% reduction until 1. " +
-				"\nDestroy all destructible tokens that would take damage." +
-				"\nRange +1 per Focus (up to 3)";
+					"\nDamage continues to spread outward with 50% reduction until 1. " +
+						"\nDestroy all destructible tokens that would take damage." +
+						"\nRange +1 per Focus (up to 3)";} }
+
+		int minRange, range; 
+		int damage =18;
+		
+		public ADeciMortar (Unit parent) {
+			Name = "Mortar";
+			Weight = 4;
+			Price = new Price(2,1);
+			Parent = parent;
+			AddAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, 3, 2));
 		}
 
 		public override void Adjust () {
-			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
+			int bonus = Mathf.Min(Parent.FP, 3);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Special, aim[0].Range+bonus, aim[0].MinRange);
 		}
 		
 		public override void UnAdjust () {
 			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EExplosion(new Source(actor), (Cell)targets[0], damage));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EExplosion(new Source(Parent), (Cell)targets[0], damage));
 		}
 	}
 }

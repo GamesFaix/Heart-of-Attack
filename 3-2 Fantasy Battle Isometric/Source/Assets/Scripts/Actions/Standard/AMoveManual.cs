@@ -3,24 +3,25 @@ using System.Collections.Generic;
 
 namespace HOA {
 	
-	public class AMoveManual : Action {
+	public class AMoveManual : Task {
 
-		public AMoveManual (Token t) {
-			weight = 1;
+		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+
+		Token mover;
+
+		public AMoveManual (Unit parent, Token mover) {
+			Parent = parent;
+			this.mover = mover;
+			Name = "Manual Move";
+			Weight = 1;
+			Price = Price.Free;
 			AddAim( new Aim (ETraj.FREE, EType.CELL, EPurp.MOVE));
-			actor = TurnQueue.Top;
-			childTemplate = t;
-			
-			name = "Manual Move";
-			desc = "Move "+actor+" to target cell.";
-			
 		}
 
 		public override bool Legal() {return true;}
 		
-		public override void Execute (List<ITarget> targets) {
-			EffectQueue.Add(new EMove(new Source(actor), childTemplate, (Cell)targets[0]));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EMove(new Source(Parent), mover, (Cell)targets[0]));
 		}
 	}
 }

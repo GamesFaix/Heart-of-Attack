@@ -96,7 +96,7 @@ namespace HOA {
 	public class FVoidoid : Faction {
 		public FVoidoid () {
 			name = "Voidoids";
-			tokens = new List<EToken> {EToken.MONO, EToken.MOUT, EToken.NECR, EToken.RECY, EToken.HBLO};
+			tokens = new List<EToken> {EToken.MONO, EToken.GATE, EToken.NECR, EToken.RECY, EToken.HBLO};
 			king = EToken.MONO;
 			heart = EToken.HBLO;
 			color1 = new Color(0.6f, 0.1f, 0.1f, 1);

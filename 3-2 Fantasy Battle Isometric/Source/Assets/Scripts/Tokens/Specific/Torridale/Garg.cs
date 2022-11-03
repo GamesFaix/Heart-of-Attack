@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace HOA{
+
 	public class Gargoliath : Unit {
 		public Gargoliath(Source s, bool template=false){
 			id = new ID(this, EToken.GARG, s, true, template);
@@ -11,202 +12,193 @@ namespace HOA{
 			NewHealth(75);
 			NewWatch(3);
 			NewWallet(3);
-			arsenal.Add(new AMovePath(this, 4));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 18));
-			arsenal.Add(new AGargLand(this));
-			arsenal.Add(new AGargPetrify(this));
-			arsenal.Add(new AGargRook(new Price(1,1), this));
-			arsenal.Add(new ACreate(Price.Cheap, this, EToken.SMAS));
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.CONF));
-			arsenal.Add(new ACreate(new Price(2,2), this, EToken.BATT));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal() {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 4),
+				new AStrike(this, 18),
+				new AGargLand(this),
+				new AGargPetrify(this),
+				new AGargRook(this),
+				new ACreate(this, Price.Cheap, EToken.SMAS),
+				new ACreate(this, new Price(1,1), EToken.CONF),
+				new ACreate(this, new Price(2,2), EToken.BATT)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}	
 
-	public class AGargLand : Action {
-		public AGargLand (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
-			AddAim(HOA.Aim.Self());
-			
-			name = "Land";
-			desc = "Becomes trampling ground unit. " +
+	public class AGargLand : Task {
+
+		public override string Desc {get {return "Becomes trampling ground unit. " +
 				"\nMove range -2 " +
 				"\nDefense +2" +
 				"\nForget 'Create Rook' " +
-				"\nLearn 'Tail Whip'";
+				"\nLearn 'Tail Whip'";} }
+
+		public AGargLand (Unit u) {
+			Name = "Land";
+			Weight = 4;
+			Parent = u;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Self());
 		}
 
 		public override bool Restrict () {
-			if (!actor.Body.Cell.Contains(EPlane.GND)) {return false;}
+			if (!Parent.Body.Cell.Contains(EPlane.GND)) {return false;}
 			Token t;
-			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
-				if (t.Type.Is(EType.DEST)) {return false;}
+			if (Parent.Body.Cell.Contains(EPlane.GND, out t)) {
+				if (t.Special.Is(EType.DEST)) {return false;}
 			}
 			return true;
-
 		}
 
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Token t;
-			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
-				if (t.Type.Is(EType.DEST)) {
-					EffectQueue.Add(new EDestruct(new Source(actor), t));
+			if (Parent.Body.Cell.Contains(EPlane.GND, out t)) {
+				if (t.Special.Is(EType.DEST)) {
+					EffectQueue.Add(new EDestruct(new Source(Parent), t));
 				}
 			}
 			
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 2));
-			actor.Plane.Set(EPlane.GND);
+			EffectQueue.Add(new EAddStat(new Source(Parent), Parent, EStat.DEF, 2));
+			Parent.Plane.Set(EPlane.GND);
 
-			Cell cell = actor.Body.Cell;
-			actor.Body.Exit();
-			actor.Body.Enter(cell);
+			Cell cell = Parent.Body.Cell;
+			Parent.Body.Exit();
+			Parent.Body.Enter(cell);
 
-			actor.Type.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
+			Parent.Special.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
 
-			actor.Arsenal().Replace("Move", new AMove(actor, HOA.Aim.MovePath(3)));
-			actor.Arsenal().Replace("Land", new AGargFly(actor));
-			actor.Arsenal().Replace("Create Rook", new AGargTailWhip(new Price(1,1), actor, 10));
-			actor.Arsenal().Sort();
+			Parent.Arsenal().Replace("Move", new AMovePath(Parent, 3));
+			Parent.Arsenal().Replace("Land", new AGargFly(Parent));
+			Parent.Arsenal().Replace("Create Rook", new AGargTailWhip(Parent));
+			Parent.Arsenal().Sort();
 			
-			actor.Display.Effect(EEffect.STATUP);
-			Targeter.Reset();
+			Parent.Display.Effect(EEffect.STATUP);
 		}
 	}
-	public class AGargFly : Action {
-		public AGargFly (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
-			AddAim(HOA.Aim.Self());
-			
-			name = "Take Flight";
-			desc = "Becomes air unit. " +
+	public class AGargFly : Task {
+
+		public override string Desc {get {return "Becomes air unit. " +
 				"\nMove range +2" +
 				"\nDefense -2" +
 				"\nForget 'Tail Whip'" +
-				"\nLearn 'Create Rook'";
+				"\nLearn 'Create Rook'";} }
+
+		public AGargFly (Unit u) {
+			Name = "Take Flight";
+			Weight = 4;
+					Parent = u;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Self());
+			
 		}
 		public override bool Restrict () {
-			if (actor.Body.Cell.Contains(EPlane.AIR)) {return true;}
+			if (Parent.Body.Cell.Contains(EPlane.AIR)) {return true;}
 			return false;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -2));
-			actor.Plane.Set(EPlane.AIR);
-			Cell cell = actor.Body.Cell;
-			actor.Body.Exit();
-			actor.Body.Enter(cell);
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EAddStat(new Source(Parent), Parent, EStat.DEF, -2));
+			Parent.Plane.Set(EPlane.AIR);
+			Cell cell = Parent.Body.Cell;
+			Parent.Body.Exit();
+			Parent.Body.Enter(cell);
 
-			actor.Type.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
+			Parent.Special.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
 
-			actor.Arsenal().Replace("Move", new AMove(actor, HOA.Aim.MovePath(5)));
-			actor.Arsenal().Replace("Take Flight", new AGargLand(actor));
-			actor.Arsenal().Replace("Tail Whip", new AGargRook(new Price(1,1), actor));
-			actor.Arsenal().Sort();
+			Parent.Arsenal().Replace("Move", new AMovePath(Parent, 5));
+			Parent.Arsenal().Replace("Take Flight", new AGargLand(Parent));
+			Parent.Arsenal().Replace("Tail Whip", new AGargRook(Parent));
+			Parent.Arsenal().Sort();
 
-			actor.Display.Effect(EEffect.STATUP);
-			Targeter.Reset();
+			Parent.Display.Effect(EEffect.STATUP);
 		}
 	}
 	
-	public class AGargTailWhip : Action {
-		int damage;
-		
-		public AGargTailWhip (Price p, Unit u, int d) {
-			weight = 4;
-			
-			price = p;
-			actor = u;
+	public class AGargTailWhip : Task {
+		int damage = 10;
+
+		public override string Desc {get {return "Do "+damage+" damage to all neighboring units.";} }
+
+		public AGargTailWhip (Unit u) {
+			Name = "Tail Whip";
+			Weight = 4;
+			Price = new Price(1,1);
+			Parent = u;
 			AddAim(HOA.Aim.Self());
-			damage = d;
-			
-			name = "Tail Whip";
-			desc = "Do "+d+" damage to all neighboring units.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			TokenGroup neighbors = actor.Body.Neighbors(false);
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup neighbors = Parent.Body.Neighbors(false);
 			neighbors = neighbors.OnlyType(EType.UNIT);
 			foreach (Token t in neighbors) {
 				Unit u = (Unit)t;
-				EffectQueue.Add(new EDamage(new Source(actor), u, damage));
+				EffectQueue.Add(new EDamage(new Source(Parent), u, damage));
 			}
-			Targeter.Reset();
 		}
 	}
 
-	public class AGargRook : Action {
-		
-		Token template;
-		
-		public AGargRook (Price p, Unit par) {
-			weight = 5;
-			actor = par;
-			template = TemplateFactory.Template(EToken.ROOK);
-			price = p;
-			
+	public class AGargRook : Task {
+
+		public override string Desc {get {return "Create Rook in "+Parent+"'s cell.";} } 
+
+		public AGargRook (Unit par) {
+			Name = "Build Rook";
+			Weight = 5;
+			Parent = par;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.Self());
-			
-			name = "Create "+template.ID.Name;
-			desc = "Create "+name+" in "+actor+"'s cell.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			if (!actor.Body.Cell.Occupied(EPlane.GND)) {
+		protected override void ExecuteMain (TargetGroup targets) {
+			if (!Parent.Body.Cell.Occupied(EPlane.GND)) {
 				Charge();
-				TokenFactory.Add(EToken.ROOK, new Source(actor), actor.Body.Cell);
+				TokenFactory.Add(EToken.ROOK, new Source(Parent), Parent.Body.Cell);
 			}
-			Targeter.Reset();
 		}
 	}
 
-	public class AGargPetrify : Action {
+	public class AGargPetrify : Task {
 		
-		int damage;
-		
+		int damage = 15;
+
+		public override string Desc {get {return "Target Unit takes "+damage+" damage and cannot move on its next turn.";} }
+
 		public AGargPetrify (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
+			Name = "Petrify";
+			Weight = 4;
+			Parent = u;
+			Price = new Price(1,1);
 			AddAim(HOA.Aim.Shoot(2));
-			damage = 15;
-			
-			name = "Petrify";
-			desc = "Target Unit takes "+damage+" damage and cannot move on its next turn.";
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			Unit u = (Unit)targets[0];
-			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
-			if ((u.Arsenal()[0]) is AMove) {
-				AMove move = (AMove)u.Arsenal()[0];
-				u.timers.Add(new TPetrify(u, actor, move));
+			EffectQueue.Add(new EDamage (new Source(Parent), u, damage));
+			if (u.Arsenal().Move != default(Task)) {
+				Task move = u.Arsenal().Move;
+				u.timers.Add(new TPetrify(u, Parent, move));
 				u.Arsenal().Remove(move);
 			}
-			Targeter.Reset();
 		}
 	}
 	public class TPetrify : Timer {
 		
-		AMove move;
+		Task move;
 
-		public TPetrify (Unit par, Token s, AMove m) {
+		public TPetrify (Unit par, Token s, Task m) {
 			parent = par;
 			turns = 1;
-
 			move = m;
-
 			name = "Petrified";
 			desc = parent.ToString()+" cannot move on its next turn.";
-			
 		}
 		
 		public override void Activate () {
@@ -214,9 +206,4 @@ namespace HOA{
 			parent.Arsenal().Sort();
 		}
 	}
-
-
-
-
-
 }

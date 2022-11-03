@@ -10,12 +10,19 @@ namespace HOA{
 			ScaleSmall();
 			health = new HealthDemo(this, 30);
 			NewWatch(3);
+			BuildArsenal();
+		}
 
-			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new AGrenade("Throw", new Price(1,1), this, 3, 10));
-			arsenal.Add(new ADemoSticky(this));
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[] {
+				new AMovePath(this, 3),
+				new ADemoThrow(this),
+				new ADemoSticky(this)
+			});
 			arsenal.Sort();
 		}
+
 		public override string Notes () {return "Defense +1 per Focus (up to +4).";}
 	}
 
@@ -28,27 +35,26 @@ namespace HOA{
 		}
 	}
 
-	public class ADemoSticky : Action {
+	public class ADemoSticky : Task {
 
-		public ADemoSticky (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,0);
-			AddAim(HOA.Aim.Melee());
-			int damage = 10;
-
-			name = "Plant";
-			desc = "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. " +
+		public override string Desc {get {return "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. " +
 				"\nAll units in neighboring cells take 50% damage (rounded down). " +
-				"\nDamage continues to spread outward with 50% reduction until 1. " +
-				"\nDestroy all destructible tokens that would take damage.";
+					"\nDamage continues to spread outward with 50% reduction until 1. " +
+						"\nDestroy all destructible tokens that would take damage.";} }
+
+		int damage = 10;
+
+		public ADemoSticky (Unit parent) {
+			Name = "Plant";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(1,0);
+			AddAim(HOA.Aim.Melee());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			Unit u = (Unit)targets[0];
-			u.timers.Add(new TStickyGrenade(u,actor));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			Unit target = (Unit)targets[0];
+			target.timers.Add(new TStickyGrenade(target, Parent));
 		}
 	}
 
@@ -74,5 +80,27 @@ namespace HOA{
 		}
 	}
 
+	public class ADemoThrow : Task {
+
+		public override string Desc {get {return "Do "+damage+" damage to all units in target cell. " +
+				"\nAll units in neighboring cells take 50% damage (rounded down). " +
+					"\nDamage continues to spread outward with 50% reduction until 1. " +
+						"\nDestroy all destructible tokens that would take damage.";} }
+
+		int range = 3;
+		int damage = 10;
+		
+		public ADemoThrow (Unit parent) {
+			Name = "Throw";
+			Weight = 3;
+			Price = new Price(1,1);
+			Parent = parent;
+			AddAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, range));
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EExplosion(new Source(Parent), (Cell)targets[0], damage));
+		}
+	}
 
 }

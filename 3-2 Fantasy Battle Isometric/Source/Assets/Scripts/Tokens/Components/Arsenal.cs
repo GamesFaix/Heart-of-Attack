@@ -3,61 +3,60 @@ using UnityEngine;
 using System;
 
 namespace HOA {
-	public class Arsenal : Group<Action> {
-		//Unit parent;
-		//List<Action> actions;
-		
-		public Arsenal (Unit unit) {
-		//	parent = unit;
-			list = new List<Action>();	
+	public class Arsenal : Group<Task> {
+		public Unit Parent {get; private set;}
+
+		public Arsenal (Unit parent) {
+			Parent = parent;
+			list = new List<Task>();	
 		}
 
 		public void Sort () {list.Sort();}
 
-		public void Reset () {
-			foreach (Action a in list) {a.Reset();}
-		}
+		public void Reset () {foreach (Task task in list) {task.Reset();} }
 
-		public Action Move {
+		public Task Move {
 			get {
-				foreach (Action a in list) {
-					if (a.Weight == 1) {return a;}
+				foreach (Task task in list) {
+					if (task.Weight == 1) {return task;}
 				}
-				return default(Action);
+				return default(Task);
 			}
 		}
 
-		public Action Action (string name) {
-			foreach (Action a in list) {
-				if (a.Name == name) {return a;}
+		public Task Task (string name) {
+			foreach (Task task in list) {
+				if (task.Name == name) {return task;}
 			}
-			return default(Action);
+			return default(Task);
 		}
 
-		public bool Replace (Action oldAct, Action newAct) {
-			if (oldAct == null || newAct == null) {throw new Exception("Arsenal.Replace: Null argument.");}
-			else if (!list.Contains(oldAct)) {
-				throw new Exception ("Arsenal cannot replace action.  Does not contain action '"+oldAct.Name+"'.");
+		public bool Replace (Task oldTask, Task newTask) {
+			if (oldTask == null || newTask == null) {
+				throw new Exception("Arsenal.Replace: Null argument.");
+			}
+			else if (!list.Contains(oldTask)) {
+				throw new Exception ("Arsenal cannot replace action.  Does not contain action '"+oldTask.Name+"'.");
 			}
 			else {
-				list.Remove(oldAct);
-				list.Add(newAct);
+				list.Remove(oldTask);
+				list.Add(newTask);
 				Sort();
 				return true;
 			}
 		}
 
-		public bool Replace (string name, Action newAct) {
-			Action oldAct = Action(name);
-			if (oldAct == null) {throw new Exception("Arsenal.Replace: Does not contain action '"+name+"'.");}
-			else {return Replace (oldAct, newAct);}
+		public bool Replace (string name, Task newTask) {
+			Task oldTask = Task(name);
+			if (oldTask == null) {throw new Exception("Arsenal.Replace: Does not contain action '"+name+"'.");}
+			else {return Replace (oldTask, newTask);}
 		}
 
 		public bool Remove (string name) {
-			Action act = Action(name);
-			if (act == null) {throw new Exception("Arsenal.Remove: Does not contain action '"+name+"'.");}
+			Task task = Task(name);
+			if (task == null) {throw new Exception("Arsenal.Remove: Does not contain action '"+name+"'.");}
 			else {
-				list.Remove(act);
+				list.Remove(task);
 				return true;
 			}
 		}

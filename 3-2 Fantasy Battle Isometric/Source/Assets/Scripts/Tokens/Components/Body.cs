@@ -55,16 +55,16 @@ namespace HOA {
 		}
 
 		public bool CanTrample (Cell newCell) {
-			if (parent.Type.Is(EType.TRAM)) {
+			if (parent.Special.Is(EType.TRAM)) {
 				foreach (Token t in newCell.Occupants) {
-					if (t.Type.Is(EType.DEST) && CanTakePlaceOf(t)) {
+					if (t.Special.Is(EType.DEST) && CanTakePlaceOf(t)) {
 						return true;
 					}
 				}
 			}
-			if (parent.Type.Is(EType.KING)) {
+			if (parent.Special.Is(EType.KING)) {
 				foreach (Token t in newCell.Occupants) {
-					if (t.Type.Is(EType.HEART) && CanTakePlaceOf(t)) {
+					if (t.Special.Is(EType.HEART) && CanTakePlaceOf(t)) {
 						return true;
 					}
 				}
@@ -79,7 +79,7 @@ namespace HOA {
 				cell = newCell;
 				Trample(newCell);
 				newCell.Enter(parent);
-				if (parent.Display != null) {parent.Display.MoveTo(cell);}
+				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(cell);}
 				return true;
 			}	
 			if (newCell == TemplateFactory.c) {
@@ -99,11 +99,11 @@ namespace HOA {
 
 				cell = newCell;
 				newCell.Enter(parent);
-				if (parent.Display != null) {parent.Display.MoveTo(newCell);}
+				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(newCell);}
 
 				other.Body.Cell = oldCell;
 				oldCell.Enter(other);
-				if (other.Display != null) {other.Display.MoveTo(oldCell);}
+				if (other.Display != null) {((TokenDisplay)other.Display).MoveTo(oldCell);}
 
 				return true;
 			}	
@@ -113,13 +113,13 @@ namespace HOA {
 		protected void Trample (Cell newCell) {
 			TokenGroup tokens = newCell.Occupants;
 
-			if (parent.Type.Is(EType.TRAM)) {
+			if (parent.Special.Is(EType.TRAM)) {
 				TokenGroup dest = tokens.OnlyType(EType.DEST);
 				for (int i=dest.Count-1; i>=0; i--) {
 					EffectQueue.Add(new EDestruct(new Source(parent), dest[i]));
 				}
 			}
-			if (parent.Type.Is(EType.KING)) {
+			if (parent.Special.Is(EType.KING)) {
 				TokenGroup heart = tokens.OnlyType(EType.HEART);
 				if (heart.Count>0) {
 					EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart[0]));

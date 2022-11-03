@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Token : ITarget{
+	public abstract class Token : Target {
 
 		protected ID id;
 		public ID ID {get {return id;} }
@@ -29,8 +29,8 @@ namespace HOA {
 		protected Plane plane;
 		public Plane Plane {get {return plane;} }
 		
-		protected Type type;
-		public Type Type {get {return type;} }
+		protected Special type;
+		public Special Special {get {return type;} }
 		
 		protected EToken onDeath = EToken.NONE;
 		public EToken OnDeath {
@@ -53,18 +53,11 @@ namespace HOA {
 		protected void ScaleTall () {SpriteScale = new Vector3 (3f, 1, 4.5f);}
 		protected void ScaleQuad () {SpriteScale = new Vector3 (5f, 1, 5f);}
  
-		TokenDisplay display = default(TokenDisplay);
-		public TokenDisplay Display {
-			get {return display;}
-			set {display = value;}
-		}
-		public ITargetDisplay TargetDisplay () {return display;}
-
 		//
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
 
-			GameObject.Destroy(Display.gameObject);
+			GameObject.Destroy(Display.GO);
 
 			//Debug.Log(Name+" is dying");
 			bool top = false;
@@ -79,8 +72,8 @@ namespace HOA {
 			Cell oldCell = Body.Cell;
 			Body.Exit();
 			if (corpse) {CreateRemains(oldCell);}
-			if (Type.Is(EType.KING)) {Owner.Kill();}
-			if (log && !Type.Is(EType.HEART)) {
+			if (Special.Is(EType.KING)) {Owner.Kill();}
+			if (log && !Special.Is(EType.HEART)) {
 				if (s.Token != default(Token)) {GameLog.Out(s.Token.ToString()+" killed "+this+".");}
 				else {GameLog.Out(this+" has been killed.");}
 			}
@@ -92,24 +85,11 @@ namespace HOA {
 				if (TokenFactory.Add(OnDeath, new Source(this), oldCell, out remains, false)) {
 					GameLog.Out(this+" left "+remains);
 				}
-				if (remains.Type.Is(EType.HEART)) {
+				if (remains.Special.Is(EType.HEART)) {
 					remains.Owner = Owner;
 
 				}
 			}
-		}
-		
-		//ITarget
-		public virtual void Select (Source s) {
-			GUISelectors.Instance = this;
-
-		}
-		bool legal = false;
-		public bool IsLegal() {return legal;}
-		public void Legalize (bool l=true) {
-			legal = l;
-			if (l) {Display.legalCard.Show();}
-			else {Display.legalCard.Hide();}
 		}
 
 		public List<Timer> timers = new List<Timer>();

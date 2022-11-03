@@ -84,7 +84,7 @@ namespace HOA {
 	
 				case EToken.RECY: return new Recyclops(s,true);
 				case EToken.NECR: return new Necrochancellor(s,true);
-				case EToken.MOUT: return new MouthOfTheUnderworld(s,true);
+				case EToken.GATE: return new Gatecreeper(s,true);
 				case EToken.MONO: return new Monolith(s,true);
 				case EToken.HBLO: return new BloodHOA(s,true);
 	

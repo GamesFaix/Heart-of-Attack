@@ -13,12 +13,19 @@ namespace HOA{
 			ScaleQuad();
 			NewHealth(55,3);
 			NewWatch(2);
-			
-			arsenal.Add(new AMoveAren(this, 3));
-			arsenal.Add(new AArenLeech (this));
-			arsenal.Add(new AArenDonate (this));
-			arsenal.Sort();
+			BuildArsenal();	
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMoveAren(this, 3),
+				new AArenLeech (this),
+				new AArenDonate (this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 
 		public CellGroup Cells {get {return ((BodyAren)body).Cells;} }
@@ -148,35 +155,31 @@ namespace HOA{
 
 	}
 
-	public class AMoveAren : Action, IMultiMove {
+	public class AMoveAren : Task, IMultiMove {
 		
-		
-		Cell target;
 		int range;
 		public int Optional () {return 1;}
-		
+
+		public override string Desc {get {return "Move "+Parent+" to target cell.";} }
+
 		public AMoveAren (Unit u, int r) {
-			weight = 1;
-			actor = u;
-			name = "Move";
-			desc = "Move "+actor+" to target cell.";
-			
+			Name = "Move";
+			Weight = 1;
+
+			Parent = u;
+
 			range = r;
 			for (int i=0; i<range; i++) {
 				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
-			
-			
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			foreach (ITarget target in targets) {
-				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
+		protected override void ExecuteMain (TargetGroup targets) {
+			foreach (Target target in targets) {
+				EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)target));
 			}
-			Targeter.Reset();
 		}
 		
 		public override void Draw (Panel p) {
@@ -190,59 +193,59 @@ namespace HOA{
 			float descH = (p.H-(p.LineH*2))/p.H;
 			//Rect descBox = new Rect(p.x2, p.y2, p.W, descH);
 			
-			GUI.Label(p.TallBox(descH), Desc());	
-			
-			
+			GUI.Label(p.TallBox(descH), Desc);	
 		}
 	}
 
-	public class AArenLeech : Action {
+	public class AArenLeech : Task {
 		
 		int damage = 7;
-		
+
+		public override string Desc {get {return  "Do "+damage+" damage to all enemy cellmates. " +
+				"\nGain health equal to damage successfully dealt.";} }
+
 		public AArenLeech (Unit u) {
-			weight = 3;
-			price = new Price(1,0);
+			Name = "Leech life";
+			Weight = 3;
+
+			Price = new Price(1,0);
 			AddAim(HOA.Aim.Self());
-			actor = u;
-			name = "Leech life";
-			desc = "Do "+damage+" damage to all enemy cellmates. \nGain health equal to damage successfully dealt.";
+			Parent = u;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			TokenGroup tokens = actor.Body.CellMates;
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup tokens = Parent.Body.CellMates;
 			tokens = tokens.OnlyType(EType.UNIT);
-			tokens = tokens.RemoveOwner(actor.Owner);
+			tokens = tokens.RemoveOwner(Parent.Owner);
 			foreach (Token t in tokens) {
-				EffectQueue.Add(new ELeech(new Source(actor), (Unit)t, damage));
+				EffectQueue.Add(new ELeech(new Source(Parent), (Unit)t, damage));
 			}
-			Targeter.Reset();
 		}
 	}
 
-	public class AArenDonate : Action {
+	public class AArenDonate : Task {
 		
 		int damage = 7;
+
+		public override string Desc {get {return  "All friendly cellmates +"+damage+" health. " +
+				"\nLose health equal to health successfully given.";} }
 		
 		public AArenDonate (Unit u) {
-			weight = 3;
-			price = new Price(1,0);
+			Name = "Donate life";
+			Weight = 3;
+
+			Price = new Price(1,0);
 			AddAim(HOA.Aim.Self());
-			actor = u;
-			name = "Donate life";
-			desc = "All friendly cellmates +"+damage+" health. \nLose health equal to health successfully given.";
+			Parent = u;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			TokenGroup tokens = actor.Body.CellMates;
+		protected override void ExecuteMain (TargetGroup targets) {
+			TokenGroup tokens = Parent.Body.CellMates;
 			tokens = tokens.OnlyType(EType.UNIT);
-			tokens = tokens.OnlyOwner(actor.Owner);
+			tokens = tokens.OnlyOwner(Parent.Owner);
 			foreach (Token t in tokens) {
-				EffectQueue.Add(new EDonate(new Source(actor), (Unit)t, damage));
+				EffectQueue.Add(new EDonate(new Source(Parent), (Unit)t, damage));
 			}
-			Targeter.Reset();
 		}
 	}
 }

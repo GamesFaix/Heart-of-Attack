@@ -9,39 +9,66 @@ namespace HOA{
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(5);
-			
-			arsenal.Add(new AMovePath(this, 0));
-			arsenal.Add(new ALeech("Feed",Price.Cheap, this, Aim.Melee(), 5));
-			arsenal.Add(new AEvolve(Price.Cheap, this, EToken.BEES));
-			arsenal.Add(new AEvolve(new Price(1,2), this, EToken.MYCO));
-			arsenal.Add(new AEvolve(new Price(1,3), this, EToken.MART));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 0),
+				new ALichFeed(this),
+				new AEvolve(this, Price.Cheap, EToken.BEES),
+				new AEvolve(this, new Price(1,2), EToken.MYCO),
+				new AEvolve(this, new Price(1,3), EToken.MART)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 
-	public class AEvolve : Action {
+	public class ALichFeed : Task {
 		
-		EToken child;
-		Token chiTemplate;
-		
-		public AEvolve (Price p, Unit par, EToken chi) {
-			weight = 4;
-			price = p;
-			AddAim(HOA.Aim.Self());
+		int damage = 5;
+
+		public override string Desc {get {return "Do "+damage+" damage to target unit. " +
+				"\nGain health equal to damage successfully dealt.";} }
+
+		public ALichFeed (Unit u) {
+			Name = "Feed";
+			Weight = 3;
 			
-			actor = par;
-			child = chi;
-			chiTemplate = TemplateFactory.Template(child);
-			
-			name = "Evolve to "+chiTemplate.ID.Name;
-			desc = "Transform "+actor+" into a "+name+".  \n(New "+name+" is added to the end of the Queue and does not retain any of "+actor+"'s attributes.)";
+			Price = Price.Cheap;
+			AddAim(HOA.Aim.Melee());
+			Parent = u;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EReplace(new Source(actor), actor, child));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ELeech(new Source(Parent), (Unit)targets[0], damage));
+		}
+	}
+
+	public class AEvolve : Task {
+		
+		EToken child;
+
+		string ChildName {get {return Template.ID.Name;} }
+
+		public override string Desc {get {return "Transform "+Parent+" into a "+ChildName+".  " +
+				"\n(New "+ChildName+" is added to the end of the Queue and does not retain any of "+Parent+"'s attributes.)";} }
+
+		public AEvolve (Unit u, Price p, EToken chi) {
+			Parent = u;
+			child = chi;
+			Template = TemplateFactory.Template(child);
+			Name = "Evolve to "+ChildName;
+			Weight = 4;
+			Price = p;
+			AddAim(HOA.Aim.Self());
+		}
+		
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EReplace(new Source(Parent), Parent, child));
 		}
 	}
 }

@@ -57,23 +57,23 @@ namespace HOA {
 			return x;
 		}
 		
-		public bool CanAfford (Price price) {
-			if (ap >= price.AP
-			&& fp >= price.FP
-			&& !price.Other) {
+		public bool CanAfford (Price Price) {
+			if (ap >= Price.AP
+			&& fp >= Price.FP
+			&& !Price.Other) {
 				return true;
 			}
 			return false;
 		}
 		
-		public void Charge (Price price) {
-			AddAP (new Source(parent), 0-price.AP, false);
-			AddFP (new Source(parent), 0-price.FP, false);
+		public void Charge (Price Price) {
+			AddAP (new Source(parent), 0-Price.AP, false);
+			AddFP (new Source(parent), 0-Price.FP, false);
 		}
 		
-		public void Refund (Price price) {
-			AddAP (new Source(parent), price.AP, false);
-			AddFP (new Source(parent), price.FP, false);
+		public void Refund (Price Price) {
+			AddAP (new Source(parent), Price.AP, false);
+			AddFP (new Source(parent), Price.FP, false);
 		}
 	}
 }

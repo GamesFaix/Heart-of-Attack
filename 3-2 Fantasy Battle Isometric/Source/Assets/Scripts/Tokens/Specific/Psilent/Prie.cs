@@ -8,39 +8,46 @@ namespace HOA{
 			ScaleLarge();
 			NewHealth(50,2);
 			NewWatch(4);
-			
-			arsenal.Add(new AMovePath(this, 4));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 15));
-			arsenal.Add(new APrieShove(this));
-
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[]{
+				new AMovePath(this, 4),
+				new AStrike(this, 15),
+				new APrieShove(this)
+			});
+			arsenal.Sort();
+		}
+
 		public override string Notes () {return "";}
 	}
 		
-	public class APrieShove : Action {
+	public class APrieShove : Task {
 		
 		int damage = 12;
 		int kb = 5;
 		int kbdmg = 2;
 
-		public APrieShove (Unit u) {
-			weight = 4;
-			actor = u;
-			price = new Price(1,1);
-			AddAim(HOA.Aim.Melee());
+		public override string Desc {get {return "Do "+damage+" damage to target unit." +
+				"\nKnockback "+kb+" (Move target in a line away from "+Parent+", up to "+kb+" cells.)" +
+					"\nTarget takes "+kbdmg+" damage per cell knocked back.";} }
 
-			name = "Shove";
-			desc = "Do "+damage+" damage to target unit.\nKnockback "+kb+" (Move target in a line away from "+actor+", up to "+kb+" cells.)\nTarget takes "+kbdmg+" damage per cell knocked back.";
+		public APrieShove (Unit u) {
+			Name = "Shove";
+			Weight = 4;
+
+			Parent = u;
+			Price = new Price(1,1);
+			AddAim(HOA.Aim.Melee());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
+		protected override void ExecuteMain (TargetGroup targets) {
 			EffectGroup e = new EffectGroup();
-			e.Add(new EDamage (new Source(actor), (Unit)targets[0], damage));
-			e.Add(new EKnockback (new Source(actor), (Unit)targets[0], kb, kbdmg));
+			e.Add(new EDamage (new Source(Parent), (Unit)targets[0], damage));
+			e.Add(new EKnockback (new Source(Parent), (Unit)targets[0], kb, kbdmg));
 			EffectQueue.Add(e);
-			Targeter.Reset();
 		}
 	}
 

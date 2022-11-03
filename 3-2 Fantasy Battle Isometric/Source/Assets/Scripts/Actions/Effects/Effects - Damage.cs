@@ -96,12 +96,12 @@ namespace HOA {
 		}
 		
 		public override void Process() {
-			TokenGroup targets = cell.Occupants.OnlyType(Type.UnitDest);
+			TokenGroup targets = cell.Occupants.OnlyType(Special.UnitDest);
 			
 			foreach (Token t in targets) {
 				t.Display.Effect(EEffect.EXP);
 				Mixer.Play(SoundLoader.Effect(EEffect.EXP));
-				if (t.Type.Is(EType.DEST)) {
+				if (t.Special.Is(EType.DEST)) {
 					source.Sequence.AddToNext(new EDestruct(source, t));
 				}
 				
@@ -127,7 +127,7 @@ namespace HOA {
 			
 			Mixer.Play(SoundLoader.Effect(EEffect.FIRE));	
 			
-			if (target.Type.Is(EType.DEST)) {
+			if (target.Special.Is(EType.DEST)) {
 				nextEffects.Add(new EDestruct(source, target));
 			}
 			else if (target is Unit) {
@@ -137,7 +137,7 @@ namespace HOA {
 			
 			TokenGroup neighbors = target.Body.Neighbors(true);
 			neighbors.Remove(source.Token);
-			neighbors = neighbors.OnlyType(Type.UnitDest);
+			neighbors = neighbors.OnlyType(Special.UnitDest);
 			
 			int newDmg = (int)Mathf.Floor(dmg * 0.5f);
 			foreach (Token t2 in neighbors) {
@@ -159,7 +159,7 @@ namespace HOA {
 			target.Display.Effect(EEffect.FIRE);
 			Mixer.Play(SoundLoader.Effect(EEffect.FIRE));
 			
-			if (target.Type.Is(EType.DEST)) {
+			if (target.Special.Is(EType.DEST)) {
 				EffectQueue.Add(new EDestruct (source, target));
 			}
 			
@@ -178,10 +178,10 @@ namespace HOA {
 			source = s; target = u; dmg = n;
 		}
 		public override void Process() {
-			Token actor = source.Token;
+			Token Parent = source.Token;
 			int currentDmg = dmg;
 			Cell cell = target.Body.Cell;
-			int[] direction = Direction.FromCells(cell, actor.Body.Cell);
+			int[] direction = Direction.FromCells(cell, Parent.Body.Cell);
 			bool stop = false;
 			
 			TokenGroup targets;
@@ -226,9 +226,9 @@ namespace HOA {
 			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
 			target.Display.Effect(EEffect.DMG);
 			int actualDmg = oldHP - target.HP;
-			Unit actor = (Unit)(source.Token);
-			actor.AddStat(source, EStat.HP, actualDmg);
-			actor.Display.Effect(EEffect.STATUP);
+			Unit Parent = (Unit)(source.Token);
+			Parent.AddStat(source, EStat.HP, actualDmg);
+			Parent.Display.Effect(EEffect.STATUP);
 			Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
 		}
 	}
@@ -246,9 +246,9 @@ namespace HOA {
 			target.Display.Effect(EEffect.STATUP);
 			Mixer.Play(SoundLoader.Effect(EEffect.STATUP));
 			int diff = target.HP - oldHP;
-			Unit actor = (Unit)(source.Token);
-			actor.Damage(source, diff);
-			actor.Display.Effect(EEffect.STATDOWN);
+			Unit Parent = (Unit)(source.Token);
+			Parent.Damage(source, diff);
+			Parent.Display.Effect(EEffect.STATDOWN);
 			Mixer.Play(SoundLoader.Effect(EEffect.STATDOWN));
 		}
 	}
@@ -311,9 +311,9 @@ namespace HOA {
 			target.Damage(source, dmg);
 			target.Display.Effect(EEffect.DMG);
 			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
-			Unit actor = (Unit)source.Token;
-			actor.Damage(source, (int)Mathf.Floor(dmg*0.5f));
-			actor.Display.Effect(EEffect.DMG);
+			Unit Parent = (Unit)source.Token;
+			Parent.Damage(source, (int)Mathf.Floor(dmg*0.5f));
+			Parent.Display.Effect(EEffect.DMG);
 			Mixer.Play(SoundLoader.Effect(EEffect.DMG));
 		}
 	}

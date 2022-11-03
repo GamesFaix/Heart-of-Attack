@@ -2,30 +2,26 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public class ACreate : Action {
+	public class ACreate : Task {
 
-
-		Cell cell;
+		public override string Desc {get {return "Create "+Template.ID.Name+" in target cell.";} }
 		EToken child;
 
-		public ACreate (Price p, Unit par, EToken chi, Aim a=default(Aim)) {
-			weight = 5;
-			actor = par;
-			child = chi;
-			childTemplate = TemplateFactory.Template(child);
-			price = p;
+		public ACreate (Unit parent, Price p, EToken child) {
+			Parent = parent;
+			this.child = child;
+			Template = TemplateFactory.Template(child);
+			Name = "Create "+Template.ID.Name;
 
-			if (a == default(Aim)) {a = HOA.Aim.Create();}
-			AddAim(a);
-
-			name = "Create "+childTemplate.ID.Name;
-			desc = "Create "+childTemplate.ID.Name+" in target cell.";
+			Weight = 5;
+			Price = p;
+			AddAim(HOA.Aim.Create());
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new ECreate(new Source(actor), child, (Cell)targets[0]));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new ECreate(new Source(Parent), child, (Cell)targets[0]));
 		}
 	}
 }
+
+

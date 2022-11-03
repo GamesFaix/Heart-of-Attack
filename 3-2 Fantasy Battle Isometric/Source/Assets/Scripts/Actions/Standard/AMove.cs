@@ -3,24 +3,22 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public class AMove : Action, IMove {
+/*	public class AMove : Task, IMove {
 
 		Cell target;
 		
-		public AMove (Unit u, Aim a) {
-			weight = 1;
+		/*public AMove (Unit u, Aim a) {
+			Name = "Move";
+			Desc = "Move "+Parent+" to target cell.";
+			Weight = 1;
+
+			Price = Price.Cheap;
 			AddAim(a);
-			actor = u;
-			
-			name = "Move";
-			desc = "Move "+actor+" to target cell.";
-			
+			Parent = u;
 		}
 		
-		public override void Execute (List<ITarget> targets) {
-			Charge();
-			EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)targets[0]));
-			Targeter.Reset();
+		protected override void ExecuteMain (TargetGroup targets) {
+			EffectQueue.Add(new EMove(new Source(Parent), Parent, (Cell)targets[0]));
 		}
-	}
+	}*/
 }

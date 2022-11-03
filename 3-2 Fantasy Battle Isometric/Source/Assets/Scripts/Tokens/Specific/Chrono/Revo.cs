@@ -11,49 +11,60 @@ namespace HOA{
 
 			NewHealth(30);
 			NewWatch(4);
-			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(2), 8));
-			arsenal.Add(new ARevoQuick(this));
-			arsenal.Sort();
+			BuildArsenal();
 		}		
+
+		protected override void BuildArsenal () {
+			base.BuildArsenal();
+			arsenal.Add(new Task[] {
+				new AMovePath(this, 3),
+				new AShoot(this, 2, 8),
+				new ARevoQuick(this)
+			});
+			arsenal.Sort();
+		}
 		public override string Notes () {return "";}
-
-		public class ARevoQuick : Action, IMultiTarget {
-			
-			int damage;
-			public int Optional () {return 1;}
-			
-			public ARevoQuick (Unit u) {
-				weight = 4;
-				actor = u;
-				price = new Price(0,1);
-				AddAim(HOA.Aim.Shoot(3));
-				damage = 6;
-				
-				name = "Quickdraw";
-				desc = "Once per Focus, select and deal "+damage+" damage to target unit (up to 5 times).\n(You may choose the same target multiple times.)\nLose all Focus.";
-			}
-
-			public override void Adjust () {
-				int shots = Mathf.Min(actor.FP, 5);
-				for (int i=1; i<shots; i++) {
-					AddAim(HOA.Aim.Shoot(3));
-				}
-			}
-
-			public override void UnAdjust () {
-				aim = new List<HOA.Aim>();
-				AddAim(HOA.Aim.Shoot(3));
-			}
-
-			public override void Execute (List<ITarget> targets) {
-				Charge();
-				for (int i=0; i<targets.Count; i++) {
-					EffectQueue.Add(new EDamage (new Source(actor), (Unit)targets[i], damage));
-				}
-				actor.SetStat(new Source(actor), EStat.FP, 0);
-				Targeter.Reset();
-			}
-		} 
 	}
+	public class ARevoQuick : Task, IMultiTarget {
+
+		public override string Desc {get {return "Once per Focus, select and deal "+damage+" damage to target unit (up to 5 times)." +
+				"\n(You may choose the same target multiple times.)" +
+					"\nLose all Focus.";} }
+
+		int damage = 6;
+		public int Optional () {return 1;}
+		
+		public ARevoQuick (Unit parent) {
+			Name = "Quickdraw";
+			Weight = 4;
+			Parent = parent;
+			Price = new Price(0,1);
+			ResetAim();
+		}
+
+		public override void Adjust () {
+			int shots = Mathf.Min(Parent.FP, 5);
+			Debug.Log("shots "+shots);
+			for (int i=2; i<=shots; i++) {
+				AddAim(HOA.Aim.Shoot(3));
+			}
+			Debug.Log("target slots "+aim.Count);
+		}
+
+		public override void UnAdjust () {
+			ResetAim();
+		}
+
+		void ResetAim () {
+			aim = new List<HOA.Aim>();
+			AddAim(HOA.Aim.Shoot(3));
+		}
+
+		protected override void ExecuteMain (TargetGroup targets) {
+			for (int i=0; i<targets.Count; i++) {
+				EffectQueue.Add(new EDamage (new Source(Parent), (Unit)targets[i], damage));
+			}
+			Parent.SetStat(new Source(Parent), EStat.FP, 0);
+		}
+	} 
 }

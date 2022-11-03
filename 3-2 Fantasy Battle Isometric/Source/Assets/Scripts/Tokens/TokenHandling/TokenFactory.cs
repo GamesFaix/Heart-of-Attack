@@ -99,7 +99,7 @@ namespace HOA {
 	
 				case EToken.RECY: return new Recyclops(s);
 				case EToken.NECR: return new Necrochancellor(s);
-				case EToken.MOUT: return new MouthOfTheUnderworld(s);
+				case EToken.GATE: return new Gatecreeper(s);
 				case EToken.MONO: return new Monolith(s);
 				case EToken.HBLO: return new BloodHOA(s);
 	
@@ -117,7 +117,7 @@ namespace HOA {
 		
 		static void InheritOwnership (Token t, Source s) {
 			if (!FactionRef.Neutral().Contains(t.ID.Code)
-			    && !t.Type.Is(EType.HEART)) {
+			    && !t.Special.Is(EType.HEART)) {
 				t.Owner = s.Player;
 			}
 		}

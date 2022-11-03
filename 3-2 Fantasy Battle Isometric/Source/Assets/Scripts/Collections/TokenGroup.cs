@@ -43,15 +43,15 @@ namespace HOA {
 		public TokenGroup OnlyType(EType c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (t.Type.Is(c)) {filtered.Add(t);}
+				if (t.Special.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup OnlyType(Type cs){
+		public TokenGroup OnlyType(Special cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				foreach (EType c in cs) {
-					if (t.Type.Is(c)) {filtered.Add(t);}
+					if (t.Special.Is(c)) {filtered.Add(t);}
 				}
 			}
 			return filtered;
@@ -61,18 +61,18 @@ namespace HOA {
 		public TokenGroup RemoveType(EType c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
-				if (!t.Type.Is(c)) {filtered.Add(t);}
+				if (!t.Special.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup RemoveType(Type cs){
+		public TokenGroup RemoveType(Special cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {filtered.Add(t);}
 
 			for (int i=filtered.Count-1; i>=0; i--) {
 				Token t = filtered[i];
 				foreach (EType c in cs) {
-					if (t.Type.Is(c)) {filtered.Remove(t);}
+					if (t.Special.Is(c)) {filtered.Remove(t);}
 				}
 			}
 			return filtered;
@@ -82,18 +82,18 @@ namespace HOA {
 		public static TokenGroup operator % (TokenGroup g, Player p) {return g.OnlyOwner(p);}
 		public static TokenGroup operator / (TokenGroup g, EPlane p) {return g.RemovePlane(p);}
 		public static TokenGroup operator % (TokenGroup g, EPlane p) {return g.OnlyPlane(p);}
-		public static TokenGroup operator / (TokenGroup g, Type c) {return g.RemoveType(c);}
-		public static TokenGroup operator % (TokenGroup g, Type c) {return g.OnlyType(c);}
+		public static TokenGroup operator / (TokenGroup g, Special c) {return g.RemoveType(c);}
+		public static TokenGroup operator % (TokenGroup g, Special c) {return g.OnlyType(c);}
 		public static TokenGroup operator / (TokenGroup g, EType c) {return g.RemoveType(c);}
 		public static TokenGroup operator % (TokenGroup g, EType c) {return g.OnlyType(c);}
 
-		public TokenGroup Restrict (Token actor, Aim a) {
+		public TokenGroup Restrict (Token Parent, Aim a) {
 			TokenGroup restricted = new TokenGroup (this);
-			restricted = restricted.OnlyType(a.Type);
-			if (a.TeamOnly) {restricted = restricted.OnlyOwner(actor.Owner);}
-			if (a.EnemyOnly) {restricted = restricted.RemoveOwner(actor.Owner);}
+			restricted = restricted.OnlyType(a.Special);
+			if (a.TeamOnly) {restricted = restricted.OnlyOwner(Parent.Owner);}
+			if (a.EnemyOnly) {restricted = restricted.RemoveOwner(Parent.Owner);}
 			if (a.NoKings) {restricted = restricted.RemoveType(EType.KING);}
-			if (!a.IncludeSelf) {restricted.Remove(actor);}
+			if (!a.IncludeSelf) {restricted.Remove(Parent);}
 			return restricted;
 		}
 
@@ -108,7 +108,7 @@ namespace HOA {
 		}
 
 		public void Legalize (bool b=true) {
-			foreach (Token t in list) {t.Legalize(b);}	
+			foreach (Token t in list) {t.Legal = b;}	
 		}
 	}
 }

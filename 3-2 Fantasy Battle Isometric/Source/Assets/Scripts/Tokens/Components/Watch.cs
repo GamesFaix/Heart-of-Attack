@@ -5,11 +5,9 @@ namespace HOA {
 	public class Watch{
 
 		protected Unit parent;
-		protected int init;
-		protected int stun;
+		protected int init, stun, cor;
 		protected bool skipped;
-		protected int cor;
-		
+
 		public Watch () {}
 		
 		public Watch(Unit u, int i=0){

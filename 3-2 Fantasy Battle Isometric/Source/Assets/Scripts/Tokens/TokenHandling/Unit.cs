@@ -14,16 +14,19 @@ namespace HOA {
 		protected void NewHealth (int h=0, int d=0) {health = new Health(this, h, d);}
 		protected void NewWallet (int f=2) {wallet = new Wallet(this, f);}
 		protected void NewWatch (int i=0) {watch = new Watch(this, i);}
-		protected void NewArsenal () {arsenal = new Arsenal(this);}
 
 		public Unit () {
 			body = new Body(this);
-			type = new Type(EType.UNIT);
+			type = new Special(EType.UNIT);
 			onDeath = EToken.CORP;
 			NewWallet();
-			NewArsenal();
+		}
+
+		protected virtual void BuildArsenal () {
+			arsenal = new Arsenal(this);
 			arsenal.Add(new AFocus(this));
 		}
+
 
 		public int SetStat (Source s, EStat stat, int n, bool log=true) {
 			switch (stat) {

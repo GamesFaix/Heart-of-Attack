@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace HOA {
 	public enum EType {UNIT, OB, KING, TRAM, DEST, REM, HEART, CELL}
 
-	public class Type {
+	public class Special {
 		List<EType> types;
 
-		public Type (EType c) {types = new List<EType> {c}; }
-		public Type (List<EType> c) {types = c;}
+		public Special (EType c) {types = new List<EType> {c}; }
+		public Special (List<EType> c) {types = c;}
 
 		public void Set (EType c) {types = new List<EType> {c};}
 		public void Set (List<EType> c) {types = c;}
@@ -31,15 +31,15 @@ namespace HOA {
 		
 		public class MyEnumerator {
 			int n;
-			Type buffer;
-			public MyEnumerator(Type input) {buffer = input; n = -1;}
+			Special buffer;
+			public MyEnumerator(Special input) {buffer = input; n = -1;}
 			public bool MoveNext() {n++; return (n < buffer.Count);}
 			public EType Current {get {return buffer[n];} }
 		}
 
-		public static Type Unit {get {return new Type(EType.UNIT);} }
-		public static Type UnitDest {get {return new Type(new List<EType> {EType.UNIT, EType.DEST, EType.REM});} }
-		public static Type Dest {get {return new Type(EType.DEST);} }
-		public static Type DestRem {get {return new Type(new List<EType> {EType.DEST, EType.REM});} }
+		public static Special Unit {get {return new Special(EType.UNIT);} }
+		public static Special UnitDest {get {return new Special(new List<EType> {EType.UNIT, EType.DEST, EType.REM});} }
+		public static Special Dest {get {return new Special(EType.DEST);} }
+		public static Special DestRem {get {return new Special(new List<EType> {EType.DEST, EType.REM});} }
 	}
 }
