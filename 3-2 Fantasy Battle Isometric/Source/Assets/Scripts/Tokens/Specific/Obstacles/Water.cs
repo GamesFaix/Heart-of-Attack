@@ -11,7 +11,7 @@ namespace HOA {
 			Neutralize();
 		}
 		public override string Notes () {return 
-			"Ground units may not move through "+ID.Name+"." +
+			"Ground units must stop on "+ID.Name+"." +
 			"\nGround Units sharing "+ID.Name+"'s Cell take 5 damage at the end of their turn.";
 		}
 

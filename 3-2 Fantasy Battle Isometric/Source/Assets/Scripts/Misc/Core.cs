@@ -24,6 +24,7 @@ public class Core : MonoBehaviour {
 
 		ImageLoader.Load();
 		SoundLoader.Load();
+		Map.LoadMaps();
 		TemplateFactory.MakeTemplates();
 		gameObject.AddComponent("EffectQueue");
 		gameObject.AddComponent("GameWorldCursor");
@@ -46,7 +47,8 @@ public class Core : MonoBehaviour {
 			Roster.Add(new Player(i));
 		}
 		Roster.ForceRandomFactions();
-		Game.Start(new index2(4,4));
+		Game.Map = Map.Maps[1];
+		//Game.Start();
 		
 		
 	}

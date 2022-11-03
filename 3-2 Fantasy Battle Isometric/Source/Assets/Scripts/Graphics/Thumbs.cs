@@ -22,8 +22,14 @@ namespace HOA {
 			Add(EToken.HSIL, "HSIL"); Add(EToken.HSTE, "HSTE"); Add(EToken.HSTO, "HSTO"); Add(EToken.HFIR, "HFIR"); 
 			Add(EToken.HBRA, "HBRA"); Add(EToken.HSLK, "HSLK"); Add(EToken.HGLA, "HGLA"); Add(EToken.HBLO, "HBLO");
 
-			Add(EToken.MNTN, "MNTN"); Add(EToken.HILL, "HILL"); Add(EToken.WATR, "WATR"); Add(EToken.LAVA, "LAVA");
+			Add(EToken.MNTN, "MNTN"); Add(EToken.HILL, "HILL"); Add(EToken.WATR, "WATR"); Add(EToken.ICE, "ICE"); Add(EToken.LAVA, "LAVA");
 			Add(EToken.ROCK, "ROCK"); Add(EToken.TREE, "TREE"); Add(EToken.CORP, "CORP");
+
+			Add(EToken.ANTE, "ANTE"); Add(EToken.PYLO, "PYLO"); Add(EToken.EXHA, "EXHA"); Add(EToken.HOLE, "HOLE");
+			Add(EToken.TREE2, "TREE2"); Add(EToken.TREE3, "TREE3"); Add(EToken.TREE4, "TREE4");
+			Add(EToken.RAMP, "RAMP"); Add(EToken.COTT, "COTT"); Add(EToken.HOUS, "HOUS"); Add(EToken.TEMP, "TEMP");
+			Add(EToken.PYRA, "PYRA"); Add(EToken.TSNK, "TSNK"); Add(EToken.TWEL, "TWEL");
+			Add(EToken.TARG, "TARG"); Add(EToken.CURS, "CURS");
 
 			thumbnails.Add(EToken.NONE, default(Texture2D));
 		}

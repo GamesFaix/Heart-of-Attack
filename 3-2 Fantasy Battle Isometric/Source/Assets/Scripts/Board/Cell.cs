@@ -5,32 +5,34 @@ using UnityEngine;
 namespace HOA {
 	
 	public class Cell : Target {
-		public Index2 Index {get; private set;}
+		public Board Board {get; protected set;}
+
+		public Int2 Index {get; protected set;}
 		public int X {get {return Index.x;} }
 		public int Y {get {return Index.y;} }
 
 		public override string ToString() {return "("+X+","+Y+")";}
 
-		public Cell (Index2 index) {
+		protected Cell () {}
+
+		public Cell (Board board, Int2 index) {
+			Board = board;
 			Index = index;
-			if (X>=0 && Y>=0) {CellDisplay.Attach(this);}
+			CellDisplay.Attach(this);
 		}
 
 		public Vector3 Location {get {return Display.gameObject.transform.position;} }
 
 		Token[] tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		
-		public Token Occupant (EPlane p) {return tokens[(int)p];}
-		public TokenGroup Occupants {
+		public virtual Token Occupant (EPlane plane) {return tokens[(int)plane];}
+		public virtual TokenGroup Occupants {
 			get {
-				TokenGroup tg = new TokenGroup();
-				for (int i=0; i<tokens.Length; i++) {
-					if (tokens[i] != default(Token)
-					&& !tg.Contains(tokens[i])) {	
-						tg.Add(tokens[i]);
-					}
+				TokenGroup occupants = new TokenGroup();
+				for (byte i=0; i<tokens.Length; i++) {
+					if (tokens[i] != null) {occupants.Add(tokens[i]);}
 				}
-				return tg;
+				return occupants;
 			}
 		}
 		public int TokenCount {get {return Occupants.Count;} }
@@ -40,12 +42,12 @@ namespace HOA {
 		}
 		
 		public bool Occupied (EPlane p) {
-			if (tokens[(int)p] != default(Token)) {return true;}
+			if (tokens[(int)p] != null) {return true;}
 			return false;
 		}
 		public bool Occupied (List<EPlane> ps) {
 			foreach (EPlane p in ps) {
-				if (tokens[(int)p] != default(Token)) {return true;}
+				if (tokens[(int)p] != null) {return true;}
 			}
 			return false;
 		}
@@ -57,7 +59,7 @@ namespace HOA {
 		}
 
 		public bool Contains (EType c, out Token occupant){
-			occupant = default(Token);
+			occupant = null;
 			foreach (Token t in Occupants) {
 				if (t.Special.Is(c)) {
 					occupant = t;
@@ -90,7 +92,7 @@ namespace HOA {
 			return false;
 		}
 		
-		public void Enter (Token t) {
+		public virtual void Enter (Token t) {
 			foreach (EPlane p in t.Plane.Value) {
 				tokens[(int)p] = t;
 			}
@@ -102,9 +104,9 @@ namespace HOA {
 			}
 		}
 
-		public void EnterSunken (Token t) {((CellDisplay)Display).EnterSunken(t);}
+		public virtual void EnterSunken (Token t) {((CellDisplay)Display).EnterSunken(t);}
 
-		public void Exit (Token t) {
+		public virtual void Exit (Token t) {
 			for (int i=0; i<=3; i++){
 				if (tokens[i] == t) {tokens[i] = default(Token);}	
 			}
@@ -116,16 +118,16 @@ namespace HOA {
 
 		void ExitSunken () {((CellDisplay)Display).ExitSunken();}
 
-		public void Clear () {
+		public virtual void Clear () {
 			tokens = new Token[Enum.GetNames(typeof(EPlane)).Length];
 		}
 
 		//Sensors
 		List<Sensor> sensors = new List<Sensor>();
 	
-		public List<Sensor> Sensors () {return sensors;}
-		public void AddSensor (Sensor s) {sensors.Add(s);}
-		public void RemoveSensor (Sensor s) {
+		public virtual List<Sensor> Sensors () {return sensors;}
+		public virtual void AddSensor (Sensor s) {sensors.Add(s);}
+		public virtual void RemoveSensor (Sensor s) {
 			if (sensors.Contains(s)) {sensors.Remove(s);}
 			else {GameLog.Debug("Attempt to remove invalid sensor from cell.");}
 		}
@@ -134,13 +136,11 @@ namespace HOA {
 			CellGroup neighbors = new CellGroup();
 			
 			for (int i=0; i<8; i++) {
-				int2 dir = Direction.FromInt(i);
+				Int2 dir = Direction.FromInt(i);
 				Cell c;
-				checked {
-					Index2 index = (Index2)(Index + dir);
-					if (Game.Board.HasCell(index, out c)) {
-						neighbors.Add(c);
-					}
+				Int2 index = Index + dir;
+				if (Board.HasCell(index, out c)) {
+					neighbors.Add(c);
 				}
 			}
 			if (self) {neighbors.Add(this);}
@@ -157,7 +157,7 @@ namespace HOA {
 			return false;
 		}
 
-		public bool StopToken (Token t) {
+		public virtual bool StopToken (Token t) {
 			foreach (EPlane p in t.Plane.Value) {
 				if (Stop(p)) {return true;}
 			}
@@ -165,7 +165,7 @@ namespace HOA {
 			return false;
 		}
 
-		public void SetStop (EPlane p, bool s) {
+		public virtual void SetStop (EPlane p, bool s) {
 			if (p == EPlane.SUNK) {stop[0] = s;}
 			if (p == EPlane.GND) {stop[1] = s;}
 			if (p == EPlane.AIR) {stop[2] = s;}

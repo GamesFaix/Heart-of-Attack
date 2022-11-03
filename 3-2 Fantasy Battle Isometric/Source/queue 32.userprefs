@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tokens\Components\Watch.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Tokens\Components\Stat.cs" Line="25" Column="63" />
+      <File FileName="Assets\Scripts\Actions\Legalizer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Components\Aim.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actions\Targeter.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\Components\Stat.cs" Line="20" Column="18" />
+      <File FileName="Assets\Scripts\Tokens\Components\Health.cs" Line="7" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\Components\Watch.cs" Line="22" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

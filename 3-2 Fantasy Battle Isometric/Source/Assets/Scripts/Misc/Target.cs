@@ -12,7 +12,7 @@ namespace HOA {
 		public TargetDisplay Display {get; set;}
 
 		bool legal;
-		public bool Legal {
+		public virtual bool Legal {
 			get {return legal;} 
 			set {
 				legal = value;

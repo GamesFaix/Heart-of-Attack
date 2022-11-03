@@ -71,7 +71,32 @@ namespace HOA {
 			{EToken.HILL, "Hill"},
 			{EToken.LAVA, "Lava"},
 			{EToken.WATR, "Water"},
-			{EToken.ROCK, "Rock"}
+			{EToken.ROCK, "Rock"},
+
+			{EToken.HOLE, "Hole"},
+			{EToken.EXHA, "Exhaust Vent"},
+			{EToken.ANTE, "Antenna"},
+			{EToken.PYLO, "Pylon"},
+
+			{EToken.TARG, "Bombing Range"},
+			{EToken.HOUS, "House"},
+
+			{EToken.TREE2, "Tree"},
+			{EToken.TREE3, "Tree"},
+			{EToken.TREE4, "Tree"},
+			{EToken.ICE, "Ice"},
+
+			{EToken.COTT, "House"},
+			{EToken.RAMP, "Rampart"},
+
+			{EToken.TSNK, "Time Sink"},
+			{EToken.TWEL, "Time Well"},
+
+			{EToken.TEMP, "Temple"},
+			{EToken.PYRA, "Pyramid"},
+
+			{EToken.CURS, "Curse"}
+
 			
 		};
 	}

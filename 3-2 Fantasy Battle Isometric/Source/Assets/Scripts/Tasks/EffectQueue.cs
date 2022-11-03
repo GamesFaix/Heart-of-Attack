@@ -42,7 +42,10 @@ namespace HOA {
 			if (processing && Time.time - startTime >= duration) {
 				if (!ActiveSequence) {Pop();}
 				if (effects.Count > 0) {Process();}
-				else {processing = false;}
+				else {
+					if (Game.ActivePending) {Game.Activate();}
+					processing = false;
+				}
 			}
 		}
 

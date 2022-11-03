@@ -115,12 +115,12 @@ namespace HOA {
 			Cell actorCell = source.Token.Body.Cell;
 			Cell start = target.Body.Cell;
 
-			int2 dir = Direction.FromCells(actorCell, start);
+			Int2 dir = Direction.FromCells(actorCell, start);
 
 			CellGroup line = new CellGroup();
 
 			for (int i=0; i<range; i++) {
-				index2 index = (index2)(start.Index + dir);
+				Int2 index = start.Index + dir;
 				Cell next;
 				if (Game.Board.HasCell(index, out next)) {
 					line.Add(next);

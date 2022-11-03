@@ -109,7 +109,15 @@ namespace HOA {
 	public class FObstacle : Faction {
 		public FObstacle () {
 			name = "(Obstacles)";
-			tokens = new List<EToken> {EToken.MNTN, EToken.HILL, EToken.ROCK, EToken.TREE, EToken.WATR, EToken.LAVA, EToken.CORP};
+			tokens = new List<EToken> {
+				EToken.MNTN, EToken.HILL, EToken.ROCK, 
+				EToken.TREE, EToken.TREE2, EToken.TREE3, EToken.TREE4, 
+				EToken.WATR, EToken.ICE, EToken.LAVA, 
+				EToken.CORP, EToken.CURS,
+				EToken.PYRA, EToken.TEMP, EToken.HOUS, EToken.COTT, EToken.RAMP,
+				EToken.TARG, EToken.TSNK, EToken.TWEL,
+				EToken.PYLO, EToken.HOLE, EToken.ANTE, EToken.EXHA
+			};
 			king = EToken.NONE; 
 			heart = EToken.NONE;
 			color1 = Color.white;

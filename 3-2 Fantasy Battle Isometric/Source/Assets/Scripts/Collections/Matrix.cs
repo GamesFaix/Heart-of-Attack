@@ -7,19 +7,19 @@ namespace HOA {
 
 	public class Matrix<T> : IEnumerable<T> {
 	
-		public virtual Size2 Size {get; protected set;}
-		public int Count {get {return Size.Count;} }
+		public virtual Int2 Size {get; protected set;}
+		public int Count {get {return Size.Product;} }
 
 		protected T[,] array;
 
 		protected Matrix () {}
 
-		public Matrix (Size2 size) {
+		public Matrix (Int2 size) {
 			Size = size;
 			array = new T[Size.x, Size.y];
 		}
 
-		public Matrix (Size2 size, IList<T> list) {
+		public Matrix (Int2 size, IList<T> list) {
 			Size = size;
 			if (list.Count != Count) {InvalidArgumentCount();}
 			array = new T[Size.x, Size.y];
@@ -32,9 +32,9 @@ namespace HOA {
 				}
 			}
 		}
-		public Matrix (Size2 size, T[] list) : this(size, new List<T>(list)){}
+		public Matrix (Int2 size, T[] list) : this(size, new List<T>(list)){}
 
-		public T this[Index2 index] {
+		public T this[Int2 index] {
 			get {
 				T item;
 				if (TryIndex(index, out item)) {return item;}
@@ -45,21 +45,21 @@ namespace HOA {
 				else {InvalidIndex();}
 			}		
 		}
-		public T this[byte x, byte y] {
-			get {return this[new Index2(x,y)];}
-			set {this[new Index2(x,y)] = value;}		
+		public T this[int x, int y] {
+			get {return this[new Int2(x,y)];}
+			set {this[new Int2(x,y)] = value;}		
 		}
 
-		public bool TryIndex (Index2 index, out T item) {
+		public bool TryIndex (Int2 index, out T item) {
 			item = default(T);
-			if (Size.Contains(index)) {
+			if (Size.Covers(index)) {
 				item = array[index.x, index.y];
 				return true;
 			}
 			else {return false;}
 		}
-		public bool TryIndex (Index2 index) {
-			if (Size.Contains(index)) {return true;}
+		public bool TryIndex (Int2 index) {
+			if (Size.Covers(index)) {return true;}
 			return false;
 		}
 
@@ -89,10 +89,21 @@ namespace HOA {
 		public Group<T> Periphery {
 			get {
 				Group<T> periphery = new Group<T>();
-				for (byte i=0; i<Size.x; i++) {periphery.Add(array[i, 0]);}
-				for (byte i=0; i<Size.y; i++) {periphery.Add(array[Size.Last.x, i]);}
-				for (byte i=Size.Last.x; i>=0; i--) {periphery.Add(array[i, Size.Last.y]);}
-				for (byte i=Size.Last.y; i>=0; i--) {periphery.Add(array[0, i]);}
+				for (int i=0; i<Size.x; i++) {periphery.Add(array[i, 0]);}
+				for (int i=0; i<Size.y; i++) {periphery.Add(array[Size.x-1, i]);}
+				for (int i=Size.x-1; i>=0; i--) {periphery.Add(array[i, Size.y-1]);}
+				for (int i=Size.y-1; i>=0; i--) {periphery.Add(array[0, i]);}
+				return periphery;
+			}
+		}
+
+		public Group<Int2> PeripheralIndexes {
+			get {
+				Group<Int2> periphery = new Group<Int2>();
+				for (int i=0; i<Size.x; i++) {periphery.Add(new Int2(i, 0));}
+				for (int i=0; i<Size.y; i++) {periphery.Add(new Int2(Size.x-1, i));}
+				for (int i=Size.x-1; i>=0; i--) {periphery.Add(new Int2(i, Size.y-1));}
+				for (int i=Size.y-1; i>=0; i--) {periphery.Add(new Int2(0, i));}
 				return periphery;
 			}
 		}

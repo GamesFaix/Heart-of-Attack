@@ -229,6 +229,62 @@ namespace HOA {
 		}
 	}
 
+	public class TCurse : Timer {
+		int magnitude = 2;
+		
+		public TCurse (Unit parent, Token sourceToken) {
+			Parent = parent;
+			Source = new Source(sourceToken);
+			Turns = 1;
+			Name = "Cursed";
+			Desc = "Do "+magnitude+" damage to "+Parent.ToString()+" at the end of its turn if sharing cell with "+Source.Token.ToString()+".";		
+		}
+		
+		public override void Activate () {
+			EffectQueue.Add(new EDamage(Source, Parent, magnitude));
+			Turns++;
+		}
+		
+		public override void Display (Panel p, float iconSize) {
+			GUI.Label(p.Box(iconSize), Icons.TIMER());
+			p.NudgeY();
+			GUI.Label(p.Box(100), Name);
+			p.NudgeY(false);
+			
+			p.NudgeX();
+			p.NudgeY();
+			GUI.Label(p.Box(200), magnitude.ToString()+" damage at end of turn.");
+		}
+	}
+
+	public class TExhaust : Timer {
+		int magnitude = 5;
+		
+		public TExhaust (Unit parent, Token sourceToken) {
+			Parent = parent;
+			Source = new Source(sourceToken);
+			Turns = 1;
+			Name = "Exhausted";
+			Desc = "Do "+magnitude+" damage to "+Parent.ToString()+" at the end of its turn if sharing cell with "+Source.Token.ToString()+".";		
+		}
+		
+		public override void Activate () {
+			EffectQueue.Add(new EIncinerate(Source, Parent, magnitude));
+			Turns++;
+		}
+		
+		public override void Display (Panel p, float iconSize) {
+			GUI.Label(p.Box(iconSize), Icons.TIMER());
+			p.NudgeY();
+			GUI.Label(p.Box(100), Name);
+			p.NudgeY(false);
+			
+			p.NudgeX();
+			p.NudgeY();
+			GUI.Label(p.Box(200), magnitude.ToString()+" damage at end of turn.");
+		}
+	}
+
 	public class TWater : Timer {
 		int magnitude = 5;
 
@@ -256,6 +312,35 @@ namespace HOA {
 			GUI.Label(p.Box(200), magnitude.ToString()+" damage at end of turn.");
 		}
 
+	}
+
+	public class TTarg : Timer {
+		int magnitude = 10;
+		
+		public TTarg (Unit parent, Token sourceToken) {
+			Parent = parent;
+			Source = new Source(sourceToken);
+			Turns = 1;
+			Name = "Targeted";
+			Desc = "Do "+magnitude+" explosive damage at "+Parent.ToString()+"'s cell at the end of its turn.";		
+		}
+		
+		public override void Activate () {
+			EffectQueue.Add(new EExplosion(Source, Parent.Body.Cell, magnitude));
+			Turns++;
+		}
+		
+		public override void Display (Panel p, float iconSize) {
+			GUI.Label(p.Box(iconSize), Icons.TIMER());
+			p.NudgeY();
+			GUI.Label(p.Box(100), Name);
+			p.NudgeY(false);
+			
+			p.NudgeX();
+			p.NudgeY();
+			GUI.Label(p.Box(200), magnitude.ToString()+" explosive damage at end of turn.");
+		}
+		
 	}
 
 	public class TPetrify : Timer {

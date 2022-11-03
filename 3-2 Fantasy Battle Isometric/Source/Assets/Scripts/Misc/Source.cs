@@ -44,6 +44,10 @@ namespace HOA {
 		public static Source ActiveUnit {
 			get {return new Source((Token)TurnQueue.Top);}
 		}
+
+		public static Source Neutral {
+			get {return new Source(Roster.Neutral);} 
+		}
 		
 	}
 }

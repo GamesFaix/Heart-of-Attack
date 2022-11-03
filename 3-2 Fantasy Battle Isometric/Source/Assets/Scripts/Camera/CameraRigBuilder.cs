@@ -28,6 +28,6 @@ public class CameraRigBuilder : MonoBehaviour {
 
 	void SetSkybox (GameObject camera) {
 		SkyboxControl sbc = camera.AddComponent("SkyboxControl") as SkyboxControl;
-		sbc.SetTexture("space");
+		sbc.SetTexture("black");
 	}
 }

@@ -204,7 +204,7 @@ namespace HOA {
 			Token Parent = source.Token;
 			int currentDmg = dmg;
 			Cell cell = target.Body.Cell;
-			int2 direction = Direction.FromCells(cell, Parent.Body.Cell);
+			Int2 direction = Direction.FromCells(cell, Parent.Body.Cell);
 			bool stop = false;
 			
 			TokenGroup targets;
@@ -233,7 +233,7 @@ namespace HOA {
 
 				if (targets.Count > 0) {currentDmg = (int)Mathf.Floor(currentDmg*0.5f);}
 
-				index2 nextIndex = (index2)(cell.Index - direction);
+				Int2 nextIndex = cell.Index - direction;
 
 				if (!Game.Board.HasCell(nextIndex, out cell)) {stop = true;}
 			}

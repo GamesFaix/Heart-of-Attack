@@ -5,12 +5,19 @@ namespace HOA {
 
 		public Cell Cell {get {return (Cell)Parent;} }
 
-		public void EnterSunken (Token t) {
+		public virtual void EnterSunken (Token t) {
 			if (t.Display != default(TokenDisplay)) {
 				spriteCard.Show();
 				spriteCard.Tex = t.Display.Sprite;
 			}
 		}
-		public void ExitSunken () {spriteCard.Hide();}
+		public virtual void ExitSunken () {spriteCard.Hide();}
+
+		public virtual Texture2D TerrainTex {
+			get { 
+				if ((Cell.X+Cell.Y)%2 == 0) {return Cell.Board.TileSet.Even;}
+				else {return Cell.Board.TileSet.Odd;}
+			} 
+		}
 	}
 }

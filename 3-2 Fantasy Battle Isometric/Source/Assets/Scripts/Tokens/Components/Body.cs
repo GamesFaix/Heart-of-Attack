@@ -33,7 +33,11 @@ namespace HOA {
 		}
 
 		public virtual bool CanEnter (Cell newCell) {
-			if (!newCell.Occupied(parent.Plane.Value) || CanTrample(newCell)) {return true;}
+			if (!(newCell is ExoCell)) {
+				if (!newCell.Occupied(parent.Plane.Value) || CanTrample(newCell)) {
+					return true;
+				}
+			}
 			return false;
 		}
 		

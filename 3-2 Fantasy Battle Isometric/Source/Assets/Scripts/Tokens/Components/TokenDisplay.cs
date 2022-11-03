@@ -43,7 +43,7 @@ namespace HOA {
 					moving = false;
 					moveStartTime = 0;
 				}
-				if (CameraPanner.Target == Token) {CameraPanner.Focus(Token, false);}
+			//	if (CameraPanner.Target == Token) {CameraPanner.Focus(Token, false);}
 			}
 		}
 

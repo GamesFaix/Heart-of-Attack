@@ -11,7 +11,7 @@ namespace HOA {
 			Neutralize();
 		}
 		public override string Notes () {return 
-			"Ground units may not move through "+ID.Name+"." +
+			"Ground units must stop on "+ID.Name+"." +
 			"\nGround Units take 7 damage upon entering "+ID.Name+"'s Cell." +
 			"\nGround Units sharing "+ID.Name+"'s Cell take 7 damage at the end of their turn.";
 		}
@@ -92,7 +92,7 @@ namespace HOA {
 			if (t is Unit && t.Plane.Is(EPlane.GND)) {
 				Unit u = (Unit)t;
 				u.timers.Add(new TLava(u, parent));
-				EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 7));
+				if (Game.Active) {EffectQueue.Interrupt(new EIncinerate(new Source(parent), u, 7));}
 			}
 		}
 		public override void OtherExit (Token t) {

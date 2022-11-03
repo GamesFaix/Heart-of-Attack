@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6B5A9474-40B2-06DC-33C5-CE4F560586B8}</ProjectGuid>
+	<ProjectGuid>{26B0C6DF-2804-4EDA-FEBD-C76AFBC8C4F6}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;UNITY_64;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -47,29 +47,45 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Board\Board.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardFactory.cs" />
      <Compile Include="Assets\Scripts\Board\BoardPhysical.cs" />
      <Compile Include="Assets\Scripts\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Board\CellDisplay.cs" />
      <Compile Include="Assets\Scripts\Board\Direction.cs" />
+     <Compile Include="Assets\Scripts\Board\ExoCell.cs" />
+     <Compile Include="Assets\Scripts\Board\ExoCellDisplay.cs" />
+     <Compile Include="Assets\Scripts\Board\Landscape.cs" />
+     <Compile Include="Assets\Scripts\Board\Map.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapBlank.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapCastle.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapGrove.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapMinefield.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapRandom.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapSpace.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapTime.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\MapVoid.cs" />
      <Compile Include="Assets\Scripts\Board\Terrain.cs" />
      <Compile Include="Assets\Scripts\Board\Zone.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraPanner.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraPanner2.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraRigBuilder.cs" />
      <Compile Include="Assets\Scripts\Camera\GameWorldCursor.cs" />
      <Compile Include="Assets\Scripts\Camera\SkyboxControl.cs" />
-     <Compile Include="Assets\Scripts\Collections\CellGroup.cs" />
-     <Compile Include="Assets\Scripts\Collections\EffectGroup.cs" />
      <Compile Include="Assets\Scripts\Collections\EffectSeq.cs" />
-     <Compile Include="Assets\Scripts\Collections\Group.cs" />
+     <Compile Include="Assets\Scripts\Collections\Groups\CellGroup.cs" />
+     <Compile Include="Assets\Scripts\Collections\Groups\EffectGroup.cs" />
+     <Compile Include="Assets\Scripts\Collections\Groups\Group.cs" />
+     <Compile Include="Assets\Scripts\Collections\Groups\TargetGroup.cs" />
+     <Compile Include="Assets\Scripts\Collections\Groups\TokenGroup.cs" />
      <Compile Include="Assets\Scripts\Collections\Matrix.cs" />
+     <Compile Include="Assets\Scripts\Collections\Probability\Distribution.cs" />
+     <Compile Include="Assets\Scripts\Collections\Probability\Possibility.cs" />
      <Compile Include="Assets\Scripts\Collections\Queue.cs" />
      <Compile Include="Assets\Scripts\Collections\ReDictionary.cs" />
-     <Compile Include="Assets\Scripts\Collections\TargetGroup.cs" />
-     <Compile Include="Assets\Scripts\Collections\TokenGroup.cs" />
      <Compile Include="Assets\Scripts\Collections\Tuples\Float2.cs" />
      <Compile Include="Assets\Scripts\Collections\Tuples\Index2.cs" />
+     <Compile Include="Assets\Scripts\Collections\Tuples\Int2.cs" />
      <Compile Include="Assets\Scripts\Collections\Tuples\Size2.cs" />
-     <Compile Include="Assets\Scripts\Collections\Tuples\int2.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />
@@ -78,6 +94,7 @@
      <Compile Include="Assets\Scripts\GUI\Game\GUIInspector.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\GUIQueue.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\NewTips\Tip.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\GUIToolTips.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipAP.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipArc.cs" />
@@ -100,8 +117,9 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipTram.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipUnit.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
-     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
+     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyBoard.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
+     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyPlayers.cs" />
      <Compile Include="Assets\Scripts\Graphics\Card.cs" />
      <Compile Include="Assets\Scripts\Graphics\EffectCard.cs" />
      <Compile Include="Assets\Scripts\Graphics\Icons.cs" />
@@ -109,6 +127,7 @@
      <Compile Include="Assets\Scripts\Graphics\SpriteEffects.cs" />
      <Compile Include="Assets\Scripts\Graphics\TargetDisplay.cs" />
      <Compile Include="Assets\Scripts\Graphics\Thumbs.cs" />
+     <Compile Include="Assets\Scripts\Graphics\TileSet.cs" />
      <Compile Include="Assets\Scripts\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Misc\DiceCoin.cs" />
      <Compile Include="Assets\Scripts\Misc\Enums.cs" />
@@ -216,7 +235,13 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\New Rep\Mine.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\New Rep\Pano.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Curse.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Exhaust.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Ice.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Lava.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Targ.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\TimeSink.cs" />
+     <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\TimeWell.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Obstacles\Water.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Aren.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psilent\Drea.cs" />
@@ -228,7 +253,6 @@
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Mart.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Myco.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Webb.cs" />
-     <Compile Include="Assets\Scripts\Tokens\Specific\Psycho\Webb2.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Ashe.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Batt.cs" />
      <Compile Include="Assets\Scripts\Tokens\Specific\Torridale\Conf.cs" />

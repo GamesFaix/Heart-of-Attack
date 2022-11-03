@@ -13,7 +13,7 @@ public static class GUIInspector {
 		set {
 			inspected = value;
 			inspectedAction = default(Task);
-			if (inspected is Token && !((Token)inspected).IsTemplate()){CameraPanner.Focus(inspected);}
+			//if (inspected is Token && !((Token)inspected).IsTemplate()){CameraPanner.Focus(inspected);}
 		}
 	}
 	
@@ -223,20 +223,21 @@ public static class GUIInspector {
 		Rect box;
 		if (u == TurnQueue.Top) {
 			p.NudgeX();
-			if (GUI.Button(p.Box(btnW), "End Turn")) {
+			if (GUI.Button(p.Box(btnW), "End Turn [0]") || Input.GetKey("0") || Input.GetKey("[0]")) {
 				Targeter.Start(new AEnd(u));
 				GUIMaster.PlaySound(EGUISound.CLICK);
 			}
 			p.NextLine();
 		}
 
+		int i =1;
 		foreach (Task a in u.Arsenal) {
 			p.NudgeX();
 
 			box = p.Box(btnW);
 
 			if (a.Legal) {
-				if (GUI.Button(box, a.Name)) {
+				if (GUI.Button(box, a.Name+" ["+i+"]") || Input.GetKey(i.ToString()) || Input.GetKey("["+i+"]")) {
 					//Debug.Log("button clicked "+a.Name);
 					GUIMaster.PlaySound(EGUISound.CLICK);
 					Targeter.Start(a);
@@ -252,7 +253,7 @@ public static class GUIInspector {
 
 			if (box.Contains(MousePos())) {inspectedAction = a;}
 			p.NextLine();
-			
+			i++;
 		}
 
 
@@ -265,12 +266,12 @@ public static class GUIInspector {
 			GUI.Label(p.TallBox(3), "Pending: \n"+Targeter.PendingString());
 
 			p.NudgeX();
-			if (GUI.Button(p.Box(btnW), "Execute") || Input.GetKeyUp("space")) {
+			if (GUI.Button(p.Box(btnW), "Execute [Space]") || Input.GetKeyUp("space")) {
 				Targeter.Execute();
 				GUIMaster.PlaySound(EGUISound.CLICK);
 			}
 
-			if (GUI.Button(p.Box(btnW), "Cancel") || Input.GetKeyUp("escape")) {
+			if (GUI.Button(p.Box(btnW), "Cancel [Backspace]") || Input.GetKeyUp("backspace")) {
 				Targeter.Reset();
 				GUIMaster.PlaySound(EGUISound.CLICK);
 			}

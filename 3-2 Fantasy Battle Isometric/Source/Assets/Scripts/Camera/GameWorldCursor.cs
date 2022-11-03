@@ -9,30 +9,51 @@ namespace HOA {
 
 		public static Rect gameWindow = new Rect(0,0,0,0);
 
+		static Vector2 mouseStart;
+
 		void Update(){
 			if (gameWindow.Contains(Input.mousePosition)) {
-				if (Input.GetMouseButtonUp(0)){
-					Target target = ClosestLegalTargetToCamera();
-					if (target != null) {
-						Targeter.Select(target);
-						GUIMaster.PlaySound(EGUISound.TARGET);
-					}
+				Vector2 mouseCurrent = Input.mousePosition;
+
+				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+					mouseStart = mouseCurrent;
 				}
 
-				if (Input.GetMouseButtonUp(1)) { 
-					Target target = null;
-					if (Input.GetKey("left shift") || Input.GetKey("right shift")){
-						target = ClosestCellToCamera();
-					}
-					else {
-						target = ClosestTokenToCamera();
-					}
+				else if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
+					if (mouseCurrent.x < mouseStart.x-50) {CameraPanner.Rotate(-1);}
+					if (mouseCurrent.x > mouseStart.x+50) {CameraPanner.Rotate(1);}
+					if (mouseCurrent.y < mouseStart.y-50) {CameraPanner.Pitch(-1);}
+					if (mouseCurrent.y > mouseStart.y+50) {CameraPanner.Pitch(1);}
 
-					if (target != null) {
-						GUIInspector.Inspected = target;
-						GUIMaster.PlaySound(EGUISound.INSPECT);
-					}
 				}
+
+				if (mouseCurrent == mouseStart) {
+					if (Input.GetMouseButtonUp(0)){Select();}
+					if (Input.GetMouseButtonUp(1)) {Inspect();}
+				}
+			}
+		}
+
+		void Select () {
+			Target target = ClosestLegalTargetToCamera();
+			if (target != null) {
+				Targeter.Select(target);
+				GUIMaster.PlaySound(EGUISound.TARGET);
+			}
+		}
+
+		void Inspect () {
+			Target target = null;
+			if (Input.GetKey("left shift") || Input.GetKey("right shift")){
+				target = ClosestCellToCamera();
+			}
+			else {
+				target = ClosestTokenToCamera();
+			}
+			
+			if (target != null) {
+				GUIInspector.Inspected = target;
+				GUIMaster.PlaySound(EGUISound.INSPECT);
 			}
 		}
 

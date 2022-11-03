@@ -96,6 +96,25 @@ namespace HOA {
 				case EToken.WATR: return new Water(s,true);
 				case EToken.LAVA: return new Lava(s,true);
 	
+
+				case EToken.TREE2: return new Tree2(s, true);
+				case EToken.TREE3: return new Tree3(s, true);
+				case EToken.TREE4: return new Tree4(s, true);
+				case EToken.HOUS: return new House(s, true);
+				case EToken.COTT: return new Cottage(s, true);
+				case EToken.TEMP: return new Temple(s, true);
+				case EToken.PYRA: return new Pyramid(s, true);
+				case EToken.ANTE: return new Antenna(s, true);
+				case EToken.PYLO: return new Pylon(s, true);
+				case EToken.HOLE: return new Hole(s, true);
+				case EToken.EXHA: return new Exhaust(s, true);
+				case EToken.ICE: return new Ice(s, true);
+				case EToken.TARG: return new Targ(s, true);
+				case EToken.RAMP: return new Rampart(s, true);
+				case EToken.CURS: return new Curse(s, true);
+				case EToken.TSNK: return new TimeSink(s, true);
+				case EToken.TWEL: return new TimeWell(s, true);
+
 				default: return default(Token);
 			}
 		}

@@ -34,36 +34,27 @@ namespace HOA {
 
 		public float Product {get {return x*y;} }
 
-		public int2 Round {
+		public Int2 Round {
 			get {
 				int i = (int)Mathf.RoundToInt(x);
 				int j = (int)Mathf.RoundToInt(y);
-				return new int2(i,j);
+				return new Int2(i,j);
 			}
 		}
 
-		public Index2 RoundToIndex {
-			get {
-				checked {
-					byte i = (byte)Mathf.RoundToInt(x);
-					byte j = (byte)Mathf.RoundToInt(y);
-					return new Index2(i,j);
-				}
-			}
-		}
-		public int2 Floor {
+		public Int2 Floor {
 			get {
 				int i = (int)Mathf.Floor(x);
 				int j = (int)Mathf.Floor(y);
-				return new int2(i,j);
+				return new Int2(i,j);
 			}
 		}
 
-		public int2 Ceil {
+		public Int2 Ceil {
 			get {
 				int i = (int)Mathf.Ceil(x);
 				int j = (int)Mathf.Ceil(y);
-				return new int2(i,j);
+				return new Int2(i,j);
 			}
 		}
 

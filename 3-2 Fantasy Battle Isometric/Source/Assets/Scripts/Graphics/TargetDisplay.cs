@@ -5,11 +5,10 @@ namespace HOA {
 
 	public class TargetDisplay : MonoBehaviour{
 		static GameObject cellPF = Resources.Load("Prefabs/CellPrefab") as GameObject;
+		static GameObject exoPF = Resources.Load("Prefabs/ExoCellPrefab") as GameObject;
 		static GameObject tokenPF = Resources.Load("Prefabs/TokenPrefab") as GameObject;
 
 		static Texture2D texLegal = Resources.Load("Images/Textures/legal") as Texture2D;
-		static Texture2D cellTexEven = Resources.Load("Images/Textures/Cell/mc grass") as Texture2D;
-		static Texture2D cellTexOdd = Resources.Load("Images/Textures/Cell/mc dirt") as Texture2D;
 
 		public Target Parent {get; set;}
 
@@ -25,9 +24,8 @@ namespace HOA {
 			set {spriteCard.Tex = value;}
 		}
 
-		public void HideSprite() {
-			spriteCard.Hide();
-		}
+		public void HideSprite() {spriteCard.Hide();}
+		public void HideTerrain() {terrainCard.Hide();}
 
 		public bool Legal {
 			set {
@@ -53,7 +51,7 @@ namespace HOA {
 			return CellPos(c.Index);
 		}
 
-		static Vector3 CellPos (Index2 index) {
+		static Vector3 CellPos (Int2 index) {
 			float x = index.x * BoardPhysical.CellSize;
 			float z = index.y * BoardPhysical.CellSize;
 			return new Vector3 (x,0,z);
@@ -63,15 +61,17 @@ namespace HOA {
 			GameObject go = Instantiate (t);
 			TargetDisplay display;
 			try {
-				display = (t is Cell ? 
-				 go.GetComponent("CellDisplay") as TargetDisplay: 
-				 go.GetComponent("TokenDisplay") as TargetDisplay);
-				go.name = (t is Cell ?
-				   "Cell "+((Cell)t).ToString():
-				   ((Token)t).ToString());
-				go.transform.localScale = (t is Cell ?
-				   new Vector3 ((float)BoardPhysical.CellSize/10, 1, (float)BoardPhysical.CellSize/10):
-				   ((Token)t).SpriteScale);
+				if (t is Cell) {
+					display = go.GetComponent("CellDisplay") as TargetDisplay;
+					if (!(t is ExoCell)){go.name = "Cell "+((Cell)t).ToString();}
+					else {go.name = "Border "+((Cell)t).ToString();}
+					go.transform.localScale = new Vector3 ((float)BoardPhysical.CellSize/10, 1, (float)BoardPhysical.CellSize/10);
+				}
+				else {
+					display = go.GetComponent("TokenDisplay") as TargetDisplay;
+					go.name = ((Token)t).ToString();
+					go.transform.localScale = ((Token)t).SpriteScale;
+				}
 			}
 			catch {
 				throw new Exception ("TargetDisplay: Can only attach to Cell or Token.");
@@ -98,14 +98,16 @@ namespace HOA {
 			if (display is CellDisplay) {
 				display.terrainCard = Card.Attach(display.GO, 0);
 				display.terrainCard.gameObject.name = "Terrain Card";
-
-				if (Even(display)) {display.terrainCard.Tex = cellTexEven;}
-				else {display.terrainCard.Tex = cellTexOdd;}
+				display.terrainCard.Tex = ((CellDisplay)display).TerrainTex;
 			}
 
 			display.spriteCard  = Card.Attach(display.GO, 0.01f);
 			display.spriteCard.gameObject.name = "Sprite Card";
-			if (display is CellDisplay) {display.spriteCard.Hide();}
+			if (display is ExoCellDisplay) {
+				display.spriteCard.Show();
+				((ExoCellDisplay)display).AddShadow();
+			}
+			else if (display is CellDisplay) {display.spriteCard.Hide();}
 
 			display.legalCard = Card.Attach(display.GO, 0.02f);
 			display.legalCard.gameObject.name = "Legal Card";
@@ -116,18 +118,12 @@ namespace HOA {
 			display.effectCard.gameObject.name = "Effect Card";
 			display.effectCard.Hide();
 		}
-		static bool Even (TargetDisplay display) {
-			if (display is CellDisplay) {
-				CellDisplay cd = (CellDisplay)display;
-				Cell cell = cd.Cell;
-				if ((cell.X+cell.Y)%2 == 0) {return true;}
-			}
-			return false;
-		}
+	
 
 		static GameObject Instantiate (Target t) {
 			GameObject prefab;
-			if (t is Cell) {prefab = cellPF;}
+			if (t is ExoCell) {prefab = exoPF;}
+			else if (t is Cell) {prefab = cellPF;}
 			else if (t is Token) {prefab = tokenPF;}
 			else {throw new Exception ("TargetDisplay: Can only insantiate on Cell or Token.");}
 			return GameObject.Instantiate (prefab, PrefabPos(t), Quaternion.identity) as GameObject;

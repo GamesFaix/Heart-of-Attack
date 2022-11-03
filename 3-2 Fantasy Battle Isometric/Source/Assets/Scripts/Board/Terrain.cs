@@ -5,11 +5,11 @@ namespace HOA {
 
 	public class Terrain : Matrix<EToken> {
 	
-		public override Size2 Size {get {return Zone.size;} }
+		public override Int2 Size {get {return Zone.size;} }
 
 		public Terrain () {
 			array = new EToken[Size.x, Size.y];
-			foreach (Index2 index in Size) {
+			foreach (Int2 index in Size) {
 				this[index] = EToken.NONE;
 			}
 		}
@@ -30,7 +30,7 @@ namespace HOA {
 		
 		public Terrain (Terrain source) {
 			array = new EToken[Size.x, Size.y];
-			foreach (Index2 index in Size) {
+			foreach (Int2 index in Size) {
 				this[index] = EToken.NONE;
 				if (source[index] != EToken.NONE) {
 					this[index] = source[index];
@@ -38,16 +38,15 @@ namespace HOA {
 			}
 		}
 
-		/*
 		public Terrain FlipHor () {
 			Terrain flipped = new Terrain();
-			foreach (index2 index in Size) {
-				index2 newIndex = index; 
+			foreach (Int2 index in Size) {
+				Int2 newIndex = index; 
 				int median = (int)Mathf.Ceil(Size.x/2);
 				int distance = index.x - median;
 				if (index.x != median) {
 					int newX = index.x - 2*distance;
-					newIndex = new index2(newX, index.y);
+					newIndex = new Int2(newX, index.y);
 				}
 				flipped[newIndex] = this[index];
 			}
@@ -55,13 +54,13 @@ namespace HOA {
 		}
 		public Terrain FlipVer () {
 			Terrain flipped = new Terrain();
-			foreach (index2 index in Size) {
-				index2 newIndex = index; 
+			foreach (Int2 index in Size) {
+				Int2 newIndex = index; 
 				int median = (int)Mathf.Ceil(Size.y/2);
 				int distance = index.y - median;
 				if (index.y != median) {
 					int newY = index.y- 2*distance;
-					newIndex = new index2(index.x, newY);
+					newIndex = new Int2(index.x, newY);
 				}
 				flipped[newIndex] = this[index];
 			}
@@ -69,16 +68,16 @@ namespace HOA {
 		}
 		public Terrain FlipPos () {
 			Terrain flipped = new Terrain();
-			foreach (index2 index in Size) {
-				index2 newIndex = new index2 (index.y, index.x);
+			foreach (Int2 index in Size) {
+				Int2 newIndex = new Int2 (index.y, index.x);
 				flipped[newIndex] = this[index];
 			}
 			return flipped;
 		}
 		public Terrain FlipNeg () {
 			Terrain flipped = new Terrain();
-			foreach (index2 index in Size) {
-				index2 newIndex = new index2 (index.y*-1, index.x*-1);
+			foreach (Int2 index in Size) {
+				Int2 newIndex = new Int2 (index.y*-1, index.x*-1);
 				flipped[newIndex] = this[index];
 			}
 			return flipped;
@@ -101,7 +100,7 @@ namespace HOA {
 			
 			return rotated;
 		}
-*/
+
 
 		public static Terrain Lake {
 			get {
@@ -109,6 +108,16 @@ namespace HOA {
 					EToken.WATR, EToken.WATR, EToken.WATR,
 					EToken.WATR, EToken.WATR, EToken.WATR,
 					EToken.WATR, EToken.WATR, EToken.WATR
+				});
+			}
+		}
+
+		public static Terrain FrozenLake {
+			get {
+				return new Terrain( new EToken[] {
+					EToken.ICE, EToken.ICE, EToken.ICE,
+					EToken.ICE, EToken.ICE, EToken.ICE,
+					EToken.ICE, EToken.ICE, EToken.ICE
 				});
 			}
 		}
@@ -142,6 +151,7 @@ namespace HOA {
 				});
 			}
 		}
+
 
 		public static Terrain Blank {
 			get {return new Terrain();}

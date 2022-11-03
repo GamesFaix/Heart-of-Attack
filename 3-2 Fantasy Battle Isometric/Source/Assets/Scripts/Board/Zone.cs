@@ -4,22 +4,18 @@ namespace HOA {
 
 	public class Zone {
 		public Matrix<Cell> cells;
-		public static Size2 size = new Size2(3,3);
+		public static Int2 size = new Int2(3,3);
 
-		public Zone (Index2 zoneIndex) {
+		public Zone () {
 			cells = new Matrix<Cell>(size);
-			foreach (Index2 localIndex in size) {
-				Index2 globalIndex = (size*zoneIndex) + localIndex;
-				cells[localIndex] = new Cell(globalIndex);
-			}
 		}
 
-		public Cell this[byte x, byte y] {
+		public Cell this[int x, int y] {
 			get {return cells[x,y];}
 			set {cells[x,y] = value;}
 		}
 
-		public Cell this[Index2 index] {
+		public Cell this[Int2 index] {
 			get {return cells[index];}
 			set {cells[index] = value;}
 		}
@@ -27,7 +23,7 @@ namespace HOA {
 
 		CellGroup ToCellGroup () {
 			CellGroup group = new CellGroup();
-			foreach (Index2 index in size) {group.Add(cells[index]);}
+			foreach (Int2 index in size) {group.Add(cells[index]);}
 			return group;
 		}
 

@@ -89,7 +89,7 @@ namespace HOA{
 		public override void Exit () {}
 		
 		public override void OtherEnter (Token t) {
-			EffectQueue.Interrupt(new EDetonate(new Source(t), parent));
+			if (Game.Active) {EffectQueue.Interrupt(new EDetonate(new Source(t), parent));}
 		}
 		public override void OtherExit (Token t) {}
 		

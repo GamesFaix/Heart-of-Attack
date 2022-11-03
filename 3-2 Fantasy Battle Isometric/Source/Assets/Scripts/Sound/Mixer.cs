@@ -26,6 +26,9 @@ public class Mixer : MonoBehaviour {
 		}
 	}
 
+	public static void Mute (bool mute) {
+		foreach (AudioSource source in sources) {source.mute = mute;}
+	}
 
 	public static void Play (AudioClip clip) {
 		AudioSource channel = NextAvailableChannel();
