@@ -163,7 +163,7 @@ namespace HOA{
 			
 			range = r;
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
@@ -171,9 +171,9 @@ namespace HOA{
 			
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -184,7 +184,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, range);
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -203,16 +203,16 @@ namespace HOA{
 		public AArenLeech (Unit u) {
 			weight = 3;
 			price = new Price(1,0);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			name = "Leech life";
 			desc = "Do "+damage+" damage to all enemy cellmates. \nGain health equal to damage successfully dealt.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			TokenGroup tokens = actor.Body.CellMates;
-			tokens = tokens.OnlyClass(EType.UNIT);
+			tokens = tokens.OnlyType(EType.UNIT);
 			tokens = tokens.RemoveOwner(actor.Owner);
 			foreach (Token t in tokens) {
 				EffectQueue.Add(new ELeech(new Source(actor), (Unit)t, damage));
@@ -228,16 +228,16 @@ namespace HOA{
 		public AArenDonate (Unit u) {
 			weight = 3;
 			price = new Price(1,0);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			name = "Donate life";
 			desc = "All friendly cellmates +"+damage+" health. \nLose health equal to health successfully given.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			TokenGroup tokens = actor.Body.CellMates;
-			tokens = tokens.OnlyClass(EType.UNIT);
+			tokens = tokens.OnlyType(EType.UNIT);
 			tokens = tokens.OnlyOwner(actor.Owner);
 			foreach (Token t in tokens) {
 				EffectQueue.Add(new EDonate(new Source(actor), (Unit)t, damage));

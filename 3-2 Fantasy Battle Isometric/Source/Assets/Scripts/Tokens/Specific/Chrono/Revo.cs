@@ -46,7 +46,7 @@ namespace HOA{
 				AddAim(HOA.Aim.Shoot(3));
 			}
 
-			public override void Execute (List<ITargetable> targets) {
+			public override void Execute (List<ITarget> targets) {
 				Charge();
 				for (int i=0; i<targets.Count; i++) {
 					EffectQueue.Add(new EDamage (new Source(actor), (Unit)targets[i], damage));

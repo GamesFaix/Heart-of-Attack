@@ -12,11 +12,11 @@ namespace HOA{
 
 			NewHealth(85,2);
 			watch = new WatchOldt(this, 2);
-			
+			NewWallet(3);
 			//arsenal.Add(new AMove(this, Aim.MovePath(2)));
 			arsenal.Add(new AMovePath(this, 2));
 
-			Aim attackAim = new Aim (EAim.ARC, EType.UNIT, 3);
+			Aim attackAim = new Aim (ETraj.ARC, EType.UNIT, 3);
 			arsenal.Add(new AAttack("Snipe", Price.Cheap, this, attackAim, 15));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.REVO));
 			arsenal.Add(new ACreate(new Price(2,0), this, EToken.PIEC));
@@ -50,13 +50,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.GLOBAL, EType.UNIT));
+			AddAim(new Aim(ETraj.GLOBAL, EType.UNIT));
 			
 			name = "Hour Saviour";
 			desc = "All teammates shift up one slot in the Queue.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			TokenGroup team = actor.Owner.OwnedUnits;
 			team.Remove(actor);
@@ -75,13 +75,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.FREE, EType.UNIT));
+			AddAim(new Aim(ETraj.FREE, EType.UNIT));
 
 			name = "Hour Saviour";
 			desc = "Target Unit shifts to the bottom of the Queue";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 
@@ -100,13 +100,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.GLOBAL, EType.UNIT));
+			AddAim(new Aim(ETraj.GLOBAL, EType.UNIT));
 			
 			name = "Minute Waltz";
 			desc = "Shuffle the Queue.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EShuffle(new Source(actor)));
 			Targeter.Reset();
@@ -119,14 +119,14 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,2);
-			AddAim(new Aim(EAim.FREE, EType.UNIT));
+			AddAim(new Aim(ETraj.FREE, EType.UNIT));
 			aim[0].IncludeSelf = false;
 			
 			name = "Second in Command";
 			desc = "Target unit takes the next turn.\n(Cannot target self.)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			int magnitude = TurnQueue.IndexOf(u) - 1;

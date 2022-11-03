@@ -37,7 +37,7 @@ namespace HOA {
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 6);
 			for (int i=0; i<bonus; i++) {
-				aim.Add(new Aim (EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE));
+				aim.Add(new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE));
 			}
 		}
 		
@@ -49,9 +49,9 @@ namespace HOA {
 			aim = new List<Aim>();
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -63,7 +63,7 @@ namespace HOA {
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, Mathf.Min(6, actor.FP));
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Min(6, actor.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -82,7 +82,7 @@ namespace HOA {
 		public AKataSpin (Price p, Unit u, int d) {
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.NEIGHBOR, EType.UNIT));
+			AddAim(new Aim (ETraj.NEIGHBOR, EType.UNIT));
 			
 			damage = d;
 			name = "Laser Spin";
@@ -90,24 +90,24 @@ namespace HOA {
 			
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Unit u = (Unit)targets[0];
 			u.Damage(new Source(actor), damage);
 			
 			int newDmg = (int)Mathf.Floor(damage*0.5f);
 			TokenGroup cellMates = u.Body.CellMates;
-			if (cellMates.OnlyClass(EType.UNIT).Count == 1) {
-				Unit next = (Unit)cellMates.OnlyClass(EType.UNIT)[0];
+			if (cellMates.OnlyType(EType.UNIT).Count == 1) {
+				Unit next = (Unit)cellMates.OnlyType(EType.UNIT)[0];
 				next.Damage(new Source(actor), newDmg);
 				//select direction
 				
 			}
-			else if (cellMates.OnlyClass(EType.UNIT).Count > 1) {
+			else if (cellMates.OnlyType(EType.UNIT).Count > 1) {
 				
 				
 			}
 			
-			else if (cellMates.OnlyClass(EType.UNIT).Count > 0) {
+			else if (cellMates.OnlyType(EType.UNIT).Count > 0) {
 				//end
 				
 			}

@@ -28,14 +28,14 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.ARC, EType.UNIT, 2));
+			AddAim(new Aim(ETraj.ARC, EType.UNIT, 2));
 			magnitude = n;
 			
 			name = "Heal";
 			desc = "Target unit gains "+magnitude+" health.\n(Can target self.)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude));
 			Targeter.Reset();

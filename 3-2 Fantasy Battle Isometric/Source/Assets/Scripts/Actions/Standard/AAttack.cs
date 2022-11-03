@@ -19,7 +19,7 @@ namespace HOA {
 			desc = "Do "+d+" damage to target unit.";
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EDamage (new Source(actor), (Unit)targets[0], damage));
 			//AEffects.Damage (new Source(actor), (Unit)targets[0], damage);

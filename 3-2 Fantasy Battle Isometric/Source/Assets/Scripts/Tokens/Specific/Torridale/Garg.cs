@@ -10,7 +10,7 @@ namespace HOA{
 			ScaleJumbo();
 			NewHealth(75);
 			NewWatch(3);
-			
+			NewWallet(3);
 			arsenal.Add(new AMovePath(this, 4));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 18));
 			arsenal.Add(new AGargLand(this));
@@ -29,7 +29,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Land";
 			desc = "Becomes trampling ground unit. \nMove range -2 \nDefense +2\nForget 'Create Rook' \nLearn 'Tail Whip'";
@@ -45,7 +45,7 @@ namespace HOA{
 
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Token t;
 			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
@@ -74,7 +74,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Take Flight";
 			desc = "Becomes air unit. \nMove range +2\nDefense -2\nForget 'Tail Whip'\nLearn 'Create Rook'";
@@ -84,7 +84,7 @@ namespace HOA{
 			return false;
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -2));
 			actor.Plane.Set(EPlane.AIR);
@@ -110,17 +110,17 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			damage = d;
 			
 			name = "Tail Whip";
 			desc = "Do "+d+" damage to all neighboring units.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			TokenGroup neighbors = actor.Body.Neighbors(false);
-			neighbors = neighbors.OnlyClass(EType.UNIT);
+			neighbors = neighbors.OnlyType(EType.UNIT);
 			foreach (Token t in neighbors) {
 				Unit u = (Unit)t;
 				EffectQueue.Add(new EDamage(new Source(actor), u, damage));
@@ -139,13 +139,13 @@ namespace HOA{
 			template = TemplateFactory.Template(EToken.ROOK);
 			price = p;
 			
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = template.ID.Name;
 			desc = "Create "+name+" in "+actor+"'s cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			if (!actor.Body.Cell.Occupied(EPlane.GND)) {
 				Charge();
 				TokenFactory.Add(EToken.ROOK, new Source(actor), actor.Body.Cell);
@@ -169,7 +169,7 @@ namespace HOA{
 			desc = "Target Unit takes "+damage+" damage and cannot move on its next turn.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			EffectQueue.Add(new EDamage (new Source(actor), u, damage));

@@ -13,7 +13,7 @@ namespace HOA {
 			ScaleJumbo();
 			NewHealth(75);
 			NewWatch(4);
-
+			NewWallet(3);
 			arsenal.Add(new AMoveLine(this, 5));
 			//arsenal.Add(new AMove(this, Aim.MoveLine(5)));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
@@ -42,7 +42,7 @@ namespace HOA {
 			desc = "Do "+damage+" damage to all units in target direction";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			int dmg = damage;
@@ -57,7 +57,7 @@ namespace HOA {
 				affected = cell.Occupants;
 
 				TokenGroup blockers = new TokenGroup (affected);
-				blockers = blockers.OnlyClass(EType.OB);
+				blockers = blockers.OnlyType(EType.OB);
 				blockers = blockers.RemovePlane(EPlane.SUNK);
 				
 				if (blockers.Count > 0) {
@@ -65,7 +65,7 @@ namespace HOA {
 					Debug.Log("obstacle hit");
 				}
 
-				foreach (Token t in affected.OnlyClass(EType.UNIT)) {
+				foreach (Token t in affected.OnlyType(EType.UNIT)) {
 					((Unit)t).Damage(new Source(actor), dmg);
 					t.Display.Effect(EEffect.LASER);
 				}
@@ -86,15 +86,15 @@ namespace HOA {
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.ARC, EType.UNIT, 5));
+			AddAim(new Aim(ETraj.ARC, EType.UNIT, 5));
 			aim[0].TeamOnly = true;
-			AddAim(new Aim(EAim.ARC, EType.CELL, EPurpose.MOVE, 5));
+			AddAim(new Aim(ETraj.ARC, EType.CELL, EPurp.MOVE, 5));
 			
 			name = "Warp Drive";
 			desc = "Move target teammate (including self) to target cell.\n"+aim[1].ToString();
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ETeleport(new Source(actor), (Unit)targets[0], (Cell)targets[1]));
 			Targeter.Reset();

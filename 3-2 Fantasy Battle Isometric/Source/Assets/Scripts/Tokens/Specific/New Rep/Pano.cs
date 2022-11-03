@@ -36,7 +36,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.ARC, EType.UNIT, 3, 2));
+			AddAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
 			damage = d;
 			
 			name = "Cannon";
@@ -46,14 +46,14 @@ namespace HOA{
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus, aim[0].MinRange);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EType.UNIT, 3, 2);
+			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();
@@ -67,7 +67,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.ARC, EType.UNIT, 3, 2));
+			AddAim(new Aim(ETraj.ARC, EType.UNIT, 3, 2));
 			damage = d;
 			
 			name = "Armor Pierce";
@@ -76,14 +76,14 @@ namespace HOA{
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus, aim[0].MinRange);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EType.UNIT, 4, 3);
+			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 4, 3);
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EPierce (new Source(actor), (Unit)targets[0], damage));
 			//AEffects.Pierce(new Source(actor), (Unit)targets[0], damage);

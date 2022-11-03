@@ -22,7 +22,7 @@ namespace HOA {
 			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ECreate(new Source(actor), child, (Cell)targets[0]));
 			Targeter.Reset();

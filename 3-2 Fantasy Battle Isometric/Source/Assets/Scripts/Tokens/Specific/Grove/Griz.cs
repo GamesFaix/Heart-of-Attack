@@ -29,7 +29,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim (new Aim(EAim.NEIGHBOR, EType.UNIT));
+			AddAim (new Aim(ETraj.NEIGHBOR, EType.UNIT));
 			aim[0].TeamOnly = true;
 			aim[0].IncludeSelf = false;
 			magnitude = n;
@@ -38,7 +38,7 @@ namespace HOA{
 			desc = "Target teammate gains "+magnitude+" health.\n(Cannot target self.)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), (Unit)targets[0], EStat.HP, magnitude));
 			Targeter.Reset();

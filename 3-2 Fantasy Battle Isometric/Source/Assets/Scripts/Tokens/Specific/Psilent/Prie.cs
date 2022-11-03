@@ -34,7 +34,7 @@ namespace HOA{
 			desc = "Do "+damage+" damage to target unit.\nKnockback "+kb+" (Move target in a line away from "+actor+", up to "+kb+" cells.)\nTarget takes "+kbdmg+" damage per cell knocked back.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectGroup e = new EffectGroup();
 			e.Add(new EDamage (new Source(actor), (Unit)targets[0], damage));

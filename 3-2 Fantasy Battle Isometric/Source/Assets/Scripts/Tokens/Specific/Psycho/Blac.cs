@@ -10,7 +10,7 @@ namespace HOA{
 			ScaleJumbo();
 			NewHealth(75);
 			NewWatch(3); 
-			
+			NewWallet(3);
 			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new ACorrode("Bite", Price.Cheap, this, Aim.Melee(), 15));
 			arsenal.Add(new ABlacLich(this));
@@ -38,13 +38,13 @@ namespace HOA{
 			desc = "Create "+childTemplate.ID.Name+" in target cell.\nAll Units in target cell take 12 damage.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Cell c = (Cell)targets[0];
 
 			EffectQueue.Add(new ECreate(new Source(actor), EToken.WEBB, c));
 
-			TokenGroup occupants = c.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup occupants = c.Occupants.OnlyType(EType.UNIT);
 			foreach (Unit u in occupants) {
 				EffectQueue.Add(new EDamage(new Source(actor), u, 12));
 			}
@@ -67,7 +67,7 @@ namespace HOA{
 			desc = "Create "+childTemplate.ID.Name+" in up to two target cells.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
 
@@ -99,7 +99,7 @@ namespace HOA{
 			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ECreate(new Source(actor), EToken.LICH, (Cell)targets[0]));
 			Targeter.Reset();

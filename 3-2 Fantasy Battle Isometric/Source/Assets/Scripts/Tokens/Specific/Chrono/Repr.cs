@@ -25,13 +25,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, new List<EType> {EType.DEST, EType.REM}));
+			AddAim(new Aim(ETraj.NEIGHBOR, Type.DestRem));
 			
 			name = "Time Mine";
 			desc = "Destroy neighboring destructible.\nIf initative is less than 6, initiative +1.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Token t = (Token)targets[0];
 			Cell c = t.Body.Cell;
@@ -68,7 +68,7 @@ namespace HOA{
 			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.\n"+actor.ID.Name+" switches cells with target, if legal.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 
@@ -115,14 +115,14 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(new Aim(EAim.ARC, EType.CELL, EPurpose.ATTACK, 2));
+			AddAim(new Aim(ETraj.ARC, EType.CELL, EPurp.ATTACK, 2));
 			damage = 10;
 			
 			name = "Time Bomb";
 			desc = "All Units in target cell take "+damage+" damage and lose 2 Initiative for 2 turns. \nAll units in neighboring cells take 50% damage (rounded down) and lose 1 Initiative for 2 turns. \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Cell c = (Cell)targets[0];
 			EffectQueue.Add(new EExplosion (new Source(actor), c, damage));
@@ -130,12 +130,12 @@ namespace HOA{
 
 			EffectGroup nextEffects = new EffectGroup();
 
-			TokenGroup affected = c.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup affected = c.Occupants.OnlyType(EType.UNIT);
 			foreach (Unit u in affected) {
 				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -2));
 				u.timers.Add(new TBomb(u, actor, 2));
 			}
-			affected = c.Neighbors().Occupants.OnlyClass(EType.UNIT);
+			affected = c.Neighbors().Occupants.OnlyType(EType.UNIT);
 			foreach (Unit u in affected) {
 				nextEffects.Add(new EAddStat (new Source(actor), u, EStat.IN, -1));
 				u.timers.Add(new TBomb(u, actor, 1));

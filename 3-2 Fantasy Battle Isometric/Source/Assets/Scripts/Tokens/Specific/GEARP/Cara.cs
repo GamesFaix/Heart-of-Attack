@@ -98,7 +98,7 @@ namespace HOA {
 			weight = 4;
 			
 			price = p;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			
 			damage = d;
@@ -109,13 +109,13 @@ namespace HOA {
 			
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			TokenGroup cellMates = actor.Body.Cell.Occupants;
 			TokenGroup neighbors = actor.Body.Cell.Neighbors().Occupants;
 			foreach (Token t in neighbors) {cellMates.Add(t);}
-			cellMates = cellMates.OnlyClass(EType.UNIT);
+			cellMates = cellMates.OnlyType(EType.UNIT);
 
 			EffectGroup nextEffects = new EffectGroup();
 			foreach (Token t in cellMates) {

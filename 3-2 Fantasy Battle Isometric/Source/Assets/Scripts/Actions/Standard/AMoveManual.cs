@@ -7,7 +7,7 @@ namespace HOA {
 
 		public AMoveManual (Token t) {
 			weight = 1;
-			AddAim( new Aim (EAim.FREE, EType.CELL, EPurpose.MOVE));
+			AddAim( new Aim (ETraj.FREE, EType.CELL, EPurp.MOVE));
 			actor = TurnQueue.Top;
 			childTemplate = t;
 			
@@ -18,7 +18,7 @@ namespace HOA {
 
 		public override bool Legal() {return true;}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			EffectQueue.Add(new EMove(new Source(actor), childTemplate, (Cell)targets[0]));
 			Targeter.Reset();
 		}

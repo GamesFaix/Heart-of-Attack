@@ -135,7 +135,7 @@ namespace HOA {
 					((Web)source.Token).Affected.Add(target, a);
 					
 					Aim oldAim = a.Aim[0];
-					Aim newAim = new Aim (oldAim.AimType, oldAim.TargetClass, oldAim.Purpose, 1);
+					Aim newAim = new Aim (oldAim.Trajectory, oldAim.Type, oldAim.Purpose, 1);
 					
 					target.Arsenal().Add(new AMove(target, newAim));
 					target.Arsenal().Remove(a);

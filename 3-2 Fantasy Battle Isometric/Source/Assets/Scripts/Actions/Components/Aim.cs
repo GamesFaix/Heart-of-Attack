@@ -1,25 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 namespace HOA {
-	public enum EAim {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
-	public enum EPurpose {MOVE, CREATE, ATTACK, OTHER}
+	public enum ETraj/*ectory*/ {CELLMATE, NEIGHBOR, PATH, LINE, ARC, FREE, SELF, GLOBAL, OTHER}
+	public enum EPurp/*ose*/ {MOVE, CREATE, ATTACK, OTHER}
 
 	public class Aim {
 
-		EAim aimType;
-		public EAim AimType {get {return aimType;} }
+		ETraj trajectory;
+		public ETraj Trajectory {get {return trajectory;} }
 
-		List<EType> targetClass = new List<EType>();
-		public List<EType> TargetClass {get {return targetClass;} }
+		Type type;
+		public Type Type {get {return type;} }
 
-		EPurpose purpose;
-		public EPurpose Purpose {get {return purpose;} }
+		EPurp purpose;
+		public EPurp Purpose {get {return purpose;} }
 
 		int range;
 		public int Range {get {return range;} }
 		int minRange;
 		public int MinRange {get {return minRange;} }
-
 
 		bool teamOnly = false;
 		public bool TeamOnly { 
@@ -42,39 +41,45 @@ namespace HOA {
 			set {noKings = value;}
 		}
 
-		public Aim (EAim a, EType tc, int r=0, int rMin=0) {
-			aimType = a;
-			targetClass = new List<EType> {tc};
-			purpose = EPurpose.ATTACK;
+		public Aim (ETraj a) {
+			trajectory = a;
+			type = default(Type);
+			purpose = EPurp.ATTACK;
+			range = 0;
+			minRange = 0;
+		}
+
+		public Aim (ETraj a, EType tc, int r=0, int rMin=0) {
+			trajectory = a;
+			type = new Type(tc);
+			purpose = EPurp.ATTACK;
 			range = r;
 			minRange = rMin;
 		}
 
-		public Aim (EAim a, List<EType> tc, int r=0, int rMin=0) {
-			aimType = a;
-			targetClass = tc;
-			purpose = EPurpose.ATTACK;
+		public Aim (ETraj a, Type t, int r=0, int rMin=0) {
+			trajectory = a;
+			type = t;
+			purpose = EPurp.ATTACK;
 			range = r;
 			minRange = rMin;
 		}
 
-		public Aim (EAim a, EType tc, EPurpose p, int r=0, int rMin=0) {
-			aimType = a;
-			targetClass = new List<EType> {tc};
+		public Aim (ETraj a, EType tc, EPurp p, int r=0, int rMin=0) {
+			trajectory = a;
+			type = new Type(tc);
 			purpose = p;
 			range = r;
 			minRange = rMin;
 		}
-		
-		public Aim (EAim a, List<EType> tc, EPurpose p, int r=0, int rMin=0) {
-			aimType = a;
-			targetClass = tc;
+
+		public Aim (ETraj a, Type t, EPurp p, int r=0, int rMin=0) {
+			trajectory = a;
+			type = t;
 			purpose = p;
 			range = r;
 			minRange = rMin;
 		}
-
-
 
 		public override string ToString () {
 			string s = "[";
@@ -86,15 +91,15 @@ namespace HOA {
 		}
 		string AimTypeString {
 			get {
-				switch (aimType) {
-					case EAim.CELLMATE: return "Cellmate";
-					case EAim.NEIGHBOR: return "Neighbor";
-					case EAim.PATH: return "Path";
-					case EAim.LINE: return "Line";
-					case EAim.ARC: return "Arc";
-					case EAim.FREE: return "Free";
-					case EAim.SELF: return "Self";
-					case EAim.GLOBAL: return "Global";
+				switch (trajectory) {
+					case ETraj.CELLMATE: return "Cellmate";
+					case ETraj.NEIGHBOR: return "Neighbor";
+					case ETraj.PATH: return "Path";
+					case ETraj.LINE: return "Line";
+					case ETraj.ARC: return "Arc";
+					case ETraj.FREE: return "Free";
+					case ETraj.SELF: return "Self";
+					case ETraj.GLOBAL: return "Global";
 					default: return "Other";
 				}
 			}
@@ -102,8 +107,8 @@ namespace HOA {
 
 		string RangeString {
 			get {
-				if (aimType == EAim.PATH || aimType == EAim.LINE) {return range+"";}	
-				else if (aimType == EAim.ARC) {
+				if (trajectory == ETraj.PATH || trajectory == ETraj.LINE) {return range+"";}	
+				else if (trajectory == ETraj.ARC) {
 					if (minRange > 0) {return minRange+"-"+range;}
 					return range+"";
 				}
@@ -112,32 +117,35 @@ namespace HOA {
 		}
 		string TargetString {
 			get {
-				if (targetClass.Contains(EType.CELL)) {return "Cell";}
+				if (type.Is(EType.CELL)) {return "Cell";}
 
-				else if (targetClass.Contains(EType.UNIT) 
-					&& targetClass.Contains(EType.DEST)) {
+				else if (type.Is(EType.UNIT) 
+					&& type.Is(EType.DEST)) {
 					return "Unit or Destructible";
 				}
-				else if (targetClass.Contains(EType.UNIT)) {return "Unit";}
-				else if (targetClass.Contains(EType.DEST) 
-				    && !targetClass.Contains(EType.REM)) {
+				else if (type.Is(EType.UNIT)) {return "Unit";}
+				else if (type.Is(EType.DEST) 
+				    && !type.Is(EType.REM)) {
 					return "Destructible (non-Remains)";
 				}
-				else if (targetClass.Contains(EType.DEST)
-				    && targetClass.Contains(EType.REM)) {
+				else if (type.Is(EType.DEST)
+				    && type.Is(EType.REM)) {
 					return "Destructible";
 				}
-				else if (targetClass.Contains(EType.REM)) {return "Remains";}
+				else if (type.Is(EType.REM)) {return "Remains";}
 				return "";
 			}
 		}
 		Texture2D[] TargetIcon {
 			get {
-				Texture2D[] texs = new Texture2D[targetClass.Count];
-				for (int i=0; i<texs.Length; i++) {
-					texs[i] = Icons.Class(targetClass[i]);
+				if (type != default(Type)) {
+					Texture2D[] texs = new Texture2D[type.Count];
+					for (int i=0; i<texs.Length; i++) {
+						texs[i] = Icons.Type(type[i]);
+					}
+					return texs;
 				}
-				return texs;
+				else return new Texture2D[0];
 			}
 		}
 
@@ -146,10 +154,10 @@ namespace HOA {
 			float iconSize = p.LineH;
 
 			Rect iconBox = p.Box(iconSize);
-			if (Icons.Aim(aimType) != default(Texture2D)) {
-				GUI.Box(iconBox, Icons.Aim(aimType), p.s);
+			if (Icons.Aim(trajectory) != default(Texture2D)) {
+				GUI.Box(iconBox, Icons.Aim(trajectory), p.s);
 				if (GUIInspector.ShiftMouseOver(iconBox)) {
-					GUIInspector.Tip = GUIToolTips.AimType(aimType);
+					GUIInspector.Tip = GUIToolTips.Trajectory(trajectory);
 				}
 			}
 			if (RangeString != "") {
@@ -163,36 +171,34 @@ namespace HOA {
 			}
 		}
 
-		public static Aim Self {
-			get {return new Aim (EAim.SELF, new List<EType>());}
-		}
+		public static Aim Self () {return new Aim (ETraj.SELF);}
 
 		///
 		public static Aim MovePath (int r) {
-			return new Aim (EAim.PATH, EType.CELL, EPurpose.MOVE, r);	
+			return new Aim (ETraj.PATH, EType.CELL, EPurp.MOVE, r);	
 		}
 		public static Aim MoveLine (int r) {
-			return new Aim (EAim.LINE, EType.CELL, EPurpose.MOVE, r);	
+			return new Aim (ETraj.LINE, EType.CELL, EPurp.MOVE, r);	
 		}
 		public static Aim MoveArc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EType.CELL, EPurpose.MOVE, r, mr);
+			return new Aim (ETraj.ARC, EType.CELL, EPurp.MOVE, r, mr);
 		}
 
 		public static Aim Create () {
-			return new Aim (EAim.NEIGHBOR, EType.CELL, EPurpose.CREATE);
+			return new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.CREATE);
 		}
 		public static Aim CreateArc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EType.CELL, EPurpose.CREATE, r, mr);
+			return new Aim (ETraj.ARC, EType.CELL, EPurp.CREATE, r, mr);
 		}
 		
 		public static Aim Melee () {
-			return new Aim (EAim.NEIGHBOR, EType.UNIT);
+			return new Aim (ETraj.NEIGHBOR, EType.UNIT);
 		}
 		public static Aim Shoot (int n) {
-			return new Aim (EAim.LINE, EType.UNIT, n);
+			return new Aim (ETraj.LINE, EType.UNIT, n);
 		}
 		public static Aim Arc (int r, int mr=0) {
-			return new Aim (EAim.ARC, EType.UNIT, r, mr);
+			return new Aim (ETraj.ARC, EType.UNIT, r, mr);
 		}
 
 	}

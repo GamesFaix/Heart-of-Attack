@@ -18,7 +18,7 @@ namespace HOA {
 			desc = "Do "+d+" damage to target unit. \n"+actor+" takes 50% damage (rounded down).";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ERage(new Source(actor), (Unit)targets[0], damage));
 			Targeter.Reset();

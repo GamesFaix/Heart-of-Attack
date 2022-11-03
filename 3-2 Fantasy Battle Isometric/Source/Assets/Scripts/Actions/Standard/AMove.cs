@@ -17,7 +17,7 @@ namespace HOA {
 			
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)targets[0]));
 			//AEffects.Move(new Source(actor), actor, (Cell)targets[0]);

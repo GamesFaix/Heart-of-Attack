@@ -2,18 +2,18 @@
 
 namespace HOA {
 	
-	public class TargetGroup : Group<ITargetable> {
-		public TargetGroup () {list = new List<ITargetable>();}
-		public TargetGroup (ITargetable t) {list = new List<ITargetable>{t};}
-		public TargetGroup (List<ITargetable> t) {list = t;}
+	public class TargetGroup : Group<ITarget> {
+		public TargetGroup () {list = new List<ITarget>();}
+		public TargetGroup (ITarget t) {list = new List<ITarget>{t};}
+		public TargetGroup (List<ITarget> t) {list = t;}
 
 		public void Legalize (bool b=true) {
-			foreach (ITargetable t in list) {t.Legalize(b);}	
+			foreach (ITarget t in list) {t.Legalize(b);}	
 		}
 		
 		public TargetGroup Legal () {
 			TargetGroup legal = new TargetGroup();
-			foreach (ITargetable t in list) {
+			foreach (ITarget t in list) {
 				if (t.IsLegal()) {legal.Add(t);}
 			}
 			return legal;
@@ -21,7 +21,7 @@ namespace HOA {
 		
 		public TargetGroup Illegal () {
 			TargetGroup illegal = new TargetGroup();
-			foreach (ITargetable t in list) {
+			foreach (ITarget t in list) {
 				if (!t.IsLegal()) {illegal.Add(t);}
 			}
 			return illegal;

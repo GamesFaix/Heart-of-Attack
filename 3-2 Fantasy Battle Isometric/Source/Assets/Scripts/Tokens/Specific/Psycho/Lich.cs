@@ -28,7 +28,7 @@ namespace HOA{
 		public AEvolve (Price p, Unit par, EToken chi) {
 			weight = 4;
 			price = p;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			actor = par;
 			child = chi;
@@ -38,7 +38,7 @@ namespace HOA{
 			desc = "Transform "+actor+" into a "+name+".  \n(New "+name+" is added to the end of the Queue and does not retain any of "+actor+"'s attributes.)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EReplace(new Source(actor), actor, child));
 			Targeter.Reset();

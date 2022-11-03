@@ -8,7 +8,7 @@ namespace HOA {
 		public static bool Ready {get {return ready;}}
 
 		static Action currentAction;
-		static List<ITargetable> targets;
+		static List<ITarget> targets;
 		static int steps;
 		static int currentStep;
 
@@ -27,7 +27,7 @@ namespace HOA {
 				currentAction = a;
 				//Debug.Log("targeting for "+a.Name);
 
-				targets = new List<ITargetable>();
+				targets = new List<ITarget>();
 
 				steps = a.Aim.Count;
 				//Debug.Log("steps: "+steps);
@@ -48,7 +48,7 @@ namespace HOA {
 
 			if (currentAction is IMultiMove && currentStep > 0) {
 				int index = targets.Count-1;
-				ITargetable last = targets[index];
+				ITarget last = targets[index];
 
 				if (last is Cell) {start = (Cell)last;}
 				if (last is Token) {start = ((Token)last).Body.Cell;}
@@ -69,7 +69,7 @@ namespace HOA {
 
 			//Debug.Log(start);
 
-			if (aim.AimType == EAim.SELF) {FinishStep();}
+			if (aim.Trajectory == ETraj.SELF) {FinishStep();}
 			else if (currentAction is AMoveAren) {
 				Legalizer.FindArenMove (actor, aim);
 			}
@@ -81,7 +81,7 @@ namespace HOA {
 
 		}
 
-		public static void Select (ITargetable t) {
+		public static void Select (ITarget t) {
 			if (t.IsLegal()) {
 				targets.Add(t);
 				//Debug.Log("new target selected: "+t.ToString());
@@ -128,8 +128,8 @@ namespace HOA {
 			string str = "";
 			if (currentAction != default(Action)) {
 				str = currentAction.Name;
-				foreach (ITargetable t in targets) {
-					if (t != default(ITargetable)) {
+				foreach (ITarget t in targets) {
+					if (t != default(ITarget)) {
 						str += "\n"+t.ToString();
 					}
 				}
@@ -141,7 +141,7 @@ namespace HOA {
 		public static void Reset () {
 			currentAction.UnAdjust();
 			currentAction = default(Action);
-			targets = default(List<ITargetable>);
+			targets = default(List<ITarget>);
 			ready = false;
 			steps = 0;
 			currentStep =0;

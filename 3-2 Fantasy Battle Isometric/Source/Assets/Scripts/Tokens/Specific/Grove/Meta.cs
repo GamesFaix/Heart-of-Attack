@@ -26,13 +26,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, EType.DEST));
+			AddAim(new Aim(ETraj.NEIGHBOR, EType.DEST));
 			
 			name = "Consume Terrain";
 			desc = "Destroy neighboring non-Remains destructible.\n"+actor+" gains 12 health.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			Token t = (Token)targets[0];

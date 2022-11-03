@@ -9,7 +9,7 @@ namespace HOA {
 			weight = 2;
 			actor = u;
 			price = Price.Cheap;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Focus";
 			desc = "Focus +1";
@@ -18,7 +18,7 @@ namespace HOA {
 		}
 		
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.FP, magnitude));
 			actor.Display.Effect(EEffect.STATUP);

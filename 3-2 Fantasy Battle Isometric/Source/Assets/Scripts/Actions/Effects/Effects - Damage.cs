@@ -96,7 +96,7 @@ namespace HOA {
 		}
 		
 		public override void Process() {
-			TokenGroup targets = cell.Occupants.OnlyClass(new List<EType> {EType.UNIT, EType.DEST});
+			TokenGroup targets = cell.Occupants.OnlyType(Type.UnitDest);
 			
 			foreach (Token t in targets) {
 				t.Display.Effect(EEffect.EXP);
@@ -137,7 +137,7 @@ namespace HOA {
 			
 			TokenGroup neighbors = target.Body.Neighbors(true);
 			neighbors.Remove(source.Token);
-			neighbors = neighbors.OnlyClass(new List<EType> {EType.UNIT, EType.DEST});
+			neighbors = neighbors.OnlyType(Type.UnitDest);
 			
 			int newDmg = (int)Mathf.Floor(dmg * 0.5f);
 			foreach (Token t2 in neighbors) {
@@ -190,14 +190,14 @@ namespace HOA {
 				targets = cell.Occupants;
 				
 				TokenGroup blockers = new TokenGroup (targets);
-				blockers = blockers.OnlyClass(EType.OB);
+				blockers = blockers.OnlyType(EType.OB);
 				blockers = blockers.RemovePlane(EPlane.SUNK);
 				
 				if (blockers.Count > 0) {
 					stop = true; 
 					Debug.Log("obstacle hit");
 				}
-				foreach (Token t in targets.OnlyClass(EType.UNIT)) {
+				foreach (Token t in targets.OnlyType(EType.UNIT)) {
 					((Unit)t).Damage(source, currentDmg);
 					t.Display.Effect(EEffect.LASER);
 				}

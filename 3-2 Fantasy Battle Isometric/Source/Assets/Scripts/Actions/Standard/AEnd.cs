@@ -7,13 +7,13 @@ namespace HOA {
 			weight = 0;
 			actor = u;
 			price = Price.Free;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "End turn";
 			desc = "";
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			EffectQueue.Add(new EAdvance(new Source(actor)));
 			Targeter.Reset();
 		}

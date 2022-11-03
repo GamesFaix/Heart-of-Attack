@@ -27,7 +27,7 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(EAim.PATH, EType.UNIT, 1));
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 			damage = 8;
 			
 			name = "Flail";
@@ -38,14 +38,14 @@ namespace HOA{
 		public override void Adjust () {
 			Debug.Log("adjusting");
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EType.UNIT, 1);
+			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 1);
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
 			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
@@ -63,7 +63,7 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(new Aim(EAim.PATH, EType.UNIT, 1));
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 			damage = 8;
 			
 			name = "Slam";
@@ -73,21 +73,21 @@ namespace HOA{
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EType.UNIT, 1);
+			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 1);
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
 		
 			Unit u = (Unit)targets[0];
 			u.Damage(new Source(actor), damage);
 			u.Display.Effect(EEffect.DMG);
-			TokenGroup neighbors = u.Body.Neighbors(true).OnlyClass(EType.UNIT);
+			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(EType.UNIT);
 			foreach (Unit u2 in neighbors) {
 				u2.Damage(new Source(actor), damage);
 				u2.Display.Effect(EEffect.DMG);

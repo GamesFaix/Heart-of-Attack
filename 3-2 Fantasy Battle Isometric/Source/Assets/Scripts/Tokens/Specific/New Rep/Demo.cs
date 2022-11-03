@@ -41,7 +41,7 @@ namespace HOA{
 			desc = "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			u.timers.Add(new TStickyGrenade(u,actor));

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HOA {
 	
-	public class Cell : ITargetable {
+	public class Cell : ITarget {
 		int x, y;
 		public int X {get {return x;} }
 		public int Y {get {return y;} }
@@ -151,7 +151,7 @@ namespace HOA {
 			return neighbors;
 		}
 
-		//ITargetable
+		//ITarget
 		public void Select (Source s) {GUISelectors.Cell = this;}
 		bool legal = false;
 		public bool IsLegal() {return legal;}

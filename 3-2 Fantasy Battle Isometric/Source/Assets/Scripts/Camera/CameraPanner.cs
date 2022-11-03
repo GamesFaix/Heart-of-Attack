@@ -68,7 +68,7 @@ public class CameraPanner : MonoBehaviour {
 		gameObject.transform.position = newPos;
 	}
 
-	public static void Focus (ITargetable t) {
+	public static void Focus (ITarget t) {
 		if (t is Cell) {
 			endPos = ((Cell)t).Location;
 		}

@@ -27,13 +27,13 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.ARC, EType.DEST, 2));
+			AddAim(new Aim (ETraj.ARC, EType.DEST, 2));
 			
 			name = "Seed";
 			desc = "Replace target non-Remains destructible with Lichenthrope.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], EToken.LICH));
 			Targeter.Reset();

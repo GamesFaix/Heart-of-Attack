@@ -35,7 +35,7 @@ namespace HOA{
 			desc = "Destroy "+actor+".\nDo "+d+" damage to target unit. \nTarget takes "+cor+" corrosion counters. \n(If a unit has corrosion counters, at the beginning of its turn it takes damage equal to the number of counters, then removes half the counters (rounded up).)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 

@@ -18,7 +18,7 @@ namespace HOA {
 
 			range = r;
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
@@ -26,9 +26,9 @@ namespace HOA {
 
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -39,7 +39,7 @@ namespace HOA {
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, range);
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;

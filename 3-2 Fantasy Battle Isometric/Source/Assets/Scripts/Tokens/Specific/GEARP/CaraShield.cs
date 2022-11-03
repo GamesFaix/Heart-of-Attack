@@ -99,7 +99,7 @@ namespace HOA {
 		
 		public override void Enter (Cell c) {
 			cell = c;
-			TokenGroup cellUnits = cell.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup cellUnits = cell.Occupants.OnlyType(EType.UNIT);
 			foreach (Unit u in cellUnits) {
 				if (u.ID.Code != EToken.CARA 
 				    && u.Owner == parent.Owner) {

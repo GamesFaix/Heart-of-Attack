@@ -26,13 +26,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.GLOBAL, EType.DEST));
+			AddAim(new Aim(ETraj.GLOBAL, EType.DEST));
 			
 			name = "Detonate";
 			desc = "Destroy all mines on team.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			TokenGroup mines = actor.Owner.OwnedUnits;
 			for (int i=mines.Count-1; i>=0; i--) {

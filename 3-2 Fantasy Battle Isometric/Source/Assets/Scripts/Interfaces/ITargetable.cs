@@ -1,7 +1,7 @@
 ﻿
 namespace HOA {
 
-	public interface ITargetable {
+	public interface ITarget {
 
 		void Select (Source s);
 		void Legalize (bool l=true);

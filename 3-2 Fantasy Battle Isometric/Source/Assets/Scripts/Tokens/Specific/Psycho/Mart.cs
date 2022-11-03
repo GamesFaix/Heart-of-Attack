@@ -42,7 +42,7 @@ namespace HOA{
 		public override void Adjust () {
 			int bonus = actor.FP;
 			for (int i=0; i<bonus; i++) {
-				aim.Add(new Aim (EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE));
+				aim.Add(new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE));
 			}
 		}
 		
@@ -53,12 +53,12 @@ namespace HOA{
 		
 		void ResetAim () {
 			aim = new List<Aim>();
-			AddAim(new Aim (EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE));
+			AddAim(new Aim (ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE));
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -69,7 +69,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, range+actor.FP);
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range+actor.FP);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -87,7 +87,7 @@ namespace HOA{
 			price = Price.Cheap;
 			actor = u;
 			
-			AddAim(new Aim(EAim.PATH, EType.DEST, 1));
+			AddAim(new Aim(ETraj.PATH, EType.DEST, 1));
 
 			name = "Grow";
 			desc = "Switch cells with target Destructible.  \nRange +1 per focus.  \n"+actor+" +1 Focus.";
@@ -97,14 +97,14 @@ namespace HOA{
 		public override void Adjust () {
 			Debug.Log("adjusting");
 			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EType.DEST, 1);
+			aim[0] = new Aim(ETraj.PATH, EType.DEST, 1);
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			actor.AddStat(new Source(actor), EStat.FP, 1, false);
 
@@ -125,7 +125,7 @@ namespace HOA{
 			price = new Price(1,1);
 			actor = u;
 			
-			AddAim(new Aim(EAim.LINE, EType.UNIT, EPurpose.ATTACK, 2));
+			AddAim(new Aim(ETraj.LINE, EType.UNIT, EPurp.ATTACK, 2));
 			damage = 18;
 
 			name = "Vine Whip";
@@ -136,14 +136,14 @@ namespace HOA{
 		public override void Adjust () {
 			Debug.Log("adjusting");
 			int bonus = actor.FP;
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.PATH, EType.UNIT, 2);
+			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 2);
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			Unit u = (Unit)targets[0];

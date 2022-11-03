@@ -27,7 +27,7 @@ namespace HOA{
 		public AAsheArise (Price p, Unit par) {
 			weight = 4;
 			price = p;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			actor = par;
 			chiTemplate = TemplateFactory.Template(EToken.CONF);
@@ -42,7 +42,7 @@ namespace HOA{
 			return false;
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			int hp = ((Unit)actor).HP;

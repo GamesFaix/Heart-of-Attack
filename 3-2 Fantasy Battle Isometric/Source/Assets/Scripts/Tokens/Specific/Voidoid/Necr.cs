@@ -33,7 +33,7 @@ namespace HOA{
 			desc = "Do "+damage+" damage to target unit.\nIf target has less than 10 health after damage is dealt, destroy target.\nIf target is destroyed and is not an Attack King, it leaves no remains and you may place a Corpse in any cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			int oldHP = u.HP;
@@ -62,13 +62,13 @@ namespace HOA{
 			childTemplate = TemplateFactory.Template(EToken.CORP);
 			price = Price.Free;
 			
-			AddAim(new Aim(EAim.FREE, EType.CELL, EPurpose.CREATE));
+			AddAim(new Aim(ETraj.FREE, EType.CELL, EPurp.CREATE));
 			
 			name = "Plant corpse";
 			desc = "Create "+childTemplate.ID.Name+" in target cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ECreate(new Source(actor), EToken.CORP, (Cell)targets[0]));
 			Targeter.Reset();
@@ -83,14 +83,14 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(0,1);
-			AddAim(new Aim(EAim.ARC, EType.REM, range));
+			AddAim(new Aim(ETraj.ARC, EType.REM, range));
 			AddAim(HOA.Aim.MoveArc(range));
 			
 			name = "Defile";
 			desc = "Move target remains to target cell.\n"+aim[1].ToString();
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new ETeleport(new Source(actor), (Token)targets[0], (Cell)targets[1]));
 			Targeter.Reset();

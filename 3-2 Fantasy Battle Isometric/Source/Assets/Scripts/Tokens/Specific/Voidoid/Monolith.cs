@@ -12,6 +12,7 @@ namespace HOA{
 			ScaleTall();
 			NewHealth(100);
 			NewWatch(2);
+			NewWallet(3);
 			
 			NewArsenal();
 			arsenal.Add(new AFocus(this));
@@ -26,7 +27,7 @@ namespace HOA{
 			arsenal.Add(new AMonoReanimate(new Price(1,0), this));
 			arsenal.Add(new ACreate(new Price(2,1), this, EToken.NECR));
 
-			Aim aim = new Aim(EAim.ARC, EType.CELL, EPurpose.CREATE, 3,3);
+			Aim aim = new Aim(ETraj.ARC, EType.CELL, EPurp.CREATE, 3,3);
 			arsenal.Add(new ACreate(new Price(1,2), this, EToken.MOUT, aim));
 			arsenal.Sort();
 		}		
@@ -41,14 +42,14 @@ namespace HOA{
 			price = new Price(1,2);
 			actor = u;
 			
-			AddAim(new Aim (EAim.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2));
+			AddAim(new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2));
 			damage = 20;
 			
 			name = "Eternal Flame";
 			desc = "Do "+damage+" damage to target unit. \nTarget's neighbors and cellmates take 50% damage (rounded down). \nDamage continues spreading until less than 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Token tar = (Token)targets[0];
 
@@ -88,7 +89,7 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EType.REM));
+			AddAim(new Aim (ETraj.NEIGHBOR, EType.REM));
 
 			//Token childTemplate = TemplateFactory.Template(EToken.RECY);
 			
@@ -96,7 +97,7 @@ namespace HOA{
 			desc = "Replace target remains with "+name+".";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], EToken.RECY));
 			Targeter.Reset();
@@ -112,7 +113,7 @@ namespace HOA{
 			weight = 4;
 			price = new Price(1,1);
 			actor = u;
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			damage = 5;
 			range = 2;
 
@@ -120,11 +121,11 @@ namespace HOA{
 			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.ID.Name+". \n"+actor.ID.Name+" gains Health equal to damage successfully dealt.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			CellGroup zone = Zone(actor, range);
-			TokenGroup affected = zone.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup affected = zone.Occupants.OnlyType(EType.UNIT);
 			affected.Remove(actor);
 
 			foreach (Unit u in affected) {
@@ -161,7 +162,7 @@ namespace HOA{
 			price = new Price(1,0);
 			actor = par;
 
-			Aim newAim = new Aim (EAim.NEIGHBOR, EType.UNIT);
+			Aim newAim = new Aim (ETraj.NEIGHBOR, EType.UNIT);
 			newAim.TeamOnly = true;
 			AddAim(newAim);
 			
@@ -169,7 +170,7 @@ namespace HOA{
 			desc = "Destroy neighboring teammate.\nInitiative +4 for next 2 turns.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EKill(new Source(actor), (Token)targets[0]));
 

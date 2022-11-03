@@ -13,14 +13,14 @@ namespace HOA{
 			ScaleJumbo();
 			health = new HealthPano(this, 85);
 			NewWatch(2);
-			
+			NewWallet(3);
 			arsenal.Add(new ADeciMove(this));
 
 
 			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 15));
 			arsenal.Add(new APanoPierce(new Price(1,1), this, 15));
 			arsenal.Add(new ADeciMortar(new Price(1,2), this, 2, 3, 18));
-			//Aim fireAim = new Aim (EAim.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2);
+			//Aim fireAim = new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2);
 			//arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
 			//arsenal.Add(new ADeciFortify(this));
 
@@ -62,15 +62,15 @@ namespace HOA{
 		void ResetAim () {
 			aim = new List<Aim>();
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -81,7 +81,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, Mathf.Max(0, range-actor.FP));
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, Mathf.Max(0, range-actor.FP));
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -102,13 +102,13 @@ namespace HOA{
 			
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Fortify";
 			desc = "Health +10/10\nDefense + 1\nAttack range +1\nAttack damage +4\nForget 'Move'\nLearn 'Mortar'";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, 10));
@@ -130,13 +130,13 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			
 			name = "Mobilize";
 			desc = "Health -10/10\nDefense -1\nAttack range -1\nAttack damage -4\nLearn 'Move'\nForget 'Mortar'";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, -10));
@@ -162,7 +162,7 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.ARC, EType.CELL, EPurpose.ATTACK, r, mr));
+			AddAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, r, mr));
 			damage = d;
 			
 			name = "Mortar";
@@ -171,14 +171,14 @@ namespace HOA{
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus, aim[0].MinRange);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus, aim[0].MinRange);
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EType.UNIT, 3, 2);
+			aim[0] = new Aim(ETraj.ARC, EType.UNIT, 3, 2);
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EExplosion(new Source(actor), (Cell)targets[0], damage));
 			//AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);

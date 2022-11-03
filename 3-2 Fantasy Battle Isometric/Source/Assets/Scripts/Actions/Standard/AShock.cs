@@ -19,7 +19,7 @@ namespace HOA {
 			desc = "Do "+d+" damage to target unit. \nTarget is stunned for "+st+" turns.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EShock(new Source(actor), (Unit)targets[0], damage, stun));
 			Targeter.Reset();

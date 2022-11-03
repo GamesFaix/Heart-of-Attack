@@ -58,7 +58,7 @@ namespace HOA {
 		protected Token childTemplate = default(Token);
 		public Token ChildTemplate {get {return childTemplate;} }
 		
-		public abstract void Execute (List<ITargetable> targets);
+		public abstract void Execute (List<ITarget> targets);
 
 		public virtual bool Legal () {
 			if (actor.CanAfford(price) 

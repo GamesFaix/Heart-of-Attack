@@ -29,13 +29,13 @@ namespace HOA{
 			weight = 4;
 			price = new Price(1,0);
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EType.REM));
+			AddAim(new Aim (ETraj.NEIGHBOR, EType.REM));
 			
 			name = "Cannibalize";
 			desc = "Destroy target remains.\nHealth +10/10";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Token t = (Token)targets[0];
 
@@ -52,7 +52,7 @@ namespace HOA{
 		public ARecyExplode (Unit u) {
 			weight = 4;
 			price = new Price(1,1);
-			AddAim(HOA.Aim.Self);
+			AddAim(HOA.Aim.Self());
 			actor = u;
 			
 			damage = 12;
@@ -61,9 +61,9 @@ namespace HOA{
 			desc = "Destroy "+actor+".\nDo "+damage+" damage to cellmates and neighbors. \nDamaged units take "+cor+" corrosion counters. \n(If a unit has corrosion counters, at the beginning of its turn it takes damage equal to the number of counters, then removes half the counters (rounded up).)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			TokenGroup victims = actor.Body.Neighbors(true).OnlyClass(EType.UNIT);
+			TokenGroup victims = actor.Body.Neighbors(true).OnlyType(EType.UNIT);
 			EffectGroup nextEffects = new EffectGroup();
 			nextEffects.Add(new EKill(new Source(actor), actor));
 			foreach (Token t in victims) {

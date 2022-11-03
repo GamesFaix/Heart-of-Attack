@@ -109,13 +109,13 @@ namespace HOA {
 			TokenGroup tokens = newCell.Occupants;
 
 			if (parent.Type.Is(EType.TRAM)) {
-				TokenGroup dest = tokens.OnlyClass(EType.DEST);
+				TokenGroup dest = tokens.OnlyType(EType.DEST);
 				for (int i=dest.Count-1; i>=0; i--) {
 					EffectQueue.Add(new EDestruct(new Source(parent), dest[i]));
 				}
 			}
 			if (parent.Type.Is(EType.KING)) {
-				TokenGroup heart = tokens.OnlyClass(EType.HEART);
+				TokenGroup heart = tokens.OnlyType(EType.HEART);
 				if (heart.Count>0) {
 					EffectQueue.Add(new EGetHeart(Source.ActivePlayer, heart[0]));
 				}

@@ -33,14 +33,14 @@ namespace HOA{
 			desc = "Do "+damage+" damage target Unit.\nTarget's Move range -2 until end of its next turn.\nTarget's neighbors and cellmates' Move range -1 until end of their next turn.\n("+actor.ID.Name+"'s Move range is not affected.)";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			EffectQueue.Add(new EDamage (new Source(actor), u, damage));
 			if ((u.Arsenal()[0]) is AMove) {
 				AMove move = (AMove)u.Arsenal()[0];
 				Aim oldAim = move.Aim[0];
-				Aim newAim = new Aim(oldAim.AimType, oldAim.TargetClass, oldAim.Purpose, oldAim.Range-2);
+				Aim newAim = new Aim(oldAim.Trajectory, oldAim.Type, oldAim.Purpose, oldAim.Range-2);
 
 				u.Arsenal().Remove(move);
 				u.Arsenal().Add(new AMove(u, newAim));
@@ -49,7 +49,7 @@ namespace HOA{
 				u.timers.Add(new TFreeze(u, actor, move, 2));
 			}				
 
-			TokenGroup neighborUnits = u.Body.Neighbors().OnlyClass(EType.UNIT);
+			TokenGroup neighborUnits = u.Body.Neighbors().OnlyType(EType.UNIT);
 
 			foreach (Token t in neighborUnits) {
 				u = (Unit)t;
@@ -57,7 +57,7 @@ namespace HOA{
 				&& (u.Arsenal()[0]) is AMove) {
 					AMove move = (AMove)u.Arsenal()[0];
 					Aim oldAim = move.Aim[0];
-					Aim newAim = new Aim(oldAim.AimType, oldAim.TargetClass, oldAim.Purpose, oldAim.Range-1);
+					Aim newAim = new Aim(oldAim.Trajectory, oldAim.Type, oldAim.Purpose, oldAim.Range-1);
 
 					u.Arsenal().Remove(move);
 					u.Arsenal().Add(new AMove(u, newAim));

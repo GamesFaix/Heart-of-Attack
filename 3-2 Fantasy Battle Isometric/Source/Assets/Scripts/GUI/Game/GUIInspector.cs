@@ -6,9 +6,9 @@ public class GUIInspector : MonoBehaviour {
 
 	static Panel panel;
 	
-	static ITargetable inspected = default(ITargetable);
+	static ITarget inspected = default(ITarget);
 
-	public static ITargetable Inspected {
+	public static ITarget Inspected {
 		get {return inspected;}
 		set {
 			inspected = value;
@@ -120,7 +120,7 @@ public class GUIInspector : MonoBehaviour {
 	}
 	void Cell (Token t, Panel p, Panel super) {
 		GUI.Box(p.FullBox, "");
-		GUI.Box(p.Box(iconSize), Icons.Class(EType.CELL), p.s);
+		GUI.Box(p.Box(iconSize), Icons.Type(EType.CELL), p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(iconSize*2), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);
@@ -164,35 +164,35 @@ public class GUIInspector : MonoBehaviour {
 
 		if (t.Type.Is(EType.KING)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Class(EType.KING), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Type(EType.KING), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.KING;
 			}
 		}	
 		if (t.Type.Is(EType.HEART)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Class(EType.HEART), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Type(EType.HEART), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)){
 				tip = ETip.HEART;
 			}
 		}
 		if (t.Type.Is(EType.DEST)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Class(EType.DEST), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Type(EType.DEST), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.DEST;
 			}
 		}
 		if (t.Type.Is(EType.REM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Class(EType.REM), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Type(EType.REM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.REM;
 			}
 		}
 		if (t.Type.Is(EType.TRAM)) {
 			box = p.Box(iconSize);
-			GUI.Box(box, Icons.Class(EType.TRAM), p.s); p.NudgeX();
+			GUI.Box(box, Icons.Type(EType.TRAM), p.s); p.NudgeX();
 			if (ShiftMouseOver(box)) {
 				tip = ETip.TRAM;
 			}
@@ -425,7 +425,7 @@ public class GUIInspector : MonoBehaviour {
 	}
 
 	void Cell (Cell c, Panel p, Panel super) {
-		GUI.Box(p.Box(iconSize), Icons.Class(EType.CELL), p.s);
+		GUI.Box(p.Box(iconSize), Icons.Type(EType.CELL), p.s);
 		p.NudgeX(); p.NudgeY();
 		GUI.Label(p.Box(0.5f), c.ToString(), p.s);
 		p.NextLine();

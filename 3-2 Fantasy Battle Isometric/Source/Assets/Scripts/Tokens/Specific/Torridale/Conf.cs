@@ -12,7 +12,7 @@ namespace HOA{
 			
 			arsenal.Add(new AMovePath(this, 6));
 			arsenal.Add(new AAttack("Melee", new Price(0,1), this, Aim.Melee(), 12));
-			Aim fireAim = new Aim (EAim.LINE, new List<EType> {EType.UNIT, EType.DEST}, 3);
+			Aim fireAim = new Aim (ETraj.LINE, Type.UnitDest, 3);
 			arsenal.Add(new AAttackFir("Firebreathing", new Price(2,0), this, fireAim, 10));
 			arsenal.Sort();
 		}		

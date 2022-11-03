@@ -54,7 +54,7 @@ namespace HOA {
 		public override void Enter (Cell c) {
 			c.SetStop(EPlane.GND, true);
 
-			TokenGroup occupants = c.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup occupants = c.Occupants.OnlyType(EType.UNIT);
 			occupants = occupants.OnlyPlane(EPlane.GND);
 			
 			foreach (Token t in occupants) {
@@ -67,7 +67,7 @@ namespace HOA {
 		public override void Exit () {
 			cell.SetStop(EPlane.GND, false);
 
-			TokenGroup cellUnits = cell.Occupants.OnlyClass(EType.UNIT);
+			TokenGroup cellUnits = cell.Occupants.OnlyType(EType.UNIT);
 			cellUnits = cellUnits.OnlyPlane(EPlane.GND);
 			
 			foreach (Unit u in cellUnits) {

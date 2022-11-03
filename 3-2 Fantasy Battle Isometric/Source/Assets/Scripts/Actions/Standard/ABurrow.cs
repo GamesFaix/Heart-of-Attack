@@ -9,7 +9,7 @@ namespace HOA {
 		
 		public ABurrow (Unit u, int r, int mr=0) {
 			weight = 1;
-			AddAim(new Aim(EAim.ARC, EType.CELL, EPurpose.MOVE, r, mr));
+			AddAim(new Aim(ETraj.ARC, EType.CELL, EPurp.MOVE, r, mr));
 			actor = u;
 			
 			name = "Burrow";
@@ -17,7 +17,7 @@ namespace HOA {
 			
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EBurrow(new Source(actor), actor, (Cell)targets[0]));
 			//AEffects.Move(new Source(actor), actor, (Cell)targets[0]);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Token : ITargetable{
+	public abstract class Token : ITarget{
 
 		protected ID id;
 		public ID ID {get {return id;} }
@@ -97,7 +97,7 @@ namespace HOA {
 			}
 		}
 		
-		//ITargetable
+		//ITarget
 		public virtual void Select (Source s) {
 			GUISelectors.Instance = this;
 

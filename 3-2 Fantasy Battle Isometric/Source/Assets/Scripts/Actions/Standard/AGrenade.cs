@@ -12,14 +12,14 @@ namespace HOA {
 			weight = 3;
 			price = p;
 			actor = u;
-			AddAim(new Aim (EAim.ARC, EType.CELL, EPurpose.ATTACK, r));
+			AddAim(new Aim (ETraj.ARC, EType.CELL, EPurp.ATTACK, r));
 			damage = d;
 			
 			name = n;
 			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EExplosion(new Source(actor), (Cell)targets[0], damage));
 			//AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);

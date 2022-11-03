@@ -18,7 +18,7 @@ namespace HOA {
 			desc = "Target unit gains "+d+" health. \n"+actor+" takes damage equal to health successfully gained.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 		
 			EffectQueue.Add(new EDonate(new Source(actor), (Unit)targets[0], damage));

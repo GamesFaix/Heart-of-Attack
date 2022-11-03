@@ -45,14 +45,14 @@ namespace HOA {
 			return filtered;
 		}
 
-		public TokenGroup OnlyClass(EType c){
+		public TokenGroup OnlyType(EType c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				if (t.Type.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup OnlyClass(List<EType> cs){
+		public TokenGroup OnlyType(Type cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				foreach (EType c in cs) {
@@ -63,14 +63,14 @@ namespace HOA {
 		}
 
 
-		public TokenGroup RemoveClass(EType c){
+		public TokenGroup RemoveType(EType c){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {
 				if (!t.Type.Is(c)) {filtered.Add(t);}
 			}
 			return filtered;
 		}
-		public TokenGroup RemoveClass(List<EType> cs){
+		public TokenGroup RemoveType(Type cs){
 			TokenGroup filtered = new TokenGroup();
 			foreach (Token t in list) {filtered.Add(t);}
 
@@ -83,6 +83,15 @@ namespace HOA {
 			return filtered;
 		}
 
+		public TokenGroup Restrict (Token actor, Aim a) {
+			TokenGroup restricted = new TokenGroup (this);
+			restricted = restricted.OnlyType(a.Type);
+			if (a.TeamOnly) {restricted = restricted.OnlyOwner(actor.Owner);}
+			if (a.EnemyOnly) {restricted = restricted.RemoveOwner(actor.Owner);}
+			if (a.NoKings) {restricted = restricted.RemoveType(EType.KING);}
+			if (!a.IncludeSelf) {restricted.Remove(actor);}
+			return restricted;
+		}
 
 		public CellGroup Cells {
 			get {

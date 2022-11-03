@@ -13,7 +13,7 @@ namespace HOA{
 			ScaleJumbo();
 			NewHealth(80);
 			NewWatch(2);
-			
+			NewWallet(3);
 			arsenal.Add(new AMovePath(this, 3));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 20));
 			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 16));
@@ -34,7 +34,7 @@ namespace HOA{
 			weight = 4;
 			actor = u;
 			price = p;
-			AddAim(new Aim(EAim.NEIGHBOR, EType.DEST));
+			AddAim(new Aim(ETraj.NEIGHBOR, EType.DEST));
 			AddAim(HOA.Aim.Arc(range));
 			damage = dmg;
 			
@@ -42,7 +42,7 @@ namespace HOA{
 			desc = "Destroy target non-Remains destructible.\n"+aim[1].ToString()+"\nDo "+damage+" damage to target unit.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EKill (new Source(actor), (Token)targets[0]));
 			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[1], damage));
@@ -60,7 +60,7 @@ namespace HOA{
 			weight = 5;
 			price = p;
 			actor = par;
-			AddAim(new Aim (EAim.NEIGHBOR, EType.DEST));
+			AddAim(new Aim (ETraj.NEIGHBOR, EType.DEST));
 			
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
@@ -69,7 +69,7 @@ namespace HOA{
 			desc = "Replace target non-remains destructible with "+name+".";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EReplace(new Source(actor), (Token)targets[0], child));
 			Targeter.Reset();
@@ -91,7 +91,7 @@ namespace HOA{
 			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Unit u = (Unit)targets[0];
 			EffectQueue.Add(new EDamage (new Source(actor), u, damage));

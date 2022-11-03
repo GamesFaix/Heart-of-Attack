@@ -10,14 +10,14 @@ namespace HOA {
 		
 		public AMoveLine (Unit u, int r) {
 			weight = 1;
-			AddAim(new Aim(EAim.LINE, EType.CELL, EPurpose.MOVE, r));
+			AddAim(new Aim(ETraj.LINE, EType.CELL, EPurp.MOVE, r));
 			actor = u;
 			
 			name = "Move";
 			desc = "Move "+actor+" to target cell.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			Cell endCell = (Cell)targets[0];
 			//Debug.Log("end: "+endCell);

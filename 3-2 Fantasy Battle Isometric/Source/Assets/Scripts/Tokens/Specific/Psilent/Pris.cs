@@ -47,7 +47,7 @@ namespace HOA{
 			desc = "50% chance of missing target.\nDo "+d+" damage to all units in target cell.\nIf there are no obstacles in target cell, do reduce damage 50% (rounded up) and damage all units in the next occupied cell in the same direction.  Repeat until damage is 1 or an obstacle is hit.";
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			int flip = DiceCoin.Throw(new Source(actor), EDice.COIN);
 
@@ -64,8 +64,8 @@ namespace HOA{
 				Mixer.Play(SoundLoader.Effect(EEffect.LASER));
 				while (dmg > 0 && !stop) {
 					affected = cell.Occupants;
-					if (affected.OnlyClass(EType.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}
-					foreach(Token t in affected.OnlyClass(EType.UNIT)) {
+					if (affected.OnlyType(EType.OB).Count > 0) {stop = true;/* Debug.Log("obstacle hit");*/}
+					foreach(Token t in affected.OnlyType(EType.UNIT)) {
 						((Unit)t).Damage(new Source(actor), dmg);
 						t.Display.Effect(EEffect.LASER);
 					}

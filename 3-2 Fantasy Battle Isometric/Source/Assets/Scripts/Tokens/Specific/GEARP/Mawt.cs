@@ -36,7 +36,7 @@ namespace HOA {
 		public override void Adjust () {
 			int shots = Mathf.Min(actor.FP, 3);
 			for (int i=0; i<shots; i++) {
-				AddAim(new Aim(EAim.LINE, EType.CELL, EPurpose.MOVE, range));
+				AddAim(new Aim(ETraj.LINE, EType.CELL, EPurp.MOVE, range));
 			}
 		}
 		
@@ -44,7 +44,7 @@ namespace HOA {
 			aim = new List<HOA.Aim>();
 		}
 		
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 			actor.SetStat(new Source(actor), EStat.FP, 0);
 
@@ -96,7 +96,7 @@ namespace HOA {
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 
-			Aim a = new Aim(EAim.LINE, EType.CELL, EPurpose.MOVE);
+			Aim a = new Aim(ETraj.LINE, EType.CELL, EPurp.MOVE);
 			a.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
@@ -160,7 +160,7 @@ namespace HOA {
 		}
 		public override void Process() {
 			EffectGroup nextEffects = new EffectGroup();
-			TokenGroup targets = cell.Occupants.OnlyClass(new List<EType> {EType.UNIT, EType.DEST});
+			TokenGroup targets = cell.Occupants.OnlyType(Type.UnitDest);
 			
 			foreach (Token t in targets) {
 				t.Display.Effect(EEffect.EXP);

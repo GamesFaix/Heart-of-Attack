@@ -11,7 +11,7 @@ namespace HOA{
 			NewHealth(20,3);
 			NewWatch(3);
 
-			Aim aim = new Aim(EAim.ARC, EType.UNIT, EPurpose.ATTACK, 2, 2);
+			Aim aim = new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2);
 			arsenal.Add(new ARookVolley(Price.Cheap, this, aim, 12));
 			arsenal.Add(new ARookMove(this));
 			arsenal.Sort();
@@ -36,11 +36,11 @@ namespace HOA{
 
 		public override void Adjust () {
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].AimType, aim[0].TargetClass, aim[0].Range+bonus);
+			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
 		}
 		
 		public override void UnAdjust () {
-			aim[0] = new Aim(EAim.ARC, EType.UNIT, EPurpose.ATTACK, 2, 2);
+			aim[0] = new Aim(ETraj.ARC, EType.UNIT, EPurp.ATTACK, 2, 2);
 		}
 
 		public override bool Restrict () {
@@ -55,7 +55,7 @@ namespace HOA{
 			return true;
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
 
 			EffectQueue.Add(new EDamage(new Source(actor), (Unit)targets[0], damage));
@@ -77,15 +77,15 @@ namespace HOA{
 			desc = "Move "+actor+" to target cell.";
 
 			for (int i=0; i<range; i++) {
-				Aim a = new Aim(EAim.NEIGHBOR, EType.CELL, EPurpose.MOVE) ;
+				Aim a = new Aim(ETraj.NEIGHBOR, EType.CELL, EPurp.MOVE) ;
 				AddAim(a);
 				//Debug.Log(a);
 			}
 		}
 
-		public override void Execute (List<ITargetable> targets) {
+		public override void Execute (List<ITarget> targets) {
 			Charge();
-			foreach (ITargetable target in targets) {
+			foreach (ITarget target in targets) {
 				EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)target));
 			}
 			Targeter.Reset();
@@ -96,7 +96,7 @@ namespace HOA{
 			
 			DrawPrice(new Panel(p.LineBox, p.LineH, p.s));
 			
-			Aim actual = new Aim(EAim.PATH, EType.CELL, EPurpose.MOVE, range);
+			Aim actual = new Aim(ETraj.PATH, EType.CELL, EPurp.MOVE, range);
 			actual.Draw(new Panel(p.LineBox, p.LineH, p.s));
 			
 			float descH = (p.H-(p.LineH*2))/p.H;
