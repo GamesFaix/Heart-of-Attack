@@ -1,0 +1,95 @@
+using UnityEngine;
+using System.Collections.Generic;
+using HOA;
+
+public class GUIQueue : MonoBehaviour {
+	
+	public void Display (Panel p){
+		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
+		p.NudgeY();
+		if (TurnQueue.Count > 0) {
+			float listHeight = (p.H-p.LineH) / p.H;
+			Panel listPanel = new Panel(p.TallBox(listHeight), p.LineH, p.s);
+			DrawList(listPanel);
+		}
+	}
+
+	//List
+	Vector2 scrollPos = new Vector2 (0,0);
+	float internalW = 100;
+
+	
+	void DrawList (Panel p) {
+		int oldSize = p.s.fontSize;
+		p.s.fontSize = 16;
+
+		float iconSize = p.LineH;
+		float internalH = TurnQueue.Count * p.LineH;
+		float nameW = 150;
+
+		scrollPos = GUI.BeginScrollView(p.FullBox, scrollPos, new Rect(p.X, p.Y, internalW, internalH));
+		
+			for (int i=0; i<TurnQueue.Count; i++) {
+				Unit u = TurnQueue.Index(i);	
+				
+				p.NudgeX();
+				if (GUI.Button(p.Box(nameW), "", p.s)) {
+					if (Input.GetMouseButtonUp(1)) {GUIInspector.Inspected = u;}
+					else if (Input.GetMouseButtonUp(0)) {u.SpriteEffect(EEffect.SHOW);}
+				}
+				p.ResetX(); p.NudgeX();
+				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
+
+			////watch
+				GUI.Box(p.Box(iconSize), Icons.Stat(EStat.IN), p.s);
+				p.x2 += 5;
+				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
+				
+				if (u.IsStunned()) {
+					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.STUN), p.s);
+					p.x2 += 5;
+					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
+				}
+				else if (u.IsSkipped()) {
+					GUI.Box(p.Box(iconSize), Icons.SKIP(), p.s);
+				}
+				else {p.x2 += iconSize;}
+
+			////wallet
+				p.NudgeX();		
+				if (u.FP > 0) {
+					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.FP), p.s);
+					p.NudgeX();
+					GUI.Label(p.Box(iconSize), u.FP+"", p.s);
+				}
+				else {p.x2 += iconSize*2 +5;}
+	
+
+			////health
+				//p.NudgeX();
+				GUI.Box(p.Box(iconSize), Icons.Stat(EStat.HP), p.s);
+				p.NudgeX();
+				GUI.Label (p.Box(iconSize*3), u.HPString, p.s);
+				
+				if (u.DEF > 0) {
+					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.DEF), p.s);
+					p.x2 += 5;
+					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
+				}
+				
+				if (u.COR > 0) {
+					GUI.Box(p.Box(iconSize), Icons.Stat(EStat.COR), p.s);
+					p.x2 += 5;
+					GUI.Label(p.Box(iconSize), u.COR+"", p.s);
+				}
+				
+				
+				if (p.x2-p.X > internalW) {internalW = p.x2-p.X;}
+				p.NextLine();
+			}
+		GUI.EndScrollView();
+
+		p.s.fontSize = oldSize;
+	}
+
+}

@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Monolith.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Game\Actions\General\Effects - Move.cs" Line="144" Column="38" />
+      <File FileName="Assets\Scripts\Game\Board\Direction.cs" Line="21" Column="4" />
+      <File FileName="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Prie.cs" Line="17" Column="6" />
+      <File FileName="Assets\Scripts\Game\Actions\General\Targeter.cs" Line="150" Column="2" />
+      <File FileName="Assets\Scripts\Game\Board\Cell.cs" Line="166" Column="16" />
+      <File FileName="Assets\Scripts\Game\Actions\General\Legalizer.cs" Line="379" Column="29" />
+      <File FileName="Assets\Scripts\Game\Misc\Game.cs" Line="18" Column="5" />
+      <File FileName="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Drea.cs" Line="58" Column="4" />
+      <File FileName="Assets\Scripts\Game\Actions\Standard\AAttack.cs" Line="28" Column="3" />
+      <File FileName="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Monolith.cs" Line="113" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

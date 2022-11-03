@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{9F4F1DF1-3E94-79C9-9509-4A1EC4FDFF58}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;UNITY_64;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Scripts\3D\CellDisplay.cs" />
+     <Compile Include="Assets\Scripts\3D\CellObjectFactory.cs" />
+     <Compile Include="Assets\Scripts\3D\GameWorldCursor.cs" />
+     <Compile Include="Assets\Scripts\3D\SkyboxControl.cs" />
+     <Compile Include="Assets\Scripts\3D\TokenDisplay.cs" />
+     <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
+     <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUIBoard.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUIGame.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUIInspector.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUILog.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUIQueue.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\GUITools.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipAP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipArc.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipCell.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipDEF.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipDest.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipFree.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipGlobal.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipHP.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipHeart.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipIN.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipKing.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipLine.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipNeighbor.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipOnDeath.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipPath.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipRem.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipSelf.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipTram.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\ToolTips\TipUnit.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUISelectionGrids.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUISelectors.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolCreate.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolKill.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolMove.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolQueue.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolRandom.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolStats.cs" />
+     <Compile Include="Assets\Scripts\GUI\Game\Tools\GUIToolTips.cs" />
+     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
+     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
+     <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Action.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Aim.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectGroup.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectQueue.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\EffectSeq.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - CreateDestroy.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Damage.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Move.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects - Queue.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Effects.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IMultiMove.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\IMultiTarget.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\ITeleport.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Legalizer.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Price.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\General\Targeter.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Manual\ACreateManual.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Manual\AMoveManual.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AAttack.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AAttackFir.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ABurrow.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ACorrode.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ACreate.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ADonate.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AEnd.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AFocus.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AGrenade.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AKnock.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ALaser.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ALeech.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AMove.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AMoveLine.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AMovePath.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\ARage.cs" />
+     <Compile Include="Assets\Scripts\Game\Actions\Standard\AShock.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\Board.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\Cell.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\CellGroup.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\CellSprite.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\Direction.cs" />
+     <Compile Include="Assets\Scripts\Game\Board\Map.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\Core.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\DiceCoin.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\Enums.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\Game.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\GameLog.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\ISource.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\ITargetable.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\QueueStunner.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\RandomSync.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\Source.cs" />
+     <Compile Include="Assets\Scripts\Game\Misc\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Faction.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\FactionRef.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Factions.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Player.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Referee.cs" />
+     <Compile Include="Assets\Scripts\Game\Players\Roster.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Arsenal.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Body.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Health.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Label.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Sprite.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Timer.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Wallet.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenComponents\Watch.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Obstacle.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\TemplateFactory.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Token.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\TokenFactory.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\TokenGroup.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\TokenRef.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenHandling\Unit.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Chrono\Aper.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Chrono\Oldt.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Chrono\Piec.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Chrono\Repr.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Chrono\Revo.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\GEARP\Cara.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\GEARP\CaraShield.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\GEARP\Kabu.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\GEARP\Kata.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\GEARP\Mawt.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Grove\Griz.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Grove\Meta.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Grove\Talo.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Grove\Ultr.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Hearts.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\New Rep\Deci.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\New Rep\Demo.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\New Rep\Mein.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\New Rep\Mine.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\New Rep\Pano.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Obstacles.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Obstacles\Lava.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Obstacles\Water.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Aren.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Drea.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Prie.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psilent\Pris.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Bees.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Blac.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Lich.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Mart.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Myco.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Psycho\Webb.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Ashe.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Batt.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Conf.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Garg.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Rook.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Torridale\Smas.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Monolith.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Mout.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Necr.cs" />
+     <Compile Include="Assets\Scripts\Game\Tokens\TokenSpecific\Voidoid\Recy.cs" />
+     <Compile Include="Assets\Scripts\Generic\Group.cs" />
+     <Compile Include="Assets\Scripts\Generic\Queue.cs" />
+     <Compile Include="Assets\Scripts\Generic\ReDictionary.cs" />
+     <Compile Include="Assets\Scripts\Graphics\CameraPanner.cs" />
+     <Compile Include="Assets\Scripts\Graphics\CameraRigBuilder.cs" />
+     <Compile Include="Assets\Scripts\Graphics\Icons.cs" />
+     <Compile Include="Assets\Scripts\Graphics\ImageLoader.cs" />
+     <Compile Include="Assets\Scripts\Graphics\SpriteEffects.cs" />
+     <Compile Include="Assets\Scripts\Graphics\Thumbs.cs" />
+     <Compile Include="Assets\Scripts\Sound\Mixer.cs" />
+     <Compile Include="Assets\Scripts\Sound\SoundLoader.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
