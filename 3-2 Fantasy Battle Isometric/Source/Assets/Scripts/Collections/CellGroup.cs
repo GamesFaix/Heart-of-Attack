@@ -3,9 +3,9 @@ using System.Collections.Generic;
 namespace HOA {
 
 	public class CellGroup : Group<Cell> {
-		public CellGroup () {list = new List<Cell>();}
-		public CellGroup (Cell c) {list = new List<Cell>{c};}
-		public CellGroup (List<Cell> c) {list = c;}
+		public CellGroup (int capacity=8) {list = new List<Cell>(capacity);}
+		public CellGroup (Cell c, int capacity=8) {list = new List<Cell>(capacity){c};}
+		public CellGroup (IEnumerable<Cell> c) {list = new List<Cell>(c);}
 
 		public TokenGroup Occupants {
 			get {

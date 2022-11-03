@@ -8,7 +8,7 @@ namespace HOA {
 		static Player neutral = Player.Neutral;
 		static List<Player> players = new List<Player>();
 
-		static int max = 8;
+		//static int max = 8;
 		
 		public static void Reset () {
 			FactionRef.ReleaseAll();
@@ -16,7 +16,7 @@ namespace HOA {
 		}
 		
 		public static void Add (Player player) {
-			if (players.Count <= max) {
+			if (!IsFull()) {
 				if (!Names.Contains(player.ToString())) {
 					players.Add(player);
 					GameLog.Debug("Roster: Added "+player.ToString());
@@ -36,7 +36,7 @@ namespace HOA {
 		}
 		
 		public static bool IsFull () {
-			if (players.Count >= max) {return true;}
+			if (players.Count >= MapFactory.MaxPlayers()) {return true;}
 			return false;
 		}
 		

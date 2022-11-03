@@ -11,10 +11,9 @@ namespace HOA{
 			ScaleSmall();
 			NewHealth(15);
 			NewWatch(5);
-			
-			//		arsenal.Add(new AMove(this, AIM.PATH, 0));
-			
-			arsenal.Add(new AAsheArise(new Price(0,2), this));
+
+			arsenal.Add(new AAsheArise(new Price(2,0), this));
+			arsenal.Remove("Focus");
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}
@@ -33,7 +32,8 @@ namespace HOA{
 			chiTemplate = TemplateFactory.Template(EToken.CONF);
 			
 			name = chiTemplate.ID.Name;
-			desc = "Transform "+actor+" into a "+name+".\n(New "+name+" starts with "+actor+"'s health.)";
+			desc = "Transform "+actor+" into a "+name+"." +
+				"\n(New "+name+" starts with "+actor+"'s health.)";
 		}
 
 		public override bool Restrict () {

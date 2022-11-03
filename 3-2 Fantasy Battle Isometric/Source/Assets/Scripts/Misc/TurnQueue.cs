@@ -21,8 +21,8 @@ namespace HOA {
 		
 		public static Unit Index (int i) {return units[i];} 
 		public static int IndexOf (Unit u) {return units.IndexOf(u);}
-		public static Unit Top {get {return units.Top;} }
-		public static Unit Bottom {get {return units.Bottom;} }
+		public static Unit Top {get {return units.First;} }
+		public static Unit Bottom {get {return units.Last;} }
 
 		public static void MoveUp(Unit u, int n, bool log=true){
 			units.MoveUp(u, n);

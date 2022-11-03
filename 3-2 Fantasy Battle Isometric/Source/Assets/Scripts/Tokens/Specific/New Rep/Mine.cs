@@ -5,7 +5,7 @@ namespace HOA{
 	public class Mine : Obstacle {
 		public Mine(Source s, bool template=false){
 			id = new ID(this, EToken.MINE, s, false, template);
-
+			type.Add(EType.DEST);
 			plane = Plane.Sunk;
 			body = new BodyMine(this);
 		}

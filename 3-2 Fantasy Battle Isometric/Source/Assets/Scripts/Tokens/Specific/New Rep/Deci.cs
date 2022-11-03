@@ -19,14 +19,14 @@ namespace HOA{
 
 			arsenal.Add(new AAttack("Shoot", Price.Cheap, this, Aim.Shoot(3), 15));
 			arsenal.Add(new APanoPierce(new Price(1,1), this, 15));
-			arsenal.Add(new ADeciMortar(new Price(1,2), this, 2, 3, 18));
+			arsenal.Add(new ADeciMortar(new Price(2,1), this, 2, 3, 18));
 			//Aim fireAim = new Aim (ETraj.LINE, new List<EType> {EType.UNIT, EType.DEST}, 2);
 			//arsenal.Add(new AAttackFir("Flamethrower", new Price(1,1), this, fireAim, 12));
 			//arsenal.Add(new ADeciFortify(this));
 
-			arsenal.Add(new ACreate(new Price(1,1), this, EToken.DEMO));
-			arsenal.Add(new ACreate(new Price(2,1), this, EToken.MEIN));
-			//arsenal.Add(new ACreate(new Price(2,2), this, EToken.PANO));
+			arsenal.Add(new ACreate(new Price(1,0), this, EToken.DEMO));
+			arsenal.Add(new ACreate(new Price(1,1), this, EToken.MEIN));
+			arsenal.Add(new ACreate(new Price(2,2), this, EToken.PANO));
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
@@ -105,23 +105,30 @@ namespace HOA{
 			AddAim(HOA.Aim.Self());
 			
 			name = "Fortify";
-			desc = "Health +10/10\nDefense + 1\nAttack range +1\nAttack damage +4\nForget 'Move'\nLearn 'Mortar'";
+			desc = "Health +10/10" +
+				"\nDefense + 1" +
+				"\nAttack range +1" +
+				"\nAttack damage +4" +
+				"\nForget 'Move'" +
+				"\nLearn 'Mortar'";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
 			Charge();
 
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, 10));
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.HP, 10));
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 1));
-			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {if (a is AAttack) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {	if (a is ADeciFortify) {actor.Arsenal().Remove(a);} }
-			actor.Arsenal().Add(new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(4), 22));
+			EffectGroup nextEffects = new EffectGroup();
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.MHP, 10));
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.HP, 10));
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 1));
+			EffectQueue.Add(nextEffects);
+
+			actor.Arsenal().Remove("Move");
+			actor.Arsenal().Replace("Shoot", new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(4), 22));
+			actor.Arsenal().Replace("Fortify", new ADeciMobilize(actor));
 			actor.Arsenal().Add(new ADeciMortar(new Price(1,2), actor, 3, 5, 14));
-			actor.Arsenal().Add(new ADeciMobilize(actor));
 			actor.Arsenal().Sort();
-			actor.Display.Effect(EEffect.STATUP);
+
+			//actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -133,24 +140,29 @@ namespace HOA{
 			AddAim(HOA.Aim.Self());
 			
 			name = "Mobilize";
-			desc = "Health -10/10\nDefense -1\nAttack range -1\nAttack damage -4\nLearn 'Move'\nForget 'Mortar'";
+			desc = "Health -10/10" +
+				"\nDefense -1" +
+				"\nAttack range -1" +
+				"\nAttack damage -4" +
+				"\nLearn 'Move'" +
+				"\nForget 'Mortar'";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
 			Charge();
 
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.MHP, -10));
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.HP, -10));
-			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -1));
-			foreach (Action a in actor.Arsenal()) {	if (a is AAttack) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) { if (a is ADeciMortar) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {	if (a is ADeciMobilize) {actor.Arsenal().Remove(a);} }
+			EffectGroup nextEffects = new EffectGroup();
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.MHP, -10));
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.HP, -10));
+			nextEffects.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -1));
+			EffectQueue.Add(nextEffects);
+
 			actor.Arsenal().Add(new AMove(actor, HOA.Aim.MovePath(2)));
-			actor.Arsenal().Add(new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(3), 18));
-			actor.Arsenal().Add(new ADeciFortify(actor));
+			actor.Arsenal().Replace("Shoot", new AAttack("Shoot", Price.Cheap, actor, HOA.Aim.Shoot(3), 18));
+			actor.Arsenal().Replace("Mobilize", new ADeciFortify(actor));
+			actor.Arsenal().Remove("Mortar");
 			actor.Arsenal().Sort();
 			
-			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
 	}
@@ -166,7 +178,11 @@ namespace HOA{
 			damage = d;
 			
 			name = "Mortar";
-			desc = "Do "+d+" damage to all units in target cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.\nRange +1 per Focus (up to 3)";
+			desc = "Do "+d+" damage to all units in target cell. " +
+				"\nAll units in neighboring cells take 50% damage (rounded down). " +
+				"\nDamage continues to spread outward with 50% reduction until 1. " +
+				"\nDestroy all destructible tokens that would take damage." +
+				"\nRange +1 per Focus (up to 3)";
 		}
 
 		public override void Adjust () {
@@ -181,7 +197,6 @@ namespace HOA{
 		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EExplosion(new Source(actor), (Cell)targets[0], damage));
-			//AEffects.Explosion(new Source(actor), (Cell)targets[0], damage);
 			Targeter.Reset();
 		}
 	}

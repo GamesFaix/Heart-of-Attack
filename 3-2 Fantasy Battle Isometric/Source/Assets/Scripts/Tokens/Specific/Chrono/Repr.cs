@@ -36,7 +36,7 @@ namespace HOA{
 			Token t = (Token)targets[0];
 			Cell c = t.Body.Cell;
 
-			EffectQueue.Add(new EKill(new Source(actor), t));
+			EffectQueue.Add(new EDestruct(new Source(actor), t));
 
 			EffectGroup nextEffects = new EffectGroup();
 
@@ -65,7 +65,8 @@ namespace HOA{
 			damage = 15;
 			
 			name = "Time Slam";
-			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.\n"+actor.ID.Name+" switches cells with target, if legal.";
+			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns." +
+				"\n"+actor.ID.Name+" switches cells with target, if legal.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
@@ -119,7 +120,10 @@ namespace HOA{
 			damage = 10;
 			
 			name = "Time Bomb";
-			desc = "All Units in target cell take "+damage+" damage and lose 2 Initiative for 2 turns. \nAll units in neighboring cells take 50% damage (rounded down) and lose 1 Initiative for 2 turns. \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
+			desc = "All Units in target cell take "+damage+" damage and lose 2 Initiative for 2 turns. " +
+				"\nAll units in neighboring cells take 50% damage (rounded down) and lose 1 Initiative for 2 turns. " +
+				"\nDamage continues to spread outward with 50% reduction until 1. " +
+				"\nDestroy all destructible tokens that would take damage.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {

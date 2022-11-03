@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 
 public class GUILobbyGame : MonoBehaviour {
-
-	float boardSize = 10;
 	
 	public void Display (Panel p) {
 		GUI.Box(p.FullBox,"");
@@ -47,12 +45,12 @@ public class GUILobbyGame : MonoBehaviour {
 		BoardSizer(new Panel(p.LineBox, p.LineH, p.s));
 		
 		p.y2 += 5;
-		if (Roster.Count() > 2) {
+		if (Roster.Count() > 1) {
 		
 			if (ready) {
 				if (GUI.Button(p.LineBox, "Start game")
 				|| Input.GetKeyUp("space")) {
-					Game.Start(Mathf.RoundToInt(boardSize));
+					Game.Start();
 				}
 			}
 			else {
@@ -100,16 +98,20 @@ public class GUILobbyGame : MonoBehaviour {
 		}
 	}
 		
+	float boardSize = 3;
+
 	void BoardSizer (Panel p) {
 		p.y2 += 5;
 		
 		GUI.Label(p.Box(0.3f), "Select board size: ");
 		p.x2 += 10;
 		p.y2 += 5;
-		boardSize = GUI.HorizontalSlider(p.Box(0.4f), boardSize, Board.Min, Board.Max);
+		boardSize = GUI.HorizontalSlider(p.Box(0.4f), boardSize, MapFactory.min, MapFactory.max);
 		boardSize = Mathf.RoundToInt(boardSize);
+		MapFactory.zonesPerSide = (int)boardSize;
 		p.y2 -= 5;
 		p.x2 += 10;
-		GUI.Label(p.Box(0.2f), "("+boardSize+"x"+boardSize+")");
+		int adjustedSize = (int)(MapFactory.zoneSize * boardSize);
+		GUI.Label(p.Box(0.2f), "("+adjustedSize+"x"+adjustedSize+")");
 	}
 }

@@ -15,7 +15,7 @@ namespace HOA{
 			NewWatch(2);
 			NewWallet(3);
 			arsenal.Add(new AMovePath(this, 3));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 20));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
 			arsenal.Add(new AUltrThrow(new Price(1,1), this, 3, 16));
 			arsenal.Add(new AUltrBlast(this));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.GRIZ));
@@ -85,7 +85,7 @@ namespace HOA{
 			actor = u;
 			price = new Price(1,1);
 			AddAim(HOA.Aim.Shoot(2));
-			damage = 12;
+			damage = 20;
 			
 			name = "Ice Blast";
 			desc = "Target Unit takes "+damage+" damage and loses 2 Initiative for 2 turns.";

@@ -34,7 +34,7 @@ namespace HOA{
 			child = chi;
 			chiTemplate = TemplateFactory.Template(child);
 			
-			name = chiTemplate.ID.Name;
+			name = "Evolve to "+chiTemplate.ID.Name;
 			desc = "Transform "+actor+" into a "+name+".  \n(New "+name+" is added to the end of the Queue and does not retain any of "+actor+"'s attributes.)";
 		}
 		

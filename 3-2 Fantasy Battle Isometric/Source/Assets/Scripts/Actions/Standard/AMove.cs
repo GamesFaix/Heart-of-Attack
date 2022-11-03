@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public class AMove : Action {
+	public class AMove : Action, IMove {
 
 		Cell target;
 		
@@ -20,7 +20,6 @@ namespace HOA {
 		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EMove(new Source(actor), actor, (Cell)targets[0]));
-			//AEffects.Move(new Source(actor), actor, (Cell)targets[0]);
 			Targeter.Reset();
 		}
 	}

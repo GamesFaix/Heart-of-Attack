@@ -58,6 +58,8 @@ namespace HOA {
 			get {return display;}
 			set {display = value;}
 		}
+		public ITargetDisplay TargetDisplay () {return display;}
+
 		//
 		public virtual void Die (Source s, bool corpse=true, bool log=true) {
 			if (this == GUIInspector.Inspected) {GUIInspector.Inspected = default(Token);}
@@ -106,7 +108,8 @@ namespace HOA {
 		public bool IsLegal() {return legal;}
 		public void Legalize (bool l=true) {
 			legal = l;
-			Display.SetLegal(legal);
+			if (l) {Display.legalCard.Show();}
+			else {Display.legalCard.Hide();}
 		}
 
 		public List<Timer> timers = new List<Timer>();

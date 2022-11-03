@@ -11,10 +11,10 @@ namespace HOA {
 		}
 		public override void Process() {
 			Token newToken;
-			TokenFactory.Add(child, source, cell, out newToken);
-			newToken.Display.Effect(EEffect.BIRTH);
-			
-			Mixer.Play(SoundLoader.Effect(EEffect.BIRTH));
+			if (TokenFactory.Add(child, source, cell, out newToken)) {
+				newToken.Display.Effect(EEffect.BIRTH);
+				Mixer.Play(SoundLoader.Effect(EEffect.BIRTH));
+			}
 		}
 	}
 	

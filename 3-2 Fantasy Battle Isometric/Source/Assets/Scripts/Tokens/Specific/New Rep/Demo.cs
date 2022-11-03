@@ -16,7 +16,7 @@ namespace HOA{
 			arsenal.Add(new ADemoSticky(this));
 			arsenal.Sort();
 		}
-		public override string Notes () {return "Defense +1 per Focus (up to 4).";}
+		public override string Notes () {return "Defense +1 per Focus (up to +4).";}
 	}
 
 	public class HealthDemo : Health{
@@ -38,7 +38,10 @@ namespace HOA{
 			int damage = 10;
 
 			name = "Plant";
-			desc = "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
+			desc = "At the end of target Unit's next turn, do "+damage+" damage to all units in its cell. " +
+				"\nAll units in neighboring cells take 50% damage (rounded down). " +
+				"\nDamage continues to spread outward with 50% reduction until 1. " +
+				"\nDestroy all destructible tokens that would take damage.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
@@ -59,13 +62,15 @@ namespace HOA{
 			turns = 1;
 
 			name = "Active Grenade";
-			desc = "At the end of "+parent.ToString()+" next turn, do 10 damage to all units in its cell. \nAll units in neighboring cells take 50% damage (rounded down). \nDamage continues to spread outward with 50% reduction until 1. \nDestroy all destructible tokens that would take damage.";
+			desc = "At the end of "+parent.ToString()+" next turn, do 10 damage to all units in its cell. " +
+				"\nAll units in neighboring cells take 50% damage (rounded down). " +
+				"\nDamage continues to spread outward with 50% reduction until 1. " +
+				"\nDestroy all destructible tokens that would take damage.";
 
 		}
 		
 		public override void Activate () {
 			EffectQueue.Add(new EExplosion(new Source(source), parent.Body.Cell, 10));
-			//AEffects.Explosion(new Source(source), parent.Cell, 10);
 		}
 	}
 

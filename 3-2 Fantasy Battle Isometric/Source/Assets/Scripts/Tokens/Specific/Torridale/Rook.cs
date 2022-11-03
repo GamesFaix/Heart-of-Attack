@@ -73,7 +73,7 @@ namespace HOA{
 			weight = 1;
 			actor = u;
 			price = new Price(0,2);
-			name = "Move";
+			name = "Rebuild";
 			desc = "Move "+actor+" to target cell.";
 
 			for (int i=0; i<range; i++) {

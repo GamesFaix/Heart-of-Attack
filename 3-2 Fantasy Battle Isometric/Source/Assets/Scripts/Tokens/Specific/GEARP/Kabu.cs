@@ -18,7 +18,7 @@ namespace HOA {
 			//arsenal.Add(new AMove(this, Aim.MoveLine(5)));
 			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 16));
 			arsenal.Add(new ACreate(Price.Cheap, this, EToken.KATA));
-			arsenal.Add(new ACreate(new Price(0,2), this, EToken.CARA));
+			arsenal.Add(new ACreate(new Price(2,1), this, EToken.CARA));
 			arsenal.Add(new ACreate(new Price(2,2), this, EToken.MAWT));
 			arsenal.Add(new AKabuTeleport(this));
 			arsenal.Add(new AKabuLaser(this));

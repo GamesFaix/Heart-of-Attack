@@ -92,14 +92,19 @@ namespace HOA {
 		public bool Swap (Token other) {
 			if (CanSwap(other)) {
 				Cell oldCell = cell;
+				Cell newCell = other.Body.Cell;
+
 				Exit();
-				cell = other.Body.Cell;
-				other.Body.Cell.Enter(parent);
-				
 				other.Body.Exit();
+
+				cell = newCell;
+				newCell.Enter(parent);
+				if (parent.Display != null) {parent.Display.MoveTo(newCell);}
+
 				other.Body.Cell = oldCell;
 				oldCell.Enter(other);
-				
+				if (other.Display != null) {other.Display.MoveTo(oldCell);}
+
 				return true;
 			}	
 			return false;

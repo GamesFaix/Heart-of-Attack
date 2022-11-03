@@ -10,6 +10,7 @@ namespace HOA {
 		public Web(Source s, bool template=false){
 			id = new ID(this, EToken.WEBB, s, false, template);
 			plane = Plane.Sunk;
+			type.Add(EType.DEST);
 			body = new BodyWeb(this);	
 			Neutralize();
 			affected = new Dictionary<Unit, Action>();

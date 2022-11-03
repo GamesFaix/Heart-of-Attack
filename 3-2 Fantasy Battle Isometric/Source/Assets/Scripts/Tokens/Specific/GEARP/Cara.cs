@@ -8,6 +8,8 @@ namespace HOA {
 			id = new ID(this, EToken.CARA, s, false, template);
 			//sprite = new HOA.Sprite(this);
 			body = new BodyCara(this);
+			plane = Plane.Gnd;
+
 			ScaleMedium();
 			NewWallet();
 			
@@ -52,7 +54,7 @@ namespace HOA {
 				cell = newCell;
 				if (CanTrample(newCell)) {Trample(newCell);}
 				newCell.Enter(parent);
-				
+				if (parent.Display != null) {parent.Display.MoveTo(cell);}
 				foreach (Sensor s in sensors) {s.Delete();}
 				
 				CellGroup shieldCells = newCell.Neighbors(true);

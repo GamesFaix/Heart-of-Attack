@@ -1,8 +1,9 @@
 using UnityEngine;
+using System;
 
 namespace HOA{
 
-	public class Price {
+	public class Price : IComparable<Price>{
 		int ap;
 		int fp;
 		bool other;
@@ -43,6 +44,15 @@ namespace HOA{
 		public static Price Free {get {return new Price(0,0);} }
 		public static Price Cheap {get {return new Price(1,0);} }
 	
+		public int CompareTo (Price other) {
+			if (Total < other.Total) {return -1;}
+			else if (Total > other.Total) {return 1;}
+			else {
+				if (AP > other.AP) {return -1;}
+				else if (AP < other.AP) {return 1;}
+				else {return 0;}
+			}
+		}
 	
 	}
 }

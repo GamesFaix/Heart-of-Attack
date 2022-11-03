@@ -25,12 +25,10 @@ namespace HOA {
 				ready = false;
 
 				currentAction = a;
-				//Debug.Log("targeting for "+a.Name);
-
+			
 				targets = new List<ITarget>();
 
 				steps = a.Aim.Count;
-				//Debug.Log("steps: "+steps);
 				currentStep = 0;
 
 				StartStep (currentStep);

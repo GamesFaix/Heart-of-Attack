@@ -24,11 +24,13 @@ namespace HOA {
 		public int Optional () {return 1;}
 
 		public AKataMove (Unit u) {
-			weight = 1;
+			weight = 4;
 			actor = u;
 			price = new Price(0,0);
 			name = "Sprint";
-			desc = "Move "+actor+" to target cell.  \nRange +1 per focus (up to +6).  \n"+actor+" loses all focus.";
+			desc = "Move "+actor+" to target cell.  " +
+				"\nRange +1 per focus (up to +6). " +
+				"\n"+actor+" loses all focus.";
 
 			ResetAim();
 			
@@ -86,7 +88,10 @@ namespace HOA {
 			
 			damage = d;
 			name = "Laser Spin";
-			desc = "Do "+d+" damage to target unit, then damage all of target's cellmates and all units clockwise or counterclockwise, reducing damage 50% each time.";
+			desc = "Do "+d+" damage to target unit, " +
+				"then damage all of target's cellmates " +
+				"and all units clockwise or counterclockwise, " +
+				"reducing damage 50% each time.";
 			
 		}
 		

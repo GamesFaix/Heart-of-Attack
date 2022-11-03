@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{113B1ACE-AE2F-8425-B4DD-ED10F32F59DF}</ProjectGuid>
+	<ProjectGuid>{0BE4A55F-FB59-E292-DCFF-16795EB017AF}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -79,6 +79,7 @@
      <Compile Include="Assets\Scripts\Actions\Standard\AMovePath.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\ARage.cs" />
      <Compile Include="Assets\Scripts\Actions\Standard\AShock.cs" />
+     <Compile Include="Assets\Scripts\Actions\Standard\IMove.cs" />
      <Compile Include="Assets\Scripts\Actions\Targeter.cs" />
      <Compile Include="Assets\Scripts\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Board\BorderFactory.cs" />
@@ -86,7 +87,9 @@
      <Compile Include="Assets\Scripts\Board\CellDisplay.cs" />
      <Compile Include="Assets\Scripts\Board\CellFactory.cs" />
      <Compile Include="Assets\Scripts\Board\Direction.cs" />
-     <Compile Include="Assets\Scripts\Board\Map.cs" />
+     <Compile Include="Assets\Scripts\Board\MapFactory.cs" />
+     <Compile Include="Assets\Scripts\Board\TerrainGenerator.cs" />
+     <Compile Include="Assets\Scripts\Board\Zone.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraPanner.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraRigBuilder.cs" />
      <Compile Include="Assets\Scripts\Camera\GameWorldCursor.cs" />
@@ -140,12 +143,16 @@
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyGame.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
+     <Compile Include="Assets\Scripts\Graphics\Card.cs" />
+     <Compile Include="Assets\Scripts\Graphics\EffectCard.cs" />
      <Compile Include="Assets\Scripts\Graphics\Icons.cs" />
      <Compile Include="Assets\Scripts\Graphics\ImageLoader.cs" />
      <Compile Include="Assets\Scripts\Graphics\SpriteEffects.cs" />
+     <Compile Include="Assets\Scripts\Graphics\TargetDisplay.cs" />
      <Compile Include="Assets\Scripts\Graphics\Thumbs.cs" />
      <Compile Include="Assets\Scripts\Interfaces\ISource.cs" />
-     <Compile Include="Assets\Scripts\Interfaces\ITargetable.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\ITarget.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\ITargetDisplay.cs" />
      <Compile Include="Assets\Scripts\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Misc\DiceCoin.cs" />
      <Compile Include="Assets\Scripts\Misc\Enums.cs" />

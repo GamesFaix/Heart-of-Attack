@@ -6,5 +6,7 @@ namespace HOA {
 		void Select (Source s);
 		void Legalize (bool l=true);
 		bool IsLegal ();
+		ITargetDisplay TargetDisplay ();
+
 	}
 }

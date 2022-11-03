@@ -32,7 +32,11 @@ namespace HOA{
 			AddAim(HOA.Aim.Self());
 			
 			name = "Land";
-			desc = "Becomes trampling ground unit. \nMove range -2 \nDefense +2\nForget 'Create Rook' \nLearn 'Tail Whip'";
+			desc = "Becomes trampling ground unit. " +
+				"\nMove range -2 " +
+				"\nDefense +2" +
+				"\nForget 'Create Rook' " +
+				"\nLearn 'Tail Whip'";
 		}
 
 		public override bool Restrict () {
@@ -50,19 +54,22 @@ namespace HOA{
 			Token t;
 			if (actor.Body.Cell.Contains(EPlane.GND, out t)) {
 				if (t.Type.Is(EType.DEST)) {
-					t.Die(new Source(actor));
+					EffectQueue.Add(new EDestruct(new Source(actor), t));
 				}
 			}
 			
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, 2));
 			actor.Plane.Set(EPlane.GND);
+
+			Cell cell = actor.Body.Cell;
+			actor.Body.Exit();
+			actor.Body.Enter(cell);
+
 			actor.Type.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
-			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {	if (a is AGargLand) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {	if (a is AGargRook) {actor.Arsenal().Remove(a);} }
-			actor.Arsenal().Add(new AMove(actor, HOA.Aim.MovePath(3)));
-			actor.Arsenal().Add(new AGargFly(actor));
-			actor.Arsenal().Add(new AGargTailWhip(new Price(1,1), actor,10));
+
+			actor.Arsenal().Replace("Move", new AMove(actor, HOA.Aim.MovePath(3)));
+			actor.Arsenal().Replace("Land", new AGargFly(actor));
+			actor.Arsenal().Replace("Create Rook", new AGargTailWhip(new Price(1,1), actor, 10));
 			actor.Arsenal().Sort();
 			
 			actor.Display.Effect(EEffect.STATUP);
@@ -77,7 +84,11 @@ namespace HOA{
 			AddAim(HOA.Aim.Self());
 			
 			name = "Take Flight";
-			desc = "Becomes air unit. \nMove range +2\nDefense -2\nForget 'Tail Whip'\nLearn 'Create Rook'";
+			desc = "Becomes air unit. " +
+				"\nMove range +2" +
+				"\nDefense -2" +
+				"\nForget 'Tail Whip'" +
+				"\nLearn 'Create Rook'";
 		}
 		public override bool Restrict () {
 			if (actor.Body.Cell.Contains(EPlane.AIR)) {return true;}
@@ -88,15 +99,17 @@ namespace HOA{
 			Charge();
 			EffectQueue.Add(new EAddStat(new Source(actor), actor, EStat.DEF, -2));
 			actor.Plane.Set(EPlane.AIR);
+			Cell cell = actor.Body.Cell;
+			actor.Body.Exit();
+			actor.Body.Enter(cell);
+
 			actor.Type.Set(new List<EType> {EType.UNIT, EType.KING, EType.TRAM});
-			foreach (Action a in actor.Arsenal()) {if (a is AMove) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {	if (a is AGargFly) {actor.Arsenal().Remove(a);} }
-			foreach (Action a in actor.Arsenal()) {if (a is AGargTailWhip) {actor.Arsenal().Remove(a);} }
-			actor.Arsenal().Add(new AMove(actor, HOA.Aim.MovePath(5)));
-			actor.Arsenal().Add(new AGargLand(actor));
-			actor.Arsenal().Add(new AGargRook(new Price(1,1),actor));
+
+			actor.Arsenal().Replace("Move", new AMove(actor, HOA.Aim.MovePath(5)));
+			actor.Arsenal().Replace("Take Flight", new AGargLand(actor));
+			actor.Arsenal().Replace("Tail Whip", new AGargRook(new Price(1,1), actor));
 			actor.Arsenal().Sort();
-			
+
 			actor.Display.Effect(EEffect.STATUP);
 			Targeter.Reset();
 		}
@@ -141,7 +154,7 @@ namespace HOA{
 			
 			AddAim(HOA.Aim.Self());
 			
-			name = template.ID.Name;
+			name = "Create "+template.ID.Name;
 			desc = "Create "+name+" in "+actor+"'s cell.";
 		}
 		
@@ -163,7 +176,7 @@ namespace HOA{
 			actor = u;
 			price = new Price(1,1);
 			AddAim(HOA.Aim.Shoot(2));
-			damage = 10;
+			damage = 15;
 			
 			name = "Petrify";
 			desc = "Target Unit takes "+damage+" damage and cannot move on its next turn.";

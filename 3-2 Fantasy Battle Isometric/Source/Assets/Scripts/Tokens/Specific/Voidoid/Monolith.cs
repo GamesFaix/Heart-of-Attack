@@ -93,8 +93,8 @@ namespace HOA{
 
 			//Token childTemplate = TemplateFactory.Template(EToken.RECY);
 			
-			name = "Recycle";
-			desc = "Replace target remains with "+name+".";
+			name = "Recycle Recyclops";
+			desc = "Replace target remains with Recyclops.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
@@ -118,7 +118,8 @@ namespace HOA{
 			range = 2;
 
 			name = "Death Field";
-			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.ID.Name+". \n"+actor.ID.Name+" gains Health equal to damage successfully dealt.";
+			desc = "Do "+damage+" damage to all units within "+range+" cells of "+actor.ID.Name+". " +
+				"\n"+actor.ID.Name+" gains Health equal to damage successfully dealt.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {
@@ -167,7 +168,8 @@ namespace HOA{
 			AddAim(newAim);
 			
 			name = "Blood Altar ";
-			desc = "Destroy neighboring teammate.\nInitiative +4 for next 2 turns.";
+			desc = "Destroy neighboring teammate." +
+				"\nInitiative +4 for next 2 turns.";
 		}
 		
 		public override void Execute (List<ITarget> targets) {

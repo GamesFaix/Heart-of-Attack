@@ -90,7 +90,9 @@ namespace HOA{
 			AddAim(new Aim(ETraj.PATH, EType.DEST, 1));
 
 			name = "Grow";
-			desc = "Switch cells with target Destructible.  \nRange +1 per focus.  \n"+actor+" +1 Focus.";
+			desc = "Switch cells with target Destructible. " +
+				"\nRange +1 per focus.  " +
+				"\n"+actor+" +1 Focus.";
 			
 		}
 		
@@ -129,7 +131,9 @@ namespace HOA{
 			damage = 18;
 
 			name = "Vine Whip";
-			desc = "Do "+damage+"damage target Unit.\nRange +1 per focus.\nIf target is killed and leaves Remains, switch cells with it's Remains.";
+			desc = "Do "+damage+" damage target Unit." +
+				"\nRange +1 per focus." +
+				"\nIf target is killed and leaves Remains, switch cells with it's Remains.";
 			
 		}
 		

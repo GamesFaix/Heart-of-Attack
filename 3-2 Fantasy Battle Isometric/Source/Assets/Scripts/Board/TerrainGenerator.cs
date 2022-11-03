@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HOA {
 
-	public static class Map {
+	public static class TerrainGenerator {
 
 		public static void Blank(int n) {
 			Board.New(n);

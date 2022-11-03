@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 namespace HOA {
@@ -15,7 +16,7 @@ namespace HOA {
 				case ETraj.ARC: Arc(start, actor, a, other); break;
 				case ETraj.FREE: Free(actor, a, other); break;
 				case ETraj.CELLMATE: Debug.Log("Cellmate targeting no longer active."); break;
-				case ETraj.PATH: Debug.Log("Path aim no longer active."); break;
+				case ETraj.PATH: Path(start, actor,a); break;//Debug.Log("Path aim no longer active."); break;
 				case ETraj.GLOBAL: Debug.Log("Global aim no longer active."); break;
 				default: break;
 			}
@@ -41,11 +42,46 @@ namespace HOA {
 			
 			if (a.Type.Is(EType.CELL)) {
 				if (a.Purpose == EPurp.CREATE) {legal.Add(Board.Cells.Occupiable(other));}
-				if (a.Purpose == EPurp.MOVE) {legal.Add(Board.Cells.Occupiable(actor));}
+        	    if (a.Purpose == EPurp.MOVE) {legal.Add(Board.Cells.Occupiable(actor));}
 			}
-			else {legal.Add(TokenFactory.Tokens.Restrict(actor, a));}
+	        else {legal.Add(TokenFactory.Tokens.Restrict(actor, a));}
 			
 			legal.Legalize();
+		}
+
+		static void Path (Cell start, Token actor, Aim a) {
+			if (!a.Type.Is(EType.CELL)) {
+				
+				
+				TargetGroup legal = new TargetGroup();
+
+				CellGroup thisRad = start.Neighbors();
+				CellGroup nextRad = new CellGroup();
+				CellGroup marked = new CellGroup();
+
+				for (int i=1; i<=a.Range; i++) {
+
+					foreach (Cell c in thisRad) {
+						legal.Add(c.Occupants.Restrict(actor, a));
+						marked.Add(c);
+
+						if (c.Occupants.Count==0 ||
+						    (c.Occupants.Count==1 && c.Contains(EPlane.SUNK))) {
+
+							foreach (Cell d in c.Neighbors()) {
+								if (!marked.Contains(d)) {nextRad.Add(d);}		
+							}
+						}
+					}
+					thisRad = nextRad;
+					nextRad = new CellGroup();
+				}
+
+				legal.Legalize();
+			}
+			else {throw new ArgumentException("Path trajectory can only be used to target tokens.  Cell targets must use repeated neighbor trajectory.");}
+
+
 		}
 
 		static void Line (Cell start, Token actor, Aim a, Token other) {
@@ -64,6 +100,7 @@ namespace HOA {
 					foreach (Cell c in LineUntilToken(line)) {
 						legal.Add(c.Occupants.Restrict(actor, a));
 					}
+					legal.Add(start.Occupants);
 				}
 			}
 			legal.Legalize();

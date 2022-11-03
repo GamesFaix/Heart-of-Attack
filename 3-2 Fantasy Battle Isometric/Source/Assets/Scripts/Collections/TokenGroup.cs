@@ -5,14 +5,9 @@ using UnityEngine;
 namespace HOA {
 
 	public class TokenGroup : Group<Token> {
-		public TokenGroup () {list = new List<Token>();}
-		public TokenGroup (Token t) {list = new List<Token>{t};}
-		public TokenGroup (List<Token> t) {list = t;}
-		public TokenGroup (TokenGroup tg) {
-			list = new List<Token>();
-			foreach (Token t in tg) {list.Add(t);}
-		}
-
+		public TokenGroup (int capacity=4) {list = new List<Token>(capacity);}
+		public TokenGroup (Token t, int capacity=4) {list = new List<Token>(capacity){t};}
+		public TokenGroup (IEnumerable<Token> t) {list = new List<Token>(t);}
 
 		//filters
 		public TokenGroup OnlyOwner(Player p){
@@ -82,6 +77,15 @@ namespace HOA {
 			}
 			return filtered;
 		}
+
+		public static TokenGroup operator / (TokenGroup g, Player p) {return g.RemoveOwner(p);}
+		public static TokenGroup operator % (TokenGroup g, Player p) {return g.OnlyOwner(p);}
+		public static TokenGroup operator / (TokenGroup g, EPlane p) {return g.RemovePlane(p);}
+		public static TokenGroup operator % (TokenGroup g, EPlane p) {return g.OnlyPlane(p);}
+		public static TokenGroup operator / (TokenGroup g, Type c) {return g.RemoveType(c);}
+		public static TokenGroup operator % (TokenGroup g, Type c) {return g.OnlyType(c);}
+		public static TokenGroup operator / (TokenGroup g, EType c) {return g.RemoveType(c);}
+		public static TokenGroup operator % (TokenGroup g, EType c) {return g.OnlyType(c);}
 
 		public TokenGroup Restrict (Token actor, Aim a) {
 			TokenGroup restricted = new TokenGroup (this);

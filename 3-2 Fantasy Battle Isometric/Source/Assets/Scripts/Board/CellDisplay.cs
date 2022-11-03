@@ -1,65 +1,81 @@
 ﻿using UnityEngine;
 
 namespace HOA {
-	public class CellDisplay : MonoBehaviour {
+	public class CellDisplay : MonoBehaviour, ITargetDisplay {
 
-		public GameObject legalPlane;
-		public GameObject effectPlane;
-		public GameObject spritePlane;
+		static GameObject cellPF = Resources.Load("Prefabs/CellPrefab") as GameObject;
+		static Texture2D texLegal = Resources.Load("Images/Textures/legal") as Texture2D;
+		static Texture2D texEven = Resources.Load("Images/Textures/Cell/mc grass") as Texture2D;
+		static Texture2D texOdd = Resources.Load("Images/Textures/Cell/mc dirt") as Texture2D;
+
+		public ITarget Target() {return (ITarget)cell;}
+		public GameObject GO() {return gameObject;}
 
 		Cell cell;
-
 		public Cell Parent {
 			get {return cell;}
 			set {cell = value;}
 		}
 
-		public void SetTex (Texture2D tex) {gameObject.renderer.material.SetTexture("_MainTex", tex);}
+		public static void Attach (Cell c) {
+			GameObject prefab = GameObject.Instantiate (cellPF, PrefabPos(c), Quaternion.identity) as GameObject;
+			prefab.transform.localScale = new Vector3 ((float)Board.CellSize/10,1,(float)Board.CellSize/10);
+			prefab.name = "Cell ("+c.X+","+c.Y+")";
+			CellDisplay cd = prefab.GetComponent("CellDisplay") as CellDisplay;
+			cd.Parent = c;
+			c.Display = cd;
+			
+			cd.AttachCards();
 
-		public void Hide () {gameObject.renderer.enabled = false;}
+		}
+
+		static Vector3 PrefabPos (Cell c) {
+			Vector3 pos = new Vector3(0,0,0);
+			pos.x = (c.X-1)*Board.CellSize;
+			pos.z = (c.Y-1)*Board.CellSize;
+			return pos;
+		}
+
+		public Card terrainCard;
+		public Card spriteCard;
+		public Card legalCard;
+		public EffectCard effectCard;
+
+		public void AttachCards() {
+			terrainCard = Card.Attach(gameObject, 0);
+			terrainCard.gameObject.name = "Terrain Card";
+
+			spriteCard  = Card.Attach(gameObject, 0.01f);
+			spriteCard.gameObject.name = "Sprite Card";
+
+			legalCard   = Card.Attach(gameObject, 0.02f);
+			legalCard.gameObject.name = "Legal Card";
+
+			effectCard  = Card.AttachEffect(gameObject, 0.03f);
+			effectCard.gameObject.name = "Effect Card";
+
+			if ((cell.X+cell.Y)%2 == 0) {terrainCard.Tex = texEven;}
+			else {terrainCard.Tex = texOdd;}
 		
-		public void HideAll () {
-			HideLegal();
-			HideSprite();
-			HideEffect();
-		}
+			spriteCard.Hide();
 
-		public void SetLegal (bool legal) {
-			if (legal) {ShowLegal();}
-			else {HideLegal();}
-		}
-		void ShowLegal () {legalPlane.renderer.enabled = true;}
-		void HideLegal () {legalPlane.renderer.enabled = false;}
+			legalCard.Tex = texLegal;
+			legalCard.Hide();
 
+			effectCard.Hide();
+		}
 
 		float effectedTime = 0;
 		float EffectElapsedTime () {return Time.time - effectedTime;}
-	//	static float fadeDuration = 1.5f;
-//		EEffect currentEffect = EEffect.NONE;
-		Texture2D effectTex;
-		
-		public void Effect (EEffect e) {
-			effectedTime = Time.time;
-			//currentEffect = e;
-			effectTex = SpriteEffects.Effect(e);
-			ShowEffect(effectTex);
-		}
-		void ShowEffect (Texture2D tex) {
-			effectPlane.renderer.enabled = true;
-			effectPlane.renderer.material.SetTexture("_MainTex", tex);
-		}
-		void HideEffect () {effectPlane.renderer.enabled = false;}
 
-
-		void ShowSprite () {spritePlane.renderer.enabled = true;}
-		void HideSprite () {spritePlane.renderer.enabled = false;}
+		public void Effect (EEffect e) {effectCard.Effect(e);}
 
 		public void EnterSunken (Token t) {
 			if (t.Display != default(TokenDisplay)) {
-				ShowSprite();
-				spritePlane.renderer.material.SetTexture("_MainTex", t.Display.Sprite);
+				spriteCard.Show();
+				spriteCard.Tex = t.Display.spriteCard.Tex;
 			}
 		}
-		public void ExitSunken () {HideSprite();}
+		public void ExitSunken () {spriteCard.Hide();}
 	}
 }

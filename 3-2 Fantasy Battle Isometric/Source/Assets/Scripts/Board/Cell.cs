@@ -13,6 +13,7 @@ namespace HOA {
 		public Cell (int xx, int yy) {
 			x = xx;
 			y = yy;
+			if (x>0) {CellDisplay.Attach(this);}
 		}
 
 		CellDisplay display;
@@ -20,6 +21,8 @@ namespace HOA {
 			get {return display;}
 			set {display = value;}
 		}
+		public ITargetDisplay TargetDisplay() {return display;}
+
 
 		public Vector3 Location {get {return display.gameObject.transform.position;} }
 
@@ -157,7 +160,8 @@ namespace HOA {
 		public bool IsLegal() {return legal;}
 		public void Legalize (bool l=true) {
 			legal = l;
-			Display.SetLegal(legal);
+			if (legal) {Display.legalCard.Show();}
+			else {Display.legalCard.Hide();}
 		}
 
 		bool[] stop = new bool[4];

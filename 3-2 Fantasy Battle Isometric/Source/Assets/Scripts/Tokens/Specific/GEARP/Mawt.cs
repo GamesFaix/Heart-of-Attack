@@ -30,7 +30,9 @@ namespace HOA {
 			price = new Price(2,0);
 
 			name = "Bombard";
-			desc = "Once per Focus, move upto "+range+" cells in a line and deal "+damage+" explosive damage at that cell (up to 3 times).\n("+actor+" receives no damage.)";
+			desc = "Once per Focus, move upto "+range+" cells in a line and " +
+				"deal "+damage+" explosive damage at that cell (up to 3 times)." +
+				"\n("+actor+" receives no damage.)";
 		}
 		
 		public override void Adjust () {

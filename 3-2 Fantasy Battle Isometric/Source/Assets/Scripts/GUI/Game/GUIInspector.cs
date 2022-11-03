@@ -408,7 +408,7 @@ public class GUIInspector : MonoBehaviour {
 
 			p.NudgeX();
 			if (Targeter.Passable) {
-				if (GUI.Button(p.Box(btnW), "Pass")) {
+				if (GUI.Button(p.Box(btnW), "Pass") || Input.GetKeyUp("space")) {
 					//Debug.Log("executing");
 					Targeter.Pass();
 					GUIMaster.PlaySound(EGUISound.CLICK);

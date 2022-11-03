@@ -3,15 +3,14 @@ using System.Collections.Generic;
 
 namespace HOA {
 	public static class Game {
-		public static void Start (int boardSize) {
-			if (Roster.Count() > 2) {
+		public static void Start () {
+			if (Roster.Count() > 1) {
 				TokenFactory.Reset();
 				GameLog.Reset();
 				TurnQueue.Reset();
-				//Board.New(boardSize);
-				Map.Map3();
-				//GUIBoard.ZoomOut();
-				SpawnKings();
+				//Map.Map3();
+				MapFactory.Build();
+
 				EffectQueue.Add(new EShuffle(new Source()));
 				EffectQueue.Add(new EInitialize(new Source()));
 
@@ -20,27 +19,6 @@ namespace HOA {
 			}
 			else {GameLog.Debug("Console: Cannot start game with less than 2 players.");}
 		}
-
-		static void SpawnKings () {
-			EffectGroup heroSpawn = new EffectGroup();
-
-			foreach (Player p in Roster.Players()) {
-				Cell cell;
-				Token temp = TemplateFactory.Template(p.King);
-
-			
-				if (Board.RandomLegalCell(temp, out cell)) {
-					heroSpawn.Add(new ECreate (new Source(p), p.King, cell));
-//					TokenFactory.Add(p.King, new Source(p), cell, false);
-				}
-				else {
-					Debug.Log("Cannot spawn "+temp+". No legal cells.");
-				}
-			
-			}
-			EffectQueue.Add(heroSpawn);
-		}
-
 
 		public static void Quit () {
 			TurnQueue.Reset();

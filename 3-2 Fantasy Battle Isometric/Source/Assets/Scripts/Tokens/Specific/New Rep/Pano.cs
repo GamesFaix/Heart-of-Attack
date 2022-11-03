@@ -12,11 +12,11 @@ namespace HOA{
 			NewWatch(1);
 
 			arsenal.Add(new AMovePath(this, 1));
-			arsenal.Add(new APanoCannon(Price.Cheap, this, 17));
+			arsenal.Add(new APanoCannon(Price.Cheap, this, 12));
 			arsenal.Add(new APanoPierce(new Price(1,2), this, 20));
 			arsenal.Sort();
 		}		
-		public override string Notes () {return "Defense +1 per Focus (up to 2).";}
+		public override string Notes () {return "Defense +1 per Focus (up to +2).";}
 	}	
 
 	public class HealthPano : Health{
@@ -40,7 +40,8 @@ namespace HOA{
 			damage = d;
 			
 			name = "Cannon";
-			desc = "Do "+d+" damage to target unit.  \nMax range +1 per focus (up to +3).";
+			desc = "Do "+d+" damage to target unit.  " +
+				"\nMax range +1 per focus (up to +3).";
 			
 		}
 
@@ -71,7 +72,8 @@ namespace HOA{
 			damage = d;
 			
 			name = "Armor Pierce";
-			desc = "Do "+d+" damage to target unit (ignore defense).  \nMax range +1 per focus (up to +3).";
+			desc = "Do "+d+" damage to target unit (ignore defense).  " +
+				"\nMax range +1 per focus (up to +3).";
 		}
 
 		public override void Adjust () {
@@ -86,7 +88,6 @@ namespace HOA{
 		public override void Execute (List<ITarget> targets) {
 			Charge();
 			EffectQueue.Add(new EPierce (new Source(actor), (Unit)targets[0], damage));
-			//AEffects.Pierce(new Source(actor), (Unit)targets[0], damage);
 			Targeter.Reset();
 		}
 	}

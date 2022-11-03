@@ -4,7 +4,7 @@ namespace HOA{
 	public class Metaterrainean : Unit {
 		public Metaterrainean(Source s, bool template=false){
 			id = new ID(this, EToken.META, s, false, template);
-			plane = Plane.Air;
+			plane = Plane.Gnd;
 			type.Add(EType.TRAM);
 			onDeath = EToken.ROCK;
 

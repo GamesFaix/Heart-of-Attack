@@ -42,13 +42,12 @@ namespace HOA{
 			int dmg = damage - def;
 			if (oldHP - dmg < 10) {dmg = oldHP;}
 			if (dmg >= oldHP) {
-				u.Die(new Source(actor), false, true);
+				EffectQueue.Add(new EKill(new Source(actor), u));
 				Targeter.Find(new ANecrCorpse(actor));
 
 			}
 			else {
-				u.Damage(new Source(actor), damage);
-				u.Display.Effect(EEffect.DMG);
+				EffectQueue.Add(new EDamage(new Source(actor), u, damage));
 				Targeter.Reset();
 			}
 		}

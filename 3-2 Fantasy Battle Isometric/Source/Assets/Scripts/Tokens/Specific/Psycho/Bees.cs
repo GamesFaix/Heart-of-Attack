@@ -42,7 +42,8 @@ namespace HOA{
 			Unit u = (Unit)targets[0];
 			EffectQueue.Add(new ECorrode (new Source(actor), u, damage));
 
-			actor.Die(new Source(actor));
+			EffectQueue.Add(new EKill (new Source(actor), actor));
+			Targeter.Reset();
 		}
 	}
 }

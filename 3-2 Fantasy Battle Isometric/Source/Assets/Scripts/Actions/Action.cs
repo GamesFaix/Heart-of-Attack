@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HOA {
 	
 	
-	public abstract class Action{
+	public abstract class Action : IComparable<Action>{
 		protected int weight;
 		public int Weight {get {return weight;} }
 
@@ -79,6 +79,15 @@ namespace HOA {
 			actor.Charge(price);
 		}
 
+		public int CompareTo (Action other) {
+			if (weight < other.weight) {return -1;}
+			else if (weight > other.weight) {return 1;}
+			else {
+				int i = price.CompareTo(other.price);
+				if (i != 0) {return i;}
+				else {return (name.CompareTo(other.name));}
+			}
+		}
 	
 	}
 }

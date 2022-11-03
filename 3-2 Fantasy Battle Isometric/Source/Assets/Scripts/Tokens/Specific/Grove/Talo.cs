@@ -7,11 +7,11 @@ namespace HOA{
 			plane = Plane.Air;
 
 			ScaleMedium();
-			NewHealth(45);
+			NewHealth(35);
 			NewWatch(4);
 
 			arsenal.Add(new AMovePath(this, 6));
-			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 10));
+			arsenal.Add(new AAttack("Melee", Price.Cheap, this, Aim.Melee(), 12));
 			arsenal.Add(new ATaloGust(this));
 			arsenal.Sort();
 		}		
@@ -30,7 +30,10 @@ namespace HOA{
 			damage = 15;
 			
 			name = "Arctic Gust";
-			desc = "Do "+damage+" damage target Unit.\nTarget's Move range -2 until end of its next turn.\nTarget's neighbors and cellmates' Move range -1 until end of their next turn.\n("+actor.ID.Name+"'s Move range is not affected.)";
+			desc = "Do "+damage+" damage target Unit." +
+				"\nTarget's Move range -2 until end of its next turn." +
+				"\nTarget's neighbors and cellmates' Move range -1 until end of their next turn." +
+				"\n("+actor.ID.Name+"'s Move range is not affected.)";
 		}
 		
 		public override void Execute (List<ITarget> targets) {

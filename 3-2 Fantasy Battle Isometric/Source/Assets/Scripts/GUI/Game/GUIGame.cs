@@ -62,10 +62,11 @@ public class GUIGame : MonoBehaviour {
 		}
 
 		Rect boardRect = new Rect(0, 0, sW-barW, sH-qH);
+		/*
 		Panel boardPanel = new Panel(boardRect, 30, s);
 		board.Display(boardPanel);
 
-
+		*/
 		Camera.main.rect = InvNormalRect(boardRect);
 	}
 

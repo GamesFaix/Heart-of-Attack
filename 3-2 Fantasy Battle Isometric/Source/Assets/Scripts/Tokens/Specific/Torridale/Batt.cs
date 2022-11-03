@@ -13,10 +13,10 @@ namespace HOA{
 			arsenal.Add(new AMovePath(this, 2));
 			arsenal.Add(new AAttack("Ram", Price.Cheap, this, Aim.Melee(), 16));
 
-			arsenal.Add(new AAttack("Fling", new Price(1,1), this, Aim.Arc(3), 12));
+			arsenal.Add(new AAttack("Fling", new Price(1,1), this, Aim.Arc(3), 16));
 			
 			Aim fireAim = new Aim (ETraj.ARC, Type.UnitDest, 3);
-			arsenal.Add(new AAttackFir("Cocktail", new Price(1,2), this, fireAim, 16));	
+			arsenal.Add(new AAttackFir("Cocktail", new Price(1,2), this, fireAim, 20));	
 			arsenal.Sort();
 		}		
 		public override string Notes () {return "";}

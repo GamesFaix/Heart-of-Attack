@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 
 namespace HOA {
-	public class TokenDisplay : MonoBehaviour {
+	public class TokenDisplay : MonoBehaviour, ITargetDisplay {
+
+		static GameObject tokenPF = Resources.Load("Prefabs/TokenPrefab") as GameObject;
+		static Texture2D texLegal = Resources.Load("Images/Textures/legal") as Texture2D;
 
 		void OnGUI () {FaceCamera();}
-		void Update () {FadeEffect();}
 
 		Token token;
 		
@@ -13,88 +15,94 @@ namespace HOA {
 			set {token = value;}
 		}
 
-		GameObject effectPlane;
-		public GameObject EffectPlane {set {effectPlane = value;} }
-		GameObject spritePlane;
-		public GameObject SpritePlane {set {spritePlane = value;} }
-		GameObject legalPlane;
-		public GameObject LegalPlane {set {legalPlane = value;} }
+		public ITarget Target() {return (ITarget)token;}
+		public GameObject GO() {return gameObject;}
 
-		Texture2D sprite = default(Texture2D);
-		public Texture2D Sprite {
-			get {return sprite;}
-			set {
-				sprite = value;
-				spritePlane.renderer.material.SetTexture("_MainTex", sprite);
-			}
-		}
-		public void HideSprite () {spritePlane.renderer.enabled = false;}
-
-		public void SetLegal (bool legal) {legalPlane.renderer.enabled = legal;}
-
-		public void MoveTo (Cell c) {
-			//if (c.Prefab != default(GameObject)) {
-				Vector3 pos = c.Location;
-				pos.y += token.SpriteScale.z*4;
-				if (token is ArenaNonSensus) {
-					pos.x += (float)(Board.CellSize/2);
-					pos.z += (float)(Board.CellSize/2);
-					pos.y -= 20;
-				}
-				if (token.Plane.Is(EPlane.AIR) || token.Plane.Is(EPlane.ETH)) {
-					if (token.Plane.Is(EPlane.GND)) {pos.y += 5;}
-					else {pos.y +=20;}
-				}
-				gameObject.transform.position = pos;
-			//}
-		}
-
-		float effectedTime = 0;
-		float EffectElapsedTime () {return Time.time - effectedTime;}
-		static float fadeDuration = 1.5f;
-		EEffect currentEffect = EEffect.NONE;
-		Texture2D effectTex;
-		
-		public void Effect (EEffect e) {
-			effectedTime = Time.time;
-			currentEffect = e;
-			effectTex = SpriteEffects.Effect(e);
-			ShowEffect(effectTex);
-		}
-
-		public void HideEffects () {
-			effectTex = default(Texture2D);
-			effectPlane.renderer.material.SetTexture("_MainTex", default(Texture2D));
-			effectPlane.renderer.enabled = false;
-		}
-		
-		void ShowEffect (Texture2D tex) {
-			effectTex = tex;
-			effectPlane.renderer.enabled = true;
-			effectPlane.renderer.material.SetTexture("_MainTex", effectTex);
-		}
-
-		void FadeEffect () {
-			if (EffectElapsedTime() < fadeDuration 
-			    && currentEffect != EEffect.NONE) {
-				float alpha;
-				
-				if (EffectElapsedTime() < (fadeDuration/2)) {alpha = (EffectElapsedTime()/fadeDuration)*2;}
-				else {alpha = (1 - (EffectElapsedTime()/fadeDuration))*2;}
-				SetAlpha (alpha);
+		public static void Attach (Token t) {
+			GameObject prefab = GameObject.Instantiate (tokenPF, PrefabPos(t), Quaternion.identity) as GameObject;
+			prefab.name = t.ToString();
+			TokenDisplay td = prefab.GetComponent("TokenDisplay") as TokenDisplay;
+			td.Token = t;
+			t.Display = td;
+			
+			td.AttachCards();
+			td.gameObject.transform.eulerAngles = new Vector3 (45, 225, 0);
+			td.spriteCard.Tex = Thumbs.CodeToThumb(t.ID.Code);
+			td.MoveTo(t.Body.Cell);
+			if (t.Plane.Is(EPlane.SUNK)) {
+				t.Display.spriteCard.Hide();
 			}
 			
-			else {
-				effectedTime = 0;
-				currentEffect = EEffect.NONE;
-				HideEffects();
-			}
+			prefab.transform.localScale = t.SpriteScale;
 		}
 
-		void SetAlpha (float f) {
-			Color c = effectPlane.renderer.material.color;
-			Color d = new Color (c.r, c.g, c.b, f);
-			effectPlane.renderer.material.color = d;
+		static Vector3 PrefabPos (Token t) {
+			Vector3 pos = new Vector3(0,0,0);
+			pos.x = (t.Body.Cell.X-1)*Board.CellSize;
+			pos.z = (t.Body.Cell.Y-1)*Board.CellSize;
+			return pos;
+		}
+
+		public Card spriteCard;
+		public Card legalCard;
+		public EffectCard effectCard;
+		
+		public void AttachCards() {
+			spriteCard  = Card.Attach(gameObject, 0.01f);
+			spriteCard.gameObject.name = "Sprite Card";
+			
+			legalCard   = Card.Attach(gameObject, 0.02f);
+			legalCard.gameObject.name = "Legal Card";
+			
+			effectCard  = Card.AttachEffect(gameObject, 0.03f);
+			effectCard.gameObject.name = "Effect Card";
+			
+			legalCard.Tex = texLegal;
+			legalCard.Hide();
+			
+			effectCard.Hide();
+		}
+
+		public void Effect (EEffect e) {effectCard.Effect(e);}
+
+		bool moving = false;
+		float moveStartTime = 0;
+		float MoveElapsedTime () {return Time.time - moveStartTime;}
+		static float moveDuration = 0.3f;
+		float MovePercent () {return MoveElapsedTime()/moveDuration;}
+		Vector3 startPos;
+		Vector3 targetPos;
+
+		public void MoveTo (Cell c) {
+			startPos = gameObject.transform.position;
+			targetPos = c.Location;
+
+			targetPos.y += token.SpriteScale.z*4;
+			
+			if (token is ArenaNonSensus) {
+				targetPos.x += (float)(Board.CellSize/2);
+				targetPos.z += (float)(Board.CellSize/2);
+				targetPos.y -= 20;
+			}
+			if (token.Plane.Is(EPlane.AIR) || token.Plane.Is(EPlane.ETH)) {
+				if (token.Plane.Is(EPlane.GND)) {targetPos.y += 5;}
+				else {targetPos.y +=20;}
+			}
+			moveStartTime = Time.time;
+			moving = true;
+		}
+
+		void Update () {
+			if (moving) {
+				gameObject.transform.position = Vector3.Lerp(startPos, targetPos, MovePercent());
+
+				if (MovePercent() > 0.995f) {
+					gameObject.transform.position = targetPos;
+					moving = false;
+					moveStartTime = 0;
+				}
+				if (CameraPanner.Target == token) {CameraPanner.Focus(token, false);}
+			}
 		}
 
 		void FaceCamera () {

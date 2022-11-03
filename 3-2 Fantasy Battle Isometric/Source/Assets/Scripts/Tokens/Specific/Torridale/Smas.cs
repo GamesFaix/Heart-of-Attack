@@ -27,22 +27,30 @@ namespace HOA{
 			price = p;
 			actor = u;
 			
-			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
+			ResetAim();
 			damage = 8;
 			
 			name = "Flail";
-			desc = "Do "+damage+" damage to target unit.  \nRange +1 per focus (Up to +3).  \n"+actor+" loses all focus.";
+			desc = "Do "+damage+" damage to target unit.  " +
+				"\nRange +1 per focus (Up to +3).  " +
+				"\n"+actor+" loses all focus.";
 			
 		}
 
 		public override void Adjust () {
 			Debug.Log("adjusting");
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
+			aim = new List<HOA.Aim>();
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1+bonus));
 		}
 
 		public override void UnAdjust () {
-			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 1);
+			ResetAim();
+		}
+
+		public void ResetAim () {
+			aim = new List<HOA.Aim>();
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 		}
 
 		public override void Execute (List<ITarget> targets) {
@@ -63,21 +71,30 @@ namespace HOA{
 			
 			price = p;
 			actor = u;
-			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
+			ResetAim();
 			damage = 8;
 			
 			name = "Slam";
-			desc = "Do "+damage+" damage to target unit and each of its neighbors and cellmates.  \nRange +1 per focus (up to +3).  \n"+actor+" loses all focus.";
+			desc = "Do "+damage+" damage to target unit and each of its neighbors and cellmates.  " +
+				"\nRange +1 per focus (up to +3).  " +
+				"\n"+actor+" loses all focus.";
 			
 		}
 
 		public override void Adjust () {
+			Debug.Log("adjusting");
 			int bonus = Mathf.Min(actor.FP, 3);
-			aim[0] = new Aim (aim[0].Trajectory, aim[0].Type, aim[0].Range+bonus);
+			aim = new List<HOA.Aim>();
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1+bonus));
 		}
-
+		
 		public override void UnAdjust () {
-			aim[0] = new Aim(ETraj.PATH, EType.UNIT, 1);
+			ResetAim();
+		}
+		
+		public void ResetAim () {
+			aim = new List<HOA.Aim>();
+			AddAim(new Aim(ETraj.PATH, EType.UNIT, 1));
 		}
 
 		public override void Execute (List<ITarget> targets) {
@@ -85,13 +102,14 @@ namespace HOA{
 			actor.SetStat(new Source(actor), EStat.FP, 0, false);
 		
 			Unit u = (Unit)targets[0];
-			u.Damage(new Source(actor), damage);
-			u.Display.Effect(EEffect.DMG);
+			EffectQueue.Add(new EDamage(new Source(actor), u, damage));
+
 			TokenGroup neighbors = u.Body.Neighbors(true).OnlyType(EType.UNIT);
+			EffectGroup nextEffects = new EffectGroup();
 			foreach (Unit u2 in neighbors) {
-				u2.Damage(new Source(actor), damage);
-				u2.Display.Effect(EEffect.DMG);
+				nextEffects.Add(new EDamage(new Source(actor), u2, damage));
 			}
+			EffectQueue.Add(nextEffects);
 			UnAdjust();
 			Targeter.Reset();
 		}
