@@ -24,7 +24,7 @@ namespace HOA {
 			
 			Rect iconBox = p.Box(30);
 			iconBox.height = 30;
-			GUI.Box(iconBox, Icons.Class(EClass.DEST));
+			GUI.Box(iconBox, Icons.Class(EType.DEST));
 			p.NudgeX(); p.NudgeY();
 			GUI.Box(p.Box(100), "Destructible", p.s);
 			p.NudgeY();
@@ -47,7 +47,7 @@ namespace HOA {
 			GUI.Label (p.TallBox(2), "Some actions only target \nDestructibles that are not \nRemains.", p.s);
 
 			/*
-			foreach (Texture2D tex in Icons.Class(EClass.DEST)) {
+			foreach (Texture2D tex in Icons.Class(EType.DEST)) {
 				iconBox = p.Box(30);
 				iconBox.height = 30;
 				GUI.Box (iconBox, tex);
