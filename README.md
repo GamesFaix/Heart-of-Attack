@@ -49,15 +49,15 @@ Unity versions:
 
 #### v3.01
 
-<img src="3-1%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/01-1%20Katandroid.png" width="300"/>
-<img src="3-1%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/05-H%20Brass%20Heart%20of%20Attack.png" width="300"/>
+<img src="3-0%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/01-1%20Katandroid.png" width="300"/>
+<img src="3-0%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/05-H%20Brass%20Heart%20of%20Attack.png" width="300"/>
 
-<img src="3-1%20Fantasy%20Battle%20Cardboard/Screenshots/v1-1.jpg" width="300" alt="v3.01"/>
-<img src="3-1%20Fantasy%20Battle%20Cardboard/Screenshots/v1-2.jpg" width="300" alt="v3.01"/>
+<img src="3-0%20Fantasy%20Battle%20Cardboard/Screenshots/v1-1.jpg" width="300" alt="v3.01"/>
+<img src="3-0%20Fantasy%20Battle%20Cardboard/Screenshots/v1-2.jpg" width="300" alt="v3.01"/>
 
 #### v3.09
 
-<img src="3-1%20Fantasy%20Battle%20Cardboard/Screenshots/v9-1.jpg" alt="v3.09"/>
+<img src="3-0%20Fantasy%20Battle%20Cardboard/Screenshots/v9-1.jpg" alt="v3.09"/>
 
 ### v3.1 Fantasy Battle 2D (Dec 2013 - Jan 2014)
 
@@ -69,13 +69,13 @@ This stage also added a separate menu screen before the game itself. (This was a
 
 #### v3.17
 
-<img src="3-2%20Fantasy%20Battle%202D/Screenshots/v17-2.jpg" width="400" alt="v3.17"/>
+<img src="3-1%20Fantasy%20Battle%202D/Screenshots/v17-2.jpg" width="400" alt="v3.17"/>
 
-<img src="3-2%20Fantasy%20Battle%202D/Screenshots/v17-4.gif" alt="v3.17"/>
+<img src="3-1%20Fantasy%20Battle%202D/Screenshots/v17-4.gif" alt="v3.17"/>
 
 #### v3.23
 
-<img src="3-2%20Fantasy%20Battle%202D/Screenshots/v23-1.gif" alt="v3.23"/>
+<img src="3-1%20Fantasy%20Battle%202D/Screenshots/v23-1.gif" alt="v3.23"/>
 
 ### v3.2 Fantasy Battle Isometric (Feb 2014 - Sep 2014)
 
