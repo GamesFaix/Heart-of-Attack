@@ -30,7 +30,7 @@ namespace HOA {
 			p.NextLine();
 
 			DrawAim(0, p.LinePanel);
-			Template.DisplayTemplate(p.LinePanel, 30);
+			Template.DisplayThumbNameTemplate(p.LinePanel);
 			float descH = (p.H-(p.LineH*2))/p.H;
 			GUI.Label(p.TallBox(descH), Desc);	
 		}

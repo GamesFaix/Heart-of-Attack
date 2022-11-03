@@ -36,8 +36,6 @@ namespace HOA {
 		public virtual void Display (Panel p, float iconSize) {
 			IN.Display(new Panel(p.Box(iconSize*2 + 5), p.LineH, p.s), iconSize);
 
-			string str = "";
-			
 			float x3 = p.x2;
 
 			Rect box;
@@ -45,7 +43,9 @@ namespace HOA {
 			if (IsStunned()) {
 				x3 = p.x2;
 				Rect stunBox = p.Box(iconSize*2 + 5);
-				if (GUIInspector.ShiftMouseOver(stunBox)) {str = "Stunned";}
+				if (GUI.Button(stunBox, "")) {
+					if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.STUN);}
+				}
 				p.x2 = x3;
 				p.NudgeX();
 				box = p.Box(iconSize);
@@ -59,10 +59,11 @@ namespace HOA {
 			else if (IsSkipped()){
 				p.NudgeX();
 				box = p.Box(iconSize);
+				if (GUI.Button(box, "")) {
+					if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.SKIP);}
+				}
 				GUI.Box(box, Icons.SKIP(), p.s);
-				if (GUIInspector.ShiftMouseOver(box)) {str = "Skipped";}
 			}
-			if (str != "" && GUIInspector.ShiftMouseOver(p.FullBox)) {GUIInspector.ToolTip(str);}
 		}
 	}
 }

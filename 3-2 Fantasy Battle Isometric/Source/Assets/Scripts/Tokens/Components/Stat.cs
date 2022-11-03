@@ -84,6 +84,11 @@ namespace HOA {
 		}
 	
 		public virtual void Display (Panel p, float iconSize) {
+			if (GUI.Button(p.FullBox, "")) {
+				//if (GUIInspector.RightClick) {
+					TipInspector.Inspect(eTip);
+				//}
+			}
 			GUI.Box(p.Box(iconSize), Icons.Stat(eStat), p.s);
 			p.NudgeX();
 			p.NudgeY();
@@ -93,10 +98,6 @@ namespace HOA {
 			else if (Modified < 0) {p.s.normal.textColor = Color.red;}
 			GUI.Label(p.Box(iconSize), ToString(), p.s);
 			p.s.normal.textColor = normColor;
-
-			if (GUIInspector.ShiftMouseOver(p.FullBox)) {
-				GUIInspector.Tip = eTip;
-			}
 		}
 
 		public static Stat HP (Unit parent, byte normal) {return new HP (parent, normal);}

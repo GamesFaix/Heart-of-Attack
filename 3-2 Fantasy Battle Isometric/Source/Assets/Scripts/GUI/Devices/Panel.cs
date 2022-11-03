@@ -75,5 +75,8 @@ public class Panel {
 		return rect;
 	}
 	
+	public Rect IconBox {get {return Box(LineH);} }
+
 	public Rect ScrollBox {get {return new Rect(x+w-15, y, 30, h);} }
+
 }

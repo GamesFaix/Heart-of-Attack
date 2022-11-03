@@ -15,10 +15,10 @@ namespace HOA {
 		}
 		
 		public override void Adjust () {
-			Debug.Log("Adjusting");
+		//	Debug.Log("Adjusting");
 			Aim[0].Range = Mathf.Max(0, Aim[0].Range-Parent.FP);}
 		public override void UnAdjust () {
-			Debug.Log("Unadjusting");
+		//	Debug.Log("Unadjusting");
 
 			NewAim(HOA.Aim.MovePath(3));
 		}

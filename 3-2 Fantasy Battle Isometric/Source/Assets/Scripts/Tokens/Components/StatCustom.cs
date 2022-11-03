@@ -36,6 +36,10 @@ namespace HOA {
 		}
 
 		public override void Display (Panel p, float iconSize) {
+			if (GUI.Button(p.FullBox, "")) {
+				if (GUIInspector.RightClick) {TipInspector.Inspect(eTip);}
+			}
+
 			GUI.Box(p.Box(iconSize), Icons.Stat(eStat), p.s);
 			p.NudgeX();
 			p.NudgeY();
@@ -57,15 +61,8 @@ namespace HOA {
 			p.s.normal.textColor = normColor;
 
 			GUI.Label(p.Box(7), ")", p.s);
-
-			if (GUIInspector.ShiftMouseOver(p.FullBox)) {
-				GUIInspector.Tip = eTip;
-			}
 		}
-
 	}
-
-
 
 	public class FPaddsIN: Stat {
 		//+1 IN per Focus (no cap)

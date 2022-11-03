@@ -10,6 +10,7 @@ public class GUIGame : MonoBehaviour {
 	}
 
 	bool cheat = false;
+	public static bool tip = false;
 
 	public void Display() {
 		float sW = Screen.width;
@@ -31,12 +32,15 @@ public class GUIGame : MonoBehaviour {
 			Game.Quit();
 		}
 		
-		float inspH = sH-lineH;
+//		float inspH = sH-lineH;
 		float qH = 150;
 		float qW = (sW - barW)/2;
 
-		if (cheat) {GUICheats.Display (new Panel(new Rect(sW-barW, lineH, barW, sH-lineH), 30, s));}
-		else {GUIInspector.Display(new Panel(new Rect(sW-barW, lineH, barW, inspH), lineH, s));}
+		Panel inspectorPanel = new Panel(new Rect(sW-barW, lineH, barW, sH-lineH), lineH, s);
+
+		if (cheat) {GUICheats.Display (inspectorPanel);}
+		else if (tip) {TipInspector.Display (inspectorPanel);}
+		else {GUIInspector.Display(inspectorPanel);}
 
 		GUIQueue.Display(new Panel(new Rect(0, sH-qH, qW, qH), 20, s));
 		GUILog.Display(new Panel(new Rect(qW, sH-qH, qW, qH), 20, s));

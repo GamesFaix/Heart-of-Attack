@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\GUIInspector.cs">
+    <Files>
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs" Line="17" Column="19" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\ToolTips\Stats\TipIN.cs" Line="1" Column="1" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\Graphics\Icons.cs" Line="1" Column="1" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\NewTips\Tip.cs" Line="97" Column="43" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\ToolTips\Special\TipUnit.cs" Line="14" Column="15" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\Tokens\Components\Timer.cs" Line="4" Column="2" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\Tokens\Components\Timers.cs" Line="209" Column="33" />
+      <File FileName="..\queue 39 - in redefine\Assets\Scripts\GUI\Game\GUIInspector.cs" Line="130" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

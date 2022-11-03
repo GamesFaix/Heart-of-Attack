@@ -34,7 +34,7 @@ namespace HOA {
 		}
 		public Aim (ETraj a, EType tc, int r=0, int rMin=0) : this (a, tc, EPurp.ATTACK, r, rMin) {}
 		public Aim (ETraj a, Special t, int r=0, int rMin=0) : this (a, t, EPurp.ATTACK, r, rMin) {}
-		public Aim (ETraj a) : this (a, default(Special), EPurp.ATTACK, 0, 0) {}
+		public Aim (ETraj a) : this (a, null, EPurp.ATTACK, 0, 0) {}
 
 		string RangeString {
 			get {
@@ -65,20 +65,24 @@ namespace HOA {
 
 			Rect iconBox = p.Box(iconSize);
 			if (Icons.Traj(Trajectory) != default(Texture2D)) {
-				GUI.Box(iconBox, Icons.Traj(Trajectory), p.s);
-				if (GUIInspector.ShiftMouseOver(iconBox)) {
-					GUIInspector.Tip = GUIToolTips.Trajectory(Trajectory);
+				if (GUI.Button(iconBox, "")) {
+					//if (GUIInspector.RightClick) {
+						TipInspector.Inspect(Tip.Trajectory(Trajectory));
+					//}
 				}
+				GUI.Box(iconBox, Icons.Traj(Trajectory));
 			}
 			if (RangeString != "") {
 				GUI.Label(p.Box(iconSize), RangeString, p.s);
 			}
 			p.NudgeX();
-			if (TargetIcon != default(Texture2D[])) {
+			if (Special != null) {Special.Display(new Panel(new Rect(p.x2, p.y2, 200, p.LineH), p.LineH, p.s));}
+			/*if (TargetIcon != default(Texture2D[])) {
 				foreach (Texture2D tex in TargetIcon) {
 					GUI.Box(p.Box(iconSize), tex, p.s);
 				}
 			}
+			*/
 		}
 
 		public static Aim Self () {return new Aim (ETraj.SELF);}

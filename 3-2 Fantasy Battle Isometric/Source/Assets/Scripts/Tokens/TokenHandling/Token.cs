@@ -28,20 +28,43 @@ namespace HOA {
 			return TemplateFactory.Template(ID.Code);
 		}
 
-		public void DisplayTemplate (Panel p, float iconSize) {
-			if (GUI.Button(p.FullBox, "", p.s)) {GUIInspector.Inspected = Template();}
-			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
+		public void DisplayThumbNameTemplate (Panel p) {
+			if (GUI.Button(p.FullBox, "")) {
+				if (GUIInspector.LeftClick) {GUIInspector.Inspected = Template();}
+			}
+			GUI.Box(p.Box(p.LineH), Thumbs.CodeToThumb(ID.Code), p.s);
 			p.NudgeX();
-			GUI.Label(p.Box(150), ID.Name);
+			GUI.Label(p.Box(0.8f), ID.Name);
 		}
-		public void DisplayThumb (Panel p, float iconSize) {
-			GUI.Box(p.Box(iconSize), Thumbs.CodeToThumb(ID.Code), p.s);
+
+		public void DisplayThumbName (Panel p) {
+			if (GUI.Button (p.FullBox, "")) {
+				if (GUIInspector.LeftClick) {
+					GUIInspector.Inspected = this;
+					Display.Effect(EEffect.SHOW);
+				}
+//				if (GUIInspector.RightClick) {GUIInspector.ToolTip("Name");}
+			}
+			GUI.Box(p.Box(p.LineH), Thumbs.CodeToThumb(ID.Code), p.s);
 			p.NudgeX();
 			p.NudgeY();
 			FancyText.Highlight(p.Box(150), ID.FullName, p.s, Owner.Colors);
-			//GUI.Label(p.Box(100), ID.FullName);
 		}
 
+		public void DisplayOnDeath (Panel p) {
+			if (GUI.Button (p.FullBox, "")) {
+				if (GUIInspector.LeftClick) {GUIInspector.Inspected = TemplateFactory.Template(OnDeath);}
+				if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.ONDEATH);}
+			}
+			GUI.Box(p.Box(p.LineH), Icons.ONDEATH(), p.s);
+			p.NudgeX();
+			if (OnDeath == EToken.NONE) {
+				GUI.Label(p.Box(250), "(Leaves no remains)");
+			}
+			else {
+				TemplateFactory.Template(OnDeath).DisplayThumbNameTemplate(new Panel(p.Box(250), p.LineH, p.s));
+			}
+		}
 
 		//graphics
 		Vector3 scale = new Vector3 (2.5f, 1, 2.5f);

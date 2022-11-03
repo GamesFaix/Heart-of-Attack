@@ -27,17 +27,21 @@ namespace HOA{
 		}
 		
 		public void Draw (Panel p) {
-			float iconSize = 20;
-		
-			Rect box = p.Box(iconSize);
+			Rect box = p.IconBox;
+			if (GUI.Button(box,"")) {
+				if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.AP);}
+			}
 			GUI.Box(box, Icons.Stat(EStat.AP), p.s);
-			box = p.Box(iconSize);
+			box = p.IconBox;
 			GUI.Label(box, ap+"", p.s);
 			p.NudgeX();
 
-			box = p.Box(iconSize);
+			box = p.IconBox;
+			if (GUI.Button(box,"")) {
+				if (GUIInspector.RightClick) {TipInspector.Inspect(ETip.FP);}
+			}
 			GUI.Box(box, Icons.Stat(EStat.FP), p.s);
-			box = p.Box(iconSize);
+			box = p.IconBox;
 			GUI.Label(box, fp+"", p.s);
 		}
 

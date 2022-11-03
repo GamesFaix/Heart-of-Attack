@@ -20,6 +20,19 @@ namespace HOA {
 			return false;
 		}
 
+		public void Display (Panel p) {
+			foreach (EPlane plane in planes) {
+				Rect box = p.Box(p.LineH);
+				if (GUI.Button(box, "")) {
+					//if (GUIInspector.RightClick) {
+						TipInspector.Inspect(ETip.PLANE);
+					//}
+				}
+				GUI.Box (box, Icons.Plane(plane), p.s);
+				p.NudgeX();
+			}
+		}
+
 		public static Plane Gnd {get {return new Plane(EPlane.GND);} }
 		public static Plane Air {get {return new Plane(EPlane.AIR);} }
 		public static Plane Eth {get {return new Plane(EPlane.ETH);} }
