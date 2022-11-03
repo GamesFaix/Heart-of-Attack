@@ -1,10 +1,10 @@
-﻿using UnityEngine; namespace HOA { 
+﻿namespace HOA.Maps { 
 	
-	public class MapCastle : Map {
+	public class Stronghold : Map {
 		
-		public MapCastle () {
+		public Stronghold () {
 			Name = "Stronghold";
-			Size = new Int2(4,4);
+			Size = new size2(4,4);
 			
 			Density = 0.4f;
 			Dist = new Distribution<EToken> ();
@@ -20,20 +20,20 @@
 			Board = new Board(Size, TileSet.Torridale);
 			Landscape = new Landscape(Board);
 
-			Landscape.Add(new Int2(1,6), Side);
-			Landscape.Add(new Int2(10,6), Side.FlipHor());
-			Landscape.Add(new Int2(4,6), Inside);
-			Landscape.Add(new Int2(7,6), Inside.FlipHor());
+			Landscape.Add(new index2(1,6), Side);
+			Landscape.Add(new index2(10,6), Side.FlipHor());
+			Landscape.Add(new index2(4,6), Inside);
+			Landscape.Add(new index2(7,6), Inside.FlipHor());
 
-			Landscape.Add(new Int2(3,3), Corner);
-			Landscape.Add(new Int2(3,8), Corner.FlipVer());
-			Landscape.Add(new Int2(8,3), Corner.FlipHor());
-			Landscape.Add(new Int2(8,8), Corner.FlipVer().FlipHor());
+			Landscape.Add(new index2(3,3), Corner);
+			Landscape.Add(new index2(3,8), Corner.FlipVer());
+			Landscape.Add(new index2(8,3), Corner.FlipHor());
+			Landscape.Add(new index2(8,8), Corner.FlipVer().FlipHor());
 
-			Landscape.Add(new Int2(6,1), EToken.LAVA);
-			Landscape.Add(new Int2(7,1), EToken.LAVA);
-			Landscape.Add(new Int2(6,12), EToken.LAVA);
-			Landscape.Add(new Int2(7,12), EToken.LAVA);
+			Landscape.Add(new index2(6,1), EToken.LAVA);
+			Landscape.Add(new index2(7,1), EToken.LAVA);
+			Landscape.Add(new index2(6,12), EToken.LAVA);
+			Landscape.Add(new index2(7,12), EToken.LAVA);
 
 
 			Populate();

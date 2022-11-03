@@ -16,13 +16,13 @@ namespace HOA {
 			Dist.Add(new Possibility<EToken>(EToken.HILL,1));
 		}
 		
-		public Board Build (Int2 size) {
+		public Board Build (size2 size) {
 			Size = size;
 			Board = new Board(Size);
 			Landscape = new Landscape(Board);
 			Populate();
 			return Board;
 		}
-		public override Board Build () {return Build(new Int2(4,4));}
+		public override Board Build () {return Build(new size2(4,4));}
 	}
 }

@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{96C1A727-62CC-816A-8C0B-40E7ED532DC0}</ProjectGuid>
+	<ProjectGuid>{1F1496A1-4A4C-2C9F-5743-18969609CE5A}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -55,15 +55,15 @@
      <Compile Include="Assets\Scripts\Board\ExoCell.cs" />
      <Compile Include="Assets\Scripts\Board\ExoCellDisplay.cs" />
      <Compile Include="Assets\Scripts\Board\Landscape.cs" />
-     <Compile Include="Assets\Scripts\Board\Map.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Map.cs" />
      <Compile Include="Assets\Scripts\Board\Maps\MapBlank.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapCastle.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapGrove.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapMinefield.cs" />
      <Compile Include="Assets\Scripts\Board\Maps\MapRandom.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapSpace.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapTime.cs" />
-     <Compile Include="Assets\Scripts\Board\Maps\MapVoid.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Frontier.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Grove.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Minefield.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Orbit.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Stronghold.cs" />
+     <Compile Include="Assets\Scripts\Board\Maps\Preset\Void.cs" />
      <Compile Include="Assets\Scripts\Board\Terrain.cs" />
      <Compile Include="Assets\Scripts\Board\Zone.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraPanner.cs" />
@@ -85,10 +85,6 @@
      <Compile Include="Assets\Scripts\Collections\Tuples New\index2.cs" />
      <Compile Include="Assets\Scripts\Collections\Tuples New\int2.cs" />
      <Compile Include="Assets\Scripts\Collections\Tuples New\size2.cs" />
-     <Compile Include="Assets\Scripts\Collections\Tuples\Float2.cs" />
-     <Compile Include="Assets\Scripts\Collections\Tuples\Index2.cs" />
-     <Compile Include="Assets\Scripts\Collections\Tuples\Int2.cs" />
-     <Compile Include="Assets\Scripts\Collections\Tuples\Size2.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />

@@ -6,7 +6,7 @@ namespace HOA {
 
 	public class ExoCell : Cell {
 	
-		public ExoCell (Board board, Int2 index) : base(board, index) {}
+		public ExoCell (Board board, index2 index) : base(board, index) {}
 	
 		public override Token Occupant (EPlane plane) {return null;}
 		public override TokenGroup Occupants {get {return new TokenGroup();} }

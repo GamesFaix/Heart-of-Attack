@@ -7,7 +7,7 @@ namespace HOA {
 	public class Cell : Target {
 		public Board Board {get; protected set;}
 
-		public Int2 Index {get; protected set;}
+		public index2 Index {get; protected set;}
 		public int X {get {return Index.x;} }
 		public int Y {get {return Index.y;} }
 
@@ -15,7 +15,7 @@ namespace HOA {
 
 		protected Cell () {}
 
-		public Cell (Board board, Int2 index) {
+		public Cell (Board board, index2 index) {
 			Board = board;
 			Index = index;
 			CellDisplay.Attach(this);
@@ -145,12 +145,13 @@ namespace HOA {
 		public CellGroup Neighbors (bool self=false) {
 			CellGroup neighbors = new CellGroup();
 			
-			for (int i=0; i<8; i++) {
-				Int2 dir = Direction.FromInt(i);
+			foreach (int2 dir in Direction.Directions) {
 				Cell c;
-				Int2 index = Index + dir;
-				if (Board.HasCell(index, out c)) {
-					neighbors.Add(c);
+				index2 index;
+				if (index2.Safe((int2)Index + dir, out index)) {
+					if (Board.HasCell(index, out c)) {
+						neighbors.Add(c);
+					}
 				}
 			}
 			if (self) {neighbors.Add(this);}

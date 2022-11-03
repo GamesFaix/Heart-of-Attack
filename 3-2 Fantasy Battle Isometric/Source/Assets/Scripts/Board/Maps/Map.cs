@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using HOA.Maps;
 
 namespace HOA { 
 
 	public abstract class Map {
 		public string Name {get; protected set;}
-		public Int2 Size {get; protected set;}
+		public size2 Size {get; protected set;}
 		public Board Board {get; protected set;}
 		public Landscape Landscape {get; protected set;}
 		public float Density {get; protected set;}
@@ -23,12 +24,12 @@ namespace HOA {
 
 		public static void LoadMaps() {
 			Maps = new List<Map>();
-			Maps.Add(new MapSpace());
-			Maps.Add(new MapMinefield());
-			Maps.Add(new MapCastle());
-			Maps.Add(new MapGrove());
-			Maps.Add(new MapTime());
-			Maps.Add(new MapVoid());
+			Maps.Add(new Orbit());
+			Maps.Add(new Minefield());
+			Maps.Add(new Stronghold());
+			Maps.Add(new Grove());
+			Maps.Add(new Frontier());
+			Maps.Add(new Void());
 
 			MapsCustom = new List<Map>();
 			MapsCustom.Add(new MapBlank());
@@ -37,6 +38,6 @@ namespace HOA {
 	}
 
 	public interface IMapCustom {
-		Board Build (Int2 size);
+		Board Build (size2 size);
 	}
 }

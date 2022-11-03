@@ -124,12 +124,12 @@ namespace HOA.Actions {
 				
 				CellGroup line = new CellGroup();
 				
-				Int2 dir = Direction.FromCells(start, endCell);
+				int2 dir = Direction.FromCells(start, endCell);
 				int length = Length(start, endCell);
 				Cell c = start;
 				
 				for (int j=0; j<length; j++) {
-					Int2 index = c.Index + dir;
+					index2 index = c.Index + dir;
 					c = Game.Board.Cell(index);
 					line.Add(c);
 				}

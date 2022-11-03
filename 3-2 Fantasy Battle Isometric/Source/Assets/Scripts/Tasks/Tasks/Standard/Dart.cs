@@ -22,14 +22,14 @@ namespace HOA.Actions {
 		
 			CellGroup line = new CellGroup();
 
-			Int2 dir = Direction.FromCells(Parent.Body.Cell, endCell);
+			int2 dir = Direction.FromCells(Parent.Body.Cell, endCell);
 		
 			int length = Length(Parent.Body.Cell, endCell);
 		
 			Cell c = Parent.Body.Cell;
 
 			for (int i=0; i<length; i++) {
-				Int2 index = c.Index + dir;
+				index2 index = c.Index + dir;
 				c = Game.Board.Cell(index);
 				line.Add(c);
 			}

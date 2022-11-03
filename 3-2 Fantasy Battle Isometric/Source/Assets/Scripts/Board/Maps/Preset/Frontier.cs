@@ -1,11 +1,9 @@
-﻿using UnityEngine; 
-
-namespace HOA { 
+﻿namespace HOA.Maps { 
 	
-	public class MapTime : Map {
-		public MapTime () {
+	public class Frontier : Map {
+		public Frontier () {
 			Name = "Frontier";
-			Size = new Int2(4,4);
+			Size = new size2(4,4);
 			
 			Density = 0.5f;
 			Dist = new Distribution<EToken> ();
@@ -19,22 +17,22 @@ namespace HOA {
 			Board = new Board(Size, TileSet.Chrono);
 			Landscape = new Landscape(Board);
 
-			Landscape.Add(new Int2(1,1), Sink);
-			Landscape.Add(new Int2(6,1), Sink);
-			Landscape.Add(new Int2(11,1), Sink);
-			Landscape.Add(new Int2(1,6), Sink);
-			Landscape.Add(new Int2(11,6), Sink);
-			Landscape.Add(new Int2(1,11), Sink);
-			Landscape.Add(new Int2(6,11), Sink);
-			Landscape.Add(new Int2(11,11), Sink);
+			Landscape.Add(new index2(1,1), Sink);
+			Landscape.Add(new index2(6,1), Sink);
+			Landscape.Add(new index2(11,1), Sink);
+			Landscape.Add(new index2(1,6), Sink);
+			Landscape.Add(new index2(11,6), Sink);
+			Landscape.Add(new index2(1,11), Sink);
+			Landscape.Add(new index2(6,11), Sink);
+			Landscape.Add(new index2(11,11), Sink);
 
-			Landscape.Add(new Int2(5,5), Well);
-			Landscape.Add(new Int2(6,6), Well.FlipVer().FlipHor());
+			Landscape.Add(new index2(5,5), Well);
+			Landscape.Add(new index2(6,6), Well.FlipVer().FlipHor());
 
-			Landscape.Add(new Int2(3,3), Corner);
-			Landscape.Add(new Int2(3,8), Corner.FlipVer());
-			Landscape.Add(new Int2(8,3), Corner.FlipHor());
-			Landscape.Add(new Int2(8,8), Corner.FlipVer().FlipHor());
+			Landscape.Add(new index2(3,3), Corner);
+			Landscape.Add(new index2(3,8), Corner.FlipVer());
+			Landscape.Add(new index2(8,3), Corner.FlipHor());
+			Landscape.Add(new index2(8,8), Corner.FlipVer().FlipHor());
 
 			Populate();
 			return Board;

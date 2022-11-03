@@ -114,12 +114,12 @@ namespace HOA.Effects {
 			Cell actorCell = source.Token.Body.Cell;
 			Cell start = target.Body.Cell;
 
-			Int2 dir = Direction.FromCells(actorCell, start);
+			int2 dir = Direction.FromCells(actorCell, start);
 
 			CellGroup line = new CellGroup();
 
 			for (int i=0; i<range; i++) {
-				Int2 index = start.Index + dir;
+				index2 index = start.Index + dir;
 				Cell next;
 				if (Game.Board.HasCell(index, out next)) {
 					line.Add(next);

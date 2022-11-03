@@ -6,27 +6,27 @@ namespace HOA {
 	public class NeighborMatrix : Matrix<Cell> {
 
 		public NeighborMatrix (Cell center) {
-			Size = new Int2 (3,3);
+			Size = new size2 (3,3);
 			array = new Cell[Size.x, Size.y];
-			foreach (Int2 index in Size) {
+			foreach (index2 index in Size) {
 				this[index] = null;
 			}
 
-			Int2 startIndex = center.Index - 1;
-			foreach (Int2 index in Size) {
+			index2 startIndex = center.Index - new int2(1,1);
+			foreach (index2 index in Size) {
 				Cell cell;
-				if (Game.Board.HasCell(startIndex+index, out cell)) {
+				if (Game.Board.HasCell(startIndex+(int2)index, out cell)) {
 					this[index] = cell;
 				}
 			}
 		}
 
-		bool IndexClockwise (Int2 start, out Int2 next) {
+		bool IndexClockwise (index2 start, out index2 next) {
 			int x = start.x;
 			int y = start.y;
-			next = new Int2 (0,0);
+			next = new index2 (0,0);
 
-			if (!Size.Covers(start)) {
+			if (!Size.Contains(start)) {
 				Debug.Log("NeighborMatrix.IndexClockwise: Start cell not in matrix.");
 				return false;
 			}
@@ -35,24 +35,24 @@ namespace HOA {
 				return false;
 			}
 			else {
-				if (x==0 && y==0) {next = new Int2(1,0);}
-				else if (x==1 && y==0) {next = new Int2(2,0);}
-				else if (x==2 && y==0) {next = new Int2(2,1);}
-				else if (x==2 && y==1) {next = new Int2(2,2);}
-				else if (x==2 && y==2) {next = new Int2(1,2);}
-				else if (x==1 && y==2) {next = new Int2(0,2);}
-				else if (x==0 && y==2) {next = new Int2(0,1);}
-				else if (x==0 && y==1) {next = new Int2(0,0);}
+				if (x==0 && y==0) {next = new index2(1,0);}
+				else if (x==1 && y==0) {next = new index2(2,0);}
+				else if (x==2 && y==0) {next = new index2(2,1);}
+				else if (x==2 && y==1) {next = new index2(2,2);}
+				else if (x==2 && y==2) {next = new index2(1,2);}
+				else if (x==1 && y==2) {next = new index2(0,2);}
+				else if (x==0 && y==2) {next = new index2(0,1);}
+				else if (x==0 && y==1) {next = new index2(0,0);}
 				return true;	
 			}
 		}
 
-		bool IndexCounter (Int2 start, out Int2 next) {
+		bool IndexCounter (index2 start, out index2 next) {
 			int x = start.x;
 			int y = start.y;
-			next = new Int2 (0,0);
+			next = new index2 (0,0);
 			
-			if (!Size.Covers(start)) {
+			if (!Size.Contains(start)) {
 				Debug.Log("NeighborMatrix.IndexCounter: Start cell not in matrix.");
 				return false;
 			}
@@ -61,14 +61,14 @@ namespace HOA {
 				return false;
 			}
 			else {
-				if (x==0 && y==0) {next = new Int2(0,1);}
-				else if (x==0 && y==1) {next = new Int2(0,2);}
-				else if (x==0 && y==2) {next = new Int2(1,2);}
-				else if (x==1 && y==2) {next = new Int2(2,2);}
-				else if (x==2 && y==2) {next = new Int2(2,1);}
-				else if (x==2 && y==1) {next = new Int2(2,0);}
-				else if (x==2 && y==0) {next = new Int2(1,0);}
-				else if (x==1 && y==0) {next = new Int2(0,0);}
+				if (x==0 && y==0) {next = new index2(0,1);}
+				else if (x==0 && y==1) {next = new index2(0,2);}
+				else if (x==0 && y==2) {next = new index2(1,2);}
+				else if (x==1 && y==2) {next = new index2(2,2);}
+				else if (x==2 && y==2) {next = new index2(2,1);}
+				else if (x==2 && y==1) {next = new index2(2,0);}
+				else if (x==2 && y==0) {next = new index2(1,0);}
+				else if (x==1 && y==0) {next = new index2(0,0);}
 				return true;	
 			}
 		}
@@ -80,13 +80,13 @@ namespace HOA {
 				Debug.Log("NeighborMatrix.CellClockwise: Start cell not in Matrix.");
 				return false;
 			}
-			else if (start == this[new Int2(1,1)]) {
+			else if (start == this[new index2(1,1)]) {
 				Debug.Log("NeighborMatrix.CellClockwise: Cannot start at center.");
 				return false;
 			}
 			else {
-				Int2 startIndex = IndexOf(start);
-				Int2 nextIndex;
+				index2 startIndex = IndexOf(start);
+				index2 nextIndex;
 				if (IndexClockwise(startIndex, out nextIndex)) {
 					next = this[nextIndex];
 					return true;
@@ -102,13 +102,13 @@ namespace HOA {
 				Debug.Log("NeighborMatrix.CellCounter: Start cell not in Matrix.");
 				return false;
 			}
-			else if (start == this[new Int2(1,1)]) {
+			else if (start == this[new index2(1,1)]) {
 				Debug.Log("NeighborMatrix.CellCounter: Cannot start at center.");
 				return false;
 			}
 			else {
-				Int2 startIndex = IndexOf(start);
-				Int2 nextIndex;
+				index2 startIndex = IndexOf(start);
+				index2 nextIndex;
 				if (IndexCounter(startIndex, out nextIndex)) {
 					next = this[nextIndex];
 					return true;

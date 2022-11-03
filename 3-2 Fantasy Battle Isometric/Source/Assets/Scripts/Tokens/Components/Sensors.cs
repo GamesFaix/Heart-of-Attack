@@ -439,9 +439,12 @@ namespace HOA {
 		}
 
 		protected override void ExitEffects (Token t) {
-			foreach (Unit u in web.Affected.Keys) {
+			List<Unit> list = new List<Unit>(web.Affected.Keys);
+
+			for (int i = list.Count-1; i>=0; i--) {
+				Unit u = list[i];
 				Task move = u.Arsenal.Move;
-				if (move != default(Task)) {
+				if (move != null) {
 					move.Aim[0].Range = web.Affected[u];
 					web.Affected.Remove(u);
 				}

@@ -4,17 +4,17 @@ using UnityEngine;
 namespace HOA { 
 
 	public class Board {
-		public static Int2 MinZones {get {return new Int2(2,2);} }
-		public static Int2 MaxZones {get {return new Int2(6,6);} }
+		public static size2 MinZones {get {return new size2(2,2);} }
+		public static size2 MaxZones {get {return new size2(6,6);} }
 
 		BoardPhysical physical;
 
-		public Int2 CellCount {get; private set;}
+		public size2 CellCount {get; private set;}
 		Matrix<Cell> cells;
 
 		public TileSet TileSet {get; private set;}
 
-		public Board (Int2 zoneCount, TileSet tileSet=null){
+		public Board (size2 zoneCount, TileSet tileSet=null){
 			if (LegalBoardSize(zoneCount)) {
 				if (Game.Board != null) {Game.Board.Destroy();}
 			
@@ -31,12 +31,12 @@ namespace HOA {
 			}
 		}
 
-		static bool LegalBoardSize (Int2 zoneCount) {
-			if (!MaxZones.Fits(zoneCount)) {
+		static bool LegalBoardSize (size2 zoneCount) {
+			if (!zoneCount.FitsIn(MaxZones)) {
 				Debug.Log("Board: New board must be smaller than "+MaxZones+" zones.");
 				return false;
 			}
-			if (!zoneCount.Fits(MinZones)) {
+			if (!zoneCount.FitsAround(MinZones)) {
 				Debug.Log("Board: New board must be larger than "+MinZones+" zones.");
 				return false;
 			}
@@ -45,19 +45,19 @@ namespace HOA {
 
 		void CreateBorder () {
 			for (int i=0; i<CellCount.x; i++) {
-				Int2 index = new Int2(i,0);
+				index2 index = new index2(i,0);
 				cells[index] = new ExoCell(this, index);
 			}
 			for (int i=0; i<CellCount.x; i++) {
-				Int2 index = new Int2(i,CellCount.x-1);
+				index2 index = new index2(i,CellCount.x-1);
 				cells[index] = new ExoCell(this, index);
 			}
 			for (int i=0; i<CellCount.y; i++) {
-				Int2 index = new Int2(0,i);
+				index2 index = new index2(0,i);
 				cells[index] = new ExoCell(this, index);
 			}
 			for (int i=0; i<CellCount.y; i++) {
-				Int2 index = new Int2(CellCount.y-1,i);
+				index2 index = new index2(CellCount.y-1,i);
 				cells[index] = new ExoCell(this, index);
 			}
 		}
@@ -65,23 +65,24 @@ namespace HOA {
 		void CreateCells () {
 			for (int i=1; i<CellCount.x-1; i++) {
 				for (int j=1; j<CellCount.y-1; j++) {
-					Int2 index = new Int2(i,j);
+					index2 index = new index2(i,j);
 					cells[index] = new Cell(this, index);
 				}
 			}
 		}
 
 		public Matrix<Zone> Zones () {
-			Int2 zoneCount = (CellCount-2)/Zone.size;
+			size2 zoneCount = (CellCount-2)/Zone.size;
 			Matrix<Zone> zones = new Matrix<Zone>(zoneCount);
 			for (int i=0; i<zoneCount.x; i++) {
 				for (int j=0; j<zoneCount.y; j++) {
-					Int2 zoneIndex = new Int2(i,j);
+					index2 zoneIndex = new index2(i,j);
 					zones[zoneIndex] = new Zone();
 					for (int k=0; k<Zone.size.x; k++) {
 						for (int l=0; l<Zone.size.y; l++) {
-							Int2 localIndex = new Int2(k,l);
-							Int2 globalIndex = zoneIndex*Zone.size + localIndex + 1;
+							index2 localIndex = new index2(k,l);
+							int2 zoneStart = (int2)zoneIndex*(int2)(Zone.size);
+							index2 globalIndex = new int2(1,1) + localIndex + zoneStart;
 							zones[zoneIndex][localIndex] = Cell(globalIndex);
 						}
 					}
@@ -91,7 +92,7 @@ namespace HOA {
 			return zones;
 		}
 
-		public static int MaxPlayers (Int2 zoneCount) {
+		public static int MaxPlayers (size2 zoneCount) {
 			int peripheralZones = 2* (zoneCount.x-1 + zoneCount.y-1);
 			return Mathf.Min(8, peripheralZones/2);
 		}
@@ -104,19 +105,20 @@ namespace HOA {
 			}
 		}
 		
-		public Cell Cell (Int2 index) {
-			Cell cell = null;
-			if (cells.TryIndex(index, out cell)) {return cell;}
-			else {throw new Exception ("Board does not contain cell at "+index+".");}
-		}
-		public Cell Cell (int x, int y) {return Cell(new Int2(x,y));}
+		public Cell Cell (index2 index) {return cells[index];}
+		public Cell Cell (int x, int y) {return Cell(new index2(x,y));}
 
-		public bool HasCell (Int2 index, out Cell cell) {
+		public bool HasCell (index2 index, out Cell cell) {
 			cell = null;
-			if (cells.TryIndex(index, out cell)) {return true;}
+			if (cells.Contains(index, out cell)) {return true;}
 			return false;
 		}
-		public bool HasCell (int x, int y, out Cell cell) {return HasCell(new Int2(x,y), out cell);}
+		public bool HasCell (int x, int y, out Cell cell) {
+			index2 index;
+			cell = null;
+			if (index2.Safe(new int2(x,y), out index)) {return HasCell(index, out cell);}
+			return false;
+		}
 
 		public Cell RandomCell {get {return cells.Random;} }
 

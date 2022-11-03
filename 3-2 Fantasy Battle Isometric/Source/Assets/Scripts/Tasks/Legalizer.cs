@@ -120,16 +120,17 @@ namespace HOA {
 		static List<CellGroup> CellStar (Cell start, int range) {
 			List<CellGroup> star = new List<CellGroup>();
 			
-			for (int i=0; i<8; i++) {
+			foreach (int2 dir in Direction.Directions) {
 				CellGroup line = new CellGroup();
-				Int2 dir = Direction.FromInt(i);
 				Cell last = start;
 				for (int j=1; j<=range; j++) {
 					Cell next;
-					Int2 index = last.Index + dir;
-					if (Game.Board.HasCell(index, out next)) {
-						line.Add(next);
-						last = next;
+					index2 index;
+					if (index2.Safe( (int2)last.Index + dir, out index)) {
+						if (Game.Board.HasCell(index, out next)) {
+							line.Add(next);
+							last = next;
+						}
 					}
 				}
 				star.Add(line);

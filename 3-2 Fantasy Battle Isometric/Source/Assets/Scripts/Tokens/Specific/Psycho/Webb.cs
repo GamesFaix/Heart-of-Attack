@@ -4,8 +4,7 @@ using System.Collections.Generic;
 namespace HOA.Tokens {
 	
 	public class Web : Obstacle {
-		Dictionary<Unit, int> affected;
-		public Dictionary<Unit, int> Affected {get {return affected;} }
+		public Dictionary<Unit, int> Affected {get; private set;}
 
 		public static Token Instantiate (Source source, bool template) {
 			return new Web (source, template);
@@ -17,7 +16,7 @@ namespace HOA.Tokens {
 			Special.Add(ESpecial.DEST);
 			Body = new BodySensor1(this, SensorWeb.Instantiate);	
 			Neutralize();
-			affected = new Dictionary<Unit, int>();
+			Affected = new Dictionary<Unit, int>();
 		}
 		public override string Notes () {return 
 			"Ground and Air units may not move through "+ID.Name+"." +

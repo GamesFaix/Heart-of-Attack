@@ -47,6 +47,8 @@ namespace HOA {
 		public static size2 operator * (size2 a, int b) {return new size2(a.x*b, a.y*b);}
 		public static size2 operator * (int a, size2 b) {return b*a;}
 
+		public static size2 operator / (size2 a, size2 b) {return (size2) ( (int2)a / (int2)b );}
+
 		public int Count {get {return x*y;} }
 
 		public bool Contains (index2 i) {

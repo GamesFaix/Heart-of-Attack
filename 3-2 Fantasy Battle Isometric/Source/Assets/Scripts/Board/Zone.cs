@@ -4,7 +4,7 @@ namespace HOA {
 
 	public class Zone {
 		public Matrix<Cell> cells;
-		public static Int2 size = new Int2(3,3);
+		public static size2 size = new size2(3,3);
 
 		public Zone () {
 			cells = new Matrix<Cell>(size);
@@ -15,7 +15,7 @@ namespace HOA {
 			set {cells[x,y] = value;}
 		}
 
-		public Cell this[Int2 index] {
+		public Cell this[index2 index] {
 			get {return cells[index];}
 			set {cells[index] = value;}
 		}
@@ -23,7 +23,7 @@ namespace HOA {
 
 		CellGroup ToCellGroup () {
 			CellGroup group = new CellGroup();
-			foreach (Int2 index in size) {group.Add(cells[index]);}
+			foreach (index2 index in size) {group.Add(cells[index]);}
 			return group;
 		}
 

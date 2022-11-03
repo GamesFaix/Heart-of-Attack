@@ -7,6 +7,7 @@ namespace HOA {
 		static GameObject cellPF = Resources.Load("Prefabs/CellPrefab") as GameObject;
 		static GameObject exoPF = Resources.Load("Prefabs/ExoCellPrefab") as GameObject;
 		static GameObject tokenPF = Resources.Load("Prefabs/TokenPrefab") as GameObject;
+		static GameObject postPF = Resources.Load("Prefabs/PostPrefab") as GameObject;
 
 		static Texture2D texLegal = Resources.Load("Images/Textures/legal") as Texture2D;
 
@@ -51,7 +52,7 @@ namespace HOA {
 			return CellPos(c.Index);
 		}
 
-		static Vector3 CellPos (Int2 index) {
+		static Vector3 CellPos (index2 index) {
 			float x = index.x * BoardPhysical.CellSize;
 			float z = index.y * BoardPhysical.CellSize;
 			return new Vector3 (x,0,z);
@@ -81,6 +82,8 @@ namespace HOA {
 			t.Display = display;
 	
 			AttachCards(display);
+		//	if (t is Token) {AttachPost(display);}
+
 
 			if (t is Token) {
 				display.Sprite = Thumbs.CodeToThumb(((Token)t).ID.Code);
@@ -119,6 +122,17 @@ namespace HOA {
 			display.effectCard.Hide();
 		}
 	
+		static void AttachPost (TargetDisplay display) {
+			GameObject post = GameObject.Instantiate(postPF, display.gameObject.transform.position, Quaternion.identity) as GameObject;
+			post.transform.Rotate(new Vector3(90,0,0));
+			post.transform.parent = display.gameObject.transform;
+			Vector3 newPos = post.transform.localPosition;
+			newPos.z += 5;
+			//newPos.x += 5;
+			post.transform.localPosition = newPos;
+
+		}
+
 
 		static GameObject Instantiate (Target t) {
 			GameObject prefab;

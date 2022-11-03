@@ -43,13 +43,13 @@ public class CameraPanner : MonoBehaviour {
 		if (Input.GetKey("up")) {Pitch(1);}
 		if (Input.GetKey("down")) {Pitch(-1);}	
 
-		if (Input.GetKey("w")) {Pan(new Int2(0,1));}
-		if (Input.GetKey("s")) {Pan(new Int2(0,-1));}
-		if (Input.GetKey("a")) {Pan(new Int2(-1,0));}
-		if (Input.GetKey("d")) {Pan(new Int2(1,0));}
+		if (Input.GetKey("w")) {Pan(new int2(0,1));}
+		if (Input.GetKey("s")) {Pan(new int2(0,-1));}
+		if (Input.GetKey("a")) {Pan(new int2(-1,0));}
+		if (Input.GetKey("d")) {Pan(new int2(1,0));}
 	}
 
-	void Pan (Int2 dir) {
+	void Pan (int2 dir) {
 		endPos = null;
 
 		Vector3 oldPos = trans.position;
@@ -62,7 +62,7 @@ public class CameraPanner : MonoBehaviour {
 
 		if (newPos.x < Game.Board.Cell(1,1).Location.x) {newPos.x = Game.Board.Cell(1,1).Location.x;}
 		if (newPos.z < Game.Board.Cell(1,1).Location.z) {newPos.z = Game.Board.Cell(1,1).Location.z;}
-		Int2 last = Game.Board.CellCount-1;
+		index2 last = (index2)((int2)(Game.Board.CellCount)-1);
 		if (newPos.x > Game.Board.Cell(last).Location.x) {newPos.x = Game.Board.Cell(last).Location.x;}
 		if (newPos.z > Game.Board.Cell(last).Location.z) {newPos.z = Game.Board.Cell(last).Location.z;}
 

@@ -1,10 +1,10 @@
-﻿using UnityEngine; namespace HOA { 
+﻿namespace HOA.Maps { 
 
-	public class MapGrove : Map {
+	public class Grove : Map {
 		
-		public MapGrove () {
+		public Grove () {
 			Name = "The Grove";
-			Size = new Int2(3,3);
+			Size = new size2(3,3);
 			
 			Density = 0.0f;
 			Dist = new Distribution<EToken> ();
@@ -17,11 +17,11 @@
 		public override Board Build () {
 			Board = new Board(Size, TileSet.Grove);
 			Landscape = new Landscape(Board);
-			Landscape.Add(new Int2(1,1), Terrain.RockCorner.FlipVer());
-			Landscape.Add(new Int2(1,7), Terrain.RockCorner);
-			Landscape.Add(new Int2(7,1), Terrain.RockCorner.FlipVer().FlipHor());
-			Landscape.Add(new Int2(7,7), Terrain.RockCorner.FlipHor());
-			Landscape.Add(new Int2(4,4), Terrain.FrozenLake);
+			Landscape.Add(new index2(1,1), Terrain.RockCorner.FlipVer());
+			Landscape.Add(new index2(1,7), Terrain.RockCorner);
+			Landscape.Add(new index2(7,1), Terrain.RockCorner.FlipVer().FlipHor());
+			Landscape.Add(new index2(7,7), Terrain.RockCorner.FlipHor());
+			Landscape.Add(new index2(4,4), Terrain.FrozenLake);
 			Populate();
 			return Board;
 		}

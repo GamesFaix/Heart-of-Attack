@@ -4,9 +4,9 @@ namespace HOA {
 
 	public static class GUILobbyMap {
 
-		static Float2 boardSize = new Float2(3,3);
-		public static Int2 zoneCount {get {return boardSize.Round;} }
-		static Int2 cellCount {get {return zoneCount*Zone.size;} }
+		static float2 boardSize = new float2(3,3);
+		public static size2 zoneCount {get {return (size2)(boardSize.Round);} }
+		static size2 cellCount {get {return zoneCount*Zone.size;} }
 		static TileSet tile {get {return TileSet.Chess; } }
 
 		static Map map = Map.MapsCustom[1];
@@ -62,12 +62,12 @@ namespace HOA {
 			p.x2 += 30;
 
 
-			Int2 cellSize = new Int2 (10,10); 
+			int2 cellSize = new int2 (10,10); 
 			Vector2 indent;
 			Texture2D tex;
 			Rect box;
 
-			foreach (Int2 index in cellCount) {
+			foreach (index2 index in cellCount) {
 				indent = new Vector2(p.x2+index.x*cellSize.x, p.y2+index.y*cellSize.y);
 
 				if ((index.x + index.y)%2 == 0) {tex = tile.Even;}

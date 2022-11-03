@@ -12,7 +12,7 @@ namespace HOA {
 		static bool TrampleVsDestructible (Token token, Cell newCell) {
 			if (token.Special.Is(ESpecial.TRAM)) {
 				foreach (Token occupant in newCell.Occupants) {
-					if (occupant.Special.Is(ESpecial.HEART) 
+					if (occupant.Special.Is(ESpecial.DEST) 
 					    && CanTakePlaceOf(token, occupant)) {
 						return true;
 					}

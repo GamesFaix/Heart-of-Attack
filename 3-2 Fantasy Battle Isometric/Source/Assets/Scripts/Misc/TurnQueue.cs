@@ -49,18 +49,20 @@ namespace HOA {
 
 		public static void Advance(){
 			Unit oldTop = Top;
-			foreach (Timer t in oldTop.timers) {t.Tick();} 
+			for (int i=oldTop.timers.Count-1; i>=0; i--) {
+				oldTop.timers[i].Tick();
+			}
 
 			oldTop.SetStat(Source.Neutral, EStat.AP, 0, false);
 			oldTop.Arsenal.Reset();
 
 			units.Remove(oldTop);
-			PrepareNewTop(Top);
 			if (oldTop.HP > 0) {
 				units.Add(oldTop);
 				Skip(oldTop);
 			}
 			Stun();
+			PrepareNewTop(Top);
 			Referee.ActivePlayer = Top.Owner;
 			if (!Top.Owner.Alive) {Advance();}
 		}

@@ -38,6 +38,7 @@ namespace HOA.Actions {
 		public Warp (Unit parent) {
 			NewAim(new Aim(ETraj.ARC, ESpecial.UNIT, 5));
 			Aim[0].TeamOnly = true;
+			Aim[0].IncludeSelf = true;
 			Aim.Add(HOA.Aim.MoveArc(5));
 			Name = "Warp";
 			Weight = 4;

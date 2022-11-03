@@ -12,13 +12,13 @@ namespace HOA.Effects {
 		public override void Process() {
 			Token Parent = source.Token;
 			Cell cell = target.Body.Cell;
-			Int2 direction = Direction.FromCells(cell, Parent.Body.Cell);
+			int2 direction = Direction.FromCells(cell, Parent.Body.Cell);
 
 			CellGroup cells = new CellGroup(cell);
 			bool stop = false;
 
 			while (!stop) {
-				Int2 nextIndex = cell.Index - direction;
+				index2 nextIndex = cell.Index - direction;
 				if (Game.Board.HasCell(nextIndex, out cell)) {
 					cells.Add(cell);
 				}

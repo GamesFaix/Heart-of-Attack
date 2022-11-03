@@ -30,7 +30,7 @@ namespace HOA {
 		}
 
 		static Texture2D Shadow (Cell cell) {
-			Int2 cellCount = cell.Board.CellCount;
+			size2 cellCount = cell.Board.CellCount;
 			if (cell.X==0 && cell.Y==0) {return shadow[5];}
 			if (cell.X==0 && cell.Y==cellCount.y-1) {return shadow[7];}
 			if (cell.X==0) {return shadow[3];}
