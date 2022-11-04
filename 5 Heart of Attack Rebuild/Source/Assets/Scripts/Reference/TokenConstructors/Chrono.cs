@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HOA.To;
 using HOA.Ref;
 using HOA.Ab;
+using HOA.To.St;
 
 namespace HOA
 {
@@ -16,12 +17,12 @@ namespace HOA
             u.vitality = new Vitality(u, 85, 2);
             u.watch = new Watch(u, 2);
             u.wallet = new Wallet(u, 3);
-            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0,2)));
-            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
-            u.Learn(Abilities.Lob, new Ab.Args(u, Price.Cheap, Range.b(0, 3), 15));
-            u.Learn(Abilities.Create, new Ab.Args(u, Price.Cheap, Species.RevolvingTom));
-            u.Learn(Abilities.Create, new Ab.Args(u, new Price(2, 0), Species.Piecemaker));
-            u.Learn(Abilities.Create, new Ab.Args(u, new Price(2, 1), Species.Reprospector));
+            u.LearnMove(2);
+            u.LearnFocus();
+            u.Learn(Abilities.Lob, new Ab.Args(u, Price.Cheap, Flex.Rng(u, 3), Scalar.Dam(u, 15)));
+            u.LearnCreate(Price.Cheap, Species.RevolvingTom);
+            u.LearnCreate(new Price(2,0), Species.Piecemaker);
+            u.LearnCreate(new Price(2,1), Species.Reprospector); 
             //Ability.HourSaviour(u),
             //Ability.MinuteWaltz(u),
             //Ability.SecondInCommand(u),
@@ -34,11 +35,11 @@ namespace HOA
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 35, 3);
             u.watch = new Watch(u, 1);
-            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0, 4)));
-            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
-            u.Learn(Abilities.Strike, new Ab.Args(u, Price.Cheap, 10));
-            u.Learn(Abilities.Summon, new Ab.Args(u, new Price(1, 1), Range.b(0, 2), Species.Aperture));
-            u.Learn(Abilities.Restore, new Ab.Args(u, new Price(0, 2), Range.b(0, 2), Filter.Unit, 10));
+            u.LearnMove(4);
+            u.LearnFocus();
+            u.LearnStrike(10);
+            u.Learn(Abilities.Summon, new Ab.Args(u, new Price(1, 1), Species.Aperture, Flex.Rng(u, 2)));
+            u.Learn(Abilities.Restore, new Ab.Args(u, new Price(0, 2), Filter.Unit, Flex.Rng(u, 2), Scalar.Dam(u, 10)));
             return u;
         }
 
@@ -48,8 +49,8 @@ namespace HOA
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 55);
             u.watch = new Watch(u, 2);
-            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0,3)));
-            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
+            u.LearnMove(3);
+            u.LearnFocus();
             //Ability.TimeMine(u),
             //Ability.TimeSlam(u),
             //Ability.TimeBomb(u)
@@ -62,9 +63,9 @@ namespace HOA
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 30);
             u.watch = new Watch(u, 4);
-            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0,3)));
-            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
-            u.Learn(Abilities.Shoot, new Ab.Args(u, Price.Cheap, Range.b(0,2), 8));
+            u.LearnMove(3);
+            u.LearnFocus();
+            u.LearnShoot(8, 2);
      		//Ability.Quickdraw(u)
 	        return u;
         }

@@ -42,7 +42,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Dart", Rank.Move);
 //            a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += Stage.MoveLine(a.Aims, Range.b(0,1));
+            a.Aims += Stage.MoveLine(a.Aims, Range.sb(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
@@ -69,8 +69,8 @@ namespace HOA.Ab
         public static Ability Teleport()
         {
             Ability a = new Ability("Teleport", Rank.Special);
-            a.Aims += Stage.AttackArc(a.Aims, Filter.Token, Range.b(0,1));
-            a.Aims += Stage.MoveArcOther(a.Aims, () => Ab.Processor.targets[0, 0] as Token, Range.b(0, 1));
+            a.Aims += Stage.AttackArc(a.Aims, Filter.Token, Range.sb(0,1));
+            a.Aims += Stage.MoveArcOther(a.Aims, () => Ab.Processor.targets[0, 0] as Token, Range.sb(0, 1));
             a.Update = Adjustments.Range0 + Adjustments.Filter0 + Adjustments.Range1;
             //a.desc = Scribe.Write("Move {0} to Target cell.", a.Aims[0].filter);
             a.MainEffects = (arg, tar) =>

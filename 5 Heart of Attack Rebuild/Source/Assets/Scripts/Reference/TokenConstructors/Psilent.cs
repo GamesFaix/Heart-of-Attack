@@ -62,7 +62,7 @@ namespace HOA
         {
             Unit u = new Unit(source, Species.PrismGuard, Rank.Light);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = Vitality.DodgeChance(u, 15, 50);
+            u.vitality = Vitality.DodgeHalf(u, 15);
             u.watch = new Watch(u, 3);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 3),

@@ -2,6 +2,7 @@
 using System;
 using HOA.Ab.Aim;
 using HOA.Ef;
+using HOA.To.St;
 
 namespace HOA.Ab
 {
@@ -14,13 +15,13 @@ namespace HOA.Ab
             Ability a = new Ability("#Add", Rank.Special);
             //a.desc = Scribe.Write ("Increase/Descrease stat of up to 10 units.");
             a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
-            a.Aims[0].selectionCount = Range.b(1,12);
+            a.Aims[0].selectionCount = Range.sb(1,12);
             
             a.MainEffects = (arg, tar) =>
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Unit u in tar[0])
-                    e.Add(Effect.AddStat(null, new Ef.Args(u, arg.damage, arg.stat)));
+                    e.Add(Effect.AddStat(null, new Ef.Args(u, arg["Damage"], arg.stat)));
                 Queue.Add(e);
             };
 
@@ -33,7 +34,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("#Create", Rank.Create);
             //a.desc = Scribe.Write("Create {0} in upto 12 cells.", a.args.species);
-            a.Aims += Stage.CreateFreeManual(a.Aims, Species.None, Range.b(1,12));
+            a.Aims += Stage.CreateFreeManual(a.Aims, Species.None, Range.sb(1,12));
             a.Update = Adjustments.SpeciesName("#Create");
             a.MainEffects = (arg, tar) =>
             {
@@ -53,7 +54,7 @@ namespace HOA.Ab
             Ability a = new Ability("#Destroy", Rank.Special);
             //a.desc = Scribe.Write("Destroy up to 12 tokens.");
             a.Aims += Stage.AttackFree(a.Aims, Filter.Token);
-            a.Aims[0].selectionCount = Range.b(1, 12);
+            a.Aims[0].selectionCount = Range.sb(1, 12);
             a.MainEffects = (arg, tar) =>
             {
                 Ef.Set e = new Ef.Set();
@@ -105,7 +106,7 @@ namespace HOA.Ab
             Ability a = new Ability("#Capture", Rank.Special);
             ///a.desc = Scribe.Write("Set owner of up to 10 units.");
             a.Aims += Stage.AttackFree(a.Aims, Filter.Token);
-            a.Aims[0].selectionCount = Range.b(1, 12);
+            a.Aims[0].selectionCount = Range.sb(1, 12);
             
             a.MainEffects = (arg, tar) =>
             {
@@ -124,13 +125,13 @@ namespace HOA.Ab
             Ability a = new Ability("#Set", Rank.Special);
            // a.desc = Scribe.Write("Set stat of up to 12 units.");
             a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
-            a.Aims[0].selectionCount = Range.b(1, 12);
+            a.Aims[0].selectionCount = Range.sb(1, 12);
 
             a.MainEffects = (arg, tar) =>
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Unit u in tar)
-                    e.Add(Effect.SetStat(a, new Ef.Args(u, arg.damage, arg.stat)));
+                    e.Add(Effect.SetStat(a, new Ef.Args(u, arg["Damage"], arg.stat)));
                 Queue.Add(e);
             };
 
@@ -144,11 +145,11 @@ namespace HOA.Ab
             Ability a = new Ability("#Shift", Rank.Special);
          //   a.desc = Scribe.Write("Move up to 10 units in the queue.");
             a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
-            a.Aims[0].selectionCount = Range.b(1, 12);
+            a.Aims[0].selectionCount = Range.sb(1, 12);
             a.MainEffects = (arg, tar) =>
             {
                 foreach (Unit u in tar)
-                    Queue.Add(Effect.Shift(a, new Ef.Args(u, arg.damage)));
+                    Queue.Add(Effect.Shift(a, new Ef.Args(u, arg["Damage"])));
             };
 
             a.Usable = UseTests.AlreadyProcessing;

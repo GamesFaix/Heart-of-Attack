@@ -12,9 +12,11 @@ namespace HOA.Ef
 
         public Func<string> desc { get; private set; }
         public Set<IEntity> targets { get; private set; }
-        public int[] values { get; private set; }
+        public sbyte[] values { get; private set; }
+        public sbyte value { get { return values.Single<sbyte>(); } }
         public bool[] options { get; private set; }
-        //
+        public bool option { get { return options.Single<bool>(); } }
+        
         public Species species { get; private set; }
         public Stats stat { get; private set; }
         public Plane plane { get; private set; }
@@ -30,13 +32,11 @@ namespace HOA.Ef
         public Unit unit { get { return targets.SingleOrDefault<IEntity>(Filter.Unit.ToFunc()) as Unit; } }
 
 
-        public int value { get { return values.Single<int>(); } }
-        public bool option { get { return options.Single<bool>(); } }
         #endregion
 
         #region Constructors
 
-        public Args(Func<string> desc, Set<IEntity> targets, int[] values, bool[] options,
+        public Args(Func<string> desc, Set<IEntity> targets, sbyte[] values, bool[] options,
             Species species, Stats stat, Plane plane = Plane.None, Player player = null)
         {
             this.desc = desc;
@@ -51,24 +51,24 @@ namespace HOA.Ef
 
         public Args(IEntity target) { targets = new Set<IEntity>(1){target}; }
 
-        public Args(IEntity target, int value)
+        public Args(IEntity target, sbyte value)
             : this(target)
-        { values = new int[1] { value }; }
+        { values = new sbyte[1] { value }; }
 
         public Args(params IEntity[] targets)
         {this.targets = new Set<IEntity>(targets);}
 
-        public Args(Set<IEntity> targets, int[] values)
+        public Args(Set<IEntity> targets, sbyte[] values)
         {
             this.targets = targets;
             this.values = values;
         }
 
-        public Args(IEntity target, int value, bool option)
+        public Args(IEntity target, sbyte value, bool option)
             : this(target, value)
         { options = new bool[1] { option }; }
 
-        public Args(IEntity target, int value, Stats stat)
+        public Args(IEntity target, sbyte value, Stats stat)
             : this(target, value)
         { this.stat = stat; }
 

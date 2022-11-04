@@ -335,7 +335,7 @@ namespace HOA.To
                     Closure move = (t as Unit).arsenal.Move;
                     if (move != null)
                     {
-                        move.ability.Aims[0].range = (Range<byte>)list[t];
+                        move.ability.Aims[0].range = (Range<sbyte>)list[t];
                         list.Remove(t);
                     }
                 }
@@ -347,7 +347,7 @@ namespace HOA.To
                 if (move != null)
                 {
                     TrackList list = s.ThisToken.trackList;
-                    move.ability.Aims[0].range = (Range<byte>)list[t];
+                    move.ability.Aims[0].range = (Range<sbyte>)list[t];
                     list.Remove(t);
                 }
             };

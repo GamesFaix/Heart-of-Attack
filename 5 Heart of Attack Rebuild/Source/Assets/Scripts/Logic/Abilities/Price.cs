@@ -10,22 +10,22 @@ namespace HOA
         /// <summary>
         /// Energy cost
         /// </summary>
-        public byte Energy { get; private set; }
+        public sbyte Energy { get; private set; }
         /// <summary>
         /// Focus cost
         /// </summary>
-        public byte Focus { get; private set; }
+        public sbyte Focus { get; private set; }
         /// <summary>
         /// Energy + Focus
         /// </summary>
-        public byte Total { get { return (byte)(Energy + Focus); } }
+        public sbyte Total { get { return (sbyte)(Energy + Focus); } }
 
         /// <summary>
         /// Create new Price
         /// </summary>
         /// <param name="energy"></param>
         /// <param name="focus"></param>
-        public Price(byte energy, byte focus)
+        public Price(sbyte energy, sbyte focus)
         {
             Energy = energy;
             Focus = focus;

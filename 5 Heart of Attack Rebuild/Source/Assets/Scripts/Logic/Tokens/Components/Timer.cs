@@ -13,7 +13,7 @@ namespace HOA.To
        
         public string Name { get; private set; }
         public Description Desc { get; private set; }
-        public int Modifier { get; private set; }
+        public sbyte Modifier { get; private set; }
         public Closure Ability { get; private set; }
         public int Turns { get; private set; }
         public Predicate<TurnChangeEventArgs> Test { get; private set; }
@@ -25,7 +25,7 @@ namespace HOA.To
 
 
 
-        private Timer(IEffect source, Token thisToken, int modifier = 0, Closure ability = null)
+        private Timer(IEffect source, Token thisToken, sbyte modifier = 0, Closure ability = null)
             : base(thisToken)
         {
             this.source = new Source(source); 

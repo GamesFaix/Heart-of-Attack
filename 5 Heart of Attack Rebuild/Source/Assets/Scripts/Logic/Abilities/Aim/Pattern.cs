@@ -12,7 +12,7 @@ namespace HOA.Ab.Aim
             Set<IEntity> square = Square(args.center, args.range);
             return (square + Cell.Occupants) / args.filter;
         }
-        static Set<IEntity> Square(Cell start, Range<byte> range)
+        static Set<IEntity> Square(Cell start, Range<sbyte> range)
         {
             Set<IEntity> square = new Set<IEntity>();
             Cell c;
@@ -51,7 +51,7 @@ namespace HOA.Ab.Aim
             }
             return (cells + Cell.Occupants) / args.filter;
         }
-        static Set<Set<IEntity>> Star(Cell center, Range<byte> range)
+        static Set<Set<IEntity>> Star(Cell center, Range<sbyte> range)
         {
             Set<Set<IEntity>> star = new Set<Set<IEntity>>();
 

@@ -109,7 +109,7 @@ namespace HOA
             units.Remove(oldTop);
             Unit newTop = Top;
 
-            if (oldTop.Health > 0)
+            if (oldTop.health > 0)
             {
                 units.Add(oldTop);
                 Skip(oldTop);
@@ -125,7 +125,7 @@ namespace HOA
 
         void Skip(Unit oldTop)
         {
-            int i = oldTop.Initiative;
+            int i = oldTop.initiative;
 
             while (i > 1)
             {
@@ -134,7 +134,7 @@ namespace HOA
                 {
                     Unit other = units[index - 1] as Unit;
                     int oldTopRandom = UnityEngine.Random.Range(0, i);
-                    int otherRandom = UnityEngine.Random.Range(0, other.Initiative);
+                    int otherRandom = UnityEngine.Random.Range(0, other.initiative);
                     if (oldTopRandom > otherRandom)
                     {
                         Shift(oldTop, -1);

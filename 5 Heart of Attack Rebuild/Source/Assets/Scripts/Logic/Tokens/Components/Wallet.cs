@@ -1,55 +1,47 @@
-﻿
+﻿using HOA.To.St;
+
 namespace HOA.To
 {
 
     public class Wallet : TokenComponent
     {
-        public Stat Energy { get; protected set; }
-        public Stat Focus { get; protected set; }
+        public Stat<sbyte> energy { get; protected set; }
+        public Stat<sbyte> focus { get; protected set; }
 
-        private Wallet(Unit thisToken, Stat energy, Stat focus)
+        private Wallet(Unit thisToken, Stat<sbyte> energy, Stat<sbyte> focus)
             : base ((Token)thisToken)
         {
-            Energy = energy;
-            Focus = focus;
+            this.energy = energy;
+            this.focus = focus;
         }
 
-        public Wallet(Unit thisToken, int energy = 2)
-            : this(thisToken, Stat.Energy(thisToken, energy), Stat.Focus(thisToken)) { }
+        public Wallet(Unit thisToken, sbyte energy = 2)
+            : this(thisToken, Capped.En(thisToken, energy), Scalar.Fo(thisToken))
+        { }
 
-        public static Wallet InitiativeBoost(Unit thisToken, int energy = 2)
-        {
-            return new Wallet(thisToken,
-                Stat.Energy(thisToken, energy),
-                Stat.FocusAddsInitiative(thisToken));
-        }
+        public static Wallet InitiativeBoost(Unit thisToken, sbyte energy = 2)
+        { return new Wallet(thisToken, Capped.En(thisToken, energy), Booster.FoIn(thisToken)); }
 
-        public static Wallet DefenseBoost(Unit thisToken, int energy, int defenseCap = 4)
-        {
-            return new Wallet(thisToken,
-                Stat.Energy(thisToken, energy),
-                Stat.FocusAddsDefense(thisToken, defenseCap));
-        }
-
+        public static Wallet DefenseBoost(Unit thisToken, sbyte energy = 2)
+        { return new Wallet(thisToken, Capped.En(thisToken, energy), Booster.FoDef(thisToken)); }
 
         public void FillEnergy()
-        {
-            if (Energy.Max > Energy)
-                Energy.Add((Energy.Max - Energy));
-        }
+        { (energy as Capped<sbyte>).Fill(); }
 
-        public bool CanAfford(Price p) { return (Energy >= p.Energy && Focus >= p.Focus); }
+        public bool CanAfford(Price p) { return (energy >= p.Energy && focus >= p.Focus); }
 
         public void Charge(Price p)
         {
-            Energy.Add(0 - p.Energy);
-            Focus.Add(0 - p.Focus);
+            System.Func<sbyte, sbyte, sbyte> adder = (sbyte a, sbyte b) => { return (sbyte)(a + b); };
+            energy.Add(adder, (sbyte)(0 - p.Energy));
+            focus.Add(adder, (sbyte)(0 - p.Focus));
         }
 
         public void Refund(Price p)
         {
-            Energy.Add(p.Energy);
-            Focus.Add(p.Focus);
+            System.Func<sbyte, sbyte, sbyte> adder = (sbyte a, sbyte b) => { return (sbyte)(a + b); };
+            energy.Add(adder, (sbyte)(p.Energy));
+            focus.Add(adder, (sbyte)(p.Focus));
         }
 
         public override string ToString() { return ThisToken + "'s Wallet"; }

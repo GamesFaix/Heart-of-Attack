@@ -27,7 +27,7 @@ namespace HOA {
     /// <summary> Min and max value always inclusive, 
     /// can test T to see if in range. </summary>
     public struct Range<T> : IEquatable<Range<T>>
-        where T : struct, IComparable, IEquatable<T>
+        where T : struct, IComparable<T>, IEquatable<T>
     {
         public T min, max;
 

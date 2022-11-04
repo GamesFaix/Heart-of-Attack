@@ -46,7 +46,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Summon", Rank.Create);
             //a.desc = Scribe.Write("Create {0} in target cell.", a.args.species);
-            a.Aims += Stage.CreateArc(a.Aims, Species.None, Range.b(0,1));
+            a.Aims += Stage.CreateArc(a.Aims, Species.None, Range.sb(0,1));
             a.Update = Adjustments.Body0 + Adjustments.SpeciesName(a.name) + Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
@@ -77,7 +77,7 @@ namespace HOA.Ab
             //string name = String.Format("Spawn {0}s {1}", species, count);
             Ability a = new Ability("Spawn", Rank.Create);
            // a.desc = Scribe.Write("Spawn {0}s in {1} target cells.", a.args.species, a.Aims[0].selectionCount);
-            a.Aims += Stage.CreateNeighborMulti(a.Aims, Species.None, Range.b(1,1));
+            a.Aims += Stage.CreateNeighborMulti(a.Aims, Species.None, Range.sb(1,1));
             a.Update = Adjustments.Body0 + Adjustments.SpeciesName(a.name) + Adjustments.SelectionCount0;
             a.MainEffects = (arg, tar) =>
             {

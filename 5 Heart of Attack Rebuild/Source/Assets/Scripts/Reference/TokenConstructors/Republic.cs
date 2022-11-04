@@ -36,7 +36,7 @@ namespace HOA
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 30);
             u.watch = new Watch(u, 3);
-            u.wallet = Wallet.DefenseBoost(u, 2, 4);
+            u.wallet = Wallet.DefenseBoost(u, 2);
             /*u.Arsenal.Add(new Ability[] {
 				Ability.Move(u, 3),
 				Ability.ThrowGrenade(u),
@@ -68,7 +68,7 @@ namespace HOA
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
             u.vitality = new Vitality(u, 65);
             u.watch = new Watch(u, 1);
-            u.wallet = Wallet.DefenseBoost(u, 2, 2);
+            u.wallet = Wallet.DefenseBoost(u, 2);
             /*u.Arsenal.Add(new Ability[] {
 				Ability.Move(u, 1),
 				Ability.Cannon(u, Price.Cheap, 12),

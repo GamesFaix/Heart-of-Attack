@@ -1,112 +1,87 @@
 ﻿using System;
+using HOA.To.St;
 
 namespace HOA.To
 {
-    /// <summary>
-    /// Manages unit health, defense, and damage
-    /// </summary>
+    /// <summary> Manages unit health, defense, and damage </summary>
     public class Vitality : TokenComponent
     {
-        /// <summary>
-        /// Health 
-        /// </summary>
-        public virtual Stat Health { get; protected set; }
-        /// <summary>
-        /// Defense
-        /// </summary>
-        public virtual Stat Defense { get; protected set; }
+        /// <summary> Health  </summary>
+        public virtual Capped<sbyte> health { get; protected set; }
+        /// <summary> Defense </summary>
+        public virtual Stat<sbyte> defense { get; protected set; }
 
-        public Func<int, bool> Damage { get; protected set; }
+        public Func<sbyte, bool> Damage { get; protected set; }
 
-        private Vitality(Unit thisToken, Stat health, Stat defense)
+        private Vitality(Unit thisToken, Capped<sbyte> health, Stat<sbyte> defense)
             : base (thisToken)
         {
-            Health = health;
-            Defense = defense;
+            this.health = health;
+            this.defense = defense;
             Damage = DamageStandard;
         }
         
-        /// <summary>
-        /// Create new Vitality
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="hp"></param>
-        /// <param name="def"></param>
-        public Vitality(Unit thisToken, int hp = 0, int def = 0)
-            : this(thisToken,
-            Stat.Health(thisToken, hp),
-            Stat.Defense(thisToken, def)) { }
+        /// <summary>  Create new Vitality </summary>
+        public Vitality(Unit thisToken, sbyte hp = 0, sbyte def = 0)
+            : this(thisToken, Capped.Hel(thisToken,hp), Scalar.Def(thisToken, def))
+        { }
 
-        public static Vitality DodgeChance(Unit thisToken, int hp, int dodgePercent, int def = 0)
+        public static Vitality DodgeHalf(Unit thisToken, sbyte hp, sbyte def = 0)
         {
             Vitality v = new Vitality(thisToken, hp, def);
             v.Damage = v.DamageDodgeHalf;
             return v;
         }
 
-        public static Vitality DefenseCap(Unit thisToken, int hp, int def = 0, int defCap = 255)
+        public static Vitality DefenseCap(Unit thisToken, sbyte hp, sbyte def = 0, sbyte defCap = 127)
         {
-            return new Vitality(thisToken,
-                Stat.Health(thisToken, hp),
-                Stat.Defense(thisToken, def, defCap));
+            return new Vitality(thisToken, Capped.Hel(thisToken, hp), Capped.Def(thisToken, def, defCap));
         }
 
 
-        /// <summary>
-        /// Destroy parent if Health is less than 1.
-        /// </summary>
+        /// <summary> Destroy parent if Health is less than 1.  </summary>
         protected void DieIfZero() 
         {
-            if (Health < 1)
-            //  EffectQueue.Add(Effect.DestroyUnit(source, Parent)); 
-            { Log.Debug("Not implemented."); }
+            if (health < 1)
+            {
+                Ef.Queue.Add(Ef.Effect.DestroyUnit(ThisToken, new Ef.Args(ThisToken))); 
+                Log.Game("{0}'s health is less than 1!  Destroying...", ThisToken); 
+            }
         }
 
-        /// <summary>
-        /// Add to Health, check if less than 1.
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public virtual int AddHealth(int n)
+        /// <summary> Add to Health, check if less than 1. </summary>
+         public virtual int AddHealth(sbyte amount)
         {
-            Health.Add(n);
+            health.Add((a, b) => (sbyte)(a + b), amount);
             DieIfZero();
-            return Health;
+            return health;
         }
         
-        /// <summary>
-        /// Add to Health.Max, check if less than 1
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public virtual int AddHealthMax(int n)
+        /// <summary>  Add to Health.Max, check if less than 1 </summary>
+        public virtual int AddHealthCap(sbyte amount)
         {
-            Health.AddMax(n);
+            health.AddCap((a, b) => (sbyte)(a + b), amount); 
             DieIfZero();
-            return Health.Max;
+            return health.Cap;
         }
 
-        /// <summary>
-        /// Health -= (n - Defense), checks if health less than 1
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public bool DamageStandard(int n)
+        /// <summary>  Health -= (n - Defense), checks if health less than 1 </summary> 
+        public bool DamageStandard(sbyte amount)
         {
-            if (n < 1)
+            if (amount < 1)
                 return false;
-            else if (n <= Defense)
+            else if (amount <= defense)
                 return false;
             else
             {
-                int dmg = n - Defense;
-                Health.Add(0 - dmg);
+                int dmg = amount - defense;
+                health.Add((a, b) => (sbyte)(a + b), (sbyte)(0 - dmg));
                 DieIfZero();
                 return true;
             }
         }
 
-        public bool DamageDodgeHalf(int damage)
+        public bool DamageDodgeHalf(sbyte damage)
         {
             if (HOA.Random.Range(0,1) == 1)
                 return DamageStandard(damage);
@@ -114,10 +89,7 @@ namespace HOA.To
                 return false;
         }
 
-        /// <summary>
-        /// "[Parent]'s Health"
-        /// </summary>
-        /// <returns></returns>
+        /// <summary> "[Parent]'s Health" </summary>
         public override string ToString() { return ThisToken + "'s Health"; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using HOA.To.St;
 
 namespace HOA.Ab.Aim
 {
@@ -22,9 +23,9 @@ namespace HOA.Ab.Aim
         public Func<Cell> center;
         public Pattern pattern;
         public Predicate<IEntity> filter;
-        public Range<byte> range;
+        public Range<sbyte> range;
         public bool inclusive;
-        public Range<byte> selectionCount;
+        public Range<sbyte> selectionCount;
         public bool autoSelect;
         
         private Stage(Plan plan)
@@ -34,9 +35,9 @@ namespace HOA.Ab.Aim
             center = () => { return user.Cell; };
             ///pattern mandatory
             filter = Filter.False;
-            range = Range.b(0, 1);
+            range = Range.sb(0, 1);
             inclusive = false;
-            selectionCount = Range.b(1, 1);
+            selectionCount = Range.sb(1, 1);
             autoSelect = false;
         }
 
@@ -53,8 +54,8 @@ namespace HOA.Ab.Aim
         }
 
         public Stage(Plan plan, Pattern pattern, Predicate<IEntity> filter,
-           Func<Token> body, Range<byte> range)
-            : this(plan, pattern, filter, body, null)
+           Func<Token> body, Range<sbyte> range)
+            : this(plan, pattern, filter, body)
         {
             this.range = range;
         }

@@ -18,14 +18,14 @@ namespace HOA.Ab.Aim
             return new Stage(plan, Patterns.Neighbor, Filter.Cell, () => Ref.Tokens.templates[species]);
         }
 
-        public static Stage CreateNeighborMulti(Plan plan, To.Species species, Range<byte> count)
+        public static Stage CreateNeighborMulti(Plan plan, To.Species species, Range<sbyte> count)
         {
             Stage a = new Stage(plan, Patterns.Neighbor, Filter.Cell, () => Ref.Tokens.templates[species]);
             a.selectionCount = count;
             return a;
         }
 
-        public static Stage CreateArc(Plan plan, To.Species species, Range<byte> range)
+        public static Stage CreateArc(Plan plan, To.Species species, Range<sbyte> range)
         {
             return new Stage(plan, Patterns.Arc, Filter.Cell, () => Ref.Tokens.templates[species], range);
         }
@@ -37,7 +37,7 @@ namespace HOA.Ab.Aim
             return new Stage(plan, Patterns.Neighbor, p, () => Ref.Tokens.templates[species]);
         }
 
-        public static Stage CreateFree(Plan plan, To.Species species, Range<byte> count)
+        public static Stage CreateFree(Plan plan, To.Species species, Range<sbyte> count)
         {
             Stage a = new Stage(plan, Patterns.Free, Filter.Cell, () => Ref.Tokens.templates[species]);
             a.selectionCount = count;
@@ -45,9 +45,9 @@ namespace HOA.Ab.Aim
         }
 
         public static Stage CreateFree(Plan plan, To.Species species) 
-        { return CreateFree(plan, species, Range.b(1, 1)); }
+        { return CreateFree(plan, species, Range.sb(1, 1)); }
 
-        public static Stage CreateFreeManual(Plan plan, To.Species species, Range<byte> count)
+        public static Stage CreateFreeManual(Plan plan, To.Species species, Range<sbyte> count)
         {
             Stage a = new Stage(plan, Patterns.Free, Filter.Cell, () => Ref.Tokens.templates[species], () => null);
             a.selectionCount = count;
@@ -66,13 +66,13 @@ namespace HOA.Ab.Aim
             return a;
         }
 
-        public static Stage MoveLine(Plan plan, Range<byte> range)
+        public static Stage MoveLine(Plan plan, Range<sbyte> range)
         {
             Stage a = new Stage(plan, Patterns.Line, Filter.Cell);
             a.range = range;
             return a;
         }
-        public static Stage MoveArc(Plan plan, Range<byte> range)
+        public static Stage MoveArc(Plan plan, Range<sbyte> range)
         {
             Stage a = new Stage(plan, Patterns.Arc, Filter.Cell);
             a.range = range;
@@ -80,7 +80,7 @@ namespace HOA.Ab.Aim
         }
 
 
-        public static Stage MoveArcOther(Plan plan, Func<Token> body, Range<byte> range)
+        public static Stage MoveArcOther(Plan plan, Func<Token> body, Range<sbyte> range)
         {
             Stage a = new Stage(plan, Patterns.Arc, Filter.Cell, body, () => body().Cell);
             a.range = range;
@@ -95,14 +95,14 @@ namespace HOA.Ab.Aim
         public static Stage AttackNeighbor(Plan plan, Predicate<IEntity> filter)
         { return new Stage(plan, Patterns.Neighbor, filter); }
 
-        public static Stage AttackLine(Plan plan, Predicate<IEntity> filter, Range<byte> range)
+        public static Stage AttackLine(Plan plan, Predicate<IEntity> filter, Range<sbyte> range)
         {
             Stage a = new Stage(plan, Patterns.Line, filter);
             a.range = range;
             return a;
         }
 
-        public static Stage AttackArc(Plan plan, Predicate<IEntity> filter, Range<byte> range)
+        public static Stage AttackArc(Plan plan, Predicate<IEntity> filter, Range<sbyte> range)
         {
             Stage a = new Stage(plan, Patterns.Arc, filter);
             a.range = range;

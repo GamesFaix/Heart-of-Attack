@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{5B836361-0FF8-11D0-3A3D-135A80C12173}</ProjectGuid>
+	<ProjectGuid>{16A12449-279A-5AD5-98F5-56386FD92039}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -127,12 +127,17 @@
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Terrain.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Token.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Unit.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Booster.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Bundle.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Capped.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Element.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Flex.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Scalar.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Stat.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Stats\Stats.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Plane.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Rank.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Species.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stat (Constructors).cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stat.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stats.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\TokenFlags.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Math.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Random.cs" />

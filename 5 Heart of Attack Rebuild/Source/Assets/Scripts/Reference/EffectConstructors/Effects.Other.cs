@@ -10,8 +10,8 @@ namespace HOA.Ef
             Effect e = new Effect(source, "Knockback", args);
             e.action = (a) =>
             {
-                int maxCells = args.values[0];
-                int dmgPerCell = args.values[1];
+                sbyte maxCells = args.values[0];
+                sbyte dmgPerCell = args.values[1];
                 Token t = e.source.Last<Token>();
                 Cell userCell = t.Cell;
                 Cell start = args.cell;
@@ -31,8 +31,8 @@ namespace HOA.Ef
                     }
                 }
 
-                int totalDamage = 0;
-                int totalCells = 0;
+                sbyte totalDamage = 0;
+                sbyte totalCells = 0;
                 foreach (Cell c in line)
                 {
                     if (!args.token.CanEnter(c) || c.CanStop(args.token))
@@ -82,7 +82,7 @@ namespace HOA.Ef
                 if (move != null)
                 {
                     e.source.Last<Token>().trackList.Add(args.token, move.Aims[0].range);
-                    move.Aims[0].range = Range.b(0, 1);
+                    move.Aims[0].range = Range.sb(0, 1);
                     AVEffect.Stick.Play(args.token);
                 }
             };

@@ -34,12 +34,12 @@ namespace HOA.To
             t.Activate = () => 
             {
                 Queue.Add(Effect.AddStat(t, 
-                    new Ef.Args(t.ThisUnit, 0-t.Modifier, Stats.Initiative)));
+                    new Ef.Args(t.ThisUnit, (sbyte)(0-t.Modifier), Stats.Initiative)));
             };
             return t;
         }
 
-        public static Timer ArcticGust(IEffect source, Unit parent, int modifier, Closure ability)
+        public static Timer ArcticGust(IEffect source, Unit parent, sbyte modifier, Closure ability)
         {
             Timer t = new Timer(source, parent, modifier, ability);
             t.Name = "Arctic Gusted";
@@ -50,7 +50,7 @@ namespace HOA.To
             {
                 Closure c = t.ThisUnit.arsenal.Move;
                 if (c != null)
-                    c.ability.Aims[0].range.max += (byte)t.Modifier;
+                    c.ability.Aims[0].range.max += (sbyte)t.Modifier;
             };
             return t;
         }
@@ -72,7 +72,7 @@ namespace HOA.To
             return t;
         }
 
-        public static Timer Corrosion(IEffect source, Unit parent, int damage)
+        public static Timer Corrosion(IEffect source, Unit parent, sbyte damage)
         {
             Timer t = new Timer(source, parent, damage);
             t.Name = "Corrosion";
@@ -82,7 +82,7 @@ namespace HOA.To
             t.Activate = () =>
             {
                 Queue.Add(Effect.CorrodeResidual(t, new Ef.Args(t.ThisUnit, t.Modifier)));
-                t.Modifier = Math.Floor(t.Modifier * 0.5f);
+                t.Modifier = (sbyte)Math.Floor(t.Modifier * 0.5f);
                 if (t.Modifier > 0) 
                     t.Turns++;
             };
@@ -134,7 +134,7 @@ namespace HOA.To
             t.Activate = () => 
             {
                 Queue.Add(Effect.AddStat(t, 
-                    new Ef.Args(t.ThisUnit, 0 - t.Modifier, Stats.Initiative)));
+                    new Ef.Args(t.ThisUnit, (sbyte)(0 - t.Modifier), Stats.Initiative)));
             };
             return t;
         }
@@ -166,7 +166,7 @@ namespace HOA.To
             return t;
         }
 
-        public static Timer Stunned(IEffect source, Unit parent, int turns)
+        public static Timer Stunned(IEffect source, Unit parent, sbyte turns)
         {
             Timer t = new Timer(source, parent, turns);
             t.Name = "Stunned";
@@ -178,7 +178,7 @@ namespace HOA.To
             return t;
         }
 
-        public static Timer TimeBomb(IEffect source, Unit parent, int modifier)
+        public static Timer TimeBomb(IEffect source, Unit parent, sbyte modifier)
         {
             Timer t = new Timer(source, parent, modifier);
             t.Name = "Time Bombed";

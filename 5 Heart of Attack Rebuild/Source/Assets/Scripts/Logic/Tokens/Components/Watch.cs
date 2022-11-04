@@ -1,19 +1,20 @@
 ﻿using System;
+using HOA.To.St;
 
 namespace HOA.To
 {
 
     public class Watch : TokenComponent
     {
-        public Stat Initiative { get; private set; }
+        public Stat<sbyte> initiative { get; private set; }
 
-        public bool Skipped { get; set; }
+        public bool skipped { get; set; }
 
-        public Watch(Unit thisToken, int i = 0)
+        public Watch(Unit thisToken, sbyte initiative = 0)
             : base (thisToken)
         {
-            Initiative = Stat.Initiative(thisToken, i);
-            Skipped = false;
+            this.initiative = Scalar.In(thisToken, initiative);
+            skipped = false;
         }
 
         public override string ToString() { return ThisToken + "'s Watch"; }

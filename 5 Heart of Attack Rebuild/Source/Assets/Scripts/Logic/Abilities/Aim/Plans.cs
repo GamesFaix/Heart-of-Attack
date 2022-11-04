@@ -16,9 +16,9 @@ namespace HOA.Ab.Aim
             for (int i = 0; i < plan.Count; i++)
             {
                 if (i < range.min)
-                    plan[i].selectionCount = Range.b(1, 1);
+                    plan[i].selectionCount = Range.sb(1, 1);
                 else
-                    plan[i].selectionCount = Range.b(0, 1);
+                    plan[i].selectionCount = Range.sb(0, 1);
             }
             return plan;
         }

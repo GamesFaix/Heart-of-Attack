@@ -61,7 +61,7 @@ namespace HOA.Ab
         
         public static event EventHandler<TargetSelectionRequestEventArgs> TargetSelectionRequestEvent;
 
-        public static void TargetSelectionRequestPublish(object sender, Set<IEntity> options, Range<byte> selectionCount)
+        public static void TargetSelectionRequestPublish(object sender, Set<IEntity> options, Range<sbyte> selectionCount)
         {
             if (TargetSelectionRequestEvent != null)
             {
@@ -71,7 +71,7 @@ namespace HOA.Ab
             }
         }
 
-        static Set<IEntity> WaitForSelection(Set<IEntity> options, Range<byte> selectionCount)
+        static Set<IEntity> WaitForSelection(Set<IEntity> options, Range<sbyte> selectionCount)
         {
             Log.Debug("Waiting for {0} targets to be chosen.", selectionCount);
             float start = (float)Time.time;
@@ -86,7 +86,7 @@ namespace HOA.Ab
                 }
                 
                 if (selection != null)
-                    if (selectionCount.Contains((byte)selection.Count))
+                    if (selectionCount.Contains((sbyte)selection.Count))
                     {
                         Log.Debug("Selection accepted.");
                         return selection;

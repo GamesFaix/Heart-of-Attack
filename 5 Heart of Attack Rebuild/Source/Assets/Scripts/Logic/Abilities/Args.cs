@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using HOA.To.St;
 
 namespace HOA.Ab
 {
@@ -9,12 +10,9 @@ namespace HOA.Ab
 
         public Unit user { get; private set; }
         public Price price { get; private set; }
-        public int damage { get; private set; }
-        public Range<byte>[] ranges { get; private set; }
-        public Range<byte> range { get { return ranges.Single(); } }
+        public Bundle values { get; private set; }
+        public Stat<sbyte> this[string name] { get { return values[name]; } }
 
-        public int[] values { get; private set; }
-        public int value { get { return values.Single(); } }
         public To.Species species { get; private set; }
         public To.Stats stat { get; private set; }
         public Player player {get; private set;}
@@ -34,9 +32,7 @@ namespace HOA.Ab
             this.user = user;
             this.price = price;
 
-            damage = 0;
-            ranges = new Range<byte>[0];
-            values = new int[0]; 
+            values = new Bundle();
             species = To.Species.None;
             stat = To.Stats.None;
             player = null;
@@ -44,44 +40,20 @@ namespace HOA.Ab
             effects = new Ef.Builder[0];
         }
 
-        public Args(Unit user, Price price, Range<byte> range)
+        public Args(Unit user, Price price, params Stat<sbyte>[] stats)
             : this(user, price)
-        { ranges = new Range<byte>[1] { range }; }
+        { values = new Bundle(stats); }
 
-        public Args(Unit user, Price price, int damage)
-            : this(user, price)
-        { this.damage = damage; }
-
-        public Args(Unit user, Price price, Range<byte> range, int damage)
-            : this(user, price, range)
-        { this.damage = damage; }
-
-        public Args(Unit user, Price price, Predicate<IEntity> filter, int damage)
-            : this(user, price, damage)
+        public Args(Unit user, Price price, Predicate<IEntity> filter, params Stat<sbyte>[] stats)
+            : this(user, price, stats)
         { filters = new Predicate<IEntity>[1] { filter }; }
 
-        public Args(Unit user, Price price, Range<byte> range, Predicate<IEntity> filter, int damage)
-            : this(user, price, range, damage)
-        { filters = new Predicate<IEntity>[1] { filter }; }
-
-        public Args(Unit user, Price price, Range<byte> range0, Predicate<IEntity> filter, Range<byte> range1)
-            : this(user, price)
-        {
-            ranges = new Range<byte>[2] { range0, range1 };
-            filters = new Predicate<IEntity>[1] { filter };
-        }
-
-
-        public Args(Unit user, Price price, To.Species species)
-            : this(user, price)
+        public Args(Unit user, Price price, To.Species species, params Stat<sbyte>[] stats)
+            : this(user, price, stats)
         { this.species = species; }
 
-        public Args(Unit user, Price price, Range<byte> range, To.Species species)
-            : this(user, price, range)
-        { this.species = species; }
-
-        public Args(Unit user, Price price, Predicate<IEntity> filter, To.Species species)
-            : this(user, price, species)
+        public Args(Unit user, Price price, Predicate<IEntity> filter, To.Species species, params Stat<sbyte>[] stats)
+            : this(user, price, species, stats)
         { filters = new Predicate<IEntity>[1] { filter }; }
 
         #endregion
@@ -94,9 +66,7 @@ namespace HOA.Ab
                 return false;
             return (user == other.user
                 && price == other.price
-                && damage == other.damage
                 && values == other.values
-                && ranges == other.ranges
                 && stat == other.stat
                 && species == other.species
                 && player == other.player

@@ -12,7 +12,7 @@ namespace HOA.Ef
             Effect e = new Effect(source, "Corrode Initial", args);
             e.action = (a) => 
             {
-                int cor = Math.Floor(a.value * 0.5f);
+                sbyte cor = (sbyte)Math.Floor(a.value * 0.5f);
                 Unit u = a.unit;
                 u.Damage(e, a.value);
                 AVEffect.Corrode.Play(u);
@@ -66,7 +66,7 @@ namespace HOA.Ef
                     AVEffect.Damage.Play(u);
                 else 
                     AVEffect.Miss.Play(u);
-                (e.source.Last<Unit>()).Damage(e, Math.Floor(args.value * 0.5f));
+                (e.source.Last<Unit>()).Damage(e, (sbyte)Math.Floor(args.value * 0.5f));
                 AVEffect.Damage.Play(e.source.Last<Unit>());
             };
             return e;
@@ -78,10 +78,10 @@ namespace HOA.Ef
             e.action = (a) =>
             {
                 Unit u = args.unit;
-                int oldHP = u.Health;
+                sbyte oldHP = u.health;
                 u.StatAdd(e, Stats.Health, args.value);
                 AVEffect.StatUp.Play(u);
-                int diff = u.Health - oldHP;
+                sbyte diff = (sbyte)(u.health - oldHP);
                 (e.source.Last<Unit>()).Damage(e, diff);
                 AVEffect.StatDown.Play(e.source.Last<Unit>());
             };
@@ -94,11 +94,11 @@ namespace HOA.Ef
             e.action = (a) =>
             {
                 Unit u = args.unit;
-                int oldHP = u.Health;
+                int oldHP = u.health;
                 if (u.Damage(e, args.value))
                 {
                     AVEffect.Damage.Play(u);
-                    int actualDmg = oldHP - u.Health ;
+                    int actualDmg = oldHP - u.health ;
                     (e.source.Last<Unit>()).StatAdd(e, Stats.Health, actualDmg);
                     AVEffect.StatUp.Play(e.source.Last<Unit>());
                 }
@@ -152,8 +152,8 @@ namespace HOA.Ef
             e.action = (a) =>
             {
                 Unit u = args.unit;
-                int dmg = args.values[0];
-                int stun = args.values[1];
+                sbyte dmg = args.values[0];
+                sbyte stun = args.values[1];
                 u.Damage(e, dmg);
                 u.timers.Add(Timer.Stunned(e, u, stun));
                 AVEffect.Stun.Play(u);
@@ -192,7 +192,7 @@ namespace HOA.Ef
 
                 Set<IEntity> neighbors = t.NeighborsAndCellmates / Filter.UnitDest;
 
-                int newDmg = Math.Floor(args.value * 0.5f);
+                sbyte newDmg = (sbyte)Math.Floor(args.value * 0.5f);
                 foreach (Token t2 in neighbors)
                     nextEffects.Add(Effect.FireSpread(source, new Args(t2, newDmg)));
                 Queue.Add(nextEffects);
@@ -249,8 +249,8 @@ namespace HOA.Ef
             Effect e = new Effect(source, "Laser Initial", args);
             e.action = (a) =>
             {
-                int currentDmg = args.values[0];
-                int decayPercent = args.values[1];
+                sbyte currentDmg = args.values[0];
+                sbyte decayPercent = args.values[1];
                 foreach (Cell cell in args.cells)
                 {
                     Set<IEntity> units = cell.occupants / Filter.Unit;
@@ -266,7 +266,7 @@ namespace HOA.Ef
                     if ((cell.occupants / f).Count > 0) 
                         return;
                     if (units.Count > 0)
-                        currentDmg = Math.Floor(currentDmg * (decayPercent / 100));
+                        currentDmg = (sbyte)Math.Floor(currentDmg * (decayPercent / 100));
                 }
             };
             return e;

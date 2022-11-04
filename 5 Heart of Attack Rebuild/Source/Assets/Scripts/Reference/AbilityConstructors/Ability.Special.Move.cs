@@ -27,7 +27,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Burrow", Rank.Move);
            // a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += Stage.MoveArc(a.Aims, Range.b(0, 1));
+            a.Aims += Stage.MoveArc(a.Aims, Range.sb(0, 1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
