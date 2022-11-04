@@ -43,7 +43,7 @@ namespace HOA.Storage.Audio
                 foreach (string names in missingNames)
                     debug += names + ", ";
             }
-            Debug.Log(debug);
+            Log.Start(debug);
 #endif
         }
 

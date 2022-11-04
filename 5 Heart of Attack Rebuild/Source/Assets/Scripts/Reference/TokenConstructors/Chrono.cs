@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Abilities;
+using HOA.To;
+using HOA.Ref;
+using HOA.Ab;
 
 namespace HOA
 {
@@ -10,70 +11,62 @@ namespace HOA
     {
         public static Unit OldThreeHands(object source)
         {
-            Unit u = new Unit(source, Species.OldThreeHands, Tokens.Rank.King, Species.BrassHeart);
+            Unit u = new Unit(source, Species.OldThreeHands, To.Rank.King, Species.BrassHeart);
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 85, 2);
             u.watch = new Watch(u, 2);
             u.wallet = new Wallet(u, 3);
-            u.arsenal.Add(
-                Ability.Move(u, 2),
-                Ability.Focus(u),
-                Ability.AttackArc(u, "Lob", Abilities.Rank.Attack, Price.Cheap, new Range(0,3), 15),
-                //Ability.HourSaviour(u),
-                //Ability.MinuteWaltz(u),
-                //Ability.SecondInCommand(u),
-                Ability.Create(u, Price.Cheap, Species.RevolvingTom),
-                Ability.Create(u, new Price(2, 0), Species.Piecemaker),
-                Ability.Create(u, new Price(2, 1), Species.Reprospector)
-            );
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0,2)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Lob, new AbilityArgs(u, Price.Cheap, Range.b(0, 3), 15));
+            u.Learn(Abilities.Create, new AbilityArgs(u, Price.Cheap, Species.RevolvingTom));
+            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 0), Species.Piecemaker));
+            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 1), Species.Reprospector));
+            //Ability.HourSaviour(u),
+            //Ability.MinuteWaltz(u),
+            //Ability.SecondInCommand(u),
             return u;
         }
         
         public static Unit Piecemaker(object source)
         {
-            Unit u = new Unit(source, Species.Piecemaker, Tokens.Rank.Medium);
+            Unit u = new Unit(source, Species.Piecemaker, To.Rank.Medium);
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 35, 3);
             u.watch = new Watch(u, 1);
-            u.arsenal.Add(
-				Ability.Move(u, 4),
-                Ability.Focus(u),
-				Ability.Strike(u, 10),
-				Ability.CreateArc(u, new Price(1,1), Species.Aperture, new Range(0,2)),
-				Ability.HealArc(u, "Repair", new Price(0, 2), Filter.Unit, new Range(0, 2), 10)
-			);
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0, 4)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Strike, new AbilityArgs(u, Price.Cheap, 10));
+            u.Learn(Abilities.Summon, new AbilityArgs(u, new Price(1, 1), Range.b(0, 2), Species.Aperture));
+            u.Learn(Abilities.Restore, new AbilityArgs(u, new Price(0, 2), Range.b(0, 2), Filter.Unit, 10));
             return u;
         }
 
         public static Unit Reprospector(object source)
         {
-            Unit u = new Unit(source, Species.Reprospector, Tokens.Rank.Heavy);
+            Unit u = new Unit(source, Species.Reprospector, To.Rank.Heavy);
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 55);
             u.watch = new Watch(u, 2);
-            u.arsenal.Add(
-                Ability.Move(u, 4),
-                Ability.Focus(u)//, 
-                //Ability.TimeMine(u),
-                //Ability.TimeSlam(u),
-                //Ability.TimeBomb(u)
-            );
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0,3)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            //Ability.TimeMine(u),
+            //Ability.TimeSlam(u),
+            //Ability.TimeBomb(u)
             return u;
         }
 
         public static Unit RevolvingTom(object source)
         {
-            Unit u = new Unit(source, Species.RevolvingTom, Tokens.Rank.Light);
+            Unit u = new Unit(source, Species.RevolvingTom, To.Rank.Light);
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 30);
             u.watch = new Watch(u, 4);
-            u.arsenal.Add(
-				Ability.Move(u, 3),
-				Ability.Focus(u),
-                Ability.Shoot(u, 2, 8)//,
-				//Ability.Quickdraw(u)
-			);
-            return u;
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0,3)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Shoot, new AbilityArgs(u, Price.Cheap, Range.b(0,2), 8));
+     		//Ability.Quickdraw(u)
+	        return u;
         }
 	}
 

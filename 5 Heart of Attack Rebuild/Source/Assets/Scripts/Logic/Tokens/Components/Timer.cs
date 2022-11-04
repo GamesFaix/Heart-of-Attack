@@ -1,7 +1,7 @@
 ﻿using System;
-using HOA.Abilities;
+using HOA.Ab;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
     
     public partial class Timer : TokenComponent, ISourced
@@ -13,7 +13,7 @@ namespace HOA.Tokens
         public string Name { get; private set; }
         public Description Desc { get; private set; }
         public int Modifier { get; private set; }
-        public Ability Ability { get; private set; }
+        public Closure Ability { get; private set; }
         public int Turns { get; private set; }
         public Predicate<TurnChangeEventArgs> Test { get; private set; }
         public Action Activate { get; private set; }
@@ -22,9 +22,9 @@ namespace HOA.Tokens
 
         #region Constructors
 
-       
 
-        private Timer(IEffect source, Token thisToken, int modifier = 0, Ability ability = null)
+
+        private Timer(IEffect source, Token thisToken, int modifier = 0, Closure ability = null)
             : base(thisToken)
         {
             this.source = new Source(source); 
@@ -35,11 +35,11 @@ namespace HOA.Tokens
             this.Ability = ability;
             Turns = 0;
             Test = DefaultTest;
-            Activate = () => { Debug.Log("[Timer Activation.]"); };
+            Activate = () => { Log.Debug("[Timer Activation.]"); };
             Session.Active.Queue.TurnChangeEvent += OnTurnChange;
         }
 
-        private Timer(IEffect source, Token thisToken, Ability ability)
+        private Timer(IEffect source, Token thisToken, Closure ability)
             : this(source, thisToken, 0, ability) { }
 
         #endregion
@@ -53,7 +53,7 @@ namespace HOA.Tokens
 
         public bool DefaultTest(TurnChangeEventArgs args)
         {
-            Debug.Log("Timer Test set to default.");
+            Log.Debug("Timer Test set to default.");
             return false;
         }
 

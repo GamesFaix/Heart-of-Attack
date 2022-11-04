@@ -14,7 +14,7 @@ namespace HOA
         public Board board { get; private set; }
         private FactionRegistry factionReg { get; set; }
         private PlayerRegistry playerReg { get; set; }
-        private Tokens.TokenRegistry tokenReg { get; set; }
+        private To.TokenRegistry tokenReg { get; set; }
         public TurnQueue Queue {get; private set;}
         public bool paused { get; private set; }
 
@@ -25,11 +25,12 @@ namespace HOA
 
         public Session()
         {
-            Debug.Log("New session started.");
+            Log.NewSession();
+            Log.Session("New session started.");
             Active = this;
             factionReg = new FactionRegistry(this);
             playerReg = new PlayerRegistry(this);
-            tokenReg = new Tokens.TokenRegistry(this);
+            tokenReg = new To.TokenRegistry(this);
             Queue = new TurnQueue(this);
         }
 
@@ -60,9 +61,9 @@ namespace HOA
         #region Tokens
 
         public Set<IEntity> tokens { get { return tokenReg.Tokens; } }
-        public int NextAvailableInstance(Tokens.Species s) { return tokenReg.NextAvailableInstance(s); }
+        public int NextAvailableInstance(To.Species s) { return tokenReg.NextAvailableInstance(s); }
 
-        public Token Create(object source, Tokens.Species species, Cell cell)
+        public Token Create(object source, To.Species species, Cell cell)
         {
             return tokenReg.Create(source, species, cell);
         }

@@ -1,53 +1,51 @@
-﻿using HOA.Tokens;
+﻿using HOA.To;
 using System;
+using System.Collections.Generic;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class Ability
     {
-        public static Ability Move(Unit parent, string name, Price price, Range range)
+        /// <summary>Arguments: price, range </summary>
+        public static Ability MovePath()
         {
-            Ability a = new Ability(parent, new AbilityArgs(name, Rank.Move, price));
-            a.desc = Scribe.Write("Move {0} to target cell.", a.sourceToken);
-            a.Aims = AimPlan.MovePath(a, range);
-            a.MainEffects = t =>
+            Ability a = new Ability("Move", Rank.Move);
+            //a.desc = Scribe.Write("Move {0} to target cell.", a.sourceToken);
+            a.Aims = AimPlan.MovePath(a, Range.b(0,1));
+            a.Update = Adjustments.Range0;
+            a.MainEffects = (arg, tar) =>
             {
-                foreach (Set<IEntity> s in t)
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(a.sourceToken, s[0] as Cell)));
+                Token mover = tar[0,0] as Token;
+                for (byte i = 1; i < tar.Count; i++)
+                {
+                    Cell c = tar[i,0] as Cell;
+                    EffectQueue.Add(Effect.Move(a, new EffectArgs(mover, c)));
+                }
             };
             return a;
         }
-        public static Ability Move(Unit parent, int rangeMax)
-        { return Move(parent, "Move", Price.Cheap, new Range(0, (short)rangeMax)); }
 
-
-        public static Ability MoveFocusBoost(Unit parent, string name, Range baseRange, int rangeBoostPerFocus, Rank rank = Rank.Move)
+        /// <summary>Arguments: price, range, rangeBoostPerFocus </summary>
+        public static Ability MovePathFocusBoost()
         {
-            Ability a = new Ability(parent, new AbilityArgs(name, rank, Price.Cheap, baseRange.min, baseRange.max, rangeBoostPerFocus));
-            a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)", a.sourceToken, a.values[2]);
-            a.Aims = AimPlan.MovePath(a, baseRange);
-            a.MainEffects = t =>
-            {
-                foreach (Set<IEntity> s in t)
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(a.sourceToken, s[0] as Cell)));
-            };
-            a.Adjust = () => a.Aims = AimPlan.MovePath(a, 
-                new Range((short)a.values[0], (short)(a.values[1] + a.sourceUnit.Focus)  ));
-            a.Unadjust = () => a.Aims = AimPlan.MovePath(a, new Range((short)a.values[0], (short)(a.values[1])));
+            Ability a = MovePath();
+            a.name = "Embark";
+            a.Update = Adjustments.FocusRangeBoost0;
             return a;
         }
 
-
-        public static Ability Dart(Unit parent, Range range)
+        /// <summary>Args: price, range</summary>
+        public static Ability MoveLine()
         {
-            Ability a = new Ability(parent, new AbilityArgs("Dart", Rank.Move, Price.Cheap));
-            a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += AimStage.MoveLine(a.Aims, range);
-            a.MainEffects = t =>
+            Ability a = new Ability("Dart", Rank.Move);
+//            a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
+            a.Aims += AimStage.MoveLine(a.Aims, Range.b(0,1));
+            a.Update = Adjustments.Range0;
+            a.MainEffects = (arg, tar) =>
             {
-                Cell start = a.sourceToken.Cell;
-                Cell finish = (Cell)t[0][0];
+                Cell start = arg.user.Cell;
+                Cell finish = tar[0,0] as Cell;
                 Set<Cell> line = new Set<Cell>();
                 int2 dir = Direction.FromCells(start, finish);
                 int length = Math.Max(
@@ -60,19 +58,25 @@ namespace HOA.Abilities
                     line.Add(start);
                 }
                 foreach (Cell c in line)
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(a.sourceToken, c)));
+                    EffectQueue.Add(Effect.Move(a, new EffectArgs(arg.user, c)));
             };
             return a;
         }
 
-        public static Ability Teleport(Unit parent, string name, Price price, Predicate<IEntity> tokenFilter, Range toToken, Range fromToken)
+        /// <summary>Args: price, range, filter, int range2min, range2max </summary>
+        public static Ability Teleport()
         {
-            Ability a = new Ability(parent, new AbilityArgs(name, Rank.Special, price));
-            a.Aims += AimStage.AttackArc(a.Aims, tokenFilter, toToken);
-            a.Aims += AimStage.MoveArcOther(a.Aims, () => AbilityProcessor.targets[0][0] as Token, fromToken);
-            a.desc = Scribe.Write("Move {0} to Target cell.", a.Aims[0].filter);
-            a.MainEffects = t =>
-                EffectQueue.Add(Effect.TeleportStart(a, new EffectArgs(t[0][0] as Token, t[1][0] as Cell)));
+            Ability a = new Ability("Teleport", Rank.Special);
+            a.Aims += AimStage.AttackArc(a.Aims, Filter.Token, Range.b(0,1));
+            a.Aims += AimStage.MoveArcOther(a.Aims, () => AbilityProcessor.targets[0][0] as Token, Range.b(0,1));
+            a.Update = Adjustments.Range0 + Adjustments.Filter0 + Adjustments.Range1;
+            //a.desc = Scribe.Write("Move {0} to Target cell.", a.Aims[0].filter);
+            a.MainEffects = (arg, tar) =>
+            {
+                IEntity mover = tar[0, 0];
+                IEntity destination = tar[1, 0];
+                EffectQueue.Add(Effect.TeleportStart(a, new EffectArgs(mover, destination)));
+            };
             return a;
         }
     }

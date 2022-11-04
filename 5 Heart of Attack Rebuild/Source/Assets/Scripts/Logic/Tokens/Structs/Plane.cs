@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 { 
     /// <summary>
     /// Flag enum of Token planes.  None = 0.

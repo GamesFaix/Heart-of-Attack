@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public static class EffectQueue
@@ -21,7 +21,7 @@ namespace HOA.Abilities
             {
                 active = value;
                 string status = (value ? "activated" : "deactivated");
-                Debug.Log("EffectQueue {0}.", status);
+                Log.Debug("EffectQueue {0}.", status);
             }
         }
 
@@ -33,7 +33,7 @@ namespace HOA.Abilities
             {
                 pause = value;
                 string status = (value ? "paused" : "unpaused");
-                Debug.Log("EffectQueue {0}.", status);
+                Log.Debug("EffectQueue {0}.", status);
             }
         }
         
@@ -44,7 +44,7 @@ namespace HOA.Abilities
 
         public static void Load () 
         {
-            Debug.Log("EffectQueue created.");
+            Log.Start("EffectQueue created.");
             Updater.StepEvent += OnStep;
         }
 
@@ -68,13 +68,13 @@ namespace HOA.Abilities
 
         public static void Add(IEffect e) 
         {
-            Debug.Log("{0} added to EffectQueue.", e);
+            Log.Debug("{0} added to EffectQueue.", e);
             effects.Add(e); 
         }
 
         public static void Interrupt(IEffect e) 
         {
-            Debug.Log("{0} interrupting EffectQueue.", e);
+            Log.Debug("{0} interrupting EffectQueue.", e);
             effects.Insert(1, e); 
         }
     }

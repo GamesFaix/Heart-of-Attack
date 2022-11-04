@@ -2,9 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA.To;
 
-namespace HOA.Reference
+namespace HOA.Ref
 {
     public delegate Token TokenConstructor(object source);
 	
@@ -99,7 +99,7 @@ namespace HOA.Reference
             names.Add(Species.Water, "Water");
             names.Add(Species.Web, "Web");
 #if DEBUG
-            Debug.Log("Species names loaded: " + names.Keys.Count);
+            Log.Start("Species names loaded: " + names.Keys.Count);
 #endif
         }
         
@@ -183,7 +183,7 @@ namespace HOA.Reference
             constructors.Add(Species.Web, Obstacle.Web);
 
 #if DEBUG
-            Debug.Log("Species constructors loaded: " + constructors.Keys.Count);
+            Log.Start("Species constructors loaded: " + constructors.Keys.Count);
 #endif
         }
 
@@ -197,7 +197,7 @@ namespace HOA.Reference
                 templates.Add((Species)i, template);
             }
 #if DEBUG
-            Debug.Log("Species templates created: " + templates.Keys.Count);
+            Log.Start("Species templates created: " + templates.Keys.Count);
 #endif
         }
 	}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
     public delegate Set<IEntity> AimPattern(AimPatternArgs args);
 
@@ -12,7 +12,7 @@ namespace HOA.Abilities
             Set<IEntity> square = Square(args.center, args.range);
             return (square + Cell.Occupants) / args.filter;
         }
-        static Set<IEntity> Square(Cell start, Range range)
+        static Set<IEntity> Square(Cell start, Range<byte> range)
         {
             Set<IEntity> square = new Set<IEntity>();
             Cell c;
@@ -51,7 +51,7 @@ namespace HOA.Abilities
             }
             return (cells + Cell.Occupants) / args.filter;
         }
-        static Set<Set<IEntity>> Star(Cell center, Range range)
+        static Set<Set<IEntity>> Star(Cell center, Range<byte> range)
         {
             Set<Set<IEntity>> star = new Set<Set<IEntity>>();
 
@@ -103,7 +103,7 @@ namespace HOA.Abilities
 
         public static Set<IEntity> Path (AimPatternArgs args)
         {
-            Debug.Log("Aim.Path does not allow custom paths.");
+            Log.Debug("Aim.Path does not allow custom paths.");
             Set<IEntity> cells = new Set<IEntity>(args.center);
             Set<IEntity> thisRad = args.center.Neighbors;
             Set<IEntity> nextRad = new Set<IEntity>();

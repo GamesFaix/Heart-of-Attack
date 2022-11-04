@@ -14,7 +14,7 @@ namespace HOA
 
         static Updater()
         {
-            Debug.Log("Updater created.");
+            Log.Start("Updater created.");
         }
 
         public void Update() {
@@ -40,7 +40,7 @@ namespace HOA
             {
                 StepEvent(null, new BlankEventArgs());
 #if DEBUG
-                Debug.Log("Step [{0:f3}s]", Time.time);
+                Log.Debug("Step [{0:f3}s]", Time.time);
 #endif
             }
         }

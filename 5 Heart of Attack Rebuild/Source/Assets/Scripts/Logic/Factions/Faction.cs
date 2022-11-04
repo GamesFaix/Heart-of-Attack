@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA.To;
 using UnityEngine;
 
 namespace HOA 
@@ -29,8 +29,8 @@ namespace HOA
         {
             get
             {
-                Debug.Log("Not implemented.");
-                return Tokens.Species.None;
+                Log.Debug("Not implemented.");
+                return To.Species.None;
             }
         }
         /// <summary>
@@ -40,8 +40,8 @@ namespace HOA
         {
             get
             {
-                Debug.Log("Not implemented.");
-                return Tokens.Species.None;
+                Log.Debug("Not implemented.");
+                return To.Species.None;
             }
         }
         
@@ -84,11 +84,11 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0, 0, 1, 1), Color.white };
             Species[] species = new Species[5]
             {
-                Tokens.Species.Kabutomachine, 
-                Tokens.Species.Mawth, 
-                Tokens.Species.Carapace, 
-                Tokens.Species.Katandroid, 
-                Tokens.Species.SiliconHeart
+                To.Species.Kabutomachine, 
+                To.Species.Mawth, 
+                To.Species.Carapace, 
+                To.Species.Katandroid, 
+                To.Species.SiliconHeart
             };
             return new Faction(FactionEnum.Gearp, "G.E.A.R.P.", colors, species);
         }
@@ -102,12 +102,12 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0, 0.2f, 0, 1), new Color(0.8f, 0.8f, 0.8f, 1) };
             Species[] species = new Species[6]
             {
-                Tokens.Species.Decimatrix, 
-                Tokens.Species.Panopticannon, 
-                Tokens.Species.MeinSchutz, 
-                Tokens.Species.Demolitia, 
-                Tokens.Species.Mine, 
-                Tokens.Species.SteelHeart
+                To.Species.Decimatrix, 
+                To.Species.Panopticannon, 
+                To.Species.MeinSchutz, 
+                To.Species.Demolitia, 
+                To.Species.Mine, 
+                To.Species.SteelHeart
             };
             return new Faction(FactionEnum.Republic, "New Republic", colors, species);
         }
@@ -121,13 +121,13 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0.5f, 0.5f, 0.5f, 1), new Color(0.6f, 0.1f, 0.1f, 1) };
             Species[] species = new Species[7]
             {
-                Tokens.Species.Gargoliath, 
-                Tokens.Species.Rambuchet, 
-                Tokens.Species.Conflagragon, 
-                Tokens.Species.Ashes, 
-                Tokens.Species.Smashbuckler, 
-                Tokens.Species.Rook, 
-                Tokens.Species.StoneHeart
+                To.Species.Gargoliath, 
+                To.Species.Rambuchet, 
+                To.Species.Conflagragon, 
+                To.Species.Ashes, 
+                To.Species.Smashbuckler, 
+                To.Species.Rook, 
+                To.Species.StoneHeart
             };
             return new Faction(FactionEnum.Torridale, "Torridale", colors, species);
         }
@@ -141,11 +141,11 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0.7f, 0.5f, 0, 1), new Color(0, 0.2f, 0, 1) };
             Species[] species = new Species[5]
             {
-                Tokens.Species.Ultratherium, 
-                Tokens.Species.Metaterrainean, 
-                Tokens.Species.TalonedScout, 
-                Tokens.Species.Grizzly, 
-                Tokens.Species.FirHeart
+                To.Species.Ultratherium, 
+                To.Species.Metaterrainean, 
+                To.Species.TalonedScout, 
+                To.Species.Grizzly, 
+                To.Species.FirHeart
             };
             return new Faction(FactionEnum.Grove, "Forgotten Grove", colors, species);
         }
@@ -159,12 +159,12 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(1, 0.8f, 0, 1), Color.magenta };
             Species[] species = new Species[6]
             {
-              Tokens.Species.OldThreeHands, 
-              Tokens.Species.Reprospector, 
-              Tokens.Species.Piecemaker, 
-              Tokens.Species.RevolvingTom, 
-              Tokens.Species.Aperture, 
-              Tokens.Species.BrassHeart
+              To.Species.OldThreeHands, 
+              To.Species.Reprospector, 
+              To.Species.Piecemaker, 
+              To.Species.RevolvingTom, 
+              To.Species.Aperture, 
+              To.Species.BrassHeart
             };
             return new Faction(FactionEnum.Chrono, "Chrononistas", colors, species);
         }
@@ -178,13 +178,13 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0.3f, 0, 0.5f, 1), Color.green };
             Species[] species = new Species[7]
             {
-                Tokens.Species.BlackWinnow, 
-                Tokens.Species.ManTrap, 
-                Tokens.Species.Mycolonist, 
-                Tokens.Species.Beesassin, 
-                Tokens.Species.Lichenthrope, 
-                Tokens.Species.Web, 
-                Tokens.Species.SilkHeart
+                To.Species.BlackWinnow, 
+                To.Species.ManTrap, 
+                To.Species.Mycolonist, 
+                To.Species.Beesassin, 
+                To.Species.Lichenthrope, 
+                To.Species.Web, 
+                To.Species.SilkHeart
             };
             return new Faction(FactionEnum.Psycho, "Psycho Tropics", colors, species);
         }
@@ -198,11 +198,11 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0.4f, 0.8f, 1, 1), new Color(1, 0.8f, 0, 1) };
             Species[] species = new Species[5]
             {
-                Tokens.Species.DreamReaver, 
-                Tokens.Species.Priest, 
-                Tokens.Species.Arena, 
-                Tokens.Species.PrismGuard, 
-                Tokens.Species.GlassHeart
+                To.Species.DreamReaver, 
+                To.Species.Priest, 
+                To.Species.Arena, 
+                To.Species.PrismGuard, 
+                To.Species.GlassHeart
             };
             return new Faction(FactionEnum.Psilent, "The Psilent", colors, species);
         }
@@ -216,11 +216,11 @@ namespace HOA
             Color[] colors = new Color[2] { new Color(0.6f, 0.1f, 0.1f, 1), Color.black };
             Species[] species = new Species[5]
             {
-                Tokens.Species.Monolith, 
-                Tokens.Species.Gatecreeper, 
-                Tokens.Species.Necro, 
-                Tokens.Species.Recyclops, 
-                Tokens.Species.BloodHeart
+                To.Species.Monolith, 
+                To.Species.Gatecreeper, 
+                To.Species.Necro, 
+                To.Species.Recyclops, 
+                To.Species.BloodHeart
             };
             return new Faction(FactionEnum.Voidoid, "Voidoids", colors, species);
         }

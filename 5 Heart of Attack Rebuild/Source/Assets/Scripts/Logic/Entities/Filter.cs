@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA.To;
 
 namespace HOA
 {
@@ -24,7 +24,7 @@ namespace HOA
         static Predicate<IEntity> terrain = (t) => { return (t is Terrain); };
         public static Predicate<IEntity> Terrain { get { return terrain; } }
         
-        static Predicate<IEntity> king = Rank(Tokens.Rank.King, true);
+        static Predicate<IEntity> king = Rank(To.Rank.King, true);
         public static Predicate<IEntity> King { get { return token + king; } }
         
         static Predicate<IEntity> heart = (t) => { return ((Token)t).heart; };
@@ -72,7 +72,7 @@ namespace HOA
                 return (match == b);
             };
         }
-        public static Predicate<IEntity> Rank(Tokens.Rank rank, bool b)
+        public static Predicate<IEntity> Rank(To.Rank rank, bool b)
         {
             return (t) =>
             {

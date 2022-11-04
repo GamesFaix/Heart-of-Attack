@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Abilities;
+using HOA.To;
+using HOA.Ab;
 
 namespace HOA 
 { 
 
 	public partial class Unit : Token
 	{
-        public Tokens.Rank rank { get; set; }
+        public To.Rank rank { get; set; }
         
         private Wallet wallet;
         public void Charge(Price p) { wallet.Charge(p); }
@@ -26,7 +26,7 @@ namespace HOA
 
         public Arsenal arsenal { get; private set; }
 
-        public Unit (object source, Species species, Tokens.Rank rank, Species remains = Species.Corpse) 
+        public Unit (object source, Species species, To.Rank rank, Species remains = Species.Corpse) 
             : base (source, species)
         {
             this.rank = rank;
@@ -42,6 +42,15 @@ namespace HOA
         public void StatSet(object source, Stats stat, int n) { }
         public void StatSetMax(object source, Stats stat, int n) { }
         public bool Damage(object source, int n) { return vitality.Damage(n); }
+
+        private void Learn(Ability ability, AbilityArgs args)
+        {
+            if (ability == null || args == null)
+                throw new ArgumentNullException();
+            Ab.Closure a = new Ab.Closure(this, ability, args);
+            arsenal.Add(a);
+        }
+
 
         public void OnTurnStart() { }
         public void OnTurnEnd() { }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Abilities;
+using HOA.Ab;
 
-namespace HOA.Tokens 
+namespace HOA.To 
 {
     public partial class Timer
     {
@@ -38,7 +38,7 @@ namespace HOA.Tokens
             return t;
         }
 
-        public static Timer ArcticGust(IEffect source, Unit parent, int modifier, Ability ability)
+        public static Timer ArcticGust(IEffect source, Unit parent, int modifier, Closure ability)
         {
             Timer t = new Timer(source, parent, modifier, ability);
             t.Name = "Arctic Gusted";
@@ -47,8 +47,9 @@ namespace HOA.Tokens
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                if (t.ThisUnit.arsenal.Move != null)
-                    t.ThisUnit.arsenal.Move.Aims[0].range.max += (short)t.Modifier;
+                Closure c = t.ThisUnit.arsenal.Move;
+                if (c != null)
+                    c.ability.Aims[0].range.max += (byte)t.Modifier;
             };
             return t;
         }
@@ -153,7 +154,7 @@ namespace HOA.Tokens
             return t;
         }
 
-        public static Timer Petrified(IEffect source, Unit parent, Ability ability)
+        public static Timer Petrified(IEffect source, Unit parent, Closure ability)
         {
             Timer t = new Timer(source, parent, ability);
             t.Name = "Petrified";

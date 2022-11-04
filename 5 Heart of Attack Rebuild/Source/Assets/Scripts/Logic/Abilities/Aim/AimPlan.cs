@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class AimPlan : IEnumerable<AimStage>, ISourced

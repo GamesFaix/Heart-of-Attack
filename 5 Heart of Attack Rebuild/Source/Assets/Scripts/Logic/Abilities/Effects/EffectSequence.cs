@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
     public partial class EffectSequence : NestedList<Effect>, IEffect, ISourced, ISourceRestricted
     {
@@ -78,8 +78,8 @@ namespace HOA.Abilities
                     typeof(Effect),
                     typeof(EffectSequence),
                     typeof(Set<Effect>),
-                    typeof(Tokens.Timer), 
-                    typeof(Tokens.Sensor),
+                    typeof(To.Timer), 
+                    typeof(To.Sensor),
                     typeof(Token),
                     typeof(Unit),
                     typeof(Obstacle),

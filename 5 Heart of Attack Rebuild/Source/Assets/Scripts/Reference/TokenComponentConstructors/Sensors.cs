@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Abilities;
+using HOA.Ab;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
 
     public partial class Sensor
@@ -63,13 +63,13 @@ namespace HOA.Tokens
             s.OnOtherEnter = (t) =>
             {
                 Effect e = Effect.AddTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Bombing(e, t as Unit);
+                e.args.component = Timer.Bombing(e, t as Unit);
                 EffectQueue.Add(e);
             };
             s.OnOtherExit = (t) =>
             {
                 Effect e = Effect.RemoveTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Bombing(e, t as Unit);
+                e.args.component = Timer.Bombing(e, t as Unit);
                 EffectQueue.Add(e);
             };
             return s;
@@ -104,7 +104,7 @@ namespace HOA.Tokens
             s.OnOtherEnter = (t) =>
             {
                 Effect e = Effect.AddTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Cursed(e, t as Unit);
+                e.args.component = Timer.Cursed(e, t as Unit);
                 EffectQueue.Add(e);
                 if (!Session.Active.paused)
                     EffectQueue.Interrupt(Effect.Damage(s, new EffectArgs(t, 2)));
@@ -113,7 +113,7 @@ namespace HOA.Tokens
             s.OnOtherExit = (t) =>
             {
                 Effect e = Effect.RemoveTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Cursed(e, t as Unit);
+                e.args.component = Timer.Cursed(e, t as Unit);
                 EffectQueue.Add(e);
             };
 
@@ -135,7 +135,7 @@ namespace HOA.Tokens
             Sensor s = new Sensor(thisToken, "Exhaust Sensor", 
                 Filter.Plane(Plane.Ground|Plane.Air, true) + Filter.Unit, 
                 Filter.Plane(Plane.Ground|Plane.Air, true));
-            s.Desc = Scribe.Write("Stops Ground and Air Tokens." +
+            s.Desc = Scribe.Write("Stops Ground and Air To." +
                 "\nGround and Air Units entering Cell take 5 damage." +
                 "\nGround and Air Units take 5 damage if in Cell at the end of their turn.");
             s.OnThisEnter = (c) =>
@@ -150,7 +150,7 @@ namespace HOA.Tokens
             s.OnOtherEnter = (t) =>
             {
                 Effect e = Effect.AddTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Exhaust(e, t as Unit);
+                e.args.component = Timer.Exhaust(e, t as Unit);
                 EffectQueue.Add(e);
                 if (!Session.Active.paused)
                     EffectQueue.Interrupt(Effect.Damage(s, new EffectArgs(t, 5)));
@@ -159,7 +159,7 @@ namespace HOA.Tokens
             s.OnOtherExit = (t) =>
             {
                 Effect e = Effect.RemoveTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Exhaust(e, t as Unit);
+                e.args.component = Timer.Exhaust(e, t as Unit);
                 EffectQueue.Add(e);
             };
             return s;
@@ -188,7 +188,7 @@ namespace HOA.Tokens
             Sensor s = new Sensor(thisToken, "Lava Sensor", 
                 Filter.Plane(Plane.Ground, true) + Filter.Unit,
                 Filter.Plane(Plane.Ground, true));
-            s.Desc = Scribe.Write("Stops Ground Tokens." +
+            s.Desc = Scribe.Write("Stops Ground To." +
                 "\nGround Units entering Cell take 7 damage." +
                 "\nGround Units take 7 damage if in Cell at the end of their turn.");
 
@@ -205,7 +205,7 @@ namespace HOA.Tokens
             s.OnOtherEnter = (t) =>
             {
                 Effect e = Effect.AddTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Incineration(e, t as Unit);
+                e.args.component = Timer.Incineration(e, t as Unit);
                 EffectQueue.Add(e);
                 
                 if (!Session.Active.paused && Filter.UnitDest.AllTrue(t))
@@ -215,7 +215,7 @@ namespace HOA.Tokens
             s.OnOtherExit = (t) =>
             {
                 Effect e = Effect.RemoveTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.Incineration(e, t as Unit);
+                e.args.component = Timer.Incineration(e, t as Unit);
                 EffectQueue.Add(e);
             };
             return s;
@@ -282,7 +282,7 @@ namespace HOA.Tokens
             Sensor s = new Sensor(thisToken, "Water Sensor", 
                 Filter.Plane(Plane.Ground, true),
                 Filter.Plane(Plane.Ground, true));
-            s.Desc = Scribe.Write("Stops Ground Tokens." +
+            s.Desc = Scribe.Write("Stops Ground To." +
                 "\nGround Units take 5 damage if in Cell at the end of their turn.");
             s.OnThisEnter = (c) =>
             {
@@ -296,7 +296,7 @@ namespace HOA.Tokens
             s.OnOtherEnter = (t) =>
             {
                 Effect e = Effect.AddTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.WaterLogged(e, t as Unit);
+                e.args.component = Timer.WaterLogged(e, t as Unit);
                 EffectQueue.Add(e);
                 if (!Session.Active.paused && Filter.UnitDest.AllTrue(t))
                     EffectQueue.Interrupt(Effect.FireInitial(s, new EffectArgs(t, 7)));
@@ -305,7 +305,7 @@ namespace HOA.Tokens
             s.OnOtherExit = (t) =>
             {
                 Effect e = Effect.RemoveTimer(s, new EffectArgs(t));
-                e.arg.component = Timer.WaterLogged(e, t as Unit);
+                e.args.component = Timer.WaterLogged(e, t as Unit);
                 EffectQueue.Add(e);
             };
             return s;
@@ -316,7 +316,7 @@ namespace HOA.Tokens
             Sensor s = new Sensor(thisToken, "Web Sensor", 
                 Filter.Plane(Plane.Tall, true) + Filter.Unit,
                 Filter.Plane(Plane.Tall, true));
-            s.Desc = Scribe.Write("Stops Ground and Air Tokens." +
+            s.Desc = Scribe.Write("Stops Ground and Air To." +
                 "\nGround and Air Units in Cell have a Move Range of 1.");
             s.OnOtherEnter = (t) => 
             { 
@@ -331,10 +331,10 @@ namespace HOA.Tokens
 
                 foreach (Token t in list)
                 {
-                    Ability move = (t as Unit).arsenal.Move;
+                    Closure move = (t as Unit).arsenal.Move;
                     if (move != null)
                     {
-                        move.Aims[0].range = (Range)list[t];
+                        move.ability.Aims[0].range = (Range<byte>)list[t];
                         list.Remove(t);
                     }
                 }
@@ -342,11 +342,11 @@ namespace HOA.Tokens
 
             s.OnOtherExit = (t) =>
             {
-                Ability move = (t as Unit).arsenal.Move;
+                Closure move = (t as Unit).arsenal.Move;
                 if (move != null)
                 {
                     TrackList list = s.ThisToken.trackList;
-                    move.Aims[0].range = (Range)list[t];
+                    move.ability.Aims[0].range = (Range<byte>)list[t];
                     list.Remove(t);
                 }
             };

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Tokens 
+namespace HOA.To 
 { 
     public class Identity : TokenComponent
 	{
@@ -13,7 +13,7 @@ namespace HOA.Tokens
         public Identity(Source source, Token thisToken, Species species)
             : base (thisToken)
         {
-            Name = Reference.Tokens.names[species];
+            Name = Ref.Tokens.names[species];
             Species = species;
             if (Session.Active != null) 
                 Instance = Session.Active.NextAvailableInstance(species);

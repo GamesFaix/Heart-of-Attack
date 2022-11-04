@@ -1,10 +1,8 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 { 
-    /// <summary>
-    /// Simple enum of Unit stats. None = 0.
-    /// </summary>
+    /// <summary> Simple enum of Unit stats. None = 0. </summary>
     public enum Stats : byte
 	{
         None = 0,

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Abilities;
+using HOA.To;
+using HOA.Ref;
+using HOA.Ab;
 
 namespace HOA 
 {
@@ -10,39 +11,34 @@ namespace HOA
     {
         public static Unit Kabutomachine(object source)
         {
-            Unit u = new Unit(source, Species.Kabutomachine, Tokens.Rank.King, Species.SiliconHeart);
+            Unit u = new Unit(source, Species.Kabutomachine, To.Rank.King, Species.SiliconHeart);
             u.body = new Body(u, Plane.Air);
             u.vitality = new Vitality(u, 75);
             u.watch = new Watch(u, 4);
-            u.arsenal.Add(
-                Ability.Dart(u, new Range(0, 5)),
-                Ability.Focus(u),
-                Ability.Strike(u, 16),
-                Ability.Teleport(u, "Warp", new Price(1, 1),
-                    Filter.Owner(u.Owner, true) + Filter.Unit,
-                    new Range(0, 5), new Range(0, 5)),
-                //Ability.GammaBurst(u),
-                Ability.Create(u, Price.Cheap, Species.Katandroid),
-                Ability.Create(u, new Price(2, 1), Species.Carapace),
-                Ability.Create(u, new Price(2, 2), Species.Mawth)
-            );
+            u.Learn(Abilities.Dart, new AbilityArgs(u, Price.Cheap, Range.b(0, 5)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Strike, new AbilityArgs(u, Price.Cheap, 16));
+            u.Learn(Abilities.Teleport, new AbilityArgs(u, new Price(1,1), Range.b(0,5),
+                Filter.Owner(u.Owner, true) + Filter.Unit, Range.b(0,5)));
+            u.Learn(Abilities.Create, new AbilityArgs(u, Price.Cheap, Species.Katandroid));
+            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 1), Species.Carapace));
+            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 2), Species.Mawth));
+            //Ability.GammaBurst(u),
             return u;
         }
 
         public static Unit CarapaceInvader(object source)
         {
-            Unit u = new Unit(source, Species.Carapace, Tokens.Rank.Medium);
+            Unit u = new Unit(source, Species.Carapace, To.Rank.Medium);
             u.body = new Body(u, Plane.Ground);//Sensor.Carapace);
             u.vitality = Vitality.DefenseCap(u, 35, 2, 5);
             u.watch = new Watch(u, 4);
             u.wallet = Wallet.DefenseBoost(u, 2, 3);
-            u.arsenal.Add(
-				Ability.Move(u, 3),
-                Ability.Focus(u)//,
-				//Ability.Shock(u),
-				//Ability.Discharge(u)
-			);
-            /*u.Notes = () =>
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0, 3)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            //Ability.Shock(u),
+			//Ability.Discharge(u)
+			/*u.Notes = () =>
             {
                 return "All non-Carapace neighboring teammates add Carapace's Defense.";
             };*/
@@ -51,32 +47,28 @@ namespace HOA
 
         public static Unit Katandroid(object source)
         {
-            Unit u = new Unit(source, Species.Katandroid, Tokens.Rank.Light);
+            Unit u = new Unit(source, Species.Katandroid, To.Rank.Light);
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 25);
             u.watch = new Watch(u, 5);
-            u.arsenal.Add(
-				Ability.Move(u, 4),
-                Ability.Focus(u),
-				Ability.Strike(u, 8),
-				Ability.Sprint(u)//,
-				//Ability.LaserSpin(u)
-			);
+            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0, 4)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Strike, new AbilityArgs(u, Price.Cheap, 8));
+            u.Learn(Abilities.Sprint, new AbilityArgs(u, Price.Free, Range.b(0, 0), 1));
+			//Ability.LaserSpin(u)
             return u;
         }
 
         public static Unit Mawth(object source)
         {
-            Unit u = new Unit(source, Species.Mawth, Tokens.Rank.Heavy);
+            Unit u = new Unit(source, Species.Mawth, To.Rank.Heavy);
             u.body = new Body(u, Plane.Air);
             u.vitality = new Vitality(u, 55);
             u.watch = new Watch(u, 3);
-            u.arsenal.Add(
-				Ability.Dart(u, new Range(0,4)),
-                Ability.Focus(u)//,
-				//Ability.LaserShot(u),
-				//Ability.Bombard(u)
-			);
+			u.Learn(Abilities.Dart, new AbilityArgs(u, Price.Cheap, Range.b(0, 4)));
+            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+           	//Ability.LaserShot(u),
+			//Ability.Bombard(u)
             return u;
         }
     }

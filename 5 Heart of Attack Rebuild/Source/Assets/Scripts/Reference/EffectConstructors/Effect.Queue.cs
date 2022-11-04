@@ -1,6 +1,6 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class Effect
@@ -34,15 +34,15 @@ namespace HOA.Abilities
                 Session.Active.Queue.Shift(u, n);
                 if (n < 0)
                 {
-                    Debug.Log("{0} shifted up {1} slot(s) in the Queue.", u, n);
+                    Log.Game("{0} shifted up {1} slot(s) in the Queue.", u, n);
                     AVEffect.StatUp.Play(u);
                 }
                 else if (n > 0)
                 {
-                    Debug.Log("{0} shifted down {1} slot(s) in the Queue.", u, n);
+                    Log.Game("{0} shifted down {1} slot(s) in the Queue.", u, n);
                     AVEffect.StatDown.Play(u);
                 }
-                Debug.Log("{0} shifted down 0 slots in the Queue\n...or shifted up 0 slots.", u);
+                Log.Debug("{0} shifted down 0 slots in the Queue\n...or shifted up 0 slots.", u);
             };
             return e;
         }
@@ -53,7 +53,7 @@ namespace HOA.Abilities
             e.action = (a) =>
             {
                 Session.Active.Queue.Shuffle();
-                Debug.Log("{0} shuffled the Queue.", e.source.Last<Token>());
+                Log.Game("{0} shuffled the Queue.", e.source.Last<Token>());
                 AVEffect.Shuffle.PlayNonLocal();
             };
             return e;

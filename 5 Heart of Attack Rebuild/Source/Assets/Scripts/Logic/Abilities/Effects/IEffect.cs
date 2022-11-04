@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public interface IEffect

@@ -57,7 +57,7 @@ namespace HOA
 #endif
             }
 #if DEBUG
-            Debug.Log(Size + " Board created (" + cellCount + " cells)");
+            Log.Session(Size + " Board created (" + cellCount + " cells)");
 #endif       
         }
 

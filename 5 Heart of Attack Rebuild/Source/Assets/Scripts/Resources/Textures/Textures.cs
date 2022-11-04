@@ -41,7 +41,7 @@ namespace HOA
         /// </summary>
         /// <param name="species"></param>
         /// <returns></returns>
-        public static Texture2D Thumbnails(HOA.Tokens.Species species)
+        public static Texture2D Thumbnails(HOA.To.Species species)
         {
             return HOA.Storage.Textures.Thumbnails.Archive[species];
         }

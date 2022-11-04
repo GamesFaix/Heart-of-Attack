@@ -1,20 +1,18 @@
 ﻿using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public class AbilityRequestEventArgs : EventArgs
     {
-        public object source { get; private set; }
-        public Ability ability { get; private set; }
-        public AbilityArgs args { get; private set; }
+        public Closure closure { get; private set; }
+        public Ability ability { get { return closure.ability; } }
+        public AbilityArgs args { get {return closure.args;} }
         public bool cancel { get; private set; }
 
-        public AbilityRequestEventArgs(Ability ability, AbilityArgs args, bool cancel = false)
+        public AbilityRequestEventArgs(Closure closure, bool cancel = false)
         {
-            this.source = source;
-            this.ability = ability;
-            this.args = args;
+            this.closure = closure;
             this.cancel = cancel;
         }
     }

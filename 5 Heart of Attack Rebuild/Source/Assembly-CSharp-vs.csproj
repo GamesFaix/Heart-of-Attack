@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6DA65D06-F538-08F7-C1A5-F91A24FD035C}</ProjectGuid>
+	<ProjectGuid>{78A47851-48FA-5A16-EAF0-1058F996BB8F}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -69,9 +69,12 @@
      <Compile Include="Assets\Scripts\Logic\Abilities\Events\TargetSelectionRequestEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\Ability.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityClosure.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityProcessor.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\Adjustments.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\Price.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\Rank.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\UsabilityTest.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Direction.cs" />
@@ -93,10 +96,10 @@
      <Compile Include="Assets\Scripts\Logic\Factions\Faction.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\FactionEnum.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Closure.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Closure2.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Exceptions.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Functionizer.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Log.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Range.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Scribe.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\StringBuilderExtensionMethods.cs" />
@@ -131,18 +134,16 @@
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stat.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stats.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\TokenFlags.cs" />
-     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Debug.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Math.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Random.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Time.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Updater.cs" />
      <Compile Include="Assets\Scripts\Model\GameObjectExtensionMethods.cs" />
+     <Compile Include="Assets\Scripts\Reference\Abilities.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Attack.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Create.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Move.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Manual.cs" />
-     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Attack.cs" />
-     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Create.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Move.cs" />
      <Compile Include="Assets\Scripts\Reference\EffectConstructors\Effect.Damage.cs" />
      <Compile Include="Assets\Scripts\Reference\EffectConstructors\Effect.Move.cs" />

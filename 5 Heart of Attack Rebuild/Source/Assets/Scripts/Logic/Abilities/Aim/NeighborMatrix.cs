@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public class NeighborMatrix : Matrix<Cell>
@@ -26,12 +26,12 @@ namespace HOA.Abilities
 
             if (!Size.Contains(start))
             {
-                Debug.Log("NeighborMatrix.IndexClockwise: Start cell not in matrix.");
+                Log.Debug("NeighborMatrix.IndexClockwise: Start cell not in matrix.");
                 return false;
             }
             else if (x == 1 && y == 1)
             {
-                Debug.Log("NeighborMatrix.IndexClockwise: Cannot start at center.");
+                Log.Debug("NeighborMatrix.IndexClockwise: Cannot start at center.");
                 return false;
             }
             else
@@ -56,12 +56,12 @@ namespace HOA.Abilities
 
             if (!Size.Contains(start))
             {
-                Debug.Log("NeighborMatrix.IndexCounter: Start cell not in matrix.");
+                Log.Debug("NeighborMatrix.IndexCounter: Start cell not in matrix.");
                 return false;
             }
             else if (x == 1 && y == 1)
             {
-                Debug.Log("NeighborMatrix.IndexCounter: Cannot start at center.");
+                Log.Debug("NeighborMatrix.IndexCounter: Cannot start at center.");
                 return false;
             }
             else
@@ -84,12 +84,12 @@ namespace HOA.Abilities
 
             if (!Contains(start))
             {
-                Debug.Log("NeighborMatrix.CellClockwise: Start cell not in Matrix.");
+                Log.Debug("NeighborMatrix.CellClockwise: Start cell not in Matrix.");
                 return false;
             }
             else if (start == this[new index2(1, 1)])
             {
-                Debug.Log("NeighborMatrix.CellClockwise: Cannot start at center.");
+                Log.Debug("NeighborMatrix.CellClockwise: Cannot start at center.");
                 return false;
             }
             else
@@ -112,12 +112,12 @@ namespace HOA.Abilities
 
             if (!Contains(start))
             {
-                Debug.Log("NeighborMatrix.CellCounter: Start cell not in Matrix.");
+                Log.Debug("NeighborMatrix.CellCounter: Start cell not in Matrix.");
                 return false;
             }
             else if (start == this[new index2(1, 1)])
             {
-                Debug.Log("NeighborMatrix.CellCounter: Cannot start at center.");
+                Log.Debug("NeighborMatrix.CellCounter: Cannot start at center.");
                 return false;
             }
             else
@@ -150,7 +150,7 @@ namespace HOA.Abilities
                     clockwise = false;
             else
             {
-                Debug.Log("NeighborMatrix.Ring: Second cell invalid.");
+                Log.Debug("NeighborMatrix.Ring: Second cell invalid.");
                 return ring;
             }
 

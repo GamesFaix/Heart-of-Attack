@@ -1,5 +1,5 @@
 ﻿
-namespace HOA.Tokens
+namespace HOA.To
 {
 
     public class Wallet : TokenComponent

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Tokens
+namespace HOA.To
 { 
     public class TokenRegistry : SessionComponent
     {
@@ -23,9 +23,9 @@ namespace HOA.Tokens
 
         public Token Create(object source, Species species, Cell cell)
         {
-            if (HOA.Reference.Tokens.templates[species].CanEnter(cell))
+            if (HOA.Ref.Tokens.templates[species].CanEnter(cell))
             {
-                Token newToken = HOA.Reference.Tokens.constructors[species](source);
+                Token newToken = HOA.Ref.Tokens.constructors[species](source);
                 newToken.Enter(cell);
                 return newToken;
             }

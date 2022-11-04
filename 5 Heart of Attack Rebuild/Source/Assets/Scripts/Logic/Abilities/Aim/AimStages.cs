@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 	
 
@@ -14,42 +14,43 @@ namespace HOA.Abilities
             return a;
         }
 
-        public static AimStage CreateNeighbor(AimPlan plan, Tokens.Species species)
+        public static AimStage CreateNeighbor(AimPlan plan, To.Species species)
         {
-            return new AimStage(plan, AimPatterns.Neighbor, Filter.Cell, () => Reference.Tokens.templates[species]);
+            return new AimStage(plan, AimPatterns.Neighbor, Filter.Cell, () => Ref.Tokens.templates[species]);
         }
 
-        public static AimStage CreateNeighborMulti(AimPlan plan, Tokens.Species species, Range count)
+        public static AimStage CreateNeighborMulti(AimPlan plan, To.Species species, Range<byte> count)
         {
-            AimStage a = new AimStage(plan, AimPatterns.Neighbor, Filter.Cell, () => Reference.Tokens.templates[species]);
+            AimStage a = new AimStage(plan, AimPatterns.Neighbor, Filter.Cell, () => Ref.Tokens.templates[species]);
             a.selectionCount = count;
             return a;
         }
 
-        public static AimStage CreateArc(AimPlan plan, Tokens.Species species, Range range)
+        public static AimStage CreateArc(AimPlan plan, To.Species species, Range<byte> range)
         {
-            return new AimStage(plan, AimPatterns.Arc, Filter.Cell, () => Reference.Tokens.templates[species], range);
+            return new AimStage(plan, AimPatterns.Arc, Filter.Cell, () => Ref.Tokens.templates[species], range);
         }
 
-        public static AimStage CreateDrop(AimPlan plan, Tokens.Species species)
+        public static AimStage CreateDrop(AimPlan plan, To.Species species)
         {
-            Predicate<IEntity> p = Filter.identity(plan.source.Last<Token>().Cell, true);
-            return new AimStage(plan, AimPatterns.Neighbor, p, () => Reference.Tokens.templates[species]);
+            Token user = plan.source.Last<Token>();
+            Predicate<IEntity> p = (user != null ? Filter.identity(user.Cell, true) : Filter.False);
+            return new AimStage(plan, AimPatterns.Neighbor, p, () => Ref.Tokens.templates[species]);
         }
 
-        public static AimStage CreateFree(AimPlan plan, Tokens.Species species, Range count)
+        public static AimStage CreateFree(AimPlan plan, To.Species species, Range<byte> count)
         {
-            AimStage a = new AimStage(plan, AimPatterns.Free, Filter.Cell, () => Reference.Tokens.templates[species]);
+            AimStage a = new AimStage(plan, AimPatterns.Free, Filter.Cell, () => Ref.Tokens.templates[species]);
             a.selectionCount = count;
             return a;
         }
 
-        public static AimStage CreateFree(AimPlan plan, Tokens.Species species) 
-        { return CreateFree(plan, species, new Range(1, 1)); }
+        public static AimStage CreateFree(AimPlan plan, To.Species species) 
+        { return CreateFree(plan, species, Range.b(1, 1)); }
 
-        public static AimStage CreateFreeManual(AimPlan plan, Tokens.Species species, Range count)
+        public static AimStage CreateFreeManual(AimPlan plan, To.Species species, Range<byte> count)
         {
-            AimStage a = new AimStage(plan, AimPatterns.Free, Filter.Cell, () => Reference.Tokens.templates[species], () => null);
+            AimStage a = new AimStage(plan, AimPatterns.Free, Filter.Cell, () => Ref.Tokens.templates[species], () => null);
             a.selectionCount = count;
             return a;
         }
@@ -66,13 +67,13 @@ namespace HOA.Abilities
             return a;
         }
 
-        public static AimStage MoveLine(AimPlan plan, Range range)
+        public static AimStage MoveLine(AimPlan plan, Range<byte> range)
         {
             AimStage a = new AimStage(plan, AimPatterns.Line, Filter.Cell);
             a.range = range;
             return a;
         }
-        public static AimStage MoveArc(AimPlan plan, Range range)
+        public static AimStage MoveArc(AimPlan plan, Range<byte> range)
         {
             AimStage a = new AimStage(plan, AimPatterns.Arc, Filter.Cell);
             a.range = range;
@@ -80,7 +81,7 @@ namespace HOA.Abilities
         }
 
 
-        public static AimStage MoveArcOther(AimPlan plan, Func<Token> body, Range range)
+        public static AimStage MoveArcOther(AimPlan plan, Func<Token> body, Range<byte> range)
         {
             AimStage a = new AimStage(plan, AimPatterns.Arc, Filter.Cell, body, () => body().Cell);
             a.range = range;
@@ -95,14 +96,14 @@ namespace HOA.Abilities
         public static AimStage AttackNeighbor(AimPlan plan, Predicate<IEntity> filter)
         { return new AimStage(plan, AimPatterns.Neighbor, filter); }
 
-        public static AimStage AttackLine(AimPlan plan, Predicate<IEntity> filter, Range range)
+        public static AimStage AttackLine(AimPlan plan, Predicate<IEntity> filter, Range<byte> range)
         {
             AimStage a = new AimStage(plan, AimPatterns.Line, filter);
             a.range = range;
             return a;
         }
 
-        public static AimStage AttackArc(AimPlan plan, Predicate<IEntity> filter, Range range)
+        public static AimStage AttackArc(AimPlan plan, Predicate<IEntity> filter, Range<byte> range)
         {
             AimStage a = new AimStage(plan, AimPatterns.Arc, filter);
             a.range = range;

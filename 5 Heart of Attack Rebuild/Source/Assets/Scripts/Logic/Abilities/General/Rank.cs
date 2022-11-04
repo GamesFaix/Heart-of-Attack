@@ -1,4 +1,4 @@
-﻿namespace HOA.Abilities
+﻿namespace HOA.Ab
 {
     /// <summary> Ability types </summary>
     public enum Rank

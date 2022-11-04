@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
 
     public class Watch : TokenComponent

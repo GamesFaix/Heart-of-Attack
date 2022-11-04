@@ -1,8 +1,8 @@
 ﻿using HOA.Resources;
-using HOA.Tokens;
+using HOA.To;
 using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
 	public partial class Effect

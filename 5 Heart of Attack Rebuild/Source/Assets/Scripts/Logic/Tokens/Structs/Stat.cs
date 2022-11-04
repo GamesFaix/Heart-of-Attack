@@ -1,48 +1,30 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
     public partial class Stat : IEquatable<Stat>, ISourced
     {
         
         #region Properties
         public Source source { get; private set; }
-        /// <summary>
-        /// Name of stat
-        /// </summary>
+        /// <summary> Name of stat  </summary>
         public string Name { get; private set; }
-        /// <summary>
-        /// Unit stat belongs to
-        /// </summary>
+        /// <summary> Unit stat belongs to </summary>
         public Unit Parent { get; private set; }
-        /// <summary>
-        /// Stat enum value
-        /// </summary>
+        /// <summary> Stat enum value </summary>
         public Stats Stats { get; private set; }
 
-        /// <summary>
-        /// Default or starting value
-        /// </summary>
+        /// <summary> Default or starting value </summary>
         public int Normal { get; private set; }
-        /// <summary>
-        /// Current value
-        /// </summary>
+        /// <summary>Current value </summary>
         public int Current { get; private set; }
-        /// <summary>
-        /// Min value, enforced by Clamp()
-        /// </summary>
+        /// <summary>  Min value, enforced by Clamp() </summary>
         public int Min { get; private set; }
-        /// <summary>
-        /// Max value, enforced by Clamp()
-        /// </summary>
+        /// <summary>  Max value, enforced by Clamp() </summary>
         public int Max { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary> </summary>
         public int Modifier { get; private set; }
-        /// <summary>
-        /// Used to invert display for negative effects
-        /// </summary>
+        /// <summary> Used to invert display for negative effects </summary>
         public bool Debuff { get; private set; }
 
         #endregion
@@ -183,7 +165,7 @@ namespace HOA.Tokens
         /// <returns></returns>
         public override int GetHashCode()
         {
-            Debug.Log("Default hashcode.");
+            Log.Debug("Default hashcode.");
             return base.GetHashCode();
         }
 

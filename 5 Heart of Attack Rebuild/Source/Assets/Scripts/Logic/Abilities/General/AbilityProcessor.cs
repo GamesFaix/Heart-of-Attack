@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public static class AbilityProcessor
     {
-        static Ability pending;
+        static Closure pending;
         static Set<IEntity> options, selection;
         public static NestedList<IEntity> targets { get; private set; }
         static bool cancel;
@@ -15,7 +15,7 @@ namespace HOA.Abilities
         {
             GUI.AbilityRequester.AbilityRequestEvent += OnAbilityRequest;
             //waitTime = 2000;
-            Debug.Log("AbilityProcessor subscribed to AbilityRequester.AbilityReqeustEvent.");
+            Log.Start("AbilityProcessor subscribed to AbilityRequester.AbilityReqeustEvent.");
         }
 
         static void Reset()
@@ -30,17 +30,17 @@ namespace HOA.Abilities
 
         static void OnAbilityRequest(object sender, AbilityRequestEventArgs args)
         {
-            pending = args.ability;
+            pending = args.closure;
             string msg;
             if (!pending.Usable(out msg))
             { 
-                Debug.Log(msg);
+                Log.Game(msg);
                 Reset();
             }
 
-            pending.Adjust();
+            pending.Update();
             targets = new NestedList<IEntity>();
-            foreach (AimStage stage in pending.Aims)
+            foreach (AimStage stage in pending)
             {
                 options = stage.FindOptions();
                 TargetSelectionRequestPublish(sender, options, stage.selectionCount);
@@ -50,7 +50,7 @@ namespace HOA.Abilities
                     targets.AddToEnd(selection);
                 else
                 {
-                    Debug.Log("No legal targets.");
+                    Log.Game("No legal targets.");
                     Reset();
                     return;
                 }
@@ -60,24 +60,24 @@ namespace HOA.Abilities
         
         public static event EventHandler<TargetSelectionRequestEventArgs> TargetSelectionRequestEvent;
 
-        public static void TargetSelectionRequestPublish(object sender, Set<IEntity> options, Range selectionCount)
+        public static void TargetSelectionRequestPublish(object sender, Set<IEntity> options, Range<byte> selectionCount)
         {
             if (TargetSelectionRequestEvent != null)
             {
-                Debug.Log("{0} requests {1} target(s) be selected, out of {2} possible.", sender, selectionCount, options.Count); 
+                Log.Game("{0} requests {1} target(s) be selected, out of {2} possible.", sender, selectionCount, options.Count); 
                 TargetSelectionRequestEvent(sender,
                     new TargetSelectionRequestEventArgs(options, selectionCount));
             }
         }
 
-        static Set<IEntity> WaitForSelection(Set<IEntity> options, Range selectionCount)
+        static Set<IEntity> WaitForSelection(Set<IEntity> options, Range<byte> selectionCount)
         {
-            Debug.Log("Waiting for {0} targets to be chosen.", selectionCount);
+            Log.Debug("Waiting for {0} targets to be chosen.", selectionCount);
             float start = (float)Time.time;
             //while (Time.Since(start) < waitTime)
             for (short i=0; i<short.MaxValue; i++)
             {
-                Debug.Log("{0}ms since wait start.", Time.Since(start));
+                Log.Debug("{0}ms since wait start.", Time.Since(start));
                 if (cancel)
                 {
                     Reset();
@@ -85,18 +85,18 @@ namespace HOA.Abilities
                 }
                 
                 if (selection != null)
-                    if (selectionCount.Contains(selection.Count))
+                    if (selectionCount.Contains((byte)selection.Count))
                     {
-                        Debug.Log("Selection accepted.");
+                        Log.Debug("Selection accepted.");
                         return selection;
                     }
                     else
                     {
-                        Debug.Log("Invalid number of targets selected.");
+                        Log.Debug("Invalid number of targets selected.");
                         cancel = true;
                     }
             }
-            Debug.Log("Wait over.");
+            Log.Debug("Wait over.");
             return null;
         }
 
@@ -106,7 +106,7 @@ namespace HOA.Abilities
             foreach (IEntity e in args.Selection)
                 if (!options.Contains(e))
                 {
-                    Debug.Log("Illegal selection!");
+                    Log.Game("Illegal selection!");
                     return;
                 }
             selection = args.Selection;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HOA.Resources;
 
-namespace HOA.Abilities 
+namespace HOA.Ab 
 {
 	
     public partial class Effect
@@ -15,6 +15,7 @@ namespace HOA.Abilities
             {
                 Token newToken = Session.Active.Create(e, args.species, args.cell);
                 AVEffect.Birth.Play(newToken);
+                Log.Game("{0} created {1} in {2}.", source, newToken, newToken.Cell);
                 if (args.effectConstructor != null)
                     EffectQueue.Interrupt(args.effectConstructor(source, new EffectArgs(newToken)));
             };
@@ -77,7 +78,7 @@ namespace HOA.Abilities
                 foreach (Token t in args.token.Owner.Tokens)
                     effects.Add(Effect.SetOwner(source, new EffectArgs(t)));
                 AVEffect.GetHeart.Play(args.token);
-                Debug.Log("{0} acquired the {1}", e.source.Last<Player>(), args.token);
+                Log.Game("{0} acquired the {1}", e.source.Last<Player>(), args.token);
                 effects.Add(Effect.DestroyCleanUp(e.source, args));
                 EffectQueue.Add(effects);
             };

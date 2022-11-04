@@ -1,4 +1,4 @@
-﻿namespace HOA.Reference
+﻿namespace HOA.Ref
 {
     public static class Main
     {
@@ -6,10 +6,11 @@
         {
             Factions.Load();
             Players.Load();
-            HOA.Tokens.Arsenal.Load();
+            HOA.To.Arsenal.Load();
+            Abilities.Load(); 
             Tokens.Load();
             //GUI.AbilityRequester.Load();
-            Abilities.AbilityProcessor.Load();
+            Ab.AbilityProcessor.Load();
             GUI.TargetSelector.Load();
         }
     }

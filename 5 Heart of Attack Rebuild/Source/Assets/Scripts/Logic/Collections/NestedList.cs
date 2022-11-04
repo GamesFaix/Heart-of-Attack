@@ -121,6 +121,7 @@ namespace HOA
         #region Iterators/Indexers
 
         public IList<T> this[int index] { get { return mainList[index]; } }
+        public T this[int index, int subIndex] { get { return this[index][subIndex]; } }
         public T this[index2 index] { get { return this[index.x][index.y]; } }
 
         public IEnumerator<IList<T>> GetEnumerator()

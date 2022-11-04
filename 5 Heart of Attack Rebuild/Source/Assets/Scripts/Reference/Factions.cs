@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HOA.Reference
+namespace HOA.Ref
 {
     public static class Factions
     {
@@ -21,15 +21,15 @@ namespace HOA.Reference
 
 #if DEBUG
             int factionCount = factions.Keys.Count;
-            Debug.Log(factionCount + " factions loaded:");
+            Log.Start(factionCount + " factions loaded:");
             foreach (Faction f in factions.Values)
             {
                 string debug = "  " + f.Name + "(";
-                foreach (Tokens.Species s in f.Species)
+                foreach (To.Species s in f.Species)
                     debug += s.ToString() + ", ";
                 debug += "King: " + f.King.ToString() + ", ";
                 debug += "Heart: " + f.Heart.ToString() + ")";
-                Debug.Log(debug);
+                Log.Start(debug);
             }
 #endif
         }

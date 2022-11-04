@@ -16,7 +16,7 @@ namespace HOA
             {
                 List<FactionEnum> free = new List<FactionEnum>();
 
-                foreach (Faction f in Reference.Factions.factions.Values)
+                foreach (Faction f in Ref.Factions.factions.Values)
                     if (!Taken.Contains(f.FactionEnum))
                         free.Add(f.FactionEnum);
 
@@ -31,7 +31,7 @@ namespace HOA
             {
                 string[] names = new string[Free.Count];
                 for (int i = 0; i < names.Length; i++)
-                    names[i] = Reference.Factions.factions[Free[i]] + "";
+                    names[i] = Ref.Factions.factions[Free[i]] + "";
                 return names;
             }
         }
@@ -47,7 +47,7 @@ namespace HOA
         public Faction Take(FactionEnum f)
         {
             Taken.Add(f);
-            return Reference.Factions.factions[f];
+            return Ref.Factions.factions[f];
         }
         
         /// <summary>Removes faction from Taken list.</summary>

@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Abilities;
-using HOA.Tokens;
+using HOA.Ab;
+using HOA.To;
 using HOA.GUI;
 
 namespace HOA { 
@@ -19,23 +19,25 @@ namespace HOA {
         private void Start()
         {
 #if DEBUG 
-            Debug.Log("Program started.");
+            Log.Load();
+            Log.Start("Program started.");
 #endif
             gameObject.AddComponent("Updater");
-            Abilities.EffectQueue.Load();
+            Ab.EffectQueue.Load();
             LoadAudioSystem();
             LoadGUISystem();            
-            Reference.Main.Load();
+            Ref.Main.Load();
 
             session = new Session();
 #if DEBUG
             session.AutoPopulate();
             session.CreateBoard(new size2(10, 10));
-            AbilityRequester.AbilityRequestPublish(Source.Force,
-                Ability.ManualCreate(Species.Demolitia);
-            AbilityRequester.AbilityRequestPublish(Source.Force,
-                Ability.ManualCreate(Species.Tree);
-            //Debug.Log(Session.Active.tokens.ToStringLong());
+            
+            AbilityRequester.AbilityRequestPublish(Source.Force, 
+                new Ab.Closure(Source.Force, Ref.Abilities._Create, 
+                    new AbilityArgs(null, Price.Free, Species.Demolitia)));
+            /*AbilityRequester.AbilityRequestPublish(Source.Force,
+                Ability.ManualCreate(Species.Tree);*/
 #endif
         }
 

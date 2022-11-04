@@ -1,5 +1,5 @@
 ﻿using System;
-using HOA.Abilities;
+using HOA.Ab;
 
 namespace HOA.GUI
 {
@@ -8,15 +8,15 @@ namespace HOA.GUI
         public static void Load()
         {
             AbilityProcessor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
-            Debug.Log("TargetSelector subscribed to AbilityProcessor.TargetSelectionRequestEvent.");
+            Log.Start("TargetSelector subscribed to AbilityProcessor.TargetSelectionRequestEvent.");
             TargetSelectionEvent += AbilityProcessor.OnTargetSelection;
-            Debug.Log("AbilityProcessor subscribed to TargetSelector.TargetSelectionEvent.");
+            Log.Start("AbilityProcessor subscribed to TargetSelector.TargetSelectionEvent.");
         }
 
 
         public static void OnTargetSelectionRequest(object sender, TargetSelectionRequestEventArgs args)
         {
-            Debug.Log("TargetSelector.OnTargetSelectionRequest temporarily short-circuited.");
+            Log.Debug("TargetSelector.OnTargetSelectionRequest temporarily short-circuited.");
             Set<IEntity> selection = new Set<IEntity>();
             for (int i = 0; i < args.selectionCount.max; i++)
                 selection.Add(args.options[i]);
@@ -31,7 +31,7 @@ namespace HOA.GUI
                 throw new ArgumentNullException();
             if (TargetSelectionEvent != null)
             {
-                Debug.Log("{0} selects {1}.", sender, selection.ToStringLong());
+                Log.Game("{0} selects {1}.", sender, selection.ToStringLong());
                 TargetSelectionEvent(sender, new TargetSelectionEventArgs(selection));
                 
             }
@@ -42,7 +42,7 @@ namespace HOA.GUI
             if (TargetSelectionEvent != null)
             {
                 TargetSelectionEvent(null, new TargetSelectionEventArgs(null, true));
-                Debug.Log("Entity selection cancelled.");
+                Log.Game("Target selection cancelled.");
             }
         }
 

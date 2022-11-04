@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HOA.Tokens;
+using HOA.To;
 
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
-    public class EffectArgs
+    public class EffectArgs : ClosureArgs
     {
         #region Properties
 
@@ -19,7 +19,7 @@ namespace HOA.Abilities
         public Stats stat { get; private set; }
         public Plane plane { get; private set; }
         public Player player { get; private set; }
-        public Ability ability { get; private set; }
+        public Closure ability { get; private set; }
         public EffectConstructor effectConstructor { get; private set; }
         public TokenComponent component { get; set; }
 
@@ -72,7 +72,7 @@ namespace HOA.Abilities
             : this(target, value)
         { this.stat = stat; }
 
-        public EffectArgs(IEntity target, Ability ability)
+        public EffectArgs(IEntity target, Closure ability)
             : this(target)
         { this.ability = ability; }
 

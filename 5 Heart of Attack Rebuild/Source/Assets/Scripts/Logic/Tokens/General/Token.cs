@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
-using HOA.Abilities;
+using HOA.To;
+using HOA.Ab;
 
 namespace HOA 
 { 
@@ -38,7 +38,7 @@ namespace HOA
         public bool trample { get { return Flags.ContainsAny(TokenFlags.Trample); } }
         public bool corpse { get { return Flags.ContainsAny(TokenFlags.Corpse); } }
         public bool heart { get { return Flags.ContainsAny(TokenFlags.Heart); } }
-        public bool king { get { return (this is Unit && (this as Unit).rank == Tokens.Rank.King); } }
+        public bool king { get { return (this is Unit && (this as Unit).rank == To.Rank.King); } }
 
         public void SetFlags(IEffect source, TokenFlags flags, bool b)
         {
@@ -64,8 +64,8 @@ namespace HOA
         public List<Timer> timers { get { return body.Timers; } }
 
 
-        public Tokens.Plane plane { get { return body.Plane; } }
-        public void SetPlane(Abilities.IEffect effect, Plane plane) 
+        public To.Plane plane { get { return body.Plane; } }
+        public void SetPlane(Ab.IEffect effect, Plane plane) 
         { 
             body.Plane = plane;
             RefreshCell();
@@ -91,9 +91,9 @@ namespace HOA
             Remains = Species.None;
         }
 
-        public void Destroy(Abilities.IEffect effect, bool normalRemains = true)
+        public void Destroy(Ab.IEffect effect, bool normalRemains = true)
         {
-            Debug.Log("Not implemented.");
+            Log.Debug("Not implemented.");
         }
 
         #endregion

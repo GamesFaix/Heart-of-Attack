@@ -1,7 +1,7 @@
 ﻿using System;
-using HOA.Abilities;
+using HOA.Ab;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
 
     public partial class Sensor : TokenComponent, ISourced

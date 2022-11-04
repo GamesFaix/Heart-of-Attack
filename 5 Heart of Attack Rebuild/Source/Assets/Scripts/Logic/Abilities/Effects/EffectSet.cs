@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
     public class EffectSet : Set<Effect>, IEffect
     {

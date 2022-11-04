@@ -1,4 +1,4 @@
-﻿namespace HOA.Abilities
+﻿namespace HOA.Ab
 {
     public partial class EffectSequence
     {
@@ -11,7 +11,7 @@
 
         public static EffectSequence Explosion(object source, EffectArgs args)
         {
-            Debug.Log("Not implemented.");
+            Log.Debug("Not implemented.");
             return null;
         }
     }

@@ -1,5 +1,5 @@
 ﻿
-namespace HOA.Tokens
+namespace HOA.To
 {
     /// <summary>
     /// Simple enum of Token species.  None = 0.

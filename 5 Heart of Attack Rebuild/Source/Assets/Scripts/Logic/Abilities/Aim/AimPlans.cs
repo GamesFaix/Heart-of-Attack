@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class AimPlan
     {
-        public static AimPlan MovePath(Ability ability, Range range)
+        public static AimPlan MovePath(Ability ability, Range<byte> range)
         {
             AimPlan plan = new AimPlan(ability);
+            plan += AimStage.Self(plan);
             if (range.max > 0)
                 plan += AimStage.MoveNeighbor(plan);
             for (int i = 1; i <= range.max; i++)
@@ -15,9 +16,9 @@ namespace HOA.Abilities
             for (int i = 0; i < plan.Count; i++)
             {
                 if (i < range.min)
-                    plan[i].selectionCount = new Range(1, 1);
+                    plan[i].selectionCount = Range.b(1, 1);
                 else
-                    plan[i].selectionCount = new Range(0, 1);
+                    plan[i].selectionCount = Range.b(0, 1);
             }
             return plan;
         }

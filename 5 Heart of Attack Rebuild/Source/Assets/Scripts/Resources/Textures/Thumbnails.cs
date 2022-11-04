@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Tokens;
+using HOA.To;
 
 namespace HOA.Storage.Textures
 { 
@@ -110,7 +110,7 @@ namespace HOA.Storage.Textures
                 foreach (string name in missingNames)
                     debug += name + ", ";
             }
-            Debug.Log(debug);
+            Log.Start(debug);
 #endif
         }
         static void Add(Species species, string fileName)

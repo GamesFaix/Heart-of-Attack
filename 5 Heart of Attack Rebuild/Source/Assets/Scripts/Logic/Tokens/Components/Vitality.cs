@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 {
     /// <summary>
     /// Manages unit health, defense, and damage
@@ -59,7 +59,7 @@ namespace HOA.Tokens
         {
             if (Health < 1)
             //  EffectQueue.Add(Effect.DestroyUnit(source, Parent)); 
-            { Debug.Log("Not implemented."); }
+            { Log.Debug("Not implemented."); }
         }
 
         /// <summary>

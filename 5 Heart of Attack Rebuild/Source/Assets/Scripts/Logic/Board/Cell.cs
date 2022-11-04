@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Tokens;
+using HOA.To;
 
 
 namespace HOA
@@ -32,7 +32,7 @@ namespace HOA
         /// </summary>
         public int y { get { return Index.y; } }
 
-        public Tokens.Plane Stop { get; set; }
+        public To.Plane Stop { get; set; }
         public bool CanStop(Token t) { return (Stop.ContainsAny(t.plane)); }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace HOA
             if (!t.CanEnter(this))
                 throw new Exception("Illegal cell entrance.");
             occupants.Add(t);
-            Debug.Log("{0} has entered {1}.", t, this);
+            Log.Game("{0} has entered {1}.", t, this);
             OccupationPublish(this, t, true);
         }
 
@@ -111,7 +111,7 @@ namespace HOA
             if (!occupants.Contains(t))
                 throw new Exception("Illegal cell exit.");
             occupants.Remove(t);
-            Debug.Log("{0} has exited {1}.", t, this); 
+            Log.Game("{0} has exited {1}.", t, this); 
             OccupationPublish(this, t, false);
         }
 

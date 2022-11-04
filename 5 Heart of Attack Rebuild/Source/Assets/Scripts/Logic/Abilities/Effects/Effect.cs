@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
     public delegate IEffect EffectConstructor (object source, EffectArgs args);
 
-    public partial class Effect : ClosedAction<EffectArgs>, IEffect, ISourced, ISourceRestricted
+    public partial class Effect : IEffect, ISourced, ISourceRestricted
     {
         public string Name { get; private set; }
         public override string ToString() { return Name; }
+        public EffectArgs args;
+        public Action<EffectArgs> action;
 
         public Action Process 
         { 
             get 
             {
-                Debug.Log("Processing {0}.", Name);
-                return Invoke; 
+                Log.Debug("Processing {0}.", Name);
+                return () => action(args);
             } 
         }
         
@@ -23,7 +25,6 @@ namespace HOA.Abilities
         public EffectSequence Sequence { get; set; }
 
         private Effect(object source, string name, EffectArgs args)
-            : base (args)
         {
             if (!IsValidSource(source))
                 throw new InvalidSourceException();
@@ -31,7 +32,9 @@ namespace HOA.Abilities
 
             if (name == "" || args == null)
                 throw new ArgumentNullException();
+            
             Name = name;
+            this.args = args;
         }
 
         #region Sources
@@ -47,8 +50,8 @@ namespace HOA.Abilities
                     typeof(Effect),
                     typeof(EffectSequence),
                     typeof(Set<Effect>),
-                    typeof(Tokens.Timer), 
-                    typeof(Tokens.Sensor),
+                    typeof(To.Timer), 
+                    typeof(To.Sensor),
                     typeof(Token),
                     typeof(Unit),
                     typeof(Obstacle),

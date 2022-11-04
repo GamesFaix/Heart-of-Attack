@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Tokens
+namespace HOA.To
 { 
     [Flags]
     public enum TokenFlags : byte

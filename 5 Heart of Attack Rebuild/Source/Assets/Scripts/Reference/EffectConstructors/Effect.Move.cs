@@ -1,7 +1,7 @@
 ﻿using HOA.Resources;
-using HOA.Tokens;
+using HOA.To;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
     public partial class Effect
     {
@@ -16,7 +16,7 @@ namespace HOA.Abilities
                 Cell oldCell = t.Cell;
                 AVEffect.Burrow.Play(t);
                 EffectQueue.Add(Effect.BurrowFinish(source, args));
-                Debug.Log("{0} burrowed from {1} to {2}.", t, oldCell, c);
+                Log.Game("{0} burrowed from {1} to {2}.", t, oldCell, c);
             };
             return e;
         }
@@ -44,7 +44,7 @@ namespace HOA.Abilities
                     AVEffect.Walk.Play(t);
                 else if (t.plane.ContainsAny(Plane.Air)) 
                     AVEffect.Fly.Play(t);
-                Debug.Log("{0} moved from {1} to {2}.", t, oldCell, newCell);
+                Log.Game("{0} moved from {1} to {2}.", t, oldCell, newCell);
             };
             return e;
         }
@@ -55,7 +55,7 @@ namespace HOA.Abilities
             e.action = (a) =>
             {
                 args.tokens[0].Swap(args.tokens[1]);
-                Debug.Log("{0} swapped places with {1}.", args.tokens[0], args.tokens[1]);
+                Log.Game("{0} swapped places with {1}.", args.tokens[0], args.tokens[1]);
             };
             return e;
         }
@@ -71,7 +71,7 @@ namespace HOA.Abilities
                 AVEffect.Teleport.Play(t);
                 EffectQueue.Add(Effect.TeleportFinish(source, args));
 
-                Debug.Log("{0} teleported {1} from {2} to {3}.", e.source.Last<Token>(), t, oldCell, c);
+                Log.Game("{0} teleported {1} from {2} to {3}.", e.source.Last<Token>(), t, oldCell, c);
             };
             return e;
         }

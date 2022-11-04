@@ -1,6 +1,6 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class Effect
@@ -47,7 +47,7 @@ namespace HOA.Abilities
 
                
                 if (totalCells == 0)
-                    Debug.Log("{0} attempted to knock {1} back, "
+                    Log.Game("{0} attempted to knock {1} back, "
                     + "but there was something in the way.", t, args.token);
                 else
                 {
@@ -60,7 +60,7 @@ namespace HOA.Abilities
                     }
                     else 
                         log += ".";
-                    Debug.Log(log);
+                    Log.Game(log);
                 }
             };
             return e;
@@ -78,11 +78,11 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Stick", args);
             e.action = (a) =>
             {
-                Ability move = args.unit.arsenal.Move;
+                Ability move = args.unit.arsenal.Move.ability;
                 if (move != null)
                 {
                     e.source.Last<Token>().trackList.Add(args.token, move.Aims[0].range);
-                    move.Aims[0].range = new Range(0,1);
+                    move.Aims[0].range = Range.b(0, 1);
                     AVEffect.Stick.Play(args.token);
                 }
             };

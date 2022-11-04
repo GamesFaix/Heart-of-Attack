@@ -1,54 +1,37 @@
-﻿using HOA.Tokens;
+﻿using HOA.To;
 using System;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
     public partial class Ability
     {
-        public static Ability Creep(Unit parent)
-        { return MoveFocusBoost(parent, "Creep", new Range(0, 1), 1); }
-
-        public static Ability Tread(Unit parent)
-        { return MoveFocusBoost(parent, "Tread", new Range(0, 3), -1); }
-
-        public static Ability Defile(Unit parent)
+        /// <summary>Args: price, range, rangeBoostPerFocus (damage) </summary>
+        public static Ability Sprint()
         {
-            return Teleport(parent, "Defile", new Price(0,1), 
-                Filter.Corpse, new Range(0,5), new Range(0,5));
-        }
-        public static Ability Dislocate(Unit parent)
-        {
-            return Teleport(parent, "Dislocate", new Price(1, 1),
-                Filter.Owner(parent.Owner, false) + Filter.Unit + Filter.Rank(Tokens.Rank.King, false),
-                new Range(0, 5), new Range(0, 5));
-        }
+            Ability a = MovePathFocusBoost();
+           // a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)\nLose all Focus.", a.sourceToken, a.values[2]);
+            a.rank = Rank.Special;
 
-
-        public static Ability Rebuild(Unit parent)
-        { return Move(parent, "Rebuild", new Price(0,2), new Range(0, 2)); }
-
-
-        public static Ability Sprint(Unit parent)
-        {
-            Ability a = MoveFocusBoost(parent, "Sprint", new Range(0, 0), 1, Rank.Special);
-            a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)\nLose all Focus.", a.sourceToken, a.values[2]);
-            a.MainEffects = Targets =>
-            {
-                foreach (Set<IEntity> s in Targets)
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(a.sourceToken, s[0] as Cell)));
-                EffectQueue.Add(Effect.SetStat(a, new EffectArgs(a.sourceUnit, 0, Stats.Focus)));
-            };
+            Action<AbilityArgs, NestedList<IEntity>> extra = 
+                (arg, tar) =>
+                   EffectQueue.Add(Effect.SetStat(a, new EffectArgs(arg.user, 0, Stats.Focus)));
+            a.MainEffects += extra;
             return a;
         }
 
-        public static Ability Burrow(Unit parent)
+        /// <summary>Args: price, range </summary>
+        public static Ability Burrow()
         {
-            Ability a = new Ability(parent, new AbilityArgs("Burrow", Rank.Move, Price.Cheap));
-            a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += AimStage.MoveArc(a.Aims, new Range(0, 3));
-            a.MainEffects = t =>
-                EffectQueue.Add(Effect.BurrowStart(a, new EffectArgs(a.sourceToken, (Cell)t[0][0])));
+            Ability a = new Ability("Burrow", Rank.Move);
+           // a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
+            a.Aims += AimStage.MoveArc(a.Aims, Range.b(0, 1));
+            a.Update = Adjustments.Range0;
+            a.MainEffects = (arg, tar) =>
+            {
+                IEntity cell = tar[0, 0];
+                EffectQueue.Add(Effect.BurrowStart(a, new EffectArgs(arg.user, cell)));
+            };
             return a;
         }
     }

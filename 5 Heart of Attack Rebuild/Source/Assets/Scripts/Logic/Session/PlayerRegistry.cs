@@ -19,8 +19,8 @@ namespace HOA
 
         public PlayerRegistry(Session session) : base(session)
         {
-            Players = new List<Player>(Reference.Players.max);
-            availableDefaultNames = Reference.Players.defaultNames;
+            Players = new List<Player>(Ref.Players.max);
+            availableDefaultNames = Ref.Players.defaultNames;
         }
 
         #region Add/Remove/Contains
@@ -34,7 +34,7 @@ namespace HOA
 #if DEBUG
             string debug;
 #endif
-            if (Players.Count < Reference.Players.max)
+            if (Players.Count < Ref.Players.max)
             {
                 if (!Names.Contains(player.ToString()))
                 {
@@ -56,7 +56,7 @@ namespace HOA
 #if DEBUG
                 debug = "Cannot add " + player.ToString() + " to registry." +
                     "Registry full.";
-                Debug.Log(debug);
+                Log.Session(debug);
 #endif
             }
         }
@@ -75,7 +75,7 @@ namespace HOA
             else
             {
 #if DEBUG
-                Debug.Log("Cannot remove " + p.ToString() + " from registry." +
+                Log.Session("Cannot remove " + p.ToString() + " from registry." +
                     " Player not found.");
 #endif
             }
@@ -134,7 +134,7 @@ namespace HOA
         {
             p.Faction = session.Take(f);
 #if DEBUG
-            Debug.Log(f.ToString() + " assigned to " + p.ToString() + ".");
+            Log.Session(f.ToString() + " assigned to " + p.ToString() + ".");
 #endif
         }
 
@@ -153,7 +153,7 @@ namespace HOA
         /// </summary>
         public void AutoPopulate()
         {
-            for (int i = 0; i < Reference.Players.max; i++)
+            for (int i = 0; i < Ref.Players.max; i++)
                 Add(new Player(RandomDefaultName()));
             ForceRandomFactions();
         }
@@ -162,7 +162,7 @@ namespace HOA
         {
             List<string> a = availableDefaultNames;
             if (a.Count < 1)
-                a = Reference.Players.defaultNames;
+                a = Ref.Players.defaultNames;
             string name = a.Random();
             a.Remove(name);
             return name;

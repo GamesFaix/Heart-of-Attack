@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using HOA.Tokens;
+using HOA.To;
 
 namespace HOA 
 { 
@@ -49,9 +49,9 @@ namespace HOA
         {
             Species[] species = new Species[3]
             {
-                Tokens.Species.Rock, 
-				Tokens.Species.Tree, 
-                Tokens.Species.Corpse, 
+                To.Species.Rock, 
+				To.Species.Tree, 
+                To.Species.Corpse, 
             };
             return new Biome(BiomeEnum.Generic, "Generic", species);
         }
@@ -64,8 +64,8 @@ namespace HOA
         {
             Species[] species = new Species[2]
             {
-                Tokens.Species.Pyramid, 
-				Tokens.Species.Tree2 
+                To.Species.Pyramid, 
+				To.Species.Tree2 
             };
             return new Biome(BiomeEnum.Desert, "Desert", species);
         }
@@ -78,9 +78,9 @@ namespace HOA
         {
             Species[] species = new Species[3]
             {
-                Tokens.Species.Exhaust, 
-				Tokens.Species.Pylon,
-                Tokens.Species.Antenna
+                To.Species.Exhaust, 
+				To.Species.Pylon,
+                To.Species.Antenna
             };
             return new Biome(BiomeEnum.Space, "Space", species);
         }

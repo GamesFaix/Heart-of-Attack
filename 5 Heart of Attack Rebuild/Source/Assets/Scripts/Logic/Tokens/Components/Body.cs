@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Tokens
+namespace HOA.To
 { 
     /// <summary>
     /// Allows tokens to interact with the board

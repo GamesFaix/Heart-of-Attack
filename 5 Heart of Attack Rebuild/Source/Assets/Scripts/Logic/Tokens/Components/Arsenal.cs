@@ -2,41 +2,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using HOA.Abilities;
+using HOA.Ab;
 
 
-namespace HOA.Tokens
+namespace HOA.To
 {
-    public class Arsenal : TokenComponent, IEnumerable<Ability>
+    public class Arsenal : TokenComponent, IEnumerable<Ab.Closure>
     {
         #region Properties
         
-        Set<Ability> list;
-        static Dictionary<Abilities.Rank, byte> rankLimits;
+        Set<Ab.Closure> list;
+        static Dictionary<Ab.Rank, byte> rankLimits;
 
-        public Ability Move
+        public Ab.Closure Move
         {
             get
             {
-                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Move; };
+                Predicate<Ab.Closure> p = (a) => { return a.rank == Ab.Rank.Move; };
                 return list.SingleOrDefault(p.ToFunc());
             }
         }
 
-        public Ability Focus
+        public Ab.Closure Focus
         {
             get
             {
-                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Focus; };
+                Predicate<Ab.Closure> p = (a) => { return a.rank == Ab.Rank.Focus; };
                 return list.SingleOrDefault(p.ToFunc());
             }
         }
 
-        public Ability Attack
+        public Ab.Closure Attack
         {
             get
             {
-                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Attack; };
+                Predicate<Ab.Closure> p = (a) => { return a.rank == Ab.Rank.Attack; };
                 return list.SingleOrDefault(p.ToFunc());
             }
         }
@@ -48,18 +48,18 @@ namespace HOA.Tokens
         public static void Load()
         {
             InitializeRankLimits();
-            Debug.Log("Arsenal rank limits set.");
+            Log.Start("Arsenal rank limits set.");
         }
 
         static void InitializeRankLimits()
         {
-            rankLimits = new Dictionary<Abilities.Rank, byte>(6);
-            rankLimits.Add(Abilities.Rank.Move, 1);
-            rankLimits.Add(Abilities.Rank.Focus, 1);
-            rankLimits.Add(Abilities.Rank.Attack, 1);
-            rankLimits.Add(Abilities.Rank.Special, 3);
-            rankLimits.Add(Abilities.Rank.Create, 3);
-            rankLimits.Add(Abilities.Rank.None, 5);
+            rankLimits = new Dictionary<Ab.Rank, byte>(6);
+            rankLimits.Add(Ab.Rank.Move, 1);
+            rankLimits.Add(Ab.Rank.Focus, 1);
+            rankLimits.Add(Ab.Rank.Attack, 1);
+            rankLimits.Add(Ab.Rank.Special, 3);
+            rankLimits.Add(Ab.Rank.Create, 3);
+            rankLimits.Add(Ab.Rank.None, 5);
         }
 
         public Arsenal(Token thisToken) 
@@ -67,7 +67,7 @@ namespace HOA.Tokens
         {
            // if (rankLimits == null)
              //   InitializeRankLimits();
-            list = new Set<Ability>(9);
+            list = new Set<Ab.Closure>(9);
         }
 
         
@@ -76,13 +76,13 @@ namespace HOA.Tokens
 
         public override string ToString() { return ThisToken + "'s Arsenal"; }
 
-        public void Reset() { foreach (Ability a in list) a.Reset(); }
+        public void Reset() { foreach (Ab.Closure a in list) a.Reset(); }
 
-        public bool HasAbility(string name, out Ability ability)
+        public bool HasAbility(string name, out Ab.Closure ability)
         {
             ability = null;
-            foreach (Ability a in list)
-                if (a.Name == name)
+            foreach (Ab.Closure a in list)
+                if (a.name == name)
                 {
                     ability = a;
                     return true;
@@ -90,37 +90,31 @@ namespace HOA.Tokens
             return false;
         }
 
-        public bool Contains(Ability a) { return (list.Contains(a)); }
-
-        public bool Perform(int i)
-        {
-            Debug.Log("Not implemented.");
-            return false;
-        }
+        public bool Contains(Ab.Closure a) { return (list.Contains(a)); }
 
         public void Sort() { list.Sort(); }
 
-        bool RankFull(Ability a)
+        bool RankFull(Ab.Closure a)
         {
-            Abilities.Rank r = a.Rank;
+            Ab.Rank r = a.rank;
             if (this[r].Count < rankLimits[r])
                 return true;
-            Debug.Log("Arsenal cannot hold any more {0} abilities.", r);
+            Log.Debug("Arsenal cannot hold any more {0} abilities.", r);
             return false;
         }
 
         #region Add/Remove/Replace
         
-        public void Add(Ability a) 
+        public void Add(Ab.Closure a) 
         { 
             if (!RankFull(a)) 
                 list.Add(a);
             Sort();
         }
 
-        public void Add(params Ability[] abilities) 
+        public void Add(params Ab.Closure[] abilities) 
         {
-            foreach (Ability a in abilities)
+            foreach (Ab.Closure a in abilities)
                 if (!RankFull(a))
                     list.Add(a);
             Sort();
@@ -128,16 +122,16 @@ namespace HOA.Tokens
 
         public bool Remove(string name)
         {
-            Ability a;
+            Ab.Closure a;
             if (!HasAbility(name, out a))
                 return false;
             list.Remove(a);
             return true;
         }
 
-        public bool Remove(Ability a) { return list.Remove(a); }
+        public bool Remove(Ab.Closure a) { return list.Remove(a); }
 
-        public bool Replace(Ability oldAb, Ability newAb)
+        public bool Replace(Ab.Closure oldAb, Ab.Closure newAb)
         {
             if (oldAb == null || newAb == null)
                 throw new ArgumentNullException();
@@ -148,9 +142,9 @@ namespace HOA.Tokens
             return true;
         }
 
-        public bool Replace(string oldName, Ability newAb)
+        public bool Replace(string oldName, Ab.Closure newAb)
         {
-            Ability oldAb;
+            Ab.Closure oldAb;
             if (!HasAbility(oldName, out oldAb))
                 return false;
             return Replace(oldAb, newAb);
@@ -160,18 +154,18 @@ namespace HOA.Tokens
 
         #region Indexers/Iterators
 
-        public IEnumerator<Ability> GetEnumerator() { return list.GetEnumerator(); }
+        public IEnumerator<Ab.Closure> GetEnumerator() { return list.GetEnumerator(); }
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-        public Ability this[int i] { get { return list[i]; } }
+        public Ab.Closure this[int i] { get { return list[i]; } }
 
-        public Set<Ability> this[Abilities.Rank rank]
+        public Set<Ab.Closure> this[Ab.Rank rank]
         {
             get
             {
-                Set<Ability> result = new Set<Ability>(rankLimits[rank]);
-                foreach (Ability a in this)
-                    if (a.Rank == rank)
+                Set<Ab.Closure> result = new Set<Ab.Closure>(rankLimits[rank]);
+                foreach (Ab.Closure a in this)
+                    if (a.rank == rank)
                         result.Add(a);
                 result.TrimExcess();
                 return result;

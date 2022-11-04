@@ -1,6 +1,6 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Abilities
+namespace HOA.Ab
 {
 
 	public partial class Effect {
@@ -33,7 +33,7 @@ namespace HOA.Abilities
             {
                 args.token.Owner = args.player;
                 AVEffect.Owner.Play(args.token);
-                Debug.Log("{0} acquired {1}", args.player, args.token);
+                Log.Game("{0} acquired {1}", args.player, args.token);
             };
             return e;
         }
@@ -50,7 +50,7 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Set Destructible", args);
             e.action = (a) => 
             { 
-                args.token.SetFlags(e, Tokens.TokenFlags.Destructible, args.option);
+                args.token.SetFlags(e, To.TokenFlags.Destructible, args.option);
                 AVEffect.Stat(!args.option).Play(args.token);
             };
             return e;
@@ -61,7 +61,7 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Set Trample", args);
             e.action = (a) =>
             {
-                args.token.SetFlags(e, Tokens.TokenFlags.Trample, args.option);
+                args.token.SetFlags(e, To.TokenFlags.Trample, args.option);
                 AVEffect.Stat(args.option).Play(args.token);
             };
             return e;
@@ -94,7 +94,7 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Add Timer", args);
             e.action = (a) =>
             {
-                args.unit.timers.Add(Tokens.Timer.Bombing(e, args.unit));
+                args.unit.timers.Add(To.Timer.Bombing(e, args.unit));
             };
             return e;
         }
@@ -104,7 +104,7 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Remove Timer", args);
             e.action = (a) =>
             {
-                Debug.Log("Not implemented.");
+                Log.Debug("Not implemented.");
             };
             return e;
         

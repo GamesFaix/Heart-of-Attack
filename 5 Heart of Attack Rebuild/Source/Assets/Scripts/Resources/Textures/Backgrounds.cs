@@ -43,7 +43,7 @@ namespace HOA.Storage.Textures
                 foreach (string name in missingNames)
                     debug += name+", ";
             }
-            Debug.Log(debug);
+            Log.Start(debug);
 #endif
         }
 
