@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Ab
+namespace HOA.Ab.Aim
 {
 
     public class NeighborMatrix : Matrix<Cell>

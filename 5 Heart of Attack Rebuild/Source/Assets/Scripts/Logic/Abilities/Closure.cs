@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HOA.Ab
 {
-	public class Closure : Closure<AbilityArgs>, 
+    public class Closure : Closure<Args>, 
         IComparable<Closure>, IEquatable<Closure>
     {
         public Ability ability { get { return functor as Ability; } }
@@ -22,7 +22,7 @@ namespace HOA.Ab
         public Price price { get { return args.price; } }
         public Description desc { get; private set; }
 
-        public Closure(object source, Ability ability, AbilityArgs args, Description desc = null)
+        public Closure(object source, Ability ability, Args args, Description desc = null)
             : base(ability, args)
         {
             this.source = new Source(source);
@@ -65,7 +65,7 @@ namespace HOA.Ab
             ability.Execute(this, targets);
         }
 
-        public IEnumerator<AimStage> GetEnumerator()
+        public IEnumerator<Aim.Stage> GetEnumerator()
         {
             return ability.Aims.GetEnumerator();
         }

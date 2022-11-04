@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace HOA.Ab
+namespace HOA.Ab.Aim
 {
-    public partial class AimStage : ISourced
+    public partial class Stage : ISourced
     {
         public Source source { get; private set; }
-        public AimPlan plan { get { return source.Last<AimPlan>(); } }
-        public AimStage previous
+        public Plan plan { get { return source.Last<Plan>(); } }
+        public Stage previous
         {
             get
             {
@@ -20,14 +20,14 @@ namespace HOA.Ab
         public Token user { get { return source.Last<Token>(); } }
         public Func<Token> body;
         public Func<Cell> center;
-        public AimPattern pattern;
+        public Pattern pattern;
         public Predicate<IEntity> filter;
         public Range<byte> range;
         public bool inclusive;
         public Range<byte> selectionCount;
         public bool autoSelect;
         
-        private AimStage(AimPlan plan)
+        private Stage(Plan plan)
         {
             source = new Source(plan);
             body = () => { return user; };
@@ -40,7 +40,7 @@ namespace HOA.Ab
             autoSelect = false;
         }
 
-        public AimStage(AimPlan plan, AimPattern pattern, Predicate<IEntity> filter, 
+        public Stage(Plan plan, Pattern pattern, Predicate<IEntity> filter, 
             Func<Token> body = null, Func<Cell> center = null)
             : this (plan)
         {
@@ -52,7 +52,7 @@ namespace HOA.Ab
                 this.center = center;
         }
 
-        public AimStage(AimPlan plan, AimPattern pattern, Predicate<IEntity> filter,
+        public Stage(Plan plan, Pattern pattern, Predicate<IEntity> filter,
            Func<Token> body, Range<byte> range)
             : this(plan, pattern, filter, body, null)
         {
@@ -60,7 +60,7 @@ namespace HOA.Ab
         }
 
         public Set<IEntity> FindOptions() 
-        { return pattern(new AimPatternArgs(user, body(), center(), filter, range, inclusive)); }
+        { return pattern(new PatternArgs(user, body(), center(), filter, range, inclusive)); }
 
     }
 }

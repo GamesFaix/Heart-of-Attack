@@ -4,9 +4,9 @@ using System.Linq;
 using HOA.To;
 
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
-    public class EffectArgs : ClosureArgs
+    public class Args : ClosureArgs
     {
         #region Properties
 
@@ -19,8 +19,8 @@ namespace HOA.Ab
         public Stats stat { get; private set; }
         public Plane plane { get; private set; }
         public Player player { get; private set; }
-        public Closure ability { get; private set; }
-        public EffectConstructor effectConstructor { get; private set; }
+        public Ab.Closure ability { get; private set; }
+        public Builder builder { get; private set; }
         public TokenComponent component { get; set; }
 
         public Set<Cell> cells { get { return new Set<Cell>(targets.OfType<Cell>()); } }
@@ -36,7 +36,7 @@ namespace HOA.Ab
 
         #region Constructors
 
-        public EffectArgs(Func<string> desc, Set<IEntity> targets, int[] values, bool[] options,
+        public Args(Func<string> desc, Set<IEntity> targets, int[] values, bool[] options,
             Species species, Stats stat, Plane plane = Plane.None, Player player = null)
         {
             this.desc = desc;
@@ -49,54 +49,54 @@ namespace HOA.Ab
             this.player = player;
         }
 
-        public EffectArgs(IEntity target) { targets = new Set<IEntity>(1){target}; }
+        public Args(IEntity target) { targets = new Set<IEntity>(1){target}; }
 
-        public EffectArgs(IEntity target, int value)
+        public Args(IEntity target, int value)
             : this(target)
         { values = new int[1] { value }; }
 
-        public EffectArgs(params IEntity[] targets)
+        public Args(params IEntity[] targets)
         {this.targets = new Set<IEntity>(targets);}
 
-        public EffectArgs(Set<IEntity> targets, int[] values)
+        public Args(Set<IEntity> targets, int[] values)
         {
             this.targets = targets;
             this.values = values;
         }
 
-        public EffectArgs(IEntity target, int value, bool option)
+        public Args(IEntity target, int value, bool option)
             : this(target, value)
         { options = new bool[1] { option }; }
 
-        public EffectArgs(IEntity target, int value, Stats stat)
+        public Args(IEntity target, int value, Stats stat)
             : this(target, value)
         { this.stat = stat; }
 
-        public EffectArgs(IEntity target, Closure ability)
+        public Args(IEntity target, Ab.Closure ability)
             : this(target)
         { this.ability = ability; }
 
-        public EffectArgs(IEntity target, TokenComponent component)
+        public Args(IEntity target, TokenComponent component)
             : this(target)
         { this.component = component; }
 
-        public EffectArgs(IEntity target, Species species)
+        public Args(IEntity target, Species species)
             : this(target)
         { this.species = species; }
 
-        public EffectArgs(IEntity target, Player player)
+        public Args(IEntity target, Player player)
             : this(target)
         { this.player = player; }
 
-        public EffectArgs(IEntity target, Species species, EffectConstructor e)
+        public Args(IEntity target, Species species, Builder builder)
             : this(target, species)
-        { this.effectConstructor = e; }
+        { this.builder = builder; }
 
         #endregion
 
-        public EffectArgs Copy()
+        public Args Copy()
         {
-            return new EffectArgs(desc, targets, values, options, 
+            return new Args(desc, targets, values, options, 
                 species, stat, plane, player);
         }
 

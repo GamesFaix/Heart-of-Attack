@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{78A47851-48FA-5A16-EAF0-1058F996BB8F}</ProjectGuid>
+	<ProjectGuid>{5B836361-0FF8-11D0-3A3D-135A80C12173}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -50,31 +50,25 @@
      <Compile Include="Assets\Scripts\GUI\Master.cs" />
      <Compile Include="Assets\Scripts\GUI\TargetSelector.cs" />
      <Compile Include="Assets\Scripts\GUI\Tools\Panel.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPattern.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPatternArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPlan.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPlans.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimStage.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimStages.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Ability.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Adjustments.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\NeighborMatrix.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\Effect.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectQueue.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSequence.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSet.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Pattern.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\PatternArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Plan.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Plans.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Stage.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Stages.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Args.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Closure.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Events\AbilityRequestEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Events\OccupationEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Events\TargetSelectionEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Events\TargetSelectionRequestEventArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\Ability.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityClosure.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityProcessor.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\Adjustments.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\Price.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\Rank.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\General\UsabilityTest.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Price.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Processor.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Rank.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\UseTest.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Direction.cs" />
@@ -89,6 +83,12 @@
      <Compile Include="Assets\Scripts\Logic\Collections\PredicateExtensionMethods.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Sequence.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Set.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Args.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Effect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Queue.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Sequence.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Set.cs" />
      <Compile Include="Assets\Scripts\Logic\Entities\Filter.cs" />
      <Compile Include="Assets\Scripts\Logic\Entities\IEntity.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\Biome.cs" />

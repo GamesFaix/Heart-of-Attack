@@ -7,10 +7,10 @@ namespace HOA.GUI
     {
         public static void Load()
         {
-            AbilityProcessor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
-            Log.Start("TargetSelector subscribed to AbilityProcessor.TargetSelectionRequestEvent.");
-            TargetSelectionEvent += AbilityProcessor.OnTargetSelection;
-            Log.Start("AbilityProcessor subscribed to TargetSelector.TargetSelectionEvent.");
+            Ab.Processor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
+            Log.Start("TargetSelector subscribed to Ab.Processor.TargetSelectionRequestEvent.");
+            TargetSelectionEvent += Ab.Processor.OnTargetSelection;
+            Log.Start("Ab.Processor subscribed to TargetSelector.TargetSelectionEvent.");
         }
 
 

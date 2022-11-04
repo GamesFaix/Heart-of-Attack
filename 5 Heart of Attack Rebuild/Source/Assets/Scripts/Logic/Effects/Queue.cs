@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
-    public static class EffectQueue
+    public static class Queue
     {
         #region Properties
 
@@ -38,7 +38,7 @@ namespace HOA.Ab
         }
         
         static bool SequenceInProgress { get { 
-            return (Top is EffectSequence && (Top as EffectSequence).Count > 0); } }
+            return (Top is Sequence && (Top as Sequence).Count > 0); } }
 
         #endregion
 

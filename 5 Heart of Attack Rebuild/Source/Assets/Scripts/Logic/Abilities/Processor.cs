@@ -1,9 +1,10 @@
 ﻿using System;
+using HOA.Ab.Aim;
 
 namespace HOA.Ab
 {
 
-    public static class AbilityProcessor
+    public static class Processor
     {
         static Closure pending;
         static Set<IEntity> options, selection;
@@ -15,7 +16,7 @@ namespace HOA.Ab
         {
             GUI.AbilityRequester.AbilityRequestEvent += OnAbilityRequest;
             //waitTime = 2000;
-            Log.Start("AbilityProcessor subscribed to AbilityRequester.AbilityReqeustEvent.");
+            Log.Start("Ab.Processor subscribed to AbilityRequester.AbilityReqeustEvent.");
         }
 
         static void Reset()
@@ -40,7 +41,7 @@ namespace HOA.Ab
 
             pending.Update();
             targets = new NestedList<IEntity>();
-            foreach (AimStage stage in pending)
+            foreach (Stage stage in pending)
             {
                 options = stage.FindOptions();
                 TargetSelectionRequestPublish(sender, options, stage.selectionCount);

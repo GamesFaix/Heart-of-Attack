@@ -15,14 +15,14 @@ namespace HOA
             u.body = new Body(u, Plane.Air);
             u.vitality = new Vitality(u, 75);
             u.watch = new Watch(u, 4);
-            u.Learn(Abilities.Dart, new AbilityArgs(u, Price.Cheap, Range.b(0, 5)));
-            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
-            u.Learn(Abilities.Strike, new AbilityArgs(u, Price.Cheap, 16));
-            u.Learn(Abilities.Teleport, new AbilityArgs(u, new Price(1,1), Range.b(0,5),
+            u.Learn(Abilities.Dart, new Ab.Args(u, Price.Cheap, Range.b(0, 5)));
+            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
+            u.Learn(Abilities.Strike, new Ab.Args(u, Price.Cheap, 16));
+            u.Learn(Abilities.Teleport, new Ab.Args(u, new Price(1,1), Range.b(0,5),
                 Filter.Owner(u.Owner, true) + Filter.Unit, Range.b(0,5)));
-            u.Learn(Abilities.Create, new AbilityArgs(u, Price.Cheap, Species.Katandroid));
-            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 1), Species.Carapace));
-            u.Learn(Abilities.Create, new AbilityArgs(u, new Price(2, 2), Species.Mawth));
+            u.Learn(Abilities.Create, new Ab.Args(u, Price.Cheap, Species.Katandroid));
+            u.Learn(Abilities.Create, new Ab.Args(u, new Price(2, 1), Species.Carapace));
+            u.Learn(Abilities.Create, new Ab.Args(u, new Price(2, 2), Species.Mawth));
             //Ability.GammaBurst(u),
             return u;
         }
@@ -34,8 +34,8 @@ namespace HOA
             u.vitality = Vitality.DefenseCap(u, 35, 2, 5);
             u.watch = new Watch(u, 4);
             u.wallet = Wallet.DefenseBoost(u, 2, 3);
-            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0, 3)));
-            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0, 3)));
+            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
             //Ability.Shock(u),
 			//Ability.Discharge(u)
 			/*u.Notes = () =>
@@ -51,10 +51,10 @@ namespace HOA
             u.body = new Body(u, Plane.Ground);
             u.vitality = new Vitality(u, 25);
             u.watch = new Watch(u, 5);
-            u.Learn(Abilities.Move, new AbilityArgs(u, Price.Cheap, Range.b(0, 4)));
-            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
-            u.Learn(Abilities.Strike, new AbilityArgs(u, Price.Cheap, 8));
-            u.Learn(Abilities.Sprint, new AbilityArgs(u, Price.Free, Range.b(0, 0), 1));
+            u.Learn(Abilities.Move, new Ab.Args(u, Price.Cheap, Range.b(0, 4)));
+            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
+            u.Learn(Abilities.Strike, new Ab.Args(u, Price.Cheap, 8));
+            u.Learn(Abilities.Sprint, new Ab.Args(u, Price.Free, Range.b(0, 0), 1));
 			//Ability.LaserSpin(u)
             return u;
         }
@@ -65,8 +65,8 @@ namespace HOA
             u.body = new Body(u, Plane.Air);
             u.vitality = new Vitality(u, 55);
             u.watch = new Watch(u, 3);
-			u.Learn(Abilities.Dart, new AbilityArgs(u, Price.Cheap, Range.b(0, 4)));
-            u.Learn(Abilities.Focus, new AbilityArgs(u, Price.Cheap, 1));
+			u.Learn(Abilities.Dart, new Ab.Args(u, Price.Cheap, Range.b(0, 4)));
+            u.Learn(Abilities.Focus, new Ab.Args(u, Price.Cheap, 1));
            	//Ability.LaserShot(u),
 			//Ability.Bombard(u)
             return u;

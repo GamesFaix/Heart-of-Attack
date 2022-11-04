@@ -2,12 +2,12 @@
 using HOA.To;
 using System;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
 	public partial class Effect
 	{
-        public static Effect CorrodeInitial(object source, EffectArgs args)
+        public static Effect CorrodeInitial(object source, Args args)
         {
             Effect e = new Effect(source, "Corrode Initial", args);
             e.action = (a) => 
@@ -20,7 +20,7 @@ namespace HOA.Ab
             };
             return e;
         }
-        public static Effect CorrodeResidual(object source, EffectArgs args)
+        public static Effect CorrodeResidual(object source, Args args)
         {
             Effect e = new Effect(source, "Corrode Residual", args);
             e.action = (a) =>
@@ -31,7 +31,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Damage(object source, EffectArgs args)
+        public static Effect Damage(object source, Args args)
         {
             Effect e = new Effect(source, "Damage", args);
             e.action = (a) =>
@@ -45,7 +45,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Pierce(object source, EffectArgs args)
+        public static Effect Pierce(object source, Args args)
         {
             Effect e = new Effect(source, "Pierce", args);
             e.action = (a) =>
@@ -55,8 +55,8 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Rage(object source, EffectArgs args)
+
+        public static Effect Rage(object source, Args args)
         {
             Effect e = new Effect(source, "Rage", args);
             e.action = (a) =>
@@ -71,8 +71,8 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Donate(object source, EffectArgs args)
+
+        public static Effect Donate(object source, Args args)
         {
             Effect e = new Effect(source, "Donate", args);
             e.action = (a) =>
@@ -87,8 +87,8 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Leech(object source, EffectArgs args)
+
+        public static Effect Leech(object source, Args args)
         {
             Effect e = new Effect(source, "Leech", args);
             e.action = (a) =>
@@ -108,13 +108,13 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect ExplosionDummy(object source, EffectArgs args)
+        public static Effect ExplosionDummy(object source, Args args)
         {
             Effect e = new Effect(source, "Explosion Dummy", args);
             e.action = (a) => { AVEffect.Explode.Play(args.token); };
             return e;
         }
-        public static Effect ExplosionIndividual(object source, EffectArgs args)
+        public static Effect ExplosionIndividual(object source, Args args)
         {
             Effect e = new Effect(source, "Explosion Individual", args);
             e.action = (a) =>
@@ -130,7 +130,7 @@ namespace HOA.Ab
                     if (t.destructible)
                     {
                         AVEffect.Explode.Play(t);
-                        e.Sequence.AddToList(1, Effect.DestroyObstacle(source, new EffectArgs(t)));
+                        e.Sequence.AddToList(1, Effect.DestroyObstacle(source, new Args(t)));
                     }
 
                     else if (t is Unit)
@@ -145,8 +145,8 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Shock(object source, EffectArgs args)
+
+        public static Effect Shock(object source, Args args)
         {
             Effect e = new Effect(source, "Shock", args);
             e.action = (a) =>
@@ -160,7 +160,7 @@ namespace HOA.Ab
             };
             return e;
         }
-        public static Effect WaterLog(object source, EffectArgs args)
+        public static Effect WaterLog(object source, Args args)
         {
             Effect e = new Effect(source, "WaterLog", args);
             e.action = (a) =>
@@ -171,12 +171,12 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect FireInitial(object source, EffectArgs args)
+        public static Effect FireInitial(object source, Args args)
         {
             Effect e = new Effect(source, "Fire Initial", args);
             e.action = (a) =>
             {
-                EffectSet nextEffects = new EffectSet();
+                Set nextEffects = new Set();
                 Token t = args.token;
 
                 if (t.destructible)
@@ -194,13 +194,13 @@ namespace HOA.Ab
 
                 int newDmg = Math.Floor(args.value * 0.5f);
                 foreach (Token t2 in neighbors)
-                    nextEffects.Add(Effect.FireSpread(source, new EffectArgs(t2, newDmg)));
-                EffectQueue.Add(nextEffects);
+                    nextEffects.Add(Effect.FireSpread(source, new Args(t2, newDmg)));
+                Queue.Add(nextEffects);
             };
             return e;
         }
 
-        public static Effect FireSpread(object source, EffectArgs args)
+        public static Effect FireSpread(object source, Args args)
         {
             Effect e = new Effect(source, "Fire Spread", args);
             e.action = (a) =>
@@ -209,7 +209,7 @@ namespace HOA.Ab
                 if (t.destructible)
                 {
                     AVEffect.Fire.Play(t);
-                    EffectQueue.Add(Effect.DestroyObstacle(source, args));
+                    Queue.Add(Effect.DestroyObstacle(source, args));
                 }
 
                 else if (t is Unit)
@@ -221,7 +221,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect LaserLine(object source, EffectArgs args)
+        public static Effect LaserLine(object source, Args args)
         {
             Effect e = new Effect(source, "Laser Line", args);
             e.action = (a) =>
@@ -240,11 +240,11 @@ namespace HOA.Ab
                         cells.Add(cell);
                     else stop = true;
                 }
-                EffectQueue.Add(Effect.LaserInitial(source, new EffectArgs((Set<IEntity>)cells, args.values)));
+                Queue.Add(Effect.LaserInitial(source, new Args((Set<IEntity>)cells, args.values)));
             };
             return e;
         }
-        public static Effect LaserInitial(object source, EffectArgs args)
+        public static Effect LaserInitial(object source, Args args)
         {
             Effect e = new Effect(source, "Laser Initial", args);
             e.action = (a) =>
@@ -271,7 +271,7 @@ namespace HOA.Ab
             };
             return e;
         }
-        public static Effect LaserSpread(object source, EffectArgs args)
+        public static Effect LaserSpread(object source, Args args)
         {
             Effect e = new Effect(source, "Laser Spread", args);
             e.action = (a) =>

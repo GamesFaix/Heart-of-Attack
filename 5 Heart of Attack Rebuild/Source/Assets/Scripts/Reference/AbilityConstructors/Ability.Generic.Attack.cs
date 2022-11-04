@@ -1,10 +1,10 @@
 ﻿using HOA.To;
 using System;
+using HOA.Ab.Aim;
+using HOA.Ef;
 
 namespace HOA.Ab
 {
-    
-
 
     public partial class Ability
     {
@@ -13,11 +13,11 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Strike", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit.", a.value);
-            a.Aims = AimPlan.Melee(a, Filter.Unit);
+            a.Aims = Plan.Melee(a, Filter.Unit);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Damage(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Damage(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -27,12 +27,12 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Shoot", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit.", a.value);
-            a.Aims += AimStage.AttackLine(a.Aims, Filter.Unit, Range.b(0,1));
+            a.Aims += Stage.AttackLine(a.Aims, Filter.Unit, Range.b(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Damage(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Damage(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -42,12 +42,12 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Lob", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit.", a.value);
-            a.Aims += AimStage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
+            a.Aims += Stage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Damage(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Damage(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -58,11 +58,11 @@ namespace HOA.Ab
             Ability a = new Ability("Leech", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit." +
             //    "\n{1} gains health equal to the damage successfully dealt.", a.value, a.sourceToken);
-            a.Aims = AimPlan.Melee(a, Filter.Unit);
+            a.Aims = Plan.Melee(a, Filter.Unit);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Leech(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Leech(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -73,12 +73,12 @@ namespace HOA.Ab
             Ability a = new Ability("Inhale", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit." +
             //    "\n{1} gains health equal to the damage successfully dealt.", a.value, a.sourceToken);
-            a.Aims += AimStage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
+            a.Aims += Stage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Leech(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Leech(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -89,11 +89,11 @@ namespace HOA.Ab
             Ability a = new Ability("Donate", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to {1}." +
             //    "\nTarget unit gains health equal to the damage successfully dealt.", a.value, a.sourceToken);
-            a.Aims = AimPlan.Melee(a, Filter.Unit);
+            a.Aims = Plan.Melee(a, Filter.Unit);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Donate(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Donate(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -104,11 +104,11 @@ namespace HOA.Ab
             Ability a = new Ability("Rage", Rank.Attack);
             //a.desc = Scribe.Write("Do {0} damage to target unit and" +
             //    "\n{1} damage to {2}.", a.value, Math.Ceil(a.value/2), a.sourceToken);
-            a.Aims = AimPlan.Melee(a, Filter.Unit);
+            a.Aims = Plan.Melee(a, Filter.Unit);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.Rage(a, new EffectArgs(unit, arg.damage)));
+                Queue.Add(Effect.Rage(a, new Ef.Args(unit, arg.damage)));
             };
             return a;
         }
@@ -117,13 +117,13 @@ namespace HOA.Ab
         public static Ability HealNeighbor()
         {
             Ability a = new Ability("Heal", Rank.Special);
-            a.Aims = AimPlan.Melee(a, Filter.Unit);
+            a.Aims = Plan.Melee(a, Filter.Unit);
            // a.desc = Scribe.Write("Heal target {0} up to {1} health.", a.Aims[0].filter, a.value);
             a.Update = Adjustments.Filter0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.AddStat(a, new EffectArgs(unit, arg.damage, To.Stats.Health)));
+                Queue.Add(Effect.AddStat(a, new Ef.Args(unit, arg.damage, To.Stats.Health)));
             };
             return a;
         }
@@ -131,13 +131,13 @@ namespace HOA.Ab
         public static Ability HealArc()
         {
             Ability a = new Ability("Restore", Rank.Special);
-            a.Aims += AimStage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
+            a.Aims += Stage.AttackArc(a.Aims, Filter.Unit, Range.b(0,1));
             //a.desc = Scribe.Write("Heal target {0} up to {1} health.", a.Aims[0].filter, a.value);
             a.Update = Adjustments.Range0 + Adjustments.Filter0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity unit = tar[0, 0];
-                EffectQueue.Add(Effect.AddStat(a, new EffectArgs(unit, arg.damage, To.Stats.Health)));
+                Queue.Add(Effect.AddStat(a, new Ef.Args(unit, arg.damage, To.Stats.Health)));
             };
             return a;
         }
@@ -147,9 +147,9 @@ namespace HOA.Ab
         {
             Ability a = new Ability("End turn", Rank.None);
            // a.desc = Scribe.Write("End current turn.");
-            a.Aims = AimPlan.Self(a);
+            a.Aims = Plan.Self(a);
             a.MainEffects = (arg, tar) =>
-                EffectQueue.Add(Effect.Advance(a, new EffectArgs()));
+                Queue.Add(Effect.Advance(a, new Ef.Args()));
             return a;
         }
 
@@ -158,11 +158,11 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Focus", Rank.Focus);
             //a.desc = Scribe.Write("Focus +{0}.", a.value);
-            a.Aims = AimPlan.Self(a);
+            a.Aims = Plan.Self(a);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity self = tar[0, 0];
-                EffectQueue.Add(Effect.AddStat(a, new EffectArgs(self, arg.damage, To.Stats.Focus)));
+                Queue.Add(Effect.AddStat(a, new Ef.Args(self, arg.damage, To.Stats.Focus)));
             };
             return a;
         }

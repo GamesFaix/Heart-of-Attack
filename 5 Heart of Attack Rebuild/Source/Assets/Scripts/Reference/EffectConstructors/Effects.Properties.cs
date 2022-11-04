@@ -1,11 +1,11 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
 	public partial class Effect {
 
-        public static Effect AddStat(object source, EffectArgs args)
+        public static Effect AddStat(object source, Args args)
         {
             Effect e = new Effect(source, "Add Stat", args);
             e.action = (a) => {
@@ -15,7 +15,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect SetStat(object source, EffectArgs args)
+        public static Effect SetStat(object source, Args args)
         {
             Effect e = new Effect(source, "Set Stat", args);
             e.action = (a) =>
@@ -26,7 +26,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect SetOwner(object source, EffectArgs args)
+        public static Effect SetOwner(object source, Args args)
         {
             Effect e = new Effect(source, "Set Owner", args);
             e.action = (a) =>
@@ -38,14 +38,14 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect SetPlane(object source, EffectArgs args)
+        public static Effect SetPlane(object source, Args args)
         {
             Effect e = new Effect(source, "Set Plane", args);
             e.action = (a) => { args.token.SetPlane(e, args.plane); };
             return e;
         }
 
-        public static Effect SetDest(object source, EffectArgs args)
+        public static Effect SetDest(object source, Args args)
         {
             Effect e = new Effect(source, "Set Destructible", args);
             e.action = (a) => 
@@ -56,7 +56,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect SetTrample(object source, EffectArgs args)
+        public static Effect SetTrample(object source, Args args)
         {
             Effect e = new Effect(source, "Set Trample", args);
             e.action = (a) =>
@@ -67,7 +67,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Learn(object source, EffectArgs args)
+        public static Effect Learn(object source, Args args)
         {
             Effect e = new Effect(source, "Learn", args);
             e.action = (a) =>
@@ -78,7 +78,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Forget(object source, EffectArgs args)
+        public static Effect Forget(object source, Args args)
         {
             Effect e = new Effect(source, "Forget", args);
             e.action = (a) =>
@@ -89,7 +89,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect AddTimer(object source, EffectArgs args)
+        public static Effect AddTimer(object source, Args args)
         {
             Effect e = new Effect(source, "Add Timer", args);
             e.action = (a) =>
@@ -99,7 +99,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect RemoveTimer(object source, EffectArgs args)
+        public static Effect RemoveTimer(object source, Args args)
         {
             Effect e = new Effect(source, "Remove Timer", args);
             e.action = (a) =>

@@ -43,7 +43,7 @@ namespace HOA
         public void StatSetMax(object source, Stats stat, int n) { }
         public bool Damage(object source, int n) { return vitality.Damage(n); }
 
-        private void Learn(Ability ability, AbilityArgs args)
+        private void Learn(Ability ability, Ab.Args args)
         {
             if (ability == null || args == null)
                 throw new ArgumentNullException();

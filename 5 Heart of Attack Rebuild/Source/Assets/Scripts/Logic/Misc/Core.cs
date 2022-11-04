@@ -23,7 +23,7 @@ namespace HOA {
             Log.Start("Program started.");
 #endif
             gameObject.AddComponent("Updater");
-            Ab.EffectQueue.Load();
+            Ef.Queue.Load();
             LoadAudioSystem();
             LoadGUISystem();            
             Ref.Main.Load();
@@ -35,7 +35,7 @@ namespace HOA {
             
             AbilityRequester.AbilityRequestPublish(Source.Force, 
                 new Ab.Closure(Source.Force, Ref.Abilities._Create, 
-                    new AbilityArgs(null, Price.Free, Species.Demolitia)));
+                    new Ab.Args(null, Price.Free, Species.Demolitia)));
             /*AbilityRequester.AbilityRequestPublish(Source.Force,
                 Ability.ManualCreate(Species.Tree);*/
 #endif

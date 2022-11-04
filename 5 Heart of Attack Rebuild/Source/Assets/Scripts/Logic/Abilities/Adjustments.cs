@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HOA.Ab {
 	
-    public delegate void Adjustment (Ability a, AbilityArgs arg);
+    public delegate void Adjustment (Ability a, Args arg);
 
 
     public static class Adjustments 

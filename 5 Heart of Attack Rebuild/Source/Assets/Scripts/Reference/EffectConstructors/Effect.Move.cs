@@ -1,12 +1,12 @@
 ﻿using HOA.Resources;
 using HOA.To;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
     public partial class Effect
     {
 
-		public static Effect BurrowStart(object source, EffectArgs args)
+        public static Effect BurrowStart(object source, Args args)
         {
             Effect e = new Effect(source, "Burrow Start", args);
             e.action = (a) =>
@@ -15,12 +15,12 @@ namespace HOA.Ab
                 Cell c = args.cell;
                 Cell oldCell = t.Cell;
                 AVEffect.Burrow.Play(t);
-                EffectQueue.Add(Effect.BurrowFinish(source, args));
+                Queue.Add(Effect.BurrowFinish(source, args));
                 Log.Game("{0} burrowed from {1} to {2}.", t, oldCell, c);
             };
             return e;
         }
-        public static Effect BurrowFinish(object source, EffectArgs args)
+        public static Effect BurrowFinish(object source, Args args)
         {
             Effect e = new Effect(source, "Burrow Finish", args);
             e.action = (a) =>
@@ -31,7 +31,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Move(object source, EffectArgs args)
+        public static Effect Move(object source, Args args)
         {
             Effect e = new Effect(source, "Move", args);
             e.action = (a) =>
@@ -48,8 +48,8 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Swap(object source, EffectArgs args)
+
+        public static Effect Swap(object source, Args args)
         {
             Effect e = new Effect(source, "Swap", args);
             e.action = (a) =>
@@ -60,7 +60,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect TeleportStart(object source, EffectArgs args)
+        public static Effect TeleportStart(object source, Args args)
         {
             Effect e = new Effect(source, "Teleport Start", args);
             e.action = (a) =>
@@ -69,13 +69,13 @@ namespace HOA.Ab
                 Cell c = args.cell;
                 Cell oldCell = t.Cell;
                 AVEffect.Teleport.Play(t);
-                EffectQueue.Add(Effect.TeleportFinish(source, args));
+                Queue.Add(Effect.TeleportFinish(source, args));
 
                 Log.Game("{0} teleported {1} from {2} to {3}.", e.source.Last<Token>(), t, oldCell, c);
             };
             return e;
         }
-        public static Effect TeleportFinish(object source, EffectArgs args)
+        public static Effect TeleportFinish(object source, Args args)
         {
             Effect e = new Effect(source, "Teleport Finish", args);
             e.action = (a) =>

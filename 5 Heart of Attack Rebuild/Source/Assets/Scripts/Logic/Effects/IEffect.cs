@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
     public interface IEffect

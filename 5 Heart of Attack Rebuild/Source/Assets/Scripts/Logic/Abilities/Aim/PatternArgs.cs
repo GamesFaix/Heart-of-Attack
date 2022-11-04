@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Ab 
+namespace HOA.Ab.Aim
 {
 	
-    public class AimPatternArgs 
+    public class PatternArgs 
     {
         public Token user, body;
         public Cell center;
@@ -12,7 +12,7 @@ namespace HOA.Ab
         public Range<byte> range;
         public bool inclusive;
 
-        public AimPatternArgs(Token user, Token body, Cell center, Predicate<IEntity> filter, Range<byte> range, bool inclusive)
+        public PatternArgs(Token user, Token body, Cell center, Predicate<IEntity> filter, Range<byte> range, bool inclusive)
         {
             this.user = user;
             this.body = body;

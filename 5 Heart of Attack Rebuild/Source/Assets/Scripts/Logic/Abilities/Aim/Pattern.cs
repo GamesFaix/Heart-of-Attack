@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 
-namespace HOA.Ab
+namespace HOA.Ab.Aim
 {
-    public delegate Set<IEntity> AimPattern(AimPatternArgs args);
+    public delegate Set<IEntity> Pattern(PatternArgs args);
 
-    public static class AimPatterns
+    public static class Patterns
     {
-        public static Set<IEntity> Arc(AimPatternArgs args)
+        public static Set<IEntity> Arc(PatternArgs args)
         {
             Set<IEntity> square = Square(args.center, args.range);
             return (square + Cell.Occupants) / args.filter;
@@ -35,12 +35,12 @@ namespace HOA.Ab
             return ring;
         }
 
-        public static Set<IEntity> Free (AimPatternArgs args)
+        public static Set<IEntity> Free (PatternArgs args)
         {
             return (Session.Active.cells.Base<Cell, IEntity>() + Session.Active.tokens) / args.filter;
         }
 
-        public static Set<IEntity> Line (AimPatternArgs args)
+        public static Set<IEntity> Line (PatternArgs args)
         {
             Set<IEntity> cells = new Set<IEntity>(args.center);
             Set<Set<IEntity>> star = Star(args.center, args.range);
@@ -96,12 +96,12 @@ namespace HOA.Ab
             return legal;
         }
         
-        public static Set<IEntity> Neighbor (AimPatternArgs args)
+        public static Set<IEntity> Neighbor (PatternArgs args)
         {
             return (args.center.NeighborsAndSelf + Cell.Occupants) / args.filter;
         }
 
-        public static Set<IEntity> Path (AimPatternArgs args)
+        public static Set<IEntity> Path (PatternArgs args)
         {
             Log.Debug("Aim.Path does not allow custom paths.");
             Set<IEntity> cells = new Set<IEntity>(args.center);
@@ -129,7 +129,7 @@ namespace HOA.Ab
             return (cells + Cell.Occupants) / args.filter;
         }
 
-        public static Set<IEntity> Radial (AimPatternArgs args)
+        public static Set<IEntity> Radial (PatternArgs args)
         {
             Set<IEntity> set = new Set<IEntity>();
             NeighborMatrix neighbors = new NeighborMatrix(args.center);
@@ -141,7 +141,7 @@ namespace HOA.Ab
             return set;
         }
 
-        public static Set<IEntity> Self (AimPatternArgs args)
+        public static Set<IEntity> Self (PatternArgs args)
         {
             return new Set<IEntity>(args.user);
         }

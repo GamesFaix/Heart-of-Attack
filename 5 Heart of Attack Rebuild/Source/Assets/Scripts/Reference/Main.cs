@@ -10,7 +10,7 @@
             Abilities.Load(); 
             Tokens.Load();
             //GUI.AbilityRequester.Load();
-            Ab.AbilityProcessor.Load();
+            Ab.Processor.Load();
             GUI.TargetSelector.Load();
         }
     }

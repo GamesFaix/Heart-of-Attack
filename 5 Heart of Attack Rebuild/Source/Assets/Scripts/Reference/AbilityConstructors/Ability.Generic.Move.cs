@@ -1,6 +1,8 @@
 ﻿using HOA.To;
 using System;
 using System.Collections.Generic;
+using HOA.Ab.Aim;
+using HOA.Ef;
 
 namespace HOA.Ab
 {
@@ -12,7 +14,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Move", Rank.Move);
             //a.desc = Scribe.Write("Move {0} to target cell.", a.sourceToken);
-            a.Aims = AimPlan.MovePath(a, Range.b(0,1));
+            a.Aims = Plan.MovePath(a, Range.b(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
@@ -20,7 +22,7 @@ namespace HOA.Ab
                 for (byte i = 1; i < tar.Count; i++)
                 {
                     Cell c = tar[i,0] as Cell;
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(mover, c)));
+                    Queue.Add(Effect.Move(a, new Ef.Args(mover, c)));
                 }
             };
             return a;
@@ -40,7 +42,7 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Dart", Rank.Move);
 //            a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += AimStage.MoveLine(a.Aims, Range.b(0,1));
+            a.Aims += Stage.MoveLine(a.Aims, Range.b(0,1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
@@ -58,7 +60,7 @@ namespace HOA.Ab
                     line.Add(start);
                 }
                 foreach (Cell c in line)
-                    EffectQueue.Add(Effect.Move(a, new EffectArgs(arg.user, c)));
+                    Queue.Add(Effect.Move(a, new Ef.Args(arg.user, c)));
             };
             return a;
         }
@@ -67,15 +69,15 @@ namespace HOA.Ab
         public static Ability Teleport()
         {
             Ability a = new Ability("Teleport", Rank.Special);
-            a.Aims += AimStage.AttackArc(a.Aims, Filter.Token, Range.b(0,1));
-            a.Aims += AimStage.MoveArcOther(a.Aims, () => AbilityProcessor.targets[0][0] as Token, Range.b(0,1));
+            a.Aims += Stage.AttackArc(a.Aims, Filter.Token, Range.b(0,1));
+            a.Aims += Stage.MoveArcOther(a.Aims, () => Ab.Processor.targets[0, 0] as Token, Range.b(0, 1));
             a.Update = Adjustments.Range0 + Adjustments.Filter0 + Adjustments.Range1;
             //a.desc = Scribe.Write("Move {0} to Target cell.", a.Aims[0].filter);
             a.MainEffects = (arg, tar) =>
             {
                 IEntity mover = tar[0, 0];
                 IEntity destination = tar[1, 0];
-                EffectQueue.Add(Effect.TeleportStart(a, new EffectArgs(mover, destination)));
+                Queue.Add(Effect.TeleportStart(a, new Ef.Args(mover, destination)));
             };
             return a;
         }

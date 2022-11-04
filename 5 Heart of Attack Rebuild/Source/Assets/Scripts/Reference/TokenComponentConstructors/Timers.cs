@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HOA.Ab;
+using HOA.Ef;
 
 namespace HOA.To 
 {
@@ -16,8 +17,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             { 
-                EffectQueue.Add(EffectSequence.Explosion(
-                    t, new EffectArgs(t.ThisToken.Cell, t.Modifier, false))); 
+                Queue.Add(Sequence.Explosion(
+                    t, new Ef.Args(t.ThisToken.Cell, t.Modifier, false))); 
             };
             return t;
         }
@@ -32,8 +33,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
-                EffectQueue.Add(Effect.AddStat(t, 
-                    new EffectArgs(t.ThisUnit, 0-t.Modifier, Stats.Initiative)));
+                Queue.Add(Effect.AddStat(t, 
+                    new Ef.Args(t.ThisUnit, 0-t.Modifier, Stats.Initiative)));
             };
             return t;
         }
@@ -64,8 +65,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(EffectSequence.Explosion(t, 
-                    new EffectArgs(t.ThisToken.Cell, t.Modifier, false)));
+                Queue.Add(Sequence.Explosion(t, 
+                    new Ef.Args(t.ThisToken.Cell, t.Modifier, false)));
                 t.Turns++;
             };
             return t;
@@ -80,7 +81,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(Effect.CorrodeResidual(t, new EffectArgs(t.ThisUnit, t.Modifier)));
+                Queue.Add(Effect.CorrodeResidual(t, new Ef.Args(t.ThisUnit, t.Modifier)));
                 t.Modifier = Math.Floor(t.Modifier * 0.5f);
                 if (t.Modifier > 0) 
                     t.Turns++;
@@ -99,7 +100,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(Effect.Damage(t, new EffectArgs(t.ThisUnit, t.Modifier)));
+                Queue.Add(Effect.Damage(t, new Ef.Args(t.ThisUnit, t.Modifier)));
                 t.Turns++;
             };
             return t;
@@ -115,7 +116,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(Effect.Damage(t, new EffectArgs(t.ThisUnit, t.Modifier)));
+                Queue.Add(Effect.Damage(t, new Ef.Args(t.ThisUnit, t.Modifier)));
                 t.Turns++;
             };
             return t;
@@ -132,8 +133,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
-                EffectQueue.Add(Effect.AddStat(t, 
-                    new EffectArgs(t.ThisUnit, 0 - t.Modifier, Stats.Initiative)));
+                Queue.Add(Effect.AddStat(t, 
+                    new Ef.Args(t.ThisUnit, 0 - t.Modifier, Stats.Initiative)));
             };
             return t;
         }
@@ -148,7 +149,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(Effect.FireInitial(t, new EffectArgs(t.ThisToken, t.Modifier)));
+                Queue.Add(Effect.FireInitial(t, new Ef.Args(t.ThisToken, t.Modifier)));
                 t.Turns++;
             };
             return t;
@@ -161,7 +162,7 @@ namespace HOA.To
             t.Desc = Scribe.Write("{0} cannot move. ({1} of {0}'s turns left.)", t.ThisToken, t.Turns);
             t.Turns = 1;
             t.Test = t.ParentTurnEndTest;
-            t.Activate = () => { EffectQueue.Add(Effect.Learn(t, new EffectArgs(t.ThisUnit, t.Ability))); };
+            t.Activate = () => { Queue.Add(Effect.Learn(t, new Ef.Args(t.ThisUnit, t.Ability))); };
             return t;
         }
 
@@ -173,7 +174,7 @@ namespace HOA.To
                     t.ThisToken, t.Turns);
             t.Turns = turns;
             t.Test = t.EveryTurnTest;
-            t.Activate = () => { EffectQueue.Add(Effect.Shift(t, new EffectArgs(t.ThisUnit, 1))); };
+            t.Activate = () => { Queue.Add(Effect.Shift(t, new Ef.Args(t.ThisUnit, 1))); };
             return t;
         }
 
@@ -187,8 +188,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
-                EffectQueue.Add(Effect.AddStat(t, 
-                    new EffectArgs(t.ThisToken, t.Modifier, Stats.Initiative)));
+                Queue.Add(Effect.AddStat(t, 
+                    new Ef.Args(t.ThisToken, t.Modifier, Stats.Initiative)));
             };
             return t;
         }
@@ -204,8 +205,8 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
-                EffectQueue.Add(Effect.AddStat(t,
-                     new EffectArgs(t.ThisToken, t.Modifier, Stats.Initiative)));
+                Queue.Add(Effect.AddStat(t,
+                     new Ef.Args(t.ThisToken, t.Modifier, Stats.Initiative)));
             };
             return t;
 
@@ -221,7 +222,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                EffectQueue.Add(Effect.WaterLog(t, new EffectArgs(t.ThisUnit, t.Modifier)));
+                Queue.Add(Effect.WaterLog(t, new Ef.Args(t.ThisUnit, t.Modifier)));
                 t.Turns++;
             };
             return t;

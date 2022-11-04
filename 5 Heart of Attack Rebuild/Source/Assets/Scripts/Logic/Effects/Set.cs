@@ -3,15 +3,15 @@ using System.Text;
 using System.Collections.Generic;
 
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
-    public class EffectSet : Set<Effect>, IEffect
+    public class Set : Set<Effect>, IEffect
     {
-        public EffectSet() : base () { }
+        public Set() : base () { }
 
-        public EffectSet(Effect e) : base (e) { }
+        public Set(Effect e) : base (e) { }
 
-        public EffectSet(IEnumerable<Effect> e) : base(e) { }
+        public Set(IEnumerable<Effect> e) : base(e) { }
 
         public Action Process { get { return () => { foreach (Effect e in this) e.Process(); }; } }
 

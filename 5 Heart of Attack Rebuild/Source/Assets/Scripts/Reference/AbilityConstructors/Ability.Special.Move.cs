@@ -1,5 +1,7 @@
 ﻿using HOA.To;
 using System;
+using HOA.Ab.Aim;
+using HOA.Ef;
 
 namespace HOA.Ab
 {
@@ -13,9 +15,9 @@ namespace HOA.Ab
            // a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)\nLose all Focus.", a.sourceToken, a.values[2]);
             a.rank = Rank.Special;
 
-            Action<AbilityArgs, NestedList<IEntity>> extra = 
+            Action<Args, NestedList<IEntity>> extra = 
                 (arg, tar) =>
-                   EffectQueue.Add(Effect.SetStat(a, new EffectArgs(arg.user, 0, Stats.Focus)));
+                   Queue.Add(Effect.SetStat(a, new Ef.Args(arg.user, 0, Stats.Focus)));
             a.MainEffects += extra;
             return a;
         }
@@ -25,12 +27,12 @@ namespace HOA.Ab
         {
             Ability a = new Ability("Burrow", Rank.Move);
            // a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += AimStage.MoveArc(a.Aims, Range.b(0, 1));
+            a.Aims += Stage.MoveArc(a.Aims, Range.b(0, 1));
             a.Update = Adjustments.Range0;
             a.MainEffects = (arg, tar) =>
             {
                 IEntity cell = tar[0, 0];
-                EffectQueue.Add(Effect.BurrowStart(a, new EffectArgs(arg.user, cell)));
+                Queue.Add(Effect.BurrowStart(a, new Ef.Args(arg.user, cell)));
             };
             return a;
         }

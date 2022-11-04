@@ -1,15 +1,15 @@
-﻿namespace HOA.Ab
+﻿namespace HOA.Ef
 {
-    public partial class EffectSequence
+    public partial class Sequence
     {
-        public static EffectSequence Detonate(object source, EffectArgs args)
+        public static Sequence Detonate(object source, Args args)
         {
-            EffectSequence e = new EffectSequence(source, "Detonate", args);
+            Sequence e = new Sequence(source, "Detonate", args);
             e.AddToEnd(Effect.Detonate2(source, args));
             return e;
         }
 
-        public static EffectSequence Explosion(object source, EffectArgs args)
+        public static Sequence Explosion(object source, Args args)
         {
             Log.Debug("Not implemented.");
             return null;

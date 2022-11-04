@@ -10,7 +10,7 @@ namespace HOA
     {
         #region ISourced
         public Source source { get; private set; }
-        public Type[] validSources { get { return new Type[3] { typeof(Player), typeof(Effect), typeof(Source.ForcedSource) }; } }
+        public Type[] validSources { get { return new Type[3] { typeof(Player), typeof(Ef.Effect), typeof(Source.ForcedSource) }; } }
         public bool IsValidSource(object obj) { return Source.IsValid(validSources, obj); }
         
         #endregion
@@ -40,7 +40,7 @@ namespace HOA
         public bool heart { get { return Flags.ContainsAny(TokenFlags.Heart); } }
         public bool king { get { return (this is Unit && (this as Unit).rank == To.Rank.King); } }
 
-        public void SetFlags(IEffect source, TokenFlags flags, bool b)
+        public void SetFlags(Ef.IEffect source, TokenFlags flags, bool b)
         {
             if(b)
                 Flags.Add(flags);
@@ -65,7 +65,7 @@ namespace HOA
 
 
         public To.Plane plane { get { return body.Plane; } }
-        public void SetPlane(Ab.IEffect effect, Plane plane) 
+        public void SetPlane(Ef.IEffect effect, Plane plane) 
         { 
             body.Plane = plane;
             RefreshCell();
@@ -91,7 +91,7 @@ namespace HOA
             Remains = Species.None;
         }
 
-        public void Destroy(Ab.IEffect effect, bool normalRemains = true)
+        public void Destroy(Ef.IEffect effect, bool normalRemains = true)
         {
             Log.Debug("Not implemented.");
         }

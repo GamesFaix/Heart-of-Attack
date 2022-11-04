@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
-    public partial class EffectSequence : NestedList<Effect>, IEffect, ISourced, ISourceRestricted
+    public partial class Sequence : NestedList<Effect>, IEffect, ISourced, ISourceRestricted
     {
         #region Properties
 
         public string Name { get; private set; }
-        public EffectArgs Args { get; private set; }
+        public Args Args { get; private set; }
         
         #endregion
 
         #region Constructors
 
-        private EffectSequence(object source, string name, EffectArgs args)
+        private Sequence(object source, string name, Args args)
         {
             if (!IsValidSource(source))
                 throw new InvalidSourceException();
@@ -28,13 +28,13 @@ namespace HOA.Ab
             mainList = new List<IList<Effect>>();
         }
 
-        private EffectSequence(object source, string name, EffectArgs args, Effect e)
+        private Sequence(object source, string name, Args args, Effect e)
             : this(source, name, args)
         {
             AddToEnd(e);
         }
 
-        private EffectSequence(object source, string name, EffectArgs args, EffectSet e)
+        private Sequence(object source, string name, Args args, Ef.Set e)
             : this(source, name, args)
         {
             AddToEnd(e);
@@ -52,7 +52,7 @@ namespace HOA.Ab
                 {
                     if (mainList.Count > 0)
                     {
-                        ((EffectSet)first).Process();
+                        ((Ef.Set)first).Process();
                         mainList.Remove(first);
                     }
                 };
@@ -74,9 +74,9 @@ namespace HOA.Ab
             {
                 return new Type[10]
                 {
-                    typeof(Ability), 
+                    typeof(Ab.Ability), 
                     typeof(Effect),
-                    typeof(EffectSequence),
+                    typeof(Sequence),
                     typeof(Set<Effect>),
                     typeof(To.Timer), 
                     typeof(To.Sensor),

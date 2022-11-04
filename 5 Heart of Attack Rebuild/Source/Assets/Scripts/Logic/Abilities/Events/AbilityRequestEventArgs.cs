@@ -7,7 +7,7 @@ namespace HOA.Ab
     {
         public Closure closure { get; private set; }
         public Ability ability { get { return closure.ability; } }
-        public AbilityArgs args { get {return closure.args;} }
+        public Args args { get { return closure.args; } }
         public bool cancel { get; private set; }
 
         public AbilityRequestEventArgs(Closure closure, bool cancel = false)

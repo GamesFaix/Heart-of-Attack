@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
-    public delegate IEffect EffectConstructor (object source, EffectArgs args);
+    public delegate IEffect Builder (object source, Args args);
 
     public partial class Effect : IEffect, ISourced, ISourceRestricted
     {
         public string Name { get; private set; }
         public override string ToString() { return Name; }
-        public EffectArgs args;
-        public Action<EffectArgs> action;
+        public Args args;
+        public Action<Args> action;
 
         public Action Process 
         { 
@@ -22,9 +22,9 @@ namespace HOA.Ab
         }
         
         
-        public EffectSequence Sequence { get; set; }
+        public Sequence Sequence { get; set; }
 
-        private Effect(object source, string name, EffectArgs args)
+        private Effect(object source, string name, Args args)
         {
             if (!IsValidSource(source))
                 throw new InvalidSourceException();
@@ -46,9 +46,9 @@ namespace HOA.Ab
             {
                 return new Type[10]
                 {
-                    typeof(Ability), 
+                    typeof(Ab.Ability), 
                     typeof(Effect),
-                    typeof(EffectSequence),
+                    typeof(Ef.Sequence),
                     typeof(Set<Effect>),
                     typeof(To.Timer), 
                     typeof(To.Sensor),

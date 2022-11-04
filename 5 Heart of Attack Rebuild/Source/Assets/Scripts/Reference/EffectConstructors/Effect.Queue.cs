@@ -1,12 +1,12 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
     public partial class Effect
     {
 
-        public static Effect Advance(object source, EffectArgs args)
+        public static Effect Advance(object source, Args args)
         {
             Effect e = new Effect(source, "Advance", args);
             e.action = (a) =>
@@ -16,15 +16,15 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Initialize(object source, EffectArgs args)
+
+        public static Effect Initialize(object source, Args args)
         {
             Effect e = new Effect(source, "Initialize", args);
             e.action = (a) => { Session.Active.Queue.Initialize(); };
             return e;
         }
-        
-        public static Effect Shift(object source, EffectArgs args)
+
+        public static Effect Shift(object source, Args args)
         {
             Effect e = new Effect(source, "Shift", args);
             e.action = (a) =>
@@ -47,7 +47,7 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect Shuffle(object source, EffectArgs args)
+        public static Effect Shuffle(object source, Args args)
         {
             Effect e = new Effect(source, "Shuffle", args);
             e.action = (a) =>

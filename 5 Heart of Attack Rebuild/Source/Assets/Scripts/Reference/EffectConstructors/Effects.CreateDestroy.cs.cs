@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using HOA.Resources;
 
-namespace HOA.Ab 
+namespace HOA.Ef
 {
 	
     public partial class Effect
     {
-        
-        public static Effect Create(object source, EffectArgs args)
+
+        public static Effect Create(object source, Args args)
         {
             Effect e = new Effect(source, "Create", args);
             e.action = (a) =>
@@ -16,49 +16,49 @@ namespace HOA.Ab
                 Token newToken = Session.Active.Create(e, args.species, args.cell);
                 AVEffect.Birth.Play(newToken);
                 Log.Game("{0} created {1} in {2}.", source, newToken, newToken.Cell);
-                if (args.effectConstructor != null)
-                    EffectQueue.Interrupt(args.effectConstructor(source, new EffectArgs(newToken)));
+                if (args.builder != null)
+                    Queue.Interrupt(args.builder(source, new Args(newToken)));
             };
             return e;
 
         }
          
-        public static Effect DestroyCleanUp(object source, EffectArgs args)
+        public static Effect DestroyCleanUp(object source, Args args)
         {
             Effect e = new Effect(source, "Destroy Clean Up", args);
             e.action = (a) => { args.token.Destroy(e, true); };
             return e;
         }
 
-        public static Effect DestroyObstacle(object source, EffectArgs args)
+        public static Effect DestroyObstacle(object source, Args args)
         {
             Effect e = new Effect(source, "Destroy Obstacle", args);
             e.action = (a) =>
             {
                 AVEffect.Destruct.Play(args.token);
                 if (e.Sequence == null)
-                    EffectQueue.Add(Effect.DestroyCleanUp(e.source, args));
+                    Queue.Add(Effect.DestroyCleanUp(e.source, args));
                 else
                     e.Sequence.AddToList(1, Effect.DestroyCleanUp(e.source, args));
             };
             return e;
         }
 
-        public static Effect DestroyUnit(object source, EffectArgs args)
+        public static Effect DestroyUnit(object source, Args args)
         {
             Effect e = new Effect(source, "Destroy Unit", args);
             e.action = (a) =>
             {
                 AVEffect.Death.Play(args.token);
                 if (e.Sequence == null)
-                    EffectQueue.Add(Effect.DestroyCleanUp(e.source, args));
+                    Queue.Add(Effect.DestroyCleanUp(e.source, args));
                 else
                     e.Sequence.AddToList(1, Effect.DestroyCleanUp(e.source, args));
             };
             return e;
         }
 
-        public static Effect Detonate2(object source, EffectArgs args)
+        public static Effect Detonate2(object source, Args args)
         {
             Effect e = new Effect(source, "Detonate2", args);
             e.action = (a) =>
@@ -69,23 +69,23 @@ namespace HOA.Ab
             return e;
         }
 
-        public static Effect GetHeart(object source, EffectArgs args)
+        public static Effect GetHeart(object source, Args args)
         {
             Effect e = new Effect(source, "Get Heart", args);
             e.action = (a) =>
             {
-                EffectSet effects = new EffectSet();
+                Set effects = new Set();
                 foreach (Token t in args.token.Owner.Tokens)
-                    effects.Add(Effect.SetOwner(source, new EffectArgs(t)));
+                    effects.Add(Effect.SetOwner(source, new Args(t)));
                 AVEffect.GetHeart.Play(args.token);
                 Log.Game("{0} acquired the {1}", e.source.Last<Player>(), args.token);
                 effects.Add(Effect.DestroyCleanUp(e.source, args));
-                EffectQueue.Add(effects);
+                Queue.Add(effects);
             };
             return e;
         }
 
-        public static Effect Replace(object source, EffectArgs args)
+        public static Effect Replace(object source, Args args)
         {
             Effect e = new Effect(source, "Replace", args);
             e.action = (a) =>
@@ -94,8 +94,8 @@ namespace HOA.Ab
                 Cell cell = token.Cell;
                 token.Destroy(e, false);
                 Token newToken = Session.Active.Create(e.source, args.species, cell);
-                if (args.effectConstructor != null)
-                    EffectQueue.Interrupt(args.effectConstructor(source, new EffectArgs(newToken)));
+                if (args.builder != null)
+                    Queue.Interrupt(args.builder(source, new Args(newToken)));
             };
             return e;
         }

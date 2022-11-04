@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using HOA.Ab.Aim;
 
 namespace HOA.Ab
 {
     
-    public partial class Ability : ICloseable<AbilityArgs>
+    public partial class Ability : ICloseable<Args>
     {
         
         public string name { get; set; }
         public Rank rank { get; private set; }
 
-        public AimPlan Aims { get; private set; }
+        public Plan Aims { get; private set; }
         
-        public UsabilityTest Usable { get; private set; }
+        public UseTest Usable { get; private set; }
 
         private Action PostEffects;
-        private Action<AbilityArgs, NestedList<IEntity>> MainEffects;
+        private Action<Args, NestedList<IEntity>> MainEffects;
 
         public Adjustment Update;
         
@@ -26,13 +26,13 @@ namespace HOA.Ab
             this.name = name;
             this.rank = rank;
             
-            Usable += UsabilityTests.UserInQueue;
-            Usable += UsabilityTests.UserIsTop;
-            Usable += UsabilityTests.Unused;
-            Usable += UsabilityTests.Affordable;
-            Usable += UsabilityTests.AlreadyProcessing;
+            Usable += UseTests.UserInQueue;
+            Usable += UseTests.UserIsTop;
+            Usable += UseTests.Unused;
+            Usable += UseTests.Affordable;
+            Usable += UseTests.AlreadyProcessing;
             
-            Aims = new AimPlan(this);
+            Aims = new Plan(this);
 
             MainEffects = (args, tar) => { };
             PostEffects = () => { };

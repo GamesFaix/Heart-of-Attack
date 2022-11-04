@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace HOA.Ab {
     
-    public delegate bool UsabilityTest(Closure ac, out string message);
+    public delegate bool UseTest(Closure ac, out string message);
 
-    public static class UsabilityTests
+    public static class UseTests
     {
         public static bool UserIsTop(this Closure ac, out string message)
         {
@@ -36,8 +36,8 @@ namespace HOA.Ab {
         }
         public static bool AlreadyProcessing(this Closure ac, out string message)
         {
-            message = (!EffectQueue.Active ? "" : "Another action is currently in progress.");
-            return !EffectQueue.Active;
+            message = (!Ef.Queue.Active ? "" : "Another action is currently in progress.");
+            return !Ef.Queue.Active;
         }
 
         public static bool AirClear(this Closure ac, out string message)

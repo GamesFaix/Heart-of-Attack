@@ -1,11 +1,11 @@
 ﻿using HOA.Resources;
 
-namespace HOA.Ab
+namespace HOA.Ef
 {
 
     public partial class Effect
     {
-        public static Effect Knockback(object source, EffectArgs args)
+        public static Effect Knockback(object source, Args args)
         {
             Effect e = new Effect(source, "Knockback", args);
             e.action = (a) =>
@@ -39,7 +39,7 @@ namespace HOA.Ab
                         break;
                     else
                     {
-                        EffectQueue.Add(Effect.Move(e.source, new EffectArgs(args.token, c)));
+                        Queue.Add(Effect.Move(e.source, new Args(args.token, c)));
                         totalDamage += dmgPerCell;
                         totalCells++;
                     } 
@@ -55,7 +55,7 @@ namespace HOA.Ab
                         "{0} knocked {1} back {2} cells", t, args.token, totalCells);
                     if (totalDamage > 0)
                     {
-                        EffectQueue.Add(Effect.Damage(e.source, new EffectArgs(args.token, totalDamage)));
+                        Queue.Add(Effect.Damage(e.source, new Args(args.token, totalDamage)));
                         log += string.Format(", dealing {0} damage.", totalDamage);
                     }
                     else 
@@ -65,20 +65,20 @@ namespace HOA.Ab
             };
             return e;
         }
-        
-        public static Effect Miss(object source, EffectArgs args)
+
+        public static Effect Miss(object source, Args args)
         {
             Effect e = new Effect(source, "Miss", args);
             e.action = (a) => { AVEffect.Miss.Play(args.token); };
             return e;
         }
-        
-        public static Effect Stick(object source, EffectArgs args)
+
+        public static Effect Stick(object source, Args args)
         {
             Effect e = new Effect(source, "Stick", args);
             e.action = (a) =>
             {
-                Ability move = args.unit.arsenal.Move.ability;
+                Ab.Ability move = args.unit.arsenal.Move.ability;
                 if (move != null)
                 {
                     e.source.Last<Token>().trackList.Add(args.token, move.Aims[0].range);
