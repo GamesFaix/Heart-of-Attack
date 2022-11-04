@@ -8,7 +8,7 @@ namespace HOA.GUI
 
         public static event EventHandler<AbilityRequestEventArgs> AbilityRequestEvent;
 
-        public static void AbilityRequestPublish(object source, Closure closure)
+        public static void AbilityRequestPublish(object source, AbilityClosure closure)
         {
             if (source == null || closure == null)
                 throw new ArgumentNullException();

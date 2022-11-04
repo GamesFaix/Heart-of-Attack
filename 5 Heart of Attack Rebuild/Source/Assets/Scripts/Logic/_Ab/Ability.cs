@@ -6,7 +6,7 @@ using HOA.Ab.Aim;
 namespace HOA.Ab
 {
     
-    public partial class Ability : ICloseable<Args>
+    public partial class Ability : ICloseable<AbilityArgs>
     {
         
         public string name { get; set; }
@@ -17,7 +17,7 @@ namespace HOA.Ab
         public UseTest Usable { get; private set; }
 
         private Action PostEffects;
-        private Action<Args, NestedList<IEntity>> MainEffects;
+        private Action<AbilityArgs, NestedList<IEntity>> MainEffects;
 
         public Adjustment Update;
         
@@ -40,7 +40,7 @@ namespace HOA.Ab
             Update = Adjustments.Standard;
         }
 
-        public void Execute(Closure source, NestedList<IEntity> targets)
+        public void Execute(AbilityClosure source, NestedList<IEntity> targets)
         {
             MainEffects(source.args, targets);
             PostEffects();

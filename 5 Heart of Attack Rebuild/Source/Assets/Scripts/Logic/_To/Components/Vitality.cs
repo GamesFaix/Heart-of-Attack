@@ -1,5 +1,7 @@
 ﻿using System;
-using HOA.St;
+using HOA.Stats;
+using HOA.Ef;
+using HOA.Fargo;
 
 namespace HOA.To
 {
@@ -44,7 +46,8 @@ namespace HOA.To
         {
             if (health < 1)
             {
-                Ef.Queue.Add(Ef.Effect.DestroyUnit(ThisToken, new Ef.Args(ThisToken))); 
+                Queue.Add(Effect.DestroyUnit(ThisToken, new EffectArgs(
+                    Arg.Target(FT.Token, ThisToken)))); 
                 Log.Game("{0}'s health is less than 1!  Destroying...", ThisToken); 
             }
         }
@@ -60,9 +63,9 @@ namespace HOA.To
         /// <summary>  Add to Health.Max, check if less than 1 </summary>
         public virtual int AddHealthCap(sbyte amount)
         {
-            health.AddCap(amount); 
+            health.Add(amount, 1); 
             DieIfZero();
-            return health.Cap;
+            return health.cap;
         }
 
         /// <summary>  Health -= (n - Defense), checks if health less than 1 </summary> 

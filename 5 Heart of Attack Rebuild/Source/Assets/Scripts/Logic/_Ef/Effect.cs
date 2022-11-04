@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace HOA.Ef
 {
-    public delegate IEffect Builder (object source, Args args);
+    public delegate IEffect Builder(object source, EffectArgs args);
 
     public partial class Effect : IEffect, ISourced, ISourceRestricted
     {
         public string Name { get; private set; }
         public override string ToString() { return Name; }
-        public Args args;
-        public Action<Args> action;
+        public EffectArgs args;
+        public Action<EffectArgs> action;
 
         public Action Process 
         { 
@@ -24,7 +24,7 @@ namespace HOA.Ef
         
         public Sequence Sequence { get; set; }
 
-        private Effect(object source, string name, Args args)
+        private Effect(object source, string name, EffectArgs args)
         {
             if (!IsValidSource(source))
                 throw new InvalidSourceException();

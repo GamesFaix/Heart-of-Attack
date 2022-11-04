@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using HOA.To;
 using HOA.Ab;
 using HOA.Ref;
-using HOA.St;
+using HOA.Stats;
+using Args = HOA.Ab.AbilityArgs;
+using HOA.Fargo;
 
 namespace HOA
 {
@@ -23,7 +25,9 @@ namespace HOA
             u.LearnStrike(16);
             u.LearnCreate(Price.Cheap, Species.Grizzly);
             u.LearnCreate(new Price(1,1), Species.TalonedScout);
-            u.Learn(Abilities.Transmute, new Ab.Args(u, new Price(1, 2), Filter.DestNotCorpse, Species.Metaterrainean));
+            u.Learn(Abilities.Transmute, new Args(u, new Price(1, 2), 
+                Arg.Filter(FF.Filter0, Filter.DestNotCorpse), 
+                Species.Metaterrainean));
             //Ability.ThrowTerrain(u),
 	        //Ability.IceBlast(u),
 			return u;
@@ -38,8 +42,9 @@ namespace HOA
             u.LearnMove(3);
             u.LearnFocus();
             u.LearnStrike(9);
-            u.Learn(Abilities.Heal, new Ab.Args(u, new Price(1, 1),
-                Filter.Owner(u.Owner, true) + Filter.identity(u, false), Scalar.Dam(u, 7)));
+            u.Learn(Abilities.Heal, new Args(u, new Price(1, 1),
+                Arg.Filter(FF.Filter0, Filter.Owner(u.Owner, true) + Filter.identity(u, false)), 
+                Arg.Stat(FS.Damage, Scalar.Dam(u, 7))));
             u.LearnCreate(new Price(0, 1), Species.Tree);
             return u;
         }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using HOA.To;
 using HOA.Ab;
-using HOA.St;
+using HOA.Stats;
+using HOA.Fargo;
 
 namespace HOA 
 { 
@@ -24,7 +25,18 @@ namespace HOA
         public bool skipped { get { return watch.skipped; } }
         public Stat health { get { return vitality.health; } }
         public Stat defense { get { return vitality.defense; } }
-        public Bundle stats { get { return new Bundle(energy, focus, initiative, health, defense); } }
+        public ArgTable<FS, Stat> stats 
+        { 
+            get 
+            { 
+                return ArgTable.Stat(
+                    Arg.Stat(FS.Energy, energy),
+                    Arg.Stat(FS.Focus, focus),
+                    Arg.Stat(FS.Initiative, initiative),
+                    Arg.Stat(FS.Health, health),
+                    Arg.Stat(FS.Defense, defense)); 
+            } 
+        }
 
         public Arsenal arsenal { get; private set; }
 
@@ -39,59 +51,67 @@ namespace HOA
             arsenal = new Arsenal(this);
         }
 
-        public void StatAdd(object source, string statName, sbyte n, bool secondary = false) 
+        public void StatAdd(object source, FS statName, sbyte amount, bool secondary = false) 
         {
             if (!secondary)
-                stats[statName].Add(n);
+                stats[statName].Add(amount);
             else
-            {
-                if (stats[statName] is Capped)
-                    ((Capped)stats[statName]).AddCap(n);
-                if (stats[statName] is Flex)
-                    ((Flex)stats[statName]).AddMin(n);
-            }
+                stats[statName].Add(amount, 1);
         }
-        public void StatSet(object source, string statName, sbyte n, bool secondary = false) 
+        public void StatSet(object source, FS statName, sbyte amount, bool secondary = false) 
         {
             if (!secondary)
-                stats[statName].Set(n);
+                stats[statName].Set(amount);
             else
-            {
-                if (stats[statName] is Capped)
-                    ((Capped)stats[statName]).SetCap(n);
-                if (stats[statName] is Flex)
-                    ((Flex)stats[statName]).SetMin(n);
-            }
+                stats[statName].Set(amount, 1);
         }
         
         public bool Damage(object source, sbyte n) { return vitality.Damage(n); }
 
         #region Learn Abilities
 
-        private void Learn(Ability ability, Ab.Args args)
+        private void Learn(Ability ability, AbilityArgs args)
         {
             if (ability == null || args == null)
                 throw new ArgumentNullException();
-            Ab.Closure a = new Ab.Closure(this, ability, args);
+            AbilityClosure a = new AbilityClosure(this, ability, args);
             arsenal.Add(a);
         }
         private void LearnFocus()
-        { Learn(Ref.Abilities.Focus, new Ab.Args(this, Price.Cheap, Scalar.Dam(this, 1))); }
+        { 
+            Learn(Ref.Abilities.Focus, new AbilityArgs(this, Price.Cheap,
+                Arg.Stat(FS.Damage, Scalar.Dam(this, 1))));
+        }
 
         private void LearnMove(sbyte rangeMax)
-        { Learn(Ref.Abilities.Move, new Ab.Args(this, Price.Cheap, Flex.Rng(this, rangeMax))); }
+        {
+            Learn(Ref.Abilities.Move, new AbilityArgs(this, Price.Cheap,
+              Arg.Stat(FS.Range0, Flex.Rng(this, rangeMax))));
+        }
 
         private void LearnDart(sbyte rangeMax)
-        { Learn(Ref.Abilities.Dart, new Ab.Args(this, Price.Cheap, Flex.Rng(this, rangeMax))); }
+        {
+            Learn(Ref.Abilities.Dart, new AbilityArgs(this, Price.Cheap,
+              Arg.Stat(FS.Range0, Flex.Rng(this, rangeMax))));
+        }
 
         private void LearnStrike(sbyte damage)
-        { Learn(Ref.Abilities.Strike, new Ab.Args(this, Price.Cheap, Scalar.Dam(this, 16))); }
+        {
+            Learn(Ref.Abilities.Strike, new AbilityArgs(this, Price.Cheap,
+              Arg.Stat(FS.Damage, Scalar.Dam(this, 16))));
+        }
 
         private void LearnShoot(sbyte damage, sbyte rangeMax)
-        { Learn(Ref.Abilities.Shoot, new Ab.Args(this, Price.Cheap, Flex.Rng(this, rangeMax), Scalar.Dam(this, damage))); }
+        {
+            Learn(Ref.Abilities.Shoot, new AbilityArgs(this, Price.Cheap,
+              Arg.Stat(FS.Range0, Flex.Rng(this, rangeMax)),
+              Arg.Stat(FS.Damage, Scalar.Dam(this, damage))));
+        }
 
         private void LearnCreate(Price price, Species species)
-        { Learn(Ref.Abilities.Create, new Ab.Args(this, price, species)); }
+        {
+            Learn(Ref.Abilities.Create, new AbilityArgs(this, price, species));
+        }
 
         #endregion
 

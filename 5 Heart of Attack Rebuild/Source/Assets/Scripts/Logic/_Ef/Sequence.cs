@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Args = HOA.Ef.EffectArgs;
 
 namespace HOA.Ef
 {

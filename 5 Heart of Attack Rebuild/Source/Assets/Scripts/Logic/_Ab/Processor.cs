@@ -6,7 +6,7 @@ namespace HOA.Ab
 
     public static class Processor
     {
-        static Closure pending;
+        static AbilityClosure pending;
         static Set<IEntity> options, selection;
         public static NestedList<IEntity> targets { get; private set; }
         static bool cancel;

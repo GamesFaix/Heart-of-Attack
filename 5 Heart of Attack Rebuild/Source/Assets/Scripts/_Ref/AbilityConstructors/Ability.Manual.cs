@@ -2,7 +2,8 @@
 using System;
 using HOA.Ab.Aim;
 using HOA.Ef;
-using HOA.St;
+using HOA.Stats;
+using HOA.Fargo;
 
 namespace HOA.Ab
 {
@@ -21,9 +22,10 @@ namespace HOA.Ab
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Unit u in tar[0])
-                    e.Add(Effect.AddStat(null, new Ef.Args(u, 
-                        "Damage", arg.stat["Damage"], 
-                        "Stat", arg.str["Stat"])));
+                    e.Add(Effect.AddStat(null, new EffectArgs(
+                        Arg.Target(FT.Unit,u), 
+                        Arg.Num(FN.Amount, arg[FS.Amount]), 
+                        Arg.Text(FX.Stat, arg[FX.Stat]))));
                 Queue.Add(e);
             };
 
@@ -42,7 +44,9 @@ namespace HOA.Ab
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Cell c in tar[0])
-                    e.Add(Effect.Create(a, new Ef.Args(c, arg.species)));
+                    e.Add(Effect.Create(a, new EffectArgs(
+                        Arg.Target(FT.Location, c), 
+                        arg.species)));
                 Queue.Add(e);
             };
             
@@ -63,9 +67,11 @@ namespace HOA.Ab
                 foreach (Token t in tar)
                 {
                     if (t is Unit)
-                        e.Add(Effect.DestroyUnit(a, new Ef.Args(t)));
+                        e.Add(Effect.DestroyUnit(a, new EffectArgs(
+                            Arg.Target(FT.Unit, t))));
                     else
-                        e.Add(Effect.DestroyObstacle(a, new Ef.Args(t)));
+                        e.Add(Effect.DestroyObstacle(a, new EffectArgs(
+                            Arg.Target(FT.Token, t))));
                 }
                 Queue.Add(e);
             };
@@ -80,7 +86,8 @@ namespace HOA.Ab
             Ability a = new Ability("#End", Rank.None);
 //            a.desc = Scribe.Write("End current turn.");
             a.Aims = Plan.Self(a);
-            a.MainEffects = (arg, tar) => Queue.Add(Effect.Advance(a, new Ef.Args()));
+            a.MainEffects = (arg, tar) => 
+                Queue.Add(Effect.Advance(a, new EffectArgs()));
             a.Usable = UseTests.AlreadyProcessing;
             return a;
         }
@@ -94,9 +101,9 @@ namespace HOA.Ab
             a.Aims += Stage.MoveFree(a.Aims);
             a.MainEffects = (arg, tar) =>
             {
-                IEntity mover = tar[0, 0];
-                IEntity cell = tar[1, 0];
-                Queue.Add(Effect.TeleportStart(a, new Ef.Args(mover, cell)));
+                Queue.Add(Effect.TeleportStart(a, new EffectArgs(
+                    Arg.Target(FT.Mover, tar[0, 0]), 
+                    Arg.Target(FT.Destination, tar[1, 0]))));
             };
             a.Usable = UseTests.AlreadyProcessing;
             return a;
@@ -114,7 +121,9 @@ namespace HOA.Ab
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Token t in tar)
-                    e.Add(Effect.SetOwner(a, new Ef.Args(t, arg.player)));
+                    e.Add(Effect.SetOwner(a, new EffectArgs(
+                        Arg.Target(FT.Token, t),
+                        arg.player)));
                 Queue.Add(e);
             };
 
@@ -133,9 +142,10 @@ namespace HOA.Ab
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Unit u in tar)
-                    e.Add(Effect.SetStat(a, new Ef.Args(u, 
-                            "Damage", arg.stat["Damage"], 
-                            "Stat", arg.str["Stat"])));
+                    e.Add(Effect.SetStat(a, new EffectArgs(
+                        Arg.Target(FT.Unit, u),
+                        Arg.Num(FN.Amount, arg[FS.Amount]), 
+                        Arg.Text(FX.Stat, arg[FX.Stat]))));
                 Queue.Add(e);
             };
 
@@ -153,8 +163,9 @@ namespace HOA.Ab
             a.MainEffects = (arg, tar) =>
             {
                 foreach (Unit u in tar)
-                    Queue.Add(Effect.Shift(a, new Ef.Args(u, 
-                        "Damage", arg.stat["Damage"])));
+                    Queue.Add(Effect.Shift(a, new EffectArgs(
+                        Arg.Target(FT.Unit, u), 
+                        Arg.Num(FN.Amount, arg[FS.Amount]))));
             };
 
             a.Usable = UseTests.AlreadyProcessing;

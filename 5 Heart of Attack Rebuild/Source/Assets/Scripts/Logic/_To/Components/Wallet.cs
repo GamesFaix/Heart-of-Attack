@@ -1,4 +1,4 @@
-﻿using HOA.St;
+﻿using HOA.Stats;
 
 namespace HOA.To
 {

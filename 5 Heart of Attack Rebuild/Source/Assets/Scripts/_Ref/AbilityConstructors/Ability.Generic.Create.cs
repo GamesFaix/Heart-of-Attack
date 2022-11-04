@@ -2,6 +2,7 @@
 using System;
 using HOA.Ab.Aim;
 using HOA.Ef;
+using HOA.Fargo;
 
 namespace HOA.Ab
 {
@@ -16,10 +17,10 @@ namespace HOA.Ab
             a.Aims += Stage.CreateNeighbor(a.Aims, Species.None);
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity cell = tar[0, 0];
-                Queue.Add(Effect.Create(a, new Ef.Args(cell, arg.species, arg.effect)));
-            };
+                Queue.Add(Effect.Create(a, new EffectArgs(
+                    Arg.Target(FT.Destination, tar[0, 0]),
+                    arg.species,
+                    Arg.Effect(FE.Birth, arg[FE.Birth]))));
             return a;
         }
 
@@ -33,10 +34,10 @@ namespace HOA.Ab
             a.MainEffects = (arg, tar) =>
             {
                 if (tar.Count > 0)
-                {
-                    IEntity cell = tar[0, 0];
-                    Queue.Add(Effect.Create(a, new Ef.Args(cell, arg.species, arg.effect)));
-                }
+                    Queue.Add(Effect.Create(a, new EffectArgs(
+                        Arg.Target(FT.Destination,  tar[0, 0]),
+                        arg.species,
+                        Arg.Effect(FE.Birth, arg[FE.Birth]))));
             };
             return a;
         }
@@ -49,10 +50,10 @@ namespace HOA.Ab
             a.Aims += Stage.CreateArc(a.Aims, Species.None, Range.sb(0,1));
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity cell = tar[0, 0];
-                Queue.Add(Effect.Create(a, new Ef.Args(cell, arg.species, arg.effect)));
-            };
+                 Queue.Add(Effect.Create(a, new EffectArgs(
+                    Arg.Target(FT.Destination, tar[0, 0]),
+                    arg.species,
+                    Arg.Effect(FE.Birth, arg[FE.Birth]))));
             return a;
         }
 
@@ -64,10 +65,10 @@ namespace HOA.Ab
             a.Aims += Stage.CreateFree(a.Aims, Species.None);
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity cell = tar[0, 0];
-                Queue.Add(Effect.Create(a, new Ef.Args(cell, arg.species, arg.effect)));
-            };
+                Queue.Add(Effect.Create(a, new EffectArgs(
+                    Arg.Target(FT.Destination, tar[0, 0]),
+                    arg.species,
+                    Arg.Effect(FE.Birth, arg[FE.Birth]))));
             return a;
         }
 
@@ -83,7 +84,10 @@ namespace HOA.Ab
             {
                 Ef.Set e = new Ef.Set();
                 foreach (Cell c in tar[0])
-                    e.Add(Effect.Create(a, new Ef.Args(c, arg.species, arg.effect)));
+                    e.Add(Effect.Create(a, new EffectArgs(
+                        Arg.Target(FT.Destination, c),
+                        arg.species,
+                        Arg.Effect(FE.Birth, arg[FE.Birth]))));
                 Queue.Add(e);
             };
             return a;
@@ -95,12 +99,11 @@ namespace HOA.Ab
             Ability a = new Ability("Transmute", Rank.Create);
             //a.desc = Scribe.Write("Replace {0} with {1}.", filter, a.args.species);
             a.Aims += new Stage(a.Aims, Patterns.Neighbor, Filter.Token);
-            a.Update += Adjustments.Filter0;
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity token = tar[0, 0];
-                Queue.Add(Effect.Replace(a, new Ef.Args(token, arg.species, arg.effect)));
-            };
+                Queue.Add(Effect.Replace(a, new EffectArgs(
+                    Arg.Target(FT.Token, tar[0, 0]), 
+                    arg.species, 
+                    Arg.Effect(FE.Birth, arg[FE.Birth]))));
             return a;
         }
 
@@ -111,10 +114,10 @@ namespace HOA.Ab
             //a.desc = Scribe.Write("Replace {0} with {1}.", a.sourceToken, a.args.species);
             a.Aims += Stage.Self(a.Aims);
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity self = tar[0, 0];
-                Queue.Add(Effect.Replace(a, new Ef.Args(self, arg.species, arg.effect)));
-            };
+                Queue.Add(Effect.Replace(a, new EffectArgs(
+                    Arg.Target(FT.User, tar[0, 0]), 
+                    arg.species, 
+                    Arg.Effect(FE.Birth, arg[FE.Birth]))));
             return a;
         }
         

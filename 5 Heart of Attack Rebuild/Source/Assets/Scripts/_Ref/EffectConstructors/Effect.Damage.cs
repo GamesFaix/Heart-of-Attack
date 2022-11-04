@@ -1,43 +1,45 @@
 ﻿using HOA.Resources;
 using HOA.To;
 using System;
+using HOA.Fargo;
 
 namespace HOA.Ef
 {
 
 	public partial class Effect
 	{
-        public static Effect CorrodeInitial(object source, Args args)
+        public static Effect CorrodeInitial(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Corrode Initial", args);
             e.action = (a) => 
             {
-                sbyte cor = (sbyte)Math.Floor(args.val["Damage"] * 0.5f);
-                Unit u = a.unit;
-                u.Damage(e, args.val["Damage"]);
+                sbyte cor = (sbyte)Math.Floor(a[FN.Damage] * 0.5f);
+                Unit u = a[FT.Damaged] as Unit;
+                u.Damage(e, a[FN.Damage]);
                 AVEffect.Corrode.Play(u);
                 u.timers.Add(Timer.Corrosion(e, u, cor));
             };
             return e;
         }
-        public static Effect CorrodeResidual(object source, Args args)
+        public static Effect CorrodeResidual(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Corrode Residual", args);
             e.action = (a) =>
             {
-                args.unit.StatAdd(e, "Health", (sbyte)(0 - args.val["Damage"]));
-                AVEffect.Corrode.Play(args.unit);
+                Unit u = a[FT.Damaged] as Unit;
+                u.StatAdd(e, FS.Health, (sbyte)(0 - a[FN.Damage]));
+                AVEffect.Corrode.Play(u);
             };
             return e;
         }
 
-        public static Effect Damage(object source, Args args)
+        public static Effect Damage(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Damage", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
-                if (u.Damage(e, args.val["Damage"]))
+                Unit u = a[FT.Damaged] as Unit;
+                if (u.Damage(e, a[FN.Damage]))
                     AVEffect.Damage.Play(u);
                 else 
                     AVEffect.Miss.Play(u);
@@ -45,41 +47,42 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect Pierce(object source, Args args)
+        public static Effect Pierce(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Pierce", args);
             e.action = (a) =>
             {
-                args.unit.StatAdd(e, "Health", (sbyte)(0 - args.val["Damage"]));
-                AVEffect.Damage.Play(args.unit);
+                Unit u = a[FT.Damaged] as Unit; 
+                u.StatAdd(e, FS.Health, (sbyte)(0 - a[FN.Damage]));
+                AVEffect.Damage.Play(u);
             };
             return e;
         }
 
-        public static Effect Rage(object source, Args args)
+        public static Effect Rage(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Rage", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
-                if (u.Damage(e, args.val["Damage"])) 
+                Unit u = a[FT.Damaged] as Unit;
+                if (u.Damage(e, a[FN.Damage])) 
                     AVEffect.Damage.Play(u);
                 else 
                     AVEffect.Miss.Play(u);
-                (e.source.Last<Unit>()).Damage(e, (sbyte)Math.Floor(args.val["Damage"] * 0.5f));
+                (e.source.Last<Unit>()).Damage(e, (sbyte)Math.Floor(a[FN.Damage] * 0.5f));
                 AVEffect.Damage.Play(e.source.Last<Unit>());
             };
             return e;
         }
 
-        public static Effect Donate(object source, Args args)
+        public static Effect Donate(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Donate", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
+                Unit u = a[FT.Unit] as Unit;
                 sbyte oldHP = u.health;
-                u.StatAdd(e, "Health", args.val["Damage"]);
+                u.StatAdd(e, FS.Health, a[FN.Amount]);
                 AVEffect.StatUp.Play(u);
                 sbyte diff = (sbyte)(u.health - oldHP);
                 (e.source.Last<Unit>()).Damage(e, diff);
@@ -88,18 +91,18 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect Leech(object source, Args args)
+        public static Effect Leech(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Leech", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
+                Unit u = a[FT.Damaged] as Unit;
                 sbyte oldHP = u.health;
-                if (u.Damage(e, args.val["Damage"]))
+                if (u.Damage(e, args[FN.Damage]))
                 {
                     AVEffect.Damage.Play(u);
                     sbyte actualDmg = (sbyte)(oldHP - u.health) ;
-                    (e.source.Last<Unit>()).StatAdd(e, "Health", actualDmg);
+                    (e.source.Last<Unit>()).StatAdd(e, FS.Health, actualDmg);
                     AVEffect.StatUp.Play(e.source.Last<Unit>());
                 }
                 else 
@@ -108,21 +111,21 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect ExplosionDummy(object source, Args args)
+        public static Effect ExplosionDummy(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Explosion Dummy", args);
-            e.action = (a) => { AVEffect.Explode.Play(args.token); };
+            e.action = (a) => { AVEffect.Explode.Play(args[FT.Token]); };
             return e;
         }
-        public static Effect ExplosionIndividual(object source, Args args)
+        public static Effect ExplosionIndividual(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Explosion Individual", args);
             e.action = (a) =>
             {
-                Cell c = args.cell;
-
-                Set<IEntity> Targets = c.occupants / Filter.UnitDest;
-                if (args.opt["ExcludeSelf"]) 
+                Set<IEntity> Targets = 
+                    (a[FT.Location] as Cell).occupants 
+                    / Filter.UnitDest;
+                if (a[FO.ExcludeSelf]) 
                     Targets.Remove(e.source.Last<Token>());
 
                 foreach (Token t in Targets)
@@ -130,13 +133,14 @@ namespace HOA.Ef
                     if (t.destructible)
                     {
                         AVEffect.Explode.Play(t);
-                        e.Sequence.AddToList(1, Effect.DestroyObstacle(source, new Args(t)));
+                        e.Sequence.AddToList(1, Effect.DestroyObstacle(source, new EffectArgs(
+                            Arg.Target(FT.Token, t))));
                     }
 
                     else if (t is Unit)
                     {
                         Unit u = (Unit)t;
-                        if (u.Damage(e, args.val["Damage"])) 
+                        if (u.Damage(e, a[FN.Damage])) 
                             AVEffect.Explode.Play(t);
                         else 
                             AVEffect.Miss.Play(t);
@@ -146,36 +150,37 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect Shock(object source, Args args)
+        public static Effect Shock(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Shock", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
-                u.Damage(e, args.val["Damage"]);
-                u.timers.Add(Timer.Stunned(e, u, args.val["Stun"]));
+                Unit u = a[FT.Damaged] as Unit;
+                u.Damage(e, a[FN.Damage]);
+                u.timers.Add(Timer.Stunned(e, u, a[FN.Stun]));
                 AVEffect.Stun.Play(u);
             };
             return e;
         }
-        public static Effect WaterLog(object source, Args args)
+        public static Effect WaterLog(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "WaterLog", args);
             e.action = (a) =>
             {
-                args.unit.Damage(e, args.val["Damage"]);
-                AVEffect.WaterLog.Play(args.unit);
+                Unit u = a[FT.Damaged] as Unit; 
+                u.Damage(e, a[FN.Damage]);
+                AVEffect.WaterLog.Play(u);
             };
             return e;
         }
 
-        public static Effect FireInitial(object source, Args args)
+        public static Effect FireInitial(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Fire Initial", args);
             e.action = (a) =>
             {
                 Set nextEffects = new Set();
-                Token t = args.token;
+                Token t = a[FT.Damaged] as Token;
 
                 if (t.destructible)
                 {
@@ -184,26 +189,28 @@ namespace HOA.Ef
                 }
                 else if (t is Unit)
                 {
-                    (t as Unit).StatAdd(e, "Health", (sbyte)(0 - args.val["Damage"]));
+                    (t as Unit).StatAdd(e, FS.Health, (sbyte)(0 - a[FN.Damage]));
                     AVEffect.Fire.Play(t);
                 }
 
                 Set<IEntity> neighbors = t.NeighborsAndCellmates / Filter.UnitDest;
 
-                sbyte newDmg = (sbyte)Math.Floor(args.val["Decay"] * 0.5f);
+                sbyte newDmg = (sbyte)Math.Floor(a[FN.Decay] * 0.5f);
                 foreach (Token t2 in neighbors)
-                    nextEffects.Add(Effect.FireSpread(source, new Args(t2, "Damage", newDmg)));
+                    nextEffects.Add(Effect.FireSpread(source, new EffectArgs(
+                        Arg.Target(FT.Damaged, t2), 
+                        Arg.Num(FN.Damage, newDmg))));
                 Queue.Add(nextEffects);
             };
             return e;
         }
 
-        public static Effect FireSpread(object source, Args args)
+        public static Effect FireSpread(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Fire Spread", args);
             e.action = (a) =>
             {
-                Token t = args.token;
+                Token t = a[FT.Damaged] as Token;
                 if (t.destructible)
                 {
                     AVEffect.Fire.Play(t);
@@ -212,19 +219,19 @@ namespace HOA.Ef
 
                 else if (t is Unit)
                 {
-                    (t as Unit).StatAdd(e, "Health", (sbyte)(0 - args.val["Damage"]));
+                    (t as Unit).StatAdd(e, FS.Health, (sbyte)(0 - a[FN.Damage]));
                     AVEffect.Fire.Play(t);
                 }
             };
             return e;
         }
 
-        public static Effect LaserLine(object source, Args args)
+        public static Effect LaserLine(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Laser Line", args);
             e.action = (a) =>
             {
-                Token t = args.token;
+                Token t = a[FT.Damaged] as Token;
                 Cell cell = t.Cell;
                 int2 direction = Direction.FromCells(cell, e.source.Last<Token>().Cell);
 
@@ -238,17 +245,19 @@ namespace HOA.Ef
                         cells.Add(cell);
                     else stop = true;
                 }
-                Queue.Add(Effect.LaserInitial(source, new Args((Set<IEntity>)cells, args.val)));
+                Queue.Add(Effect.LaserInitial(source, new EffectArgs(
+                    cells, 
+                    Arg.Num(FN.Damage, a[FN.Damage]))));
             };
             return e;
         }
-        public static Effect LaserInitial(object source, Args args)
+        public static Effect LaserInitial(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Laser Initial", args);
             e.action = (a) =>
             {
-                sbyte currentDmg = args.val["Damage"];
-                foreach (Cell cell in args.cells)
+                sbyte currentDmg = a[FN.Damage];
+                foreach (Cell cell in a.targetBatch)
                 {
                     Set<IEntity> units = cell.occupants / Filter.Unit;
                     foreach (Unit u in units)
@@ -263,20 +272,21 @@ namespace HOA.Ef
                     if ((cell.occupants / f).Count > 0) 
                         return;
                     if (units.Count > 0)
-                        currentDmg = (sbyte)Math.Floor(currentDmg * (args.val["Decay"] / 100));
+                        currentDmg = (sbyte)Math.Floor(currentDmg * (a[FN.Decay] / 100));
                 }
             };
             return e;
         }
-        public static Effect LaserSpread(object source, Args args)
+        public static Effect LaserSpread(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Laser Spread", args);
             e.action = (a) =>
             {
-                if (args.unit.Damage(e, args.val["Damage"])) 
-                    AVEffect.Laser.Play(args.token);
+                Unit u = a[FT.Damaged] as Unit;
+                if (u.Damage(e, a[FN.Damage])) 
+                    AVEffect.Laser.Play(u);
                 else 
-                    AVEffect.Miss.Play(args.token);
+                    AVEffect.Miss.Play(u);
             };
             return e;
         }

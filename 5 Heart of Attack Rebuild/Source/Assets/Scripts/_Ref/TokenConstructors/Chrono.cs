@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using HOA.To;
 using HOA.Ref;
 using HOA.Ab;
-using HOA.St;
+using HOA.Stats;
+using HOA.Fargo;
+using Args = HOA.Ab.AbilityArgs;
 
 namespace HOA
 {
@@ -19,7 +21,9 @@ namespace HOA
             u.wallet = new Wallet(u, 3);
             u.LearnMove(2);
             u.LearnFocus();
-            u.Learn(Abilities.Lob, new Ab.Args(u, Price.Cheap, Flex.Rng(u, 3), Scalar.Dam(u, 15)));
+            u.Learn(Abilities.Lob, new Args(u, Price.Cheap, 
+                Arg.Stat(FS.Range0, Flex.Rng(u, 3)),
+                Arg.Stat(FS.Damage, Scalar.Dam(u, 15))));
             u.LearnCreate(Price.Cheap, Species.RevolvingTom);
             u.LearnCreate(new Price(2,0), Species.Piecemaker);
             u.LearnCreate(new Price(2,1), Species.Reprospector); 
@@ -38,8 +42,12 @@ namespace HOA
             u.LearnMove(4);
             u.LearnFocus();
             u.LearnStrike(10);
-            u.Learn(Abilities.Summon, new Ab.Args(u, new Price(1, 1), Species.Aperture, Flex.Rng(u, 2)));
-            u.Learn(Abilities.Restore, new Ab.Args(u, new Price(0, 2), Filter.Unit, Flex.Rng(u, 2), Scalar.Dam(u, 10)));
+            u.Learn(Abilities.Summon, new Args(u, new Price(1, 1), Species.Aperture, 
+                Arg.Stat(FS.Range0, Flex.Rng(u, 2))));
+            u.Learn(Abilities.Restore, new Args(u, new Price(0, 2), 
+                Arg.Filter(FF.Filter0, Filter.Unit),
+                Arg.Stat(FS.Range0, Flex.Rng(u, 2)), 
+                Arg.Stat(FS.Damage, Scalar.Dam(u, 10))));
             return u;
         }
 

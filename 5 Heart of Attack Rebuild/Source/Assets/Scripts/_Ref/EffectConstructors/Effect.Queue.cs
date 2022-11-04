@@ -1,4 +1,5 @@
 ﻿using HOA.Resources;
+using HOA.Fargo;
 
 namespace HOA.Ef
 {
@@ -6,7 +7,7 @@ namespace HOA.Ef
     public partial class Effect
     {
 
-        public static Effect Advance(object source, Args args)
+        public static Effect Advance(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Advance", args);
             e.action = (a) =>
@@ -17,20 +18,20 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect Initialize(object source, Args args)
+        public static Effect Initialize(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Initialize", args);
             e.action = (a) => { Session.Active.Queue.Initialize(); };
             return e;
         }
 
-        public static Effect Shift(object source, Args args)
+        public static Effect Shift(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Shift", args);
             e.action = (a) =>
             {
-                Unit u = args.unit;
-                int n = args.val["Damage"];
+                Unit u = a[FT.Unit] as Unit;
+                int n = a[FN.Amount];
                 Session.Active.Queue.Shift(u, n);
                 if (n < 0)
                 {
@@ -47,7 +48,7 @@ namespace HOA.Ef
             return e;
         }
 
-        public static Effect Shuffle(object source, Args args)
+        public static Effect Shuffle(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Shuffle", args);
             e.action = (a) =>

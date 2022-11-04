@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using HOA.To;
 using HOA.Ref;
 using HOA.Ab;
-using HOA.St;
+using HOA.Stats;
+using Args = HOA.Ab.AbilityArgs;
+using HOA.Fargo;
 
 namespace HOA 
 {
@@ -19,9 +21,10 @@ namespace HOA
             u.LearnDart(5);
             u.LearnFocus();
             u.LearnStrike(16);
-            u.Learn(Abilities.Teleport, new Ab.Args(u, new Price(1, 1),
-                Filter.Owner(u.Owner, true) + Filter.Unit, 
-                Flex.Rng(0, u, 5), Flex.Rng(1, u, 5)));
+            u.Learn(Abilities.Teleport, new Args(u, new Price(1, 1),
+                Arg.Filter(FF.Filter0, Filter.Owner(u.Owner, true) + Filter.Unit), 
+                Arg.Stat(FS.Range0, Flex.Rng(u, 5)), 
+                Arg.Stat(FS.Range1, Flex.Rng(u, 5))));
             //Ability.GammaBurst(u),
             u.LearnCreate(Price.Cheap, Species.Katandroid);
             u.LearnCreate(new Price(2, 1), Species.Carapace);
@@ -56,7 +59,9 @@ namespace HOA
             u.LearnMove(4);
             u.LearnFocus();
             u.LearnStrike(8);
-            u.Learn(Abilities.Sprint, new Ab.Args(u, Price.Free, Flex.Rng(u, 0), Scalar.Boost(u, 1)));
+            u.Learn(Abilities.Sprint, new Args(u, Price.Free, 
+                Arg.Stat(FS.Range0, Flex.Rng(u, 0)), 
+                Arg.Stat(FS.Boost, Scalar.Boost(u, 1))));
 			//Ability.LaserSpin(u)
             return u;
         }

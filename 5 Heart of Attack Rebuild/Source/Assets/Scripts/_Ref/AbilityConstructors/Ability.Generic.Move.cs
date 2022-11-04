@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using HOA.Ab.Aim;
 using HOA.Ef;
+using HOA.Fargo;
 
 namespace HOA.Ab
 {
@@ -17,12 +18,10 @@ namespace HOA.Ab
             a.Aims = Plan.MovePath(a, Range.b(0,1));
             a.MainEffects = (arg, tar) =>
             {
-                Token mover = tar[0,0] as Token;
                 for (byte i = 1; i < tar.Count; i++)
-                {
-                    Cell c = tar[i,0] as Cell;
-                    Queue.Add(Effect.Move(a, new Ef.Args(mover, c)));
-                }
+                    Queue.Add(Effect.Move(a, new EffectArgs(
+                        Arg.Target(FT.Mover, tar[0, 0]),
+                        Arg.Target(FT.Destination, tar[i, 0]))));
             };
             return a;
         }
@@ -44,7 +43,7 @@ namespace HOA.Ab
             a.Aims += Stage.MoveLine(a.Aims, Range.sb(0,1));
             a.MainEffects = (arg, tar) =>
             {
-                Cell start = arg.user.Cell;
+                Cell start = (arg[FT.User] as Token).Cell;
                 Cell finish = tar[0,0] as Cell;
                 Set<Cell> line = new Set<Cell>();
                 int2 dir = Direction.FromCells(start, finish);
@@ -58,7 +57,9 @@ namespace HOA.Ab
                     line.Add(start);
                 }
                 foreach (Cell c in line)
-                    Queue.Add(Effect.Move(a, new Ef.Args(arg.user, c)));
+                    Queue.Add(Effect.Move(a, new EffectArgs(
+                        Arg.Target(FT.Mover, arg[FT.User]), 
+                        Arg.Target(FT.Destination, c))));
             };
             return a;
         }
@@ -69,14 +70,11 @@ namespace HOA.Ab
             Ability a = new Ability("Teleport", Rank.Special);
             a.Aims += Stage.AttackArc(a.Aims, Filter.Token, Range.sb(0,1));
             a.Aims += Stage.MoveArcOther(a.Aims, () => Ab.Processor.targets[0, 0] as Token, Range.sb(0, 1));
-            a.Update += Adjustments.Filter0;
             //a.desc = Scribe.Write("Move {0} to Target cell.", a.Aims[0].filter);
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity mover = tar[0, 0];
-                IEntity destination = tar[1, 0];
-                Queue.Add(Effect.TeleportStart(a, new Ef.Args(mover, destination)));
-            };
+                Queue.Add(Effect.TeleportStart(a, new EffectArgs(
+                    Arg.Target(FT.Mover, tar[0, 0]), 
+                    Arg.Target(FT.Destination, tar[1, 0]))));
             return a;
         }
     }

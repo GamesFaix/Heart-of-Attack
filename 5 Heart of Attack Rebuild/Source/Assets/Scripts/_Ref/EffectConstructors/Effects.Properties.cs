@@ -1,105 +1,120 @@
 ﻿using HOA.Resources;
+using HOA.Fargo;
+
 
 namespace HOA.Ef
 {
 
 	public partial class Effect {
 
-        public static Effect AddStat(object source, Args args)
+        public static Effect AddStat(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Add Stat", args);
-            e.action = (a) => {
-                args.unit.StatAdd(e, args.str["Stat"], args.val["Damage"], args.opt["Secondary"]);
-                AVEffect.Stat(args.val["Damage"] >= 0).Play(args.unit);
+            e.action = (a) => 
+            {
+                Unit u = a[FT.Unit] as Unit;
+                u.StatAdd(e, (FS)a[FN.Stat], a[FN.Damage], a[FO.Secondary]);
+                AVEffect.Stat(a[FN.Damage] >= 0).Play(u);
             };
             return e;
         }
 
-        public static Effect SetStat(object source, Args args)
+        public static Effect SetStat(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Set Stat", args);
             e.action = (a) =>
             {
-                args.unit.StatAdd(e, args.str["Stat"], args.val["Damage"], args.opt["Secondary"]);
-                AVEffect.Stat(args.val["Damage"] >= 0).Play(args.unit);
+                Unit u = a[FT.Unit] as Unit;
+                u.StatAdd(e, (FS)a[FN.Stat], a[FN.Damage], a[FO.Secondary]);
+                AVEffect.Stat(a[FN.Damage] >= 0).Play(u);
             };
             return e;
         }
 
-        public static Effect SetOwner(object source, Args args)
+        public static Effect SetOwner(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Set Owner", args);
             e.action = (a) =>
             {
-                args.token.Owner = args.player;
-                AVEffect.Owner.Play(args.token);
-                Log.Game("{0} acquired {1}", args.player, args.token);
+                Token t = a[FT.Token] as Token; 
+                t.Owner = a.player;
+                AVEffect.Owner.Play(t);
+                Log.Game("{0} acquired {1}", a.player, t);
             };
             return e;
         }
 
-        public static Effect SetPlane(object source, Args args)
+        public static Effect SetPlane(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Set Plane", args);
-            e.action = (a) => { args.token.SetPlane(e, args.plane); };
+            e.action = (a) => 
+            {
+                Token t = a[FT.Token] as Token; 
+                t.SetPlane(e, a.plane);
+            };
             return e;
         }
 
-        public static Effect SetDest(object source, Args args)
+        public static Effect SetDest(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Set Destructible", args);
             e.action = (a) => 
-            { 
-                args.token.SetFlags(e, To.TokenFlags.Destructible, args.opt["Toggle"]);
-                AVEffect.Stat(!args.opt["Toggle"]).Play(args.token);
+            {
+                Token t = a[FT.Token] as Token; 
+                t.SetFlags(e, To.TokenFlags.Destructible, a[FO.Toggle]);
+                AVEffect.Stat(!a[FO.Toggle]).Play(t);
             };
             return e;
         }
 
-        public static Effect SetTrample(object source, Args args)
+        public static Effect SetTrample(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Set Trample", args);
             e.action = (a) =>
             {
-                args.token.SetFlags(e, To.TokenFlags.Trample, args.opt["Toggle"]);
-                AVEffect.Stat(args.opt["Toggle"]).Play(args.token);
+                Token t = a[FT.Token] as Token; 
+                t.SetFlags(e, To.TokenFlags.Trample, a[FO.Toggle]);
+                AVEffect.Stat(a[FO.Toggle]).Play(t);
             };
             return e;
         }
 
-        public static Effect Learn(object source, Args args)
+        public static Effect Learn(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Learn", args);
             e.action = (a) =>
             {
-                args.unit.arsenal.Add(args.ability);
-                AVEffect.StatUp.Play(args.unit);
+                Unit u = a[FT.Unit] as Unit;
+                u.arsenal.Add(args.ability);
+                AVEffect.StatUp.Play(u);
             };
             return e;
         }
 
-        public static Effect Forget(object source, Args args)
+        public static Effect Forget(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Forget", args);
             e.action = (a) =>
             {
-                args.unit.arsenal.Remove(args.ability);
-                AVEffect.StatDown.Play(args.unit);
+                Unit u = a[FT.Unit] as Unit;
+                u.arsenal.Remove(a.ability);
+                AVEffect.StatDown.Play(u);
             };
             return e;
         }
 
-        public static Effect AddTimer(object source, Args args)
+        public static Effect AddTimer(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Add Timer", args);
             e.action = (a) =>
             {
-                args.unit.timers.Add(To.Timer.Bombing(e, args.unit));
+                Unit u = a[FT.Unit] as Unit;
+                u.timers.Add(To.Timer.Bombing(e, u));
             };
             return e;
         }
 
-        public static Effect RemoveTimer(object source, Args args)
+        public static Effect RemoveTimer(object source, EffectArgs args)
         {
             Effect e = new Effect(source, "Remove Timer", args);
             e.action = (a) =>

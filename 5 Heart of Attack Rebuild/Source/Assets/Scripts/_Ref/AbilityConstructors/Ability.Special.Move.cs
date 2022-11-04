@@ -2,6 +2,7 @@
 using System;
 using HOA.Ab.Aim;
 using HOA.Ef;
+using HOA.Fargo;
 
 namespace HOA.Ab
 {
@@ -15,9 +16,11 @@ namespace HOA.Ab
            // a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)\nLose all Focus.", a.sourceToken, a.values[2]);
             a.rank = Rank.Special;
 
-            Action<Args, NestedList<IEntity>> extra = 
-                (arg, tar) =>
-                   Queue.Add(Effect.SetStat(a, new Ef.Args(arg.user, "Boost", 0, "Stat", "Focus")));
+            Action<AbilityArgs, NestedList<IEntity>> extra = (arg, tar) =>
+                Queue.Add(Effect.SetStat(a, new EffectArgs(
+                    Arg.Target(FT.User, arg[FT.User]),
+                    Arg.Num(FN.Boost, 0), 
+                    Arg.Text(FX.Stat, "Focus"))));
             a.MainEffects += extra;
             return a;
         }
@@ -29,10 +32,9 @@ namespace HOA.Ab
            // a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
             a.Aims += Stage.MoveArc(a.Aims, Range.sb(0, 1));
             a.MainEffects = (arg, tar) =>
-            {
-                IEntity cell = tar[0, 0];
-                Queue.Add(Effect.BurrowStart(a, new Ef.Args(arg.user, cell)));
-            };
+                Queue.Add(Effect.BurrowStart(a, new EffectArgs(
+                    Arg.Target(FT.Mover, arg[FT.User]), 
+                    Arg.Target(FT.Destination, tar[0, 0]))));
             return a;
         }
     }

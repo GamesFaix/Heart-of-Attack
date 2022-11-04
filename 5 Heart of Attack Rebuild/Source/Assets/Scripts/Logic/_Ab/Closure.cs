@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using HOA.Fargo;
+using HOA.Stats;
 
 namespace HOA.Ab
 {
-    public class Closure : Closure<Args>, 
-        IComparable<Closure>, IEquatable<Closure>
+    public class AbilityClosure : Closure<AbilityArgs>, 
+        IComparable<AbilityClosure>, IEquatable<AbilityClosure>
     {
         public Ability ability { get { return functor as Ability; } }
 
@@ -19,10 +21,18 @@ namespace HOA.Ab
         
         public string name { get { return ability.name; } }
         public Rank rank { get { return ability.rank; } }
-        public Price price { get { return args.price; } }
+        public Price price
+        {
+            get
+            {
+                Twin priceStat = args[FS.Price] as Twin;
+                return new Price(priceStat.first, priceStat.second);
+            }
+        }
+         
         public Description desc { get; private set; }
 
-        public Closure(object source, Ability ability, Args args, Description desc = null)
+        public AbilityClosure(object source, Ability ability, AbilityArgs args, Description desc = null)
             : base(ability, args)
         {
             this.source = new Source(source);
@@ -47,8 +57,8 @@ namespace HOA.Ab
             if (source.Last<Unit>(out u))
             {
                 usedThisTurn = true;
-                u.Charge(args.price);
-                Log.Debug("{0} charged to {1}.", args.price, u);
+                u.Charge(price);
+                Log.Debug("{0} charged to {1}.", price, u);
             }
         }
 
@@ -73,7 +83,7 @@ namespace HOA.Ab
         #region IComparable & IEquatable
 
         /// <summary> Compare by Rank, then Price, then Name </summary>
-        public int CompareTo(Closure other)
+        public int CompareTo(AbilityClosure other)
         {
             if (rank < other.rank)
                 return -1;
@@ -89,7 +99,7 @@ namespace HOA.Ab
             }
         }
 
-        public bool Equals(Closure other)
+        public bool Equals(AbilityClosure other)
         {
             if (other as object == null)
                 return false;
@@ -98,7 +108,7 @@ namespace HOA.Ab
 
         public override bool Equals(object other)
         {
-            return (other is Closure && (other as Closure).Equals(this));
+            return (other is AbilityClosure && (other as AbilityClosure).Equals(this));
         }
 
         public override int GetHashCode()
@@ -107,8 +117,8 @@ namespace HOA.Ab
             return base.GetHashCode();
         }
 
-        public static bool operator ==(Closure a, Closure b) { return a.Equals(b); }
-        public static bool operator !=(Closure a, Closure b) { return !a.Equals(b); }
+        public static bool operator ==(AbilityClosure a, AbilityClosure b) { return a.Equals(b); }
+        public static bool operator !=(AbilityClosure a, AbilityClosure b) { return !a.Equals(b); }
 
         #endregion
 	}

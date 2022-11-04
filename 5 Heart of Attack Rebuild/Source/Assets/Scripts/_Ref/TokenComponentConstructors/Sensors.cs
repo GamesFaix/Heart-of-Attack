@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HOA.Ab;
 using HOA.Ef;
+using HOA.Fargo;
 
 namespace HOA.To
 {
@@ -29,7 +30,9 @@ namespace HOA.To
             s.OnThisEnter = (c) =>
             {
                 s.Subscribe(c);
-                Set<IEntity> apertures = Session.Active.tokens / Filter.Species(Species.Aperture, true);
+                Set<IEntity> apertures = 
+                    Session.Active.tokens 
+                    / Filter.Species(Species.Aperture, true);
                 apertures.Remove(s.ThisToken);
 
                 foreach (Token t in apertures)
@@ -41,7 +44,9 @@ namespace HOA.To
 
             s.OnThisExit = (c) =>
             {
-                Set<IEntity> apertures = Session.Active.tokens / Filter.Species(Species.Aperture, true);
+                Set<IEntity> apertures = 
+                    Session.Active.tokens 
+                    / Filter.Species(Species.Aperture, true);
                 apertures.Remove(s.ThisToken);
 
                 foreach (Token t in apertures)
@@ -63,13 +68,15 @@ namespace HOA.To
 
             s.OnOtherEnter = (t) =>
             {
-                Effect e = Effect.AddTimer(s, new Ef.Args(t));
+                Effect e = Effect.AddTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Bombing(e, t as Unit);
                 Queue.Add(e);
             };
             s.OnOtherExit = (t) =>
             {
-                Effect e = Effect.RemoveTimer(s, new Ef.Args(t));
+                Effect e = Effect.RemoveTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Bombing(e, t as Unit);
                 Queue.Add(e);
             };
@@ -98,22 +105,28 @@ namespace HOA.To
                     s.Subscribe(cell);
                 Ef.Set e = new Ef.Set();
                 foreach (Unit u in c.occupants)
-                    e.Add(Effect.AddTimer(s, new Ef.Args(u, Timer.Cursed(e, u))));
+                    e.Add(Effect.AddTimer(s, new EffectArgs(
+                        Arg.Target(FT.Unit, u),
+                        Timer.Cursed(e, u))));
                 Queue.Add(e);
             };
 
             s.OnOtherEnter = (t) =>
             {
-                Effect e = Effect.AddTimer(s, new Ef.Args(t));
+                Effect e = Effect.AddTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Cursed(e, t as Unit);
                 Queue.Add(e);
                 if (!Session.Active.paused)
-                    Queue.Interrupt(Effect.Damage(s, new Ef.Args(t, "Damage", 2)));
+                    Queue.Interrupt(Effect.Damage(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t),
+                        Arg.Num(FN.Damage, 2))));
             };
 
             s.OnOtherExit = (t) =>
             {
-                Effect e = Effect.RemoveTimer(s, new Ef.Args(t));
+                Effect e = Effect.RemoveTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Cursed(e, t as Unit);
                 Queue.Add(e);
             };
@@ -123,7 +136,9 @@ namespace HOA.To
                 Ef.Set e = new Ef.Set();
                 foreach (Token t in c.occupants)
                 {
-                    e.Add(Effect.RemoveTimer(s, new Ef.Args(t, Timer.Cursed(e, t as Unit))));
+                    e.Add(Effect.RemoveTimer(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Timer.Cursed(e, t as Unit))));
                     s.UnsubscribeAll();
                 }
                 Queue.Add(e);
@@ -144,22 +159,28 @@ namespace HOA.To
                 s.Subscribe(c);
                 Ef.Set e = new Ef.Set();
                 foreach (Token t in c.occupants / s.Trigger)
-                    e.Add(Effect.AddTimer(s, new Ef.Args(t, Timer.Exhaust(e, t as Unit))));
+                    e.Add(Effect.AddTimer(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Timer.Exhaust(e, t as Unit))));
                 Queue.Add(e);
             };
 
             s.OnOtherEnter = (t) =>
             {
-                Effect e = Effect.AddTimer(s, new Ef.Args(t));
+                Effect e = Effect.AddTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Exhaust(e, t as Unit);
                 Queue.Add(e);
                 if (!Session.Active.paused)
-                    Queue.Interrupt(Effect.Damage(s, new Ef.Args(t, "Damage", 5)));
+                    Queue.Interrupt(Effect.Damage(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Arg.Num(FN.Damage, 5))));
             };
 
             s.OnOtherExit = (t) =>
             {
-                Effect e = Effect.RemoveTimer(s, new Ef.Args(t));
+                Effect e = Effect.RemoveTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Exhaust(e, t as Unit);
                 Queue.Add(e);
             };
@@ -178,7 +199,9 @@ namespace HOA.To
             {
                 if (!Session.Active.paused
                     && Random.Range(1, 4) == 1) 
-                        Queue.Add(Effect.Replace(s, new Ef.Args(s.ThisToken, Species.Water)));
+                        Queue.Add(Effect.Replace(s, new EffectArgs(
+                            Arg.Target(FT.User, s.ThisToken), 
+                            Species.Water)));
             };
             s.OnThisEnter = (c) => { s.Subscribe(c); };
             return s;
@@ -198,24 +221,29 @@ namespace HOA.To
                 s.Subscribe(c);
                 Ef.Set e = new Ef.Set();
                 foreach (Token t in c.occupants / s.Trigger)
-                    e.Add(Effect.AddTimer
-                        (s, new Ef.Args(t, Timer.Incineration(e, t as Unit))));
+                    e.Add(Effect.AddTimer(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Timer.Incineration(e, t as Unit))));
                 Queue.Add(e);
             };
 
             s.OnOtherEnter = (t) =>
             {
-                Effect e = Effect.AddTimer(s, new Ef.Args(t));
+                Effect e = Effect.AddTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Incineration(e, t as Unit);
                 Queue.Add(e);
                 
                 if (!Session.Active.paused && Filter.UnitDest.AllTrue(t))
-                    Queue.Interrupt(Effect.FireInitial(s, new Ef.Args(t, "Damage", 7)));
+                    Queue.Interrupt(Effect.FireInitial(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Arg.Num(FN.Damage, 7))));
             };
 
             s.OnOtherExit = (t) =>
             {
-                Effect e = Effect.RemoveTimer(s, new Ef.Args(t));
+                Effect e = Effect.RemoveTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.Incineration(e, t as Unit);
                 Queue.Add(e);
             };
@@ -230,7 +258,8 @@ namespace HOA.To
             s.OnOtherEnter = (t) =>
             {
                 if (!Session.Active.paused) 
-                    Queue.Interrupt(Sequence.Detonate(s, new Ef.Args(s.ThisToken)));
+                    Queue.Interrupt(Sequence.Detonate(s, new EffectArgs(
+                        Arg.Target(FT.Token, s.ThisToken))));
             };
             s.OnThisEnter = (c) =>
             {
@@ -249,13 +278,19 @@ namespace HOA.To
             s.OnOtherEnter = (t) =>
             {
                 s.ThisToken.trackList.Add(t, 2);
-                Queue.Add(Effect.AddStat(s, new Ef.Args(t, "Damage", -2, "Stat", "Initiative")));
+                Queue.Add(Effect.AddStat(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t),
+                    Arg.Num(FN.Damage, -2),
+                    Arg.Text(FX.Stat, "Initiative"))));
             };
 
             s.OnOtherExit = (t) =>
             {
                 s.ThisToken.trackList.Remove(t);
-                Queue.Add(Effect.AddStat(s, new Ef.Args(t, "Damage", 2, "Stat", "Initiative")));
+                Queue.Add(Effect.AddStat(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t),
+                    Arg.Num(FN.Damage, 2),
+                    Arg.Text(FX.Stat, "Initiative"))));
             };
             return s;
         }
@@ -267,13 +302,19 @@ namespace HOA.To
             s.OnOtherEnter = (t) =>
             {
                 s.ThisToken.trackList.Add(t, 2);
-                Queue.Add(Effect.AddStat(s, new Ef.Args(t, "Damage", 2, "Stat", "Initiative")));
+                Queue.Add(Effect.AddStat(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t),
+                    Arg.Num(FN.Damage, 2),
+                    Arg.Text(FX.Stat, "Initiative"))));
             };
 
             s.OnOtherExit = (t) =>
             {
                 s.ThisToken.trackList.Remove(t);
-                Queue.Add(Effect.AddStat(s, new Ef.Args(t, "Damage", -2, "Stat", "Initiative")));
+                Queue.Add(Effect.AddStat(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t),
+                    Arg.Num(FN.Damage, -2),
+                    Arg.Text(FX.Stat, "Initiative"))));
             };
             return s;
         }
@@ -290,22 +331,28 @@ namespace HOA.To
                 s.Subscribe(c);
                 Ef.Set e = new Ef.Set();
                 foreach (Token t in c.occupants / s.Trigger)
-                    e.Add(Effect.AddTimer(s, new Ef.Args(t, Timer.WaterLogged(e, t as Unit))));
+                    e.Add(Effect.AddTimer(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Timer.WaterLogged(e, t as Unit))));
                 Queue.Add(e);
             };
 
             s.OnOtherEnter = (t) =>
             {
-                Effect e = Effect.AddTimer(s, new Ef.Args(t));
+                Effect e = Effect.AddTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.WaterLogged(e, t as Unit);
                 Queue.Add(e);
                 if (!Session.Active.paused && Filter.UnitDest.AllTrue(t))
-                    Queue.Interrupt(Effect.FireInitial(s, new Ef.Args(t, "Damage", 7)));
+                    Queue.Interrupt(Effect.FireInitial(s, new EffectArgs(
+                        Arg.Target(FT.Unit, t), 
+                        Arg.Num(FN.Damage, 5))));
             };
 
             s.OnOtherExit = (t) =>
             {
-                Effect e = Effect.RemoveTimer(s, new Ef.Args(t));
+                Effect e = Effect.RemoveTimer(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)));
                 e.args.component = Timer.WaterLogged(e, t as Unit);
                 Queue.Add(e);
             };
@@ -321,7 +368,8 @@ namespace HOA.To
                 "\nGround and Air Units in Cell have a Move Range of 1.");
             s.OnOtherEnter = (t) => 
             { 
-                Queue.Add(Effect.Stick(s, new Ef.Args(t))); 
+                Queue.Add(Effect.Stick(s, new EffectArgs(
+                    Arg.Target(FT.Unit, t)))); 
             };
 
             s.OnThisExit = (c) =>
@@ -332,7 +380,7 @@ namespace HOA.To
 
                 foreach (Token t in list)
                 {
-                    Closure move = (t as Unit).arsenal.Move;
+                    AbilityClosure move = (t as Unit).arsenal.Move;
                     if (move != null)
                     {
                         move.ability.Aims[0].range = (Range<sbyte>)list[t];
@@ -343,7 +391,7 @@ namespace HOA.To
 
             s.OnOtherExit = (t) =>
             {
-                Closure move = (t as Unit).arsenal.Move;
+                AbilityClosure move = (t as Unit).arsenal.Move;
                 if (move != null)
                 {
                     TrackList list = s.ThisToken.trackList;

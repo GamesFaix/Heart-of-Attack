@@ -1,4 +1,7 @@
-﻿namespace HOA.Ef
+﻿
+using Args = HOA.Ef.EffectArgs;
+
+namespace HOA.Ef
 {
     public partial class Sequence
     {

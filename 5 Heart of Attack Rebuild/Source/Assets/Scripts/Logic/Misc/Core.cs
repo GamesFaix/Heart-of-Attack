@@ -34,8 +34,8 @@ namespace HOA {
             session.CreateBoard(new size2(10, 10));
             
             AbilityRequester.AbilityRequestPublish(Source.Force, 
-                new Ab.Closure(Source.Force, Ref.Abilities._Create, 
-                    new Ab.Args(null, Price.Free, Species.Demolitia)));
+                new AbilityClosure(Source.Force, Ref.Abilities._Create, 
+                    new AbilityArgs(null, Price.Free, Species.Demolitia)));
             /*AbilityRequester.AbilityRequestPublish(Source.Force,
                 Ability.ManualCreate(Species.Tree);*/
 #endif
