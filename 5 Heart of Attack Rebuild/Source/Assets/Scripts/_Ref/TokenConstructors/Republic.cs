@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
+using HOA.Stats;
 
-namespace HOA
+namespace HOA.Tokens
 {
 
     public partial class Unit
     {
         public static Unit Decimatrix(object source)
         {
-            Unit u = new Unit(source, Species.Decimatrix, Rank.King, Species.SteelHeart);
+            Unit u = new Unit(source, Species.Decimatrix, UnitRank.King, Species.SteelHeart);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 85);
-            u.watch = new Watch(u, 2);
-            u.wallet = new Wallet(u, 3);
+            u.stats = Tokens.StatSheet.King(u, 85, 2);
             /*
             u.Arsenal.Add(new Ability[]{
 				Ability.Tread(u),
@@ -32,11 +30,10 @@ namespace HOA
         
         public static Unit Demolitia(object source)
         {
-            Unit u = new Unit(source, Species.Demolitia, Rank.Light);
+            Unit u = new Unit(source, Species.Demolitia, UnitRank.Light);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 30);
-            u.watch = new Watch(u, 3);
-            u.wallet = Wallet.DefenseBoost(u, 2);
+            u.stats = Tokens.StatSheet.FocusSideEffects(u, 30, 3, 
+                (n) => { u.StatAdd(u, Fargo.FS.Defense, n); }); 
             /*u.Arsenal.Add(new Ability[] {
 				Ability.Move(u, 3),
 				Ability.ThrowGrenade(u),
@@ -48,10 +45,9 @@ namespace HOA
 
         public static Unit MeinSchutz(object source)
         {
-            Unit u = new Unit(source, Species.MeinSchutz, Rank.Medium);
+            Unit u = new Unit(source, Species.MeinSchutz, UnitRank.Medium);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 40);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 40, 4);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 5),
 				Ability.Shoot(u, 2, 12),
@@ -64,11 +60,11 @@ namespace HOA
 
         public static Unit Panopticannon(object source)
         {
-            Unit u = new Unit(source, Species.Panopticannon, Rank.Heavy);
+            Unit u = new Unit(source, Species.Panopticannon, UnitRank.Heavy);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 65);
-            u.watch = new Watch(u, 1);
-            u.wallet = Wallet.DefenseBoost(u, 2);
+            u.stats = new Tokens.StatSheet(u, 25, 5);
+            u.stats = Tokens.StatSheet.FocusSideEffects(u, 65, 1,
+                (n) => { u.StatAdd(u, Fargo.FS.Defense, n); }); 
             /*u.Arsenal.Add(new Ability[] {
 				Ability.Move(u, 1),
 				Ability.Cannon(u, Price.Cheap, 12),

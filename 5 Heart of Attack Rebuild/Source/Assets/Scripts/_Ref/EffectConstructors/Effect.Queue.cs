@@ -1,5 +1,8 @@
 ﻿using HOA.Resources;
 using HOA.Fargo;
+using Session = HOA.Sessions.Session;
+using Token = HOA.Tokens.Token;
+using Unit = HOA.Tokens.Unit;
 
 namespace HOA.Ef
 {

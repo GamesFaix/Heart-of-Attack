@@ -1,10 +1,9 @@
-﻿using HOA.To;
+﻿using HOA.Tokens;
 using System;
-using HOA.Ab.Aim;
 using HOA.Ef;
 using HOA.Fargo;
 
-namespace HOA.Ab
+namespace HOA.Abilities
 {
 
     public partial class Ability
@@ -14,7 +13,7 @@ namespace HOA.Ab
         {
             Ability a = MovePathFocusBoost();
            // a.desc = Scribe.Write("Move {0} to target cell. (+{1} range per Focus.)\nLose all Focus.", a.sourceToken, a.values[2]);
-            a.rank = Rank.Special;
+            a.rank = AbilityRank.Special;
 
             Action<AbilityArgs, NestedList<IEntity>> extra = (arg, tar) =>
                 Queue.Add(Effect.SetStat(a, new EffectArgs(
@@ -28,9 +27,9 @@ namespace HOA.Ab
         /// <summary>Args: price, range </summary>
         public static Ability Burrow()
         {
-            Ability a = new Ability("Burrow", Rank.Move);
+            Ability a = new Ability("Burrow", AbilityRank.Move);
            // a.desc = Scribe.Write("Move {0} to Target cell.", a.sourceToken);
-            a.Aims += Stage.MoveArc(a.Aims, Range.sb(0, 1));
+            a.Aims += AimStage.MoveArc(a.Aims, Range.sb(0, 1));
             a.MainEffects = (arg, tar) =>
                 Queue.Add(Effect.BurrowStart(a, new EffectArgs(
                     Arg.Target(FT.Mover, arg[FT.User]), 

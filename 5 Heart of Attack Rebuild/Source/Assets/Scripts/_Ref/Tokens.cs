@@ -2,17 +2,17 @@
 
 using System;
 using System.Collections.Generic;
-using HOA.To;
+using HOA.Tokens;
 
-namespace HOA.Ref
+namespace HOA.Content
 {
-    public delegate Token TokenConstructor(object source);
+    public delegate Token TokenBuilder(object source);
 	
     public static class Tokens
     {
         public static Dictionary<Species, Token> templates { get; private set; }
         public static Dictionary<Species, string> names { get; private set; }
-        public static Dictionary<Species, TokenConstructor> constructors { get; private set; }
+        public static Dictionary<Species, TokenBuilder> builders { get; private set; }
 
         static int speciesCount { get { return Enum.GetValues(typeof(Species)).Length; } }
 
@@ -105,85 +105,85 @@ namespace HOA.Ref
         
         static void LoadConstructors()
         {
-            constructors = new Dictionary<Species, TokenConstructor>();
-
-            constructors.Add(Species.None, ((c) => { return null; }));
-            
-            constructors.Add(Species.Antenna, Obstacle.Antenna);
-            constructors.Add(Species.Aperture, Obstacle.Aperture);
-            constructors.Add(Species.Arena, Unit.ArenaNonSensus);
-            constructors.Add(Species.Ashes, Unit.Ashes);
-            constructors.Add(Species.Beesassin, Unit.Beesassin);
-            constructors.Add(Species.BlackWinnow, Unit.BlackWinnow);
-            constructors.Add(Species.BloodHeart, Obstacle.BloodHeart);
-            constructors.Add(Species.BombingRange, Obstacle.BombingRange);
-            constructors.Add(Species.BrassHeart, Obstacle.Brass);
-            constructors.Add(Species.Carapace, Unit.CarapaceInvader);
-            constructors.Add(Species.Conflagragon, Unit.Conflagragon);
-            constructors.Add(Species.Corpse, Obstacle.Corpse);
-            constructors.Add(Species.Cottage, Obstacle.Cottage);
-            constructors.Add(Species.Curse, Obstacle.Curse);
-            constructors.Add(Species.Decimatrix, Unit.Decimatrix);
-            constructors.Add(Species.Demolitia, Unit.Demolitia);
-            constructors.Add(Species.DreamReaver, Unit.DreamReaver);
-            constructors.Add(Species.Exhaust, Terrain.Exhaust);
-            constructors.Add(Species.FirHeart, Obstacle.Fir);
-            constructors.Add(Species.Gap, Terrain.Gap);
-            constructors.Add(Species.Gargoliath, Unit.Gargoliath);
-            constructors.Add(Species.Gatecreeper, Unit.Gatecreeper);
-            constructors.Add(Species.GlassHeart, Obstacle.Glass);
-            constructors.Add(Species.Grizzly, Unit.GrizzlyElder);
-            constructors.Add(Species.Hill, Terrain.Hill);
-            constructors.Add(Species.House, Obstacle.House);
-            constructors.Add(Species.Ice, Terrain.Ice);
-            constructors.Add(Species.Kabutomachine, Unit.Kabutomachine);
-            constructors.Add(Species.Katandroid, Unit.Katandroid);
-            constructors.Add(Species.Lava, Terrain.Lava);
-            constructors.Add(Species.Lichenthrope, Unit.Lichenthrope);
-            constructors.Add(Species.ManTrap, Unit.MartianManTrap);
-            constructors.Add(Species.Mawth, Unit.Mawth);
-            constructors.Add(Species.MeinSchutz, Unit.MeinSchutz);
-            constructors.Add(Species.Metaterrainean, Unit.Metaterrainean);
-            constructors.Add(Species.Mine, Obstacle.Mine);
-            constructors.Add(Species.Monolith, Unit.Monolith);
-            constructors.Add(Species.Mountain, Terrain.Mountain);
-            constructors.Add(Species.Mycolonist, Unit.Mycolonist);
-            constructors.Add(Species.Necro, Unit.Necrochancellor);
-            constructors.Add(Species.OldThreeHands, Unit.OldThreeHands);
-            constructors.Add(Species.Panopticannon, Unit.Panopticannon);
-            constructors.Add(Species.Piecemaker, Unit.Piecemaker);
-            constructors.Add(Species.Priest, Unit.PriestOfNaja);
-            constructors.Add(Species.PrismGuard, Unit.PrismGuard);
-            constructors.Add(Species.Pylon, Obstacle.Pylon);
-            constructors.Add(Species.Pyramid, Obstacle.Pyramid);
-            constructors.Add(Species.Quicksand, Terrain.Quicksand);
-            constructors.Add(Species.Rambuchet, Unit.BatteringRambuchet);
-            constructors.Add(Species.Rampart, Obstacle.Rampart);
-            constructors.Add(Species.Recyclops, Unit.Recyclops);
-            constructors.Add(Species.Reprospector, Unit.Reprospector);
-            constructors.Add(Species.RevolvingTom, Unit.RevolvingTom);
-            constructors.Add(Species.Rock, Obstacle.Rock);
-            constructors.Add(Species.Rook, Unit.Rook);
-            constructors.Add(Species.Sand, Terrain.Sand);
-            constructors.Add(Species.SiliconHeart, Obstacle.Silicon);
-            constructors.Add(Species.SilkHeart, Obstacle.Silk);
-            constructors.Add(Species.Smashbuckler, Unit.Smashbuckler);
-            constructors.Add(Species.SteelHeart, Obstacle.SteelHeart);
-            constructors.Add(Species.StoneHeart, Obstacle.Stone);
-            constructors.Add(Species.TalonedScout, Unit.TalonedScout);
-            constructors.Add(Species.Temple, Obstacle.Temple);
-            constructors.Add(Species.TimeSink, Terrain.TimeSink);
-            constructors.Add(Species.TimeWell, Terrain.TimeWell);
-            constructors.Add(Species.Tree, Obstacle.Tree);
-            constructors.Add(Species.Tree2, Obstacle.Tree2);
-            constructors.Add(Species.Tree3, Obstacle.Tree3);
-            constructors.Add(Species.Tree4, Obstacle.Tree4);
-            constructors.Add(Species.Ultratherium, Unit.Ultratherium);
-            constructors.Add(Species.Water, Terrain.Water);
-            constructors.Add(Species.Web, Obstacle.Web);
+            builders = new Dictionary<Species, TokenBuilder>(100)
+            {
+                {Species.None, (c) => { return null; } },
+                {Species.Antenna, Obstacle.Antenna},
+                {Species.Aperture, Obstacle.Aperture},
+                {Species.Arena, Unit.ArenaNonSensus},
+                {Species.Ashes, Unit.Ashes},
+                {Species.Beesassin, Unit.Beesassin},
+                {Species.BlackWinnow, Unit.BlackWinnow},
+                {Species.BloodHeart, Obstacle.BloodHeart},
+                {Species.BombingRange, Obstacle.BombingRange},
+                {Species.BrassHeart, Obstacle.Brass},
+                {Species.Carapace, Unit.CarapaceInvader},
+                {Species.Conflagragon, Unit.Conflagragon},
+                {Species.Corpse, Obstacle.Corpse},
+                {Species.Cottage, Obstacle.Cottage},
+                {Species.Curse, Obstacle.Curse},
+                {Species.Decimatrix, Unit.Decimatrix},
+                {Species.Demolitia, Unit.Demolitia},
+                {Species.DreamReaver, Unit.DreamReaver},
+                {Species.Exhaust, Terrain.Exhaust},
+                {Species.FirHeart, Obstacle.Fir},
+                {Species.Gap, Terrain.Gap},
+                {Species.Gargoliath, Unit.Gargoliath},
+                {Species.Gatecreeper, Unit.Gatecreeper},
+                {Species.GlassHeart, Obstacle.Glass},
+                {Species.Grizzly, Unit.GrizzlyElder},
+                {Species.Hill, Terrain.Hill},
+                {Species.House, Obstacle.House},
+                {Species.Ice, Terrain.Ice},
+                {Species.Kabutomachine, Unit.Kabutomachine},
+                {Species.Katandroid, Unit.Katandroid},
+                {Species.Lava, Terrain.Lava},
+                {Species.Lichenthrope, Unit.Lichenthrope},
+                {Species.ManTrap, Unit.MartianManTrap},
+                {Species.Mawth, Unit.Mawth},
+                {Species.MeinSchutz, Unit.MeinSchutz},
+                {Species.Metaterrainean, Unit.Metaterrainean},
+                {Species.Mine, Obstacle.Mine},
+                {Species.Monolith, Unit.Monolith},
+                {Species.Mountain, Terrain.Mountain},
+                {Species.Mycolonist, Unit.Mycolonist},
+                {Species.Necro, Unit.Necrochancellor},
+                {Species.OldThreeHands, Unit.OldThreeHands},
+                {Species.Panopticannon, Unit.Panopticannon},
+                {Species.Piecemaker, Unit.Piecemaker},
+                {Species.Priest, Unit.PriestOfNaja},
+                {Species.PrismGuard, Unit.PrismGuard},
+                {Species.Pylon, Obstacle.Pylon},
+                {Species.Pyramid, Obstacle.Pyramid},
+                {Species.Quicksand, Terrain.Quicksand},
+                {Species.Rambuchet, Unit.BatteringRambuchet},
+                {Species.Rampart, Obstacle.Rampart},
+                {Species.Recyclops, Unit.Recyclops},
+                {Species.Reprospector, Unit.Reprospector},
+                {Species.RevolvingTom, Unit.RevolvingTom},
+                {Species.Rock, Obstacle.Rock},
+                {Species.Rook, Unit.Rook},
+                {Species.Sand, Terrain.Sand},
+                {Species.SiliconHeart, Obstacle.Silicon},
+                {Species.SilkHeart, Obstacle.Silk},
+                {Species.Smashbuckler, Unit.Smashbuckler},
+                {Species.SteelHeart, Obstacle.SteelHeart},
+                {Species.StoneHeart, Obstacle.Stone},
+                {Species.TalonedScout, Unit.TalonedScout},
+                {Species.Temple, Obstacle.Temple},
+                {Species.TimeSink, Terrain.TimeSink},
+                {Species.TimeWell, Terrain.TimeWell},
+                {Species.Tree, Obstacle.Tree},
+                {Species.Tree2, Obstacle.Tree2},
+                {Species.Tree3, Obstacle.Tree3},
+                {Species.Tree4, Obstacle.Tree4},
+                {Species.Ultratherium, Unit.Ultratherium},
+                {Species.Water, Terrain.Water},
+                {Species.Web, Obstacle.Web}
+            };
 
 #if DEBUG
-            Log.Start("Species constructors loaded: " + constructors.Keys.Count);
+            Log.Start("Species constructors loaded: " + builders.Keys.Count);
 #endif
         }
 
@@ -193,7 +193,7 @@ namespace HOA.Ref
 
             for (short i = 0; i < speciesCount; i++)
             {
-                Token template = constructors[(Species)i](Source.Force);
+                Token template = builders[(Species)i](Source.Force);
                 templates.Add((Species)i, template);
             }
 #if DEBUG

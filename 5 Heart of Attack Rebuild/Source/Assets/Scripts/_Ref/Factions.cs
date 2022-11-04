@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HOA.Ref
+namespace HOA.Content
 {
     public static class Factions
     {
@@ -8,27 +8,28 @@ namespace HOA.Ref
 
         public static void Load()
         {
-            factions = new Dictionary<FactionEnum, Faction>();
-            factions.Add(HOA.FactionEnum.Gearp, Faction.Gearp());
-            factions.Add(HOA.FactionEnum.Republic, Faction.Republic());
-            factions.Add(HOA.FactionEnum.Torridale, Faction.Torridale());
-            factions.Add(HOA.FactionEnum.Grove, Faction.Grove());
-            factions.Add(HOA.FactionEnum.Chrono, Faction.Chrono());
-            factions.Add(HOA.FactionEnum.Psycho, Faction.Psycho());
-            factions.Add(HOA.FactionEnum.Psilent, Faction.Psilent());
-            factions.Add(HOA.FactionEnum.Voidoid, Faction.Voidoid());
-
+            factions = new Dictionary<FactionEnum, Faction>()
+            {
+                {HOA.FactionEnum.Gearp, Faction.Gearp()},
+                {HOA.FactionEnum.Republic, Faction.Republic()},
+                {HOA.FactionEnum.Torridale, Faction.Torridale()},
+                {HOA.FactionEnum.Grove, Faction.Grove()},
+                {HOA.FactionEnum.Chrono, Faction.Chrono()},
+                {HOA.FactionEnum.Psycho, Faction.Psycho()},
+                {HOA.FactionEnum.Psilent, Faction.Psilent()},
+                {HOA.FactionEnum.Voidoid, Faction.Voidoid()}
+            };
 
 #if DEBUG
             int factionCount = factions.Keys.Count;
             Log.Start(factionCount + " factions loaded:");
             foreach (Faction f in factions.Values)
             {
-                string debug = "  " + f.Name + "(";
-                foreach (To.Species s in f.Species)
+                string debug = "  " + f.name + "(";
+                foreach (To.Species s in f.species)
                     debug += s.ToString() + ", ";
-                debug += "King: " + f.King.ToString() + ", ";
-                debug += "Heart: " + f.Heart.ToString() + ")";
+                debug += "King: " + f.king.ToString() + ", ";
+                debug += "Heart: " + f.heart.ToString() + ")";
                 Log.Start(debug);
             }
 #endif
@@ -44,8 +45,8 @@ namespace HOA.Ref
                 int largest = 0;
                 foreach (Faction f in factions.Values)
                 {
-                    if (f.Species.Length > largest)
-                        largest = f.Species.Length;
+                    if (f.species.Length > largest)
+                        largest = f.species.Length;
                 }
                 return largest;
             }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HOA.To;
+using HOA.Tokens;
 using HOA.Fargo;
 
 namespace HOA.Ef
@@ -21,7 +21,7 @@ namespace HOA.Ef
         public Species species { get; private set; }
         public Plane plane { get; private set; }
         public Player player { get; private set; }
-        public Ab.AbilityClosure ability { get; private set; }
+        public Abilities.AbilityClosure ability { get; private set; }
         public TokenComponent component { get; set; }
 
         #endregion
@@ -73,7 +73,7 @@ namespace HOA.Ef
             : this(target, value)
         { options.Add(option); }
 
-        public EffectArgs(Arg<FT, IEntity> target, Ab.AbilityClosure ability)
+        public EffectArgs(Arg<FT, IEntity> target, Abilities.AbilityClosure ability)
             : this(target)
         { this.ability = ability; }
 

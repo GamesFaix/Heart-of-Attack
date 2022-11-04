@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
+using HOA.Tokens;
 
 
-namespace HOA
+namespace HOA.Board
 {
 
     public class Cell : IEntity
@@ -32,7 +32,7 @@ namespace HOA
         /// </summary>
         public int y { get { return Index.y; } }
 
-        public To.Plane Stop { get; set; }
+        public Plane Stop { get; set; }
         public bool CanStop(Token t) { return (Stop.ContainsAny(t.plane)); }
 
         /// <summary>

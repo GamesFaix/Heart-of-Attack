@@ -1,6 +1,10 @@
 ﻿using HOA.Resources;
 using HOA.Fargo;
-
+using Token = HOA.Tokens.Token;
+using Unit = HOA.Tokens.Unit;
+using Cell = HOA.Board.Cell;
+using Direction = HOA.Board.Direction;
+using Session = HOA.Sessions.Session;
 
 namespace HOA.Ef
 {
@@ -87,7 +91,7 @@ namespace HOA.Ef
             {
                 Unit u = a[FT.Unit] as Unit;
 
-                Ab.Ability move = u.arsenal.Move.ability;
+                Abilities.Ability move = u.arsenal.Move.ability;
                 if (move != null)
                 {
                     e.source.Last<Token>().trackList.Add(u, move.Aims[0].range);

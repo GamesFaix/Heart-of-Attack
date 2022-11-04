@@ -1,45 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HOA.Stats
 {
-
-    public abstract class Stat
+	public abstract class Stat
     {
-        public Unit self { get; protected set; }
-        public string name { get; protected set; }
+        protected Element[] values;
+        protected Action<sbyte> sideEffects;
 
-        protected Element primary;
-        public sbyte Current { get { return primary.current; } }
-
-        protected Stat(Unit self, string name, sbyte normal)
+        protected Stat (Action<sbyte> sideEffects = null, params Element[] values)
         {
-            this.self = self;
-            this.name = name;
-            primary = new Element(normal);
+            this.sideEffects = sideEffects;
+            this.values = values;
         }
 
-        public virtual void Add(sbyte amount, byte index = 0)
+        protected Stat(Action<sbyte> sideEffects = null, params sbyte[] values)
         {
-            if (index > 0)
-                throw new IndexOutOfRangeException();
-            primary += amount;
-        }
-        public virtual void Set(sbyte amount, byte index = 0)
-        {
-            if (index > 0)
-                throw new IndexOutOfRangeException();
-            primary.Set(amount);
-        }
-        public virtual int Changed(byte index = 0)
-        {
-            if (index > 0)
-                throw new IndexOutOfRangeException();
-            return primary.Changed();
+            this.sideEffects = sideEffects;
+            this.values = new Element[values.Length];
+            for (int i = 0; i < values.Length; i++)
+                this.values[i] = new Element(values[i]);
         }
 
-        public static implicit operator sbyte(Stat s) { return  s.Current; }
-        public override string ToString() { return primary.ToString(); }
+        public sbyte this[int i] { get { return values[i].current; } }
 
-        public static Stat operator +(Stat s, sbyte i) { s.Add(i); return s; }
+        public virtual sbyte Add(sbyte amount, byte index = 0) 
+        {
+            return Set(values[index] + amount, index);
+        }
+
+        public virtual sbyte Set(sbyte amount, byte index = 0)
+        {
+            sbyte original = values[index];
+            values[index] = values[index].Set(amount);
+            if (sideEffects != null)
+                sideEffects(values[index] - original);
+            return values[index];
+        }
+
+        public sbyte Changed(byte index = 0) 
+        { return values[index].Changed(); }
+
+        public static Stat operator +(Stat s, sbyte amount) { s.Add(amount, 0); return s; }
+
+        public static Stat operator +(Stat s, int2 i)
+        {
+            checked
+            {
+                s.Add((sbyte)i.x, 0);
+                s.Add((sbyte)i.y, 1);
+                return s;
+            }
+        }
+
+        public static implicit operator sbyte(Stat s) { return s[0]; }
     }
 }

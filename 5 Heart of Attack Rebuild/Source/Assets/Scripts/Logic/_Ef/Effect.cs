@@ -46,16 +46,16 @@ namespace HOA.Ef
             {
                 return new Type[10]
                 {
-                    typeof(Ab.Ability), 
+                    typeof(Abilities.Ability), 
                     typeof(Effect),
                     typeof(Ef.Sequence),
                     typeof(Set<Effect>),
-                    typeof(To.Timer), 
-                    typeof(To.Sensor),
-                    typeof(Token),
-                    typeof(Unit),
-                    typeof(Obstacle),
-                    typeof(Terrain)
+                    typeof(Tokens.Timer), 
+                    typeof(Tokens.Sensor),
+                    typeof(Tokens.Token),
+                    typeof(Tokens.Unit),
+                    typeof(Tokens.Obstacle),
+                    typeof(Tokens.Terrain)
                 };
             }
         }

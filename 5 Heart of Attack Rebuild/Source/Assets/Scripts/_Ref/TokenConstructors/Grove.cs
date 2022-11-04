@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
-using HOA.Ab;
-using HOA.Ref;
+using HOA.Abilities;
+using HOA.Content;
 using HOA.Stats;
-using Args = HOA.Ab.AbilityArgs;
 using HOA.Fargo;
 
-namespace HOA
+namespace HOA.Tokens
 {
 
     public partial class Unit
@@ -15,17 +13,15 @@ namespace HOA
 
         public static Unit Ultratherium(object source)
         {
-            Unit u = new Unit(source, Species.Ultratherium, To.Rank.King, Species.FirHeart);
+            Unit u = new Unit(source, Species.Ultratherium, UnitRank.King, Species.FirHeart);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 80);
-            u.watch = new Watch(u, 2);
-            u.wallet = new Wallet(u, 3);
+            u.stats = Tokens.StatSheet.King(u, 80, 2);
             u.LearnMove(4);
             u.LearnFocus();
             u.LearnStrike(16);
             u.LearnCreate(Price.Cheap, Species.Grizzly);
             u.LearnCreate(new Price(1,1), Species.TalonedScout);
-            u.Learn(Abilities.Transmute, new Args(u, new Price(1, 2), 
+            u.Learn(Content.Abilities.Transmute, new AbilityArgs(u, new Price(1, 2), 
                 Arg.Filter(FF.Filter0, Filter.DestNotCorpse), 
                 Species.Metaterrainean));
             //Ability.ThrowTerrain(u),
@@ -35,26 +31,24 @@ namespace HOA
 
         public static Unit GrizzlyElder(object source)
         {
-            Unit u = new Unit(source, Species.Grizzly, To.Rank.Light);
+            Unit u = new Unit(source, Species.Grizzly, UnitRank.Light);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 25);
-            u.watch = new Watch(u, 3);
+            u.stats = new Tokens.StatSheet(u, 25, 3);
             u.LearnMove(3);
             u.LearnFocus();
             u.LearnStrike(9);
-            u.Learn(Abilities.Heal, new Args(u, new Price(1, 1),
+            u.Learn(Content.Abilities.Heal, new AbilityArgs(u, new Price(1, 1),
                 Arg.Filter(FF.Filter0, Filter.Owner(u.Owner, true) + Filter.identity(u, false)), 
-                Arg.Stat(FS.Damage, Scalar.Dam(u, 7))));
+                Arg.Stat(FS.Damage, new Scalar(7))));
             u.LearnCreate(new Price(0, 1), Species.Tree);
             return u;
         }
 
         public static Unit Metaterrainean(object source)
         {
-            Unit u = new Unit(source, Species.Metaterrainean, To.Rank.Heavy, Species.Rock);
+            Unit u = new Unit(source, Species.Metaterrainean, UnitRank.Heavy, Species.Rock);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 50);
-            u.watch = new Watch(u, 1);
+            u.stats = new Tokens.StatSheet(u, 50, 1);
             u.LearnMove(2);
             u.LearnFocus();
             u.LearnStrike(20); 
@@ -64,10 +58,9 @@ namespace HOA
 
         public static Unit TalonedScout(object source)
         {
-            Unit u = new Unit(source, Species.TalonedScout, To.Rank.Medium);
+            Unit u = new Unit(source, Species.TalonedScout, UnitRank.Medium);
             u.body = new Body(u, Plane.Air);
-            u.vitality = new Vitality(u, 35);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 35, 4);
             u.LearnMove(6);
             u.LearnFocus();
             u.LearnStrike(12);

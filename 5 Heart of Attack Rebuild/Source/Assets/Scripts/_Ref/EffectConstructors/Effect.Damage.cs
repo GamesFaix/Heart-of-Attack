@@ -1,7 +1,10 @@
 ﻿using HOA.Resources;
-using HOA.To;
+using HOA.Tokens;
 using System;
 using HOA.Fargo;
+using Cell = HOA.Board.Cell;
+using Direction = HOA.Board.Direction;
+using Session = HOA.Sessions.Session;
 
 namespace HOA.Ef
 {

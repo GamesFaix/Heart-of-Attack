@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace HOA
+namespace HOA.Board
 {
     /// <summary>
     /// Basically an enumerator of ordered pairs for iterating thru 8 planar directions.

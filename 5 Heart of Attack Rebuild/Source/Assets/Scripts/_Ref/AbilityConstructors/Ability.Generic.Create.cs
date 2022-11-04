@@ -1,10 +1,10 @@
-﻿using HOA.To;
+﻿using HOA.Tokens;
 using System;
-using HOA.Ab.Aim;
 using HOA.Ef;
 using HOA.Fargo;
+using Cell = HOA.Board.Cell;
 
-namespace HOA.Ab
+namespace HOA.Abilities
 {
 
     public partial class Ability
@@ -12,9 +12,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, species, effectConstructor birtheffects </summary>
         public static Ability Create()
         {
-            Ability a = new Ability("Create", Rank.Create);
+            Ability a = new Ability("Create", AbilityRank.Create);
            // a.desc = Scribe.Write("Create {0} in target cell.", a.args.species);
-            a.Aims += Stage.CreateNeighbor(a.Aims, Species.None);
+            a.Aims += AimStage.CreateNeighbor(a.Aims, Species.None);
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
                 Queue.Add(Effect.Create(a, new EffectArgs(
@@ -27,9 +27,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, species, effectConstructor birtheffects </summary>
         public static Ability CreateDrop()
         {
-            Ability a = new Ability("Drop", Rank.Create);
+            Ability a = new Ability("Drop", AbilityRank.Create);
             //a.desc = Scribe.Write("Create {0} in {1}'s cell.", a.args.species, a.sourceToken);
-            a.Aims += Stage.CreateDrop(a.Aims, Species.None);
+            a.Aims += AimStage.CreateDrop(a.Aims, Species.None);
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
             {
@@ -45,9 +45,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, int rangeMin, int rangeMax, species, effectConstructor birtheffects </summary>
         public static Ability CreateArc()
         {
-            Ability a = new Ability("Summon", Rank.Create);
+            Ability a = new Ability("Summon", AbilityRank.Create);
             //a.desc = Scribe.Write("Create {0} in target cell.", a.args.species);
-            a.Aims += Stage.CreateArc(a.Aims, Species.None, Range.sb(0,1));
+            a.Aims += AimStage.CreateArc(a.Aims, Species.None, Range.sb(0,1));
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
                  Queue.Add(Effect.Create(a, new EffectArgs(
@@ -60,9 +60,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, species, effectConstructor birtheffects </summary>
         public static Ability CreateFree()
         {
-            Ability a = new Ability("Conjure", Rank.Create);
+            Ability a = new Ability("Conjure", AbilityRank.Create);
             //a.desc = Scribe.Write("Create {0} in any legal cell.", a.args.species);
-            a.Aims += Stage.CreateFree(a.Aims, Species.None);
+            a.Aims += AimStage.CreateFree(a.Aims, Species.None);
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
                 Queue.Add(Effect.Create(a, new EffectArgs(
@@ -76,9 +76,9 @@ namespace HOA.Ab
         public static Ability CreateMulti()
         {
             //string name = String.Format("Spawn {0}s {1}", species, count);
-            Ability a = new Ability("Spawn", Rank.Create);
+            Ability a = new Ability("Spawn", AbilityRank.Create);
            // a.desc = Scribe.Write("Spawn {0}s in {1} target cells.", a.args.species, a.Aims[0].selectionCount);
-            a.Aims += Stage.CreateNeighborMulti(a.Aims, Species.None, Range.sb(1,1));
+            a.Aims += AimStage.CreateNeighborMulti(a.Aims, Species.None, Range.sb(1,1));
             a.Update += Adjustments.Body0 + Adjustments.SpeciesName(a.name);
             a.MainEffects = (arg, tar) =>
             {
@@ -96,9 +96,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, species, filter, birthEffects </summary>
         public static Ability TransformNeighbor()
         {
-            Ability a = new Ability("Transmute", Rank.Create);
+            Ability a = new Ability("Transmute", AbilityRank.Create);
             //a.desc = Scribe.Write("Replace {0} with {1}.", filter, a.args.species);
-            a.Aims += new Stage(a.Aims, Patterns.Neighbor, Filter.Token);
+            a.Aims += new AimStage(a.Aims, AimPatterns.Neighbor, Filter.Token);
             a.MainEffects = (arg, tar) =>
                 Queue.Add(Effect.Replace(a, new EffectArgs(
                     Arg.Target(FT.Token, tar[0, 0]), 
@@ -110,9 +110,9 @@ namespace HOA.Ab
         /// <summary>Arguments: price, species, birthEffects </summary>
         public static Ability TransformSelf()
         {
-            Ability a = new Ability("Evolve", Rank.Special);
+            Ability a = new Ability("Evolve", AbilityRank.Special);
             //a.desc = Scribe.Write("Replace {0} with {1}.", a.sourceToken, a.args.species);
-            a.Aims += Stage.Self(a.Aims);
+            a.Aims += AimStage.Self(a.Aims);
             a.MainEffects = (arg, tar) =>
                 Queue.Add(Effect.Replace(a, new EffectArgs(
                     Arg.Target(FT.User, tar[0, 0]), 

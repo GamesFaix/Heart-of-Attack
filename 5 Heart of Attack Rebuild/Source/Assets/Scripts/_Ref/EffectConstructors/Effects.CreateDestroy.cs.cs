@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using HOA.Resources;
 using HOA.Fargo;
+using Token = HOA.Tokens.Token;
+using Cell = HOA.Board.Cell;
+using Session = HOA.Sessions.Session;
 
 namespace HOA.Ef
 {

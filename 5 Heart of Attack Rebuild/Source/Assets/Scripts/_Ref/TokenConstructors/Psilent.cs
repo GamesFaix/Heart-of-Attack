@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
 
-namespace HOA
+namespace HOA.Tokens
 {
 
     public partial class Unit
     {
         public static Unit DreamReaver(object source)
         {
-            Unit u = new Unit(source, Species.DreamReaver, Rank.King, Species.GlassHeart);
+            Unit u = new Unit(source, Species.DreamReaver, UnitRank.King, Species.GlassHeart);
             u.body = new Body(u, Plane.Air);
-            u.vitality = new Vitality(u, 75, 2);
-            u.watch = new Watch(u, 3);
-            u.wallet = new Wallet(u, 3);
+            u.stats = Tokens.StatSheet.King(u, 75, 3, 2);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 4),
 				Ability.PsiBeam(u),
@@ -29,10 +26,9 @@ namespace HOA
        
         public static Unit ArenaNonSensus(object source)
         {
-            Unit u = new Unit(source, Species.Arena, Rank.Medium, Species.None);
+            Unit u = new Unit(source, Species.Arena, UnitRank.Medium, Species.None);
             u.body = new Body(u, Plane.Ethereal);
-            u.vitality = new Vitality(u, 55, 3);
-            u.watch = new Watch(u, 2);
+            u.stats = new Tokens.StatSheet(u, 55, 2, 3);
            /* u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 3),
 				Ability.MneumonicPlague (u),
@@ -45,10 +41,9 @@ namespace HOA
 
         public static Unit PriestOfNaja(object source)
         {
-            Unit u = new Unit(source, Species.Priest, Rank.Heavy);
+            Unit u = new Unit(source, Species.Priest, UnitRank.Heavy);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 50, 2);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 50, 4);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 4),
 				Ability.Strike(u, 15),
@@ -60,10 +55,9 @@ namespace HOA
 
         public static Unit PrismGuard(object source)
         {
-            Unit u = new Unit(source, Species.PrismGuard, Rank.Light);
+            Unit u = new Unit(source, Species.PrismGuard, UnitRank.Light);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = Vitality.DodgeHalf(u, 15);
-            u.watch = new Watch(u, 3);
+            u.stats = Tokens.StatSheet.HalfDodge(u, 15, 3);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 3),
 				Ability.Strike(u, 8),

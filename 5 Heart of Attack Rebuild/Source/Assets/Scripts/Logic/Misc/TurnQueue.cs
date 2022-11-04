@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using HOA.Tokens;
 
-namespace HOA
+namespace HOA.Sessions
 {
     /// <summary>
     /// Maintains Unit turn order
@@ -118,14 +119,14 @@ namespace HOA
             TurnChangePublish(oldTop, newTop);
 
             Initialize();
-            if (!Top.Owner.Alive)
+            if (!Top.Owner.alive)
                 Advance();
         }
 
 
         void Skip(Unit oldTop)
         {
-            int i = oldTop.initiative;
+            sbyte i = oldTop.initiative;
 
             while (i > 1)
             {

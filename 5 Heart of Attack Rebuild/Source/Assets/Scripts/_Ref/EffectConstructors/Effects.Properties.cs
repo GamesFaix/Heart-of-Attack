@@ -1,6 +1,7 @@
 ﻿using HOA.Resources;
 using HOA.Fargo;
-
+using Unit = HOA.Tokens.Unit;
+using Token = HOA.Tokens.Token;
 
 namespace HOA.Ef
 {
@@ -61,7 +62,7 @@ namespace HOA.Ef
             e.action = (a) => 
             {
                 Token t = a[FT.Token] as Token; 
-                t.SetFlags(e, To.TokenFlags.Destructible, a[FO.Toggle]);
+                t.SetFlags(e, Tokens.TokenFlags.Destructible, a[FO.Toggle]);
                 AVEffect.Stat(!a[FO.Toggle]).Play(t);
             };
             return e;
@@ -73,7 +74,7 @@ namespace HOA.Ef
             e.action = (a) =>
             {
                 Token t = a[FT.Token] as Token; 
-                t.SetFlags(e, To.TokenFlags.Trample, a[FO.Toggle]);
+                t.SetFlags(e, Tokens.TokenFlags.Trample, a[FO.Toggle]);
                 AVEffect.Stat(a[FO.Toggle]).Play(t);
             };
             return e;
@@ -108,8 +109,9 @@ namespace HOA.Ef
             Effect e = new Effect(source, "Add Timer", args);
             e.action = (a) =>
             {
-                Unit u = a[FT.Unit] as Unit;
-                u.timers.Add(To.Timer.Bombing(e, u));
+                //Unit u = a[FT.Unit] as Unit;
+                Log.Debug("Not implemented.");
+                //                u.timers.Add(Tokens.Timer.Bombing(e, u));
             };
             return e;
         }

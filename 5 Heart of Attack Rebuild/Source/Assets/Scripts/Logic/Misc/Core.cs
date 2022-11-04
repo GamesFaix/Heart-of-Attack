@@ -3,9 +3,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HOA.Ab;
-using HOA.To;
+using HOA.Abilities;
+using HOA.Tokens;
 using HOA.GUI;
+using HOA.Sessions;
 
 namespace HOA { 
     /// <summary>
@@ -26,7 +27,7 @@ namespace HOA {
             Ef.Queue.Load();
             LoadAudioSystem();
             LoadGUISystem();            
-            Ref.Main.Load();
+            Content.Main.Load();
 
             session = new Session();
 #if DEBUG
@@ -34,7 +35,7 @@ namespace HOA {
             session.CreateBoard(new size2(10, 10));
             
             AbilityRequester.AbilityRequestPublish(Source.Force, 
-                new AbilityClosure(Source.Force, Ref.Abilities._Create, 
+                new AbilityClosure(Source.Force, Content.Abilities._Create, 
                     new AbilityArgs(null, Price.Free, Species.Demolitia)));
             /*AbilityRequester.AbilityRequestPublish(Source.Force,
                 Ability.ManualCreate(Species.Tree);*/

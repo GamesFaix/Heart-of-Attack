@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
+using HOA.Tokens;
 
 namespace HOA
 {
@@ -9,7 +9,7 @@ namespace HOA
         static Predicate<IEntity> alwaysFalse = (t) => { return false; };
         public static Predicate<IEntity> False { get { return alwaysFalse; } }
 
-        static Predicate<IEntity> cell = (t) => { return (t is Cell); };
+        static Predicate<IEntity> cell = (t) => { return (t is Board.Cell); };
         public static Predicate<IEntity> Cell { get { return cell; } }
 
         static Predicate<IEntity> token = (t) => { return (t is Token); };
@@ -24,7 +24,7 @@ namespace HOA
         static Predicate<IEntity> terrain = (t) => { return (t is Terrain); };
         public static Predicate<IEntity> Terrain { get { return terrain; } }
         
-        static Predicate<IEntity> king = Rank(To.Rank.King, true);
+        static Predicate<IEntity> king = Rank(UnitRank.King, true);
         public static Predicate<IEntity> King { get { return token + king; } }
         
         static Predicate<IEntity> heart = (t) => { return ((Token)t).heart; };
@@ -72,7 +72,7 @@ namespace HOA
                 return (match == b);
             };
         }
-        public static Predicate<IEntity> Rank(To.Rank rank, bool b)
+        public static Predicate<IEntity> Rank(UnitRank rank, bool b)
         {
             return (t) =>
             {
@@ -103,7 +103,7 @@ namespace HOA
         {
             return (t) =>
             {
-                return (t is Cell && token.CanEnter((Cell)t));
+                return (t is Board.Cell && token.CanEnter((Board.Cell)t));
             };
         }
 

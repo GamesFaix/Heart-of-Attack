@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace HOA
+namespace HOA.Sessions
 {
     public class FactionRegistry : SessionComponent
     {
@@ -16,9 +16,9 @@ namespace HOA
             {
                 List<FactionEnum> free = new List<FactionEnum>();
 
-                foreach (Faction f in Ref.Factions.factions.Values)
-                    if (!Taken.Contains(f.FactionEnum))
-                        free.Add(f.FactionEnum);
+                foreach (Faction f in Content.Factions.factions.Values)
+                    if (!Taken.Contains(f.factionEnum))
+                        free.Add(f.factionEnum);
 
                 return free;
             }
@@ -31,7 +31,7 @@ namespace HOA
             {
                 string[] names = new string[Free.Count];
                 for (int i = 0; i < names.Length; i++)
-                    names[i] = Ref.Factions.factions[Free[i]] + "";
+                    names[i] = Content.Factions.factions[Free[i]] + "";
                 return names;
             }
         }
@@ -47,7 +47,7 @@ namespace HOA
         public Faction Take(FactionEnum f)
         {
             Taken.Add(f);
-            return Ref.Factions.factions[f];
+            return Content.Factions.factions[f];
         }
         
         /// <summary>Removes faction from Taken list.</summary>

@@ -1,5 +1,5 @@
 ﻿using System;
-using HOA.Ab;
+using HOA.Abilities;
 
 namespace HOA.GUI
 {

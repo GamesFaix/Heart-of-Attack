@@ -1,4 +1,4 @@
-﻿namespace HOA
+﻿namespace HOA.Sessions
 {
 
     public abstract class SessionComponent

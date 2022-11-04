@@ -3,35 +3,18 @@ using System.Collections.Generic;
 
 namespace HOA.Stats
 {
-	
+
     public class Scalar : Stat
     {
-        protected Scalar(Unit self, string name, sbyte normal)
-            : base(self, name, normal)
+        public Scalar(sbyte normal, Action<sbyte> sideEffect = null)
+            : base(sideEffect, new Element(normal))
         { }
 
-        #region Builders
+        public static implicit operator sbyte(Scalar s) { return s.values[0].current; }
 
-        public static Scalar In(Unit self, sbyte normal)
-        { return new Scalar(self, "Initiative", normal); }
+        public override string ToString() { return values[0].ToString(); }
 
-        public static Scalar Def(Unit self, sbyte normal)
-        { return new Scalar(self, "Defense", normal); }
-
-        public static Scalar Fo(Unit self)
-        { return new Scalar(self, "Focus", 0); }
-
-        public static Scalar Dam(byte i, Unit self, sbyte normal)
-        { return new Scalar(self, "Damage" + i, normal); }
-
-        public static Scalar Dam(Unit self, sbyte normal)
-        { return Dam(0, self, normal); }
-
-        public static Scalar Boost(Unit self, sbyte normal)
-        { return new Scalar(self, "Boost", normal); }
-
-        #endregion
-
-        public static Scalar operator +(Scalar s, sbyte i) { s.Add(i); return s; }
+        public static Scalar operator +(Scalar s, sbyte amount) { s.Add(amount, 0); return s; }
+        public static Scalar operator -(Scalar s, sbyte amount) { checked { s.Add((sbyte)(0 - amount), 0); } return s; }
     }
 }

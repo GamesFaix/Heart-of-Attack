@@ -1,6 +1,7 @@
 ﻿using HOA.Resources;
-using HOA.To;
+using HOA.Tokens;
 using HOA.Fargo;
+using Cell = HOA.Board.Cell;
 
 namespace HOA.Ef
 {

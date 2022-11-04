@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Ab;
+using HOA.Abilities;
 using HOA.Ef;
 using HOA.Fargo;
 
-namespace HOA.To 
+namespace HOA.Tokens
 {
     public partial class Timer
     {
@@ -12,14 +12,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Active Grenade";
-            t.Desc = Scribe.Write("{0} explosive damage at end of {1}'s next turn.", t.Modifier, t.ThisToken);
+            t.Desc = Scribe.Write("{0} explosive damage at end of {1}'s next turn.", t.Modifier, t.self);
             t.Modifier = 10;
             t.Turns = 1;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             { 
                 Queue.Add(Sequence.Explosion(t, new EffectArgs(
-                    Arg.Target(FT.Location, t.ThisToken.Cell),    
+                    Arg.Target(FT.Location, t.self.Cell),    
                     Arg.Num(FN.Damage, t.Modifier), 
                     Arg.Option(FO.ExcludeSelf, false)))); 
             };
@@ -37,7 +37,7 @@ namespace HOA.To
             t.Activate = () => 
             {
                 Queue.Add(Effect.AddStat(t, new EffectArgs(
-                    Arg.Target(FT.User, t.ThisUnit),
+                    Arg.Target(FT.User, t.selfUnit),
                     Arg.Num(FN.Damage, (sbyte)(0 - t.Modifier)), 
                     Arg.Text(FX.Stat, "Initiative"))));
             };
@@ -53,7 +53,7 @@ namespace HOA.To
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
-                AbilityClosure c = t.ThisUnit.arsenal.Move;
+                AbilityClosure c = t.selfUnit.arsenal.Move;
                 if (c != null)
                     c.ability.Aims[0].range.max += (sbyte)t.Modifier;
             };
@@ -64,14 +64,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Targeted";
-            t.Desc = Scribe.Write("{0} explosive damage at end of {1}'s turn.", t.Modifier, t.ThisToken);
+            t.Desc = Scribe.Write("{0} explosive damage at end of {1}'s turn.", t.Modifier, t.self);
             t.Turns = 1;
             t.Modifier = 10;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Sequence.Explosion(t, new EffectArgs(
-                    Arg.Target(FT.Location, t.ThisToken.Cell),
+                    Arg.Target(FT.Location, t.self.Cell),
                     Arg.Num(FN.Damage, t.Modifier),
                     Arg.Option(FO.ExcludeSelf, false))));
                 t.Turns++;
@@ -83,13 +83,13 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent, damage);
             t.Name = "Corrosion";
-            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn. (50% next turn.)", t.Modifier, t.ThisToken); 
+            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn. (50% next turn.)", t.Modifier, t.self); 
             t.Turns = 1;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Effect.CorrodeResidual(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, t.Modifier))));
                 t.Modifier = (sbyte)Math.Floor(t.Modifier * 0.5f);
                 if (t.Modifier > 0) 
@@ -103,14 +103,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Cursed";
-            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn.", t.Modifier, t.ThisToken);
+            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn.", t.Modifier, t.self);
             t.Turns = 1;
             t.Modifier = 2;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Effect.Damage(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, t.Modifier))));
                 t.Turns++;
             };
@@ -121,14 +121,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Exhausted";
-            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn.", t.Modifier, t.ThisToken); 
+            t.Desc = Scribe.Write("{0} damage at end of {1}'s turn.", t.Modifier, t.self); 
             t.Turns = 1;
             t.Modifier = 5;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Effect.Damage(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, t.Modifier))));
                 t.Turns++;
             };
@@ -140,14 +140,14 @@ namespace HOA.To
             Timer t = new Timer(source, parent);
             t.Name = "Ice Blasted";
             t.Desc = Scribe.Write("Initiative {0}. ({1} of {2}'s turns left.)",
-                t.Modifier, t.Turns, t.ThisToken);
+                t.Modifier, t.Turns, t.self);
             t.Turns = 2;
             t.Modifier = (-2);
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
                 Queue.Add(Effect.AddStat(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, (sbyte)(0 - t.Modifier)),
                     Arg.Text(FX.Stat, "Initiative"))));
             };
@@ -158,14 +158,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Incinerating";
-            t.Desc = Scribe.Write("{0} damage at the end of {1}'s turn.", t.Modifier, t.ThisToken);
+            t.Desc = Scribe.Write("{0} damage at the end of {1}'s turn.", t.Modifier, t.self);
             t.Turns = 1;
             t.Modifier = 7;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Effect.FireInitial(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, t.Modifier))));
                 t.Turns++;
             };
@@ -176,13 +176,13 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent, ability);
             t.Name = "Petrified";
-            t.Desc = Scribe.Write("{0} cannot move. ({1} of {0}'s turns left.)", t.ThisToken, t.Turns);
+            t.Desc = Scribe.Write("{0} cannot move. ({1} of {0}'s turns left.)", t.self, t.Turns);
             t.Turns = 1;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             { 
                 Queue.Add(Effect.Learn(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     t.Ability))); 
             };
             return t;
@@ -193,13 +193,13 @@ namespace HOA.To
             Timer t = new Timer(source, parent, turns);
             t.Name = "Stunned";
             t.Desc = Scribe.Write("{0} cannot move forward in the Queue for the next {1} turn changes.",
-                    t.ThisToken, t.Turns);
+                    t.self, t.Turns);
             t.Turns = turns;
             t.Test = t.EveryTurnTest;
             t.Activate = () => 
             { 
                 Queue.Add(Effect.Shift(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, 1)))); 
             };
             return t;
@@ -210,14 +210,14 @@ namespace HOA.To
             Timer t = new Timer(source, parent, modifier);
             t.Name = "Time Bombed";
             t.Desc = Scribe.Write("Initiative {0}. ({1} of {2}'s turns left.)",
-                    t.Modifier, t.Turns, t.ThisToken);
+                    t.Modifier, t.Turns, t.self);
             t.Turns = 2;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () => 
             {
                 Queue.Add(Effect.AddStat(t,
                     new EffectArgs(
-                        Arg.Target(FT.Damaged, t.ThisUnit), 
+                        Arg.Target(FT.Damaged, t.selfUnit), 
                         Arg.Num(FN.Damage, t.Modifier),
                         Arg.Text(FX.Stat, "Initiative"))));
             };
@@ -229,7 +229,7 @@ namespace HOA.To
             Timer t = new Timer(source, parent);
             t.Name = "Time Slammed";
             t.Desc = Scribe.Write("Initiative {0}. ({1} of {2}'s turns left.)",
-                    t.Modifier, t.Turns, t.ThisToken);
+                    t.Modifier, t.Turns, t.self);
             t.Turns = 2;
             t.Modifier = (-2);
             t.Test = t.ParentTurnEndTest;
@@ -237,7 +237,7 @@ namespace HOA.To
             {
                 Queue.Add(Effect.AddStat(t,
                      new EffectArgs(
-                         Arg.Target(FT.Damaged, t.ThisUnit), 
+                         Arg.Target(FT.Damaged, t.selfUnit), 
                          Arg.Num(FN.Damage, t.Modifier),
                          Arg.Text(FX.Stat, "Initiative"))));
             };
@@ -249,14 +249,14 @@ namespace HOA.To
         {
             Timer t = new Timer(source, parent);
             t.Name = "Waterlogged";
-            t.Desc = Scribe.Write("{0} damage at the end of {1}'s turn.", t.Modifier, t.ThisToken);
+            t.Desc = Scribe.Write("{0} damage at the end of {1}'s turn.", t.Modifier, t.self);
             t.Turns = 1;
             t.Modifier = 5;
             t.Test = t.ParentTurnEndTest;
             t.Activate = () =>
             {
                 Queue.Add(Effect.WaterLog(t, new EffectArgs(
-                    Arg.Target(FT.Damaged, t.ThisUnit), 
+                    Arg.Target(FT.Damaged, t.selfUnit), 
                     Arg.Num(FN.Damage, t.Modifier))));
                 t.Turns++;
             };

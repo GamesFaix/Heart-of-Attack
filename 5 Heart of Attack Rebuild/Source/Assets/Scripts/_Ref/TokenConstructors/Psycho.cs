@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
 
-namespace HOA
+namespace HOA.Tokens
 {
 
     public partial class Unit
     {
         public static Unit BlackWinnow(object source)
         {
-            Unit u = new Unit(source, Species.BlackWinnow, Rank.King, Species.SilkHeart);
+            Unit u = new Unit(source, Species.BlackWinnow, UnitRank.King, Species.SilkHeart);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 75);
-            u.watch = new Watch(u, 3);
-            u.wallet = new Wallet(u, 3);
+            u.stats = Tokens.StatSheet.King(u, 75, 3);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 3),
 				Ability.Sting(u, 15),
@@ -28,10 +25,9 @@ namespace HOA
         
         public static Unit Beesassin(object source)
         {
-            Unit u = new Unit(source, Species.Beesassin, Rank.Light);
+            Unit u = new Unit(source, Species.Beesassin, UnitRank.Light);
             u.body = new Body(u, Plane.Air);
-            u.vitality = new Vitality(u, 25);
-            u.watch = new Watch(u, 5);
+            u.stats = new Tokens.StatSheet(u, 25, 5);
            // u.timers.Add(Timer.Corrosion(new Source(u), u, 12));
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Dart(u, 5),
@@ -44,10 +40,9 @@ namespace HOA
 
         public static Unit Lichenthrope(object source)
         {
-            Unit u = new Unit(source, Species.Lichenthrope, Rank.Minor, Species.None);
+            Unit u = new Unit(source, Species.Lichenthrope, UnitRank.Minor, Species.None);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 15);
-            u.watch = new Watch(u, 5);
+            u.stats = new Tokens.StatSheet(u, 15, 5);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 0),
 				Ability.Feed(u),
@@ -61,10 +56,9 @@ namespace HOA
 
         public static Unit MartianManTrap(object source)
         {
-            Unit u = new Unit(source, Species.ManTrap, Rank.Heavy, Species.Tree);
+            Unit u = new Unit(source, Species.ManTrap, UnitRank.Heavy, Species.Tree);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 70);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 70, 4);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Creep(u),
 				Ability.Grow(u),
@@ -77,10 +71,9 @@ namespace HOA
 
         public static Unit Mycolonist(object source)
         {
-            Unit u = new Unit(source, Species.Mycolonist, Rank.Medium);
+            Unit u = new Unit(source, Species.Mycolonist, UnitRank.Medium);
             u.body = new Body(u, Plane.Ground);
-            u.vitality = new Vitality(u, 40);
-            u.watch = new Watch(u, 2);
+            u.stats = new Tokens.StatSheet(u, 40, 2);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 2),
 				Ability.Sporatic(u),

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Ab;
+using HOA.Abilities;
 using HOA.Ef;
 using HOA.Fargo;
+using Session = HOA.Sessions.Session;
+using Cell = HOA.Board.Cell;
 
-namespace HOA.To
+namespace HOA.Tokens
 {
 
     public partial class Sensor
@@ -33,7 +35,7 @@ namespace HOA.To
                 Set<IEntity> apertures = 
                     Session.Active.tokens 
                     / Filter.Species(Species.Aperture, true);
-                apertures.Remove(s.ThisToken);
+                apertures.Remove(s.self);
 
                 foreach (Token t in apertures)
                 {
@@ -47,12 +49,12 @@ namespace HOA.To
                 Set<IEntity> apertures = 
                     Session.Active.tokens 
                     / Filter.Species(Species.Aperture, true);
-                apertures.Remove(s.ThisToken);
+                apertures.Remove(s.self);
 
                 foreach (Token t in apertures)
                 {
-                    s.ThisToken.Cell.Links.Remove(t.Cell);
-                    t.Cell.Links.Remove(s.ThisToken.Cell);
+                    s.self.Cell.Links.Remove(t.Cell);
+                    t.Cell.Links.Remove(s.self.Cell);
                 }
                 s.Unsubscribe(c);
             };
@@ -89,7 +91,7 @@ namespace HOA.To
             Sensor s = new Sensor(thisToken, "Carapace Invader Sensor",
                 Filter.Species(Species.Carapace, false) + Filter.Owner(thisToken.Owner, true));
             s.Desc = Scribe.Write("Units in Cell on {0}'s team " +
-                "\n(except Carapace Invaders) add n{0}'s Defense to their own.", s.ThisToken);
+                "\n(except Carapace Invaders) add n{0}'s Defense to their own.", s.self);
             return s;
         }
 
@@ -200,7 +202,7 @@ namespace HOA.To
                 if (!Session.Active.paused
                     && Random.Range(1, 4) == 1) 
                         Queue.Add(Effect.Replace(s, new EffectArgs(
-                            Arg.Target(FT.User, s.ThisToken), 
+                            Arg.Target(FT.User, s.self), 
                             Species.Water)));
             };
             s.OnThisEnter = (c) => { s.Subscribe(c); };
@@ -254,12 +256,12 @@ namespace HOA.To
         {
             Sensor s = new Sensor(thisToken, "Mine Sensor", Filter.Token);
             s.Desc = Scribe.Write("If a Token enters Cell, " +
-                "\n10 Explosive damage is dealt at {0}'s Cell.", s.ThisToken);
+                "\n10 Explosive damage is dealt at {0}'s Cell.", s.self);
             s.OnOtherEnter = (t) =>
             {
                 if (!Session.Active.paused) 
                     Queue.Interrupt(Sequence.Detonate(s, new EffectArgs(
-                        Arg.Target(FT.Token, s.ThisToken))));
+                        Arg.Target(FT.Token, s.self))));
             };
             s.OnThisEnter = (c) =>
             {
@@ -277,7 +279,7 @@ namespace HOA.To
             s.Desc = Scribe.Write("Units in Cell have -2 Initiative");
             s.OnOtherEnter = (t) =>
             {
-                s.ThisToken.trackList.Add(t, 2);
+                s.self.trackList.Add(t, 2);
                 Queue.Add(Effect.AddStat(s, new EffectArgs(
                     Arg.Target(FT.Unit, t),
                     Arg.Num(FN.Damage, -2),
@@ -286,7 +288,7 @@ namespace HOA.To
 
             s.OnOtherExit = (t) =>
             {
-                s.ThisToken.trackList.Remove(t);
+                s.self.trackList.Remove(t);
                 Queue.Add(Effect.AddStat(s, new EffectArgs(
                     Arg.Target(FT.Unit, t),
                     Arg.Num(FN.Damage, 2),
@@ -301,7 +303,7 @@ namespace HOA.To
             s.Desc = Scribe.Write("Units in Cell have +2 Initiative");
             s.OnOtherEnter = (t) =>
             {
-                s.ThisToken.trackList.Add(t, 2);
+                s.self.trackList.Add(t, 2);
                 Queue.Add(Effect.AddStat(s, new EffectArgs(
                     Arg.Target(FT.Unit, t),
                     Arg.Num(FN.Damage, 2),
@@ -310,7 +312,7 @@ namespace HOA.To
 
             s.OnOtherExit = (t) =>
             {
-                s.ThisToken.trackList.Remove(t);
+                s.self.trackList.Remove(t);
                 Queue.Add(Effect.AddStat(s, new EffectArgs(
                     Arg.Target(FT.Unit, t),
                     Arg.Num(FN.Damage, -2),
@@ -376,7 +378,7 @@ namespace HOA.To
             {
                 s.Subscribe(c);
 
-                TrackList list = s.ThisToken.trackList;
+                TrackList list = s.self.trackList;
 
                 foreach (Token t in list)
                 {
@@ -394,7 +396,7 @@ namespace HOA.To
                 AbilityClosure move = (t as Unit).arsenal.Move;
                 if (move != null)
                 {
-                    TrackList list = s.ThisToken.trackList;
+                    TrackList list = s.self.trackList;
                     move.ability.Aims[0].range = (Range<sbyte>)list[t];
                     list.Remove(t);
                 }

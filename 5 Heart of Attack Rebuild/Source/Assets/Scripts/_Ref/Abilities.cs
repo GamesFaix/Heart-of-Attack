@@ -1,12 +1,10 @@
-﻿#define DEBUG
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using HOA.Ab;
+using HOA.Abilities;
 
-namespace HOA.Ref
+namespace HOA.Content
 {
-    public delegate Ability AbilityConstructor();
+    public delegate Ability AbilityBuilder();
 
     public static class Abilities
     {

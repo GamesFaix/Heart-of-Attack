@@ -5,25 +5,40 @@ namespace HOA.Stats
 {
     public struct Element
     {
-        public sbyte normal, current;
+        public readonly sbyte normal, current;
 
-        public Element(sbyte normal)
+        private Element(sbyte normal, sbyte current)
         {
             this.normal = normal;
-            current = normal;
+            this.current = current;
         }
 
-        public void Add(sbyte amount) { current += amount; }
-        public void Set(sbyte amount) { current = amount; }
-        public int Changed() { return current.CompareTo(normal); }
+        public Element(sbyte normal)
+            : this(normal, normal)
+        { }
+
+
+        public Element Add(sbyte amount)
+        { 
+            checked 
+            { 
+                return new Element(normal, (sbyte)(current + amount)); 
+            } 
+        }
+
+        public Element Set(sbyte amount) 
+        { return new Element(normal, amount); }
+
+        public sbyte Changed()
+        { checked { return (sbyte)(current.CompareTo(normal)); } }
 
         public static implicit operator sbyte(Element e) { return e.current; }
         public override string ToString() { return current.ToString(); }
 
         public static Element operator +(Element e, sbyte s)
-        {
-            e.Add(s);
-            return e;
-        }
+        { return e.Add(s); }
+
+        public static Element operator -(Element e, sbyte s)
+        { return e.Add((sbyte)(0 - s)); }
     }
 }

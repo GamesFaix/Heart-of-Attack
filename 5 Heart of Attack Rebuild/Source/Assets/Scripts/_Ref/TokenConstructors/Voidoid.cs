@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.To;
 
-namespace HOA
+namespace HOA.Tokens
 {
 
     public partial class Unit
     {
         public static Unit Monolith(object source)
         {
-            Unit u = new Unit(source, Species.Monolith, Rank.King, Species.BloodHeart);
+            Unit u = new Unit(source, Species.Monolith, UnitRank.King, Species.BloodHeart);
             u.body = new Body(u, Plane.Tall);
-            u.vitality = new Vitality(u, 100);
-            u.watch = new Watch(u, 2);
-            u.wallet = new Wallet(u, 3);
+            u.stats = Tokens.StatSheet.King(u, 100, 2);
             /*u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 4),
 				Ability.Rage(u, 20),
@@ -31,10 +28,9 @@ namespace HOA
         
         public static Unit Gatecreeper(object source)
         {
-            Unit u = new Unit(source, Species.Gatecreeper, Rank.Heavy);
+            Unit u = new Unit(source, Species.Gatecreeper, UnitRank.Heavy);
             u.body = new Body(u, Plane.Ground, TokenFlags.Trample);
-            u.vitality = new Vitality(u, 30);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 30, 4);
             /*
              * u.arsenal.Add({
 			//	Ability.Burrow(u),
@@ -49,10 +45,9 @@ namespace HOA
 
         public static Unit Necrochancellor(object source)
         {
-            Unit u = new Unit(source, Species.Necro, Rank.Medium, Species.None);
+            Unit u = new Unit(source, Species.Necro, UnitRank.Medium, Species.None);
             u.body = new Body(u, Plane.Ethereal);
-            u.vitality = new Vitality(u, 30, 5);
-            u.watch = new Watch(u, 3);
+            u.stats = new Tokens.StatSheet(u, 30, 3, 5);
            /*
             * u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 3),
@@ -67,10 +62,9 @@ namespace HOA
 
         public static Unit Recyclops(object source)
         {
-            Unit u = new Unit(source, Species.Recyclops, Rank.Light);
+            Unit u = new Unit(source, Species.Recyclops, UnitRank.Light);
             u.body = new Body(u, Plane.Ground, (TokenFlags.Destructible | TokenFlags.Corpse));
-            u.vitality = new Vitality(u, 15);
-            u.watch = new Watch(u, 4);
+            u.stats = new Tokens.StatSheet(u, 15, 4);
             /*
              * u.Arsenal.Add(new Ability[]{
 				Ability.Move(u, 2),

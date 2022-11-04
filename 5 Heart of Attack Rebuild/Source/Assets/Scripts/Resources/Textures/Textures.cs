@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Species = HOA.Tokens.Species;
 
 namespace HOA 
 { 
@@ -41,7 +42,7 @@ namespace HOA
         /// </summary>
         /// <param name="species"></param>
         /// <returns></returns>
-        public static Texture2D Thumbnails(HOA.To.Species species)
+        public static Texture2D Thumbnails(Species species)
         {
             return HOA.Storage.Textures.Thumbnails.Archive[species];
         }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using HOA.Board;
+using Species = HOA.Tokens.Species;
+using Token = HOA.Tokens.Token;
 
-
-namespace HOA 
+namespace HOA.Sessions
 {
 
     public class Session 
@@ -11,10 +13,10 @@ namespace HOA
 
         #region Properties
 
-        public Board board { get; private set; }
+        public Board.Board board { get; private set; }
         private FactionRegistry factionReg { get; set; }
         private PlayerRegistry playerReg { get; set; }
-        private To.TokenRegistry tokenReg { get; set; }
+        private TokenRegistry tokenReg { get; set; }
         public TurnQueue Queue {get; private set;}
         public bool paused { get; private set; }
 
@@ -30,7 +32,7 @@ namespace HOA
             Active = this;
             factionReg = new FactionRegistry(this);
             playerReg = new PlayerRegistry(this);
-            tokenReg = new To.TokenRegistry(this);
+            tokenReg = new TokenRegistry(this);
             Queue = new TurnQueue(this);
         }
 
@@ -38,7 +40,7 @@ namespace HOA
 
         #region Board
 
-        public void CreateBoard(size2 size) { board = new Board(this, size); }
+        public void CreateBoard(size2 size) { board = new Board.Board(this, size); }
         public Set<Cell> cells { get { return board.Cells; } }
 
         #endregion
@@ -61,9 +63,9 @@ namespace HOA
         #region Tokens
 
         public Set<IEntity> tokens { get { return tokenReg.Tokens; } }
-        public int NextAvailableInstance(To.Species s) { return tokenReg.NextAvailableInstance(s); }
+        public int NextAvailableInstance(Species s) { return tokenReg.NextAvailableInstance(s); }
 
-        public Token Create(object source, To.Species species, Cell cell)
+        public Token Create(object source, Species species, Cell cell)
         {
             return tokenReg.Create(source, species, cell);
         }

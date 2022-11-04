@@ -1,11 +1,11 @@
-﻿using HOA.To;
+﻿using HOA.Tokens;
 using System;
-using HOA.Ab.Aim;
 using HOA.Ef;
 using HOA.Stats;
 using HOA.Fargo;
+using Cell = HOA.Board.Cell;
 
-namespace HOA.Ab
+namespace HOA.Abilities
 {
 
     public partial class Ability
@@ -13,9 +13,9 @@ namespace HOA.Ab
         /// <summary>Args: damage, stat</summary>
         public static Ability ManualAdd()
         {
-            Ability a = new Ability("#Add", Rank.Special);
+            Ability a = new Ability("#Add", AbilityRank.Special);
             //a.desc = Scribe.Write ("Increase/Descrease stat of up to 10 units.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Unit);
             a.Aims[0].selectionCount = Range.sb(1,12);
             
             a.MainEffects = (arg, tar) =>
@@ -36,9 +36,9 @@ namespace HOA.Ab
         /// <summary>Args: species</summary>
         public static Ability ManualCreate()
         {
-            Ability a = new Ability("#Create", Rank.Create);
+            Ability a = new Ability("#Create", AbilityRank.Create);
             //a.desc = Scribe.Write("Create {0} in upto 12 cells.", a.args.species);
-            a.Aims += Stage.CreateFreeManual(a.Aims, Species.None, Range.sb(1,12));
+            a.Aims += AimStage.CreateFreeManual(a.Aims, Species.None, Range.sb(1,12));
             a.Update = Adjustments.SpeciesName("#Create");
             a.MainEffects = (arg, tar) =>
             {
@@ -57,9 +57,9 @@ namespace HOA.Ab
         /// <summary>Args: (none)</summary>
         public static Ability ManualDestroy()
         {
-            Ability a = new Ability("#Destroy", Rank.Special);
+            Ability a = new Ability("#Destroy", AbilityRank.Special);
             //a.desc = Scribe.Write("Destroy up to 12 tokens.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Token);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Token);
             a.Aims[0].selectionCount = Range.sb(1, 12);
             a.MainEffects = (arg, tar) =>
             {
@@ -83,9 +83,9 @@ namespace HOA.Ab
         /// <summary>Args: (none)</summary>
         public static Ability ManualEnd()
         {
-            Ability a = new Ability("#End", Rank.None);
+            Ability a = new Ability("#End", AbilityRank.None);
 //            a.desc = Scribe.Write("End current turn.");
-            a.Aims = Plan.Self(a);
+            a.Aims = AimPlan.Self(a);
             a.MainEffects = (arg, tar) => 
                 Queue.Add(Effect.Advance(a, new EffectArgs()));
             a.Usable = UseTests.AlreadyProcessing;
@@ -95,10 +95,10 @@ namespace HOA.Ab
         /// <summary>Args: </summary>
         public static Ability ManualMove()
         {
-            Ability a = new Ability("#Move", Rank.Move);
+            Ability a = new Ability("#Move", AbilityRank.Move);
 //            a.desc = Scribe.Write("Move target token to target cell.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Token);
-            a.Aims += Stage.MoveFree(a.Aims);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Token);
+            a.Aims += AimStage.MoveFree(a.Aims);
             a.MainEffects = (arg, tar) =>
             {
                 Queue.Add(Effect.TeleportStart(a, new EffectArgs(
@@ -112,9 +112,9 @@ namespace HOA.Ab
         /// <summary>Args: player</summary>
         public static Ability ManualOwner()
         {
-            Ability a = new Ability("#Capture", Rank.Special);
+            Ability a = new Ability("#Capture", AbilityRank.Special);
             ///a.desc = Scribe.Write("Set owner of up to 10 units.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Token);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Token);
             a.Aims[0].selectionCount = Range.sb(1, 12);
             
             a.MainEffects = (arg, tar) =>
@@ -133,9 +133,9 @@ namespace HOA.Ab
         /// <summary>Args: damage, stat</summary>
         public static Ability ManualSet()
         {
-            Ability a = new Ability("#Set", Rank.Special);
+            Ability a = new Ability("#Set", AbilityRank.Special);
            // a.desc = Scribe.Write("Set stat of up to 12 units.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Unit);
             a.Aims[0].selectionCount = Range.sb(1, 12);
 
             a.MainEffects = (arg, tar) =>
@@ -156,9 +156,9 @@ namespace HOA.Ab
         /// <summary>Args: damage</summary>
         public static Ability ManualShift()
         {
-            Ability a = new Ability("#Shift", Rank.Special);
+            Ability a = new Ability("#Shift", AbilityRank.Special);
          //   a.desc = Scribe.Write("Move up to 10 units in the queue.");
-            a.Aims += Stage.AttackFree(a.Aims, Filter.Unit);
+            a.Aims += AimStage.AttackFree(a.Aims, Filter.Unit);
             a.Aims[0].selectionCount = Range.sb(1, 12);
             a.MainEffects = (arg, tar) =>
             {

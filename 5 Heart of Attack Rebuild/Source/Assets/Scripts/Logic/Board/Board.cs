@@ -2,9 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using HOA.Sessions;
 
-
-namespace HOA 
+namespace HOA.Board
 { 
     /// <summary>
     /// Instance of game board
@@ -93,7 +93,7 @@ namespace HOA
         /// <param name="t"></param>
         /// <param name="outCell"></param>
         /// <returns></returns>
-        public bool RandomLegalCell(Token t, out Cell outCell)
+        public bool RandomLegalCell(Tokens.Token t, out Cell outCell)
         {
             Set<Cell> remainingCells = Cells;
             while (remainingCells.Count > 0)

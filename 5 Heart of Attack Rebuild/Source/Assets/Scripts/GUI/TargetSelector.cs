@@ -1,5 +1,5 @@
 ﻿using System;
-using HOA.Ab;
+using HOA.Abilities;
 
 namespace HOA.GUI
 {
@@ -7,9 +7,9 @@ namespace HOA.GUI
     {
         public static void Load()
         {
-            Ab.Processor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
+            AbilityProcessor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
             Log.Start("TargetSelector subscribed to Ab.Processor.TargetSelectionRequestEvent.");
-            TargetSelectionEvent += Ab.Processor.OnTargetSelection;
+            TargetSelectionEvent += AbilityProcessor.OnTargetSelection;
             Log.Start("Ab.Processor subscribed to TargetSelector.TargetSelectionEvent.");
         }
 
