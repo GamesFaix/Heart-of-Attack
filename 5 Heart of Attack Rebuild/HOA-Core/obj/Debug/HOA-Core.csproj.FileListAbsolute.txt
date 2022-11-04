@@ -1,0 +1,8 @@
+F:\_Game Design\_HOA\_H05.x\HOA-Core\obj\Debug\HOA-Core.csprojResolveAssemblyReference.cache
+F:\_Game Design\_HOA\_H05.x\HOA-Core\bin\Debug\HOA_Core.dll
+F:\_Game Design\_HOA\_H05.x\HOA-Core\bin\Debug\HOA_Core.pdb
+F:\_Game Design\_HOA\_H05.x\HOA-Core\obj\Debug\HOA_Core.dll
+F:\_Game Design\_HOA\_H05.x\HOA-Core\obj\Debug\HOA_Core.pdb
+F:\_Game Design\_HOA\_H05.x\HOA-Core\bin\Debug\UnityEngine.dll
+F:\_Game Design\_HOA\_H05.x\HOA-Core\bin\Debug\HOA_Core.XML
+F:\_Game Design\_HOA\_H05.x\HOA-Core\bin\Debug\HOA_Core.tlb

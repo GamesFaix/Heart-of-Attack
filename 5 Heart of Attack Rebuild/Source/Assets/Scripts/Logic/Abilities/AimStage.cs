@@ -2,6 +2,7 @@
 using HOA.Stats;
 using Cell = HOA.Board.Cell;
 using Token = HOA.Tokens.Token;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {
@@ -34,7 +35,7 @@ namespace HOA.Abilities
         {
             source = new Source(plan);
             body = () => { return user; };
-            center = () => { return user.Cell; };
+            center = () => { return user.cell; };
             ///pattern mandatory
             filter = Filter.False;
             range = Range.sb(0, 1);

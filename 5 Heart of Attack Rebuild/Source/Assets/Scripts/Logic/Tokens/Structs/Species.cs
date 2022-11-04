@@ -1,9 +1,7 @@
 ﻿
 namespace HOA.Tokens
 {
-    /// <summary>
-    /// Simple enum of Token species.  None = 0.
-    /// </summary>
+    /// <summary> Simple enum of Token species.  None = 0.  </summary>
     public enum Species : short
     {
         None = 0,

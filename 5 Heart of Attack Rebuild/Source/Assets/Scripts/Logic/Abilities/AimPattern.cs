@@ -4,6 +4,7 @@ using Cell = HOA.Board.Cell;
 using Direction = HOA.Board.Direction;
 using Session = HOA.Sessions.Session;
 using Token = HOA.Tokens.Token;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {

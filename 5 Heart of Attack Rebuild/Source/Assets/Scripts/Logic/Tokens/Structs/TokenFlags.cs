@@ -14,11 +14,7 @@ namespace HOA.Tokens
 
     public static class TokenFlagsExtensionMethods
     {
-        /// <summary>
-        /// Does this TokenFlags contain any of the flags of the argument?
-        /// </summary>
-        /// <param name="p">This.</param>
-        /// <param name="query"></param>
+        /// <summary> Does this TokenFlags contain any of the flags of the argument? </summary>
         /// <returns>True if any flags match.</returns>
         public static bool ContainsAny(this TokenFlags a, TokenFlags b)
         {

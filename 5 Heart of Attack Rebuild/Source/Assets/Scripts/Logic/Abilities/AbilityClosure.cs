@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Fargo;
+using HOA.Collections;
+using HOA.Args;
 using HOA.Stats;
 using Token = HOA.Tokens.Token;
 using Unit = HOA.Tokens.Unit;
 
 namespace HOA.Abilities
 {
-    public class AbilityClosure : Closure<AbilityArgs>, 
-        IComparable<AbilityClosure>, IEquatable<AbilityClosure>
+    public class AbilityClosure : IComparable<AbilityClosure>, IEquatable<AbilityClosure>
     {
-        public Ability ability { get { return functor as Ability; } }
+        public readonly Source source;
+        public readonly Ability ability;
+        public readonly AbilityArgs args;
 
-        
-        public Source source { get; private set; }
         public Token sourceToken { get { return source.Last<Token>(); } }
         public Unit sourceUnit { get { return source.Last<Unit>(); } }
         public Player sourcePlayer { get { return source.Last<Player>(); } }
         
         public bool usedThisTurn { get; private set; }
 
-        
         public string name { get { return ability.name; } }
         public AbilityRank rank { get { return ability.rank; } }
         public Price price
         {
             get
             {
-                Twin price = args[FS.Price] as Twin;
+                Twin price = args[RS.Price] as Twin;
                 return new Price(price[0], price[1]);
             }
         }
@@ -35,9 +34,10 @@ namespace HOA.Abilities
         public Description desc { get; private set; }
 
         public AbilityClosure(object source, Ability ability, AbilityArgs args, Description desc = null)
-            : base(ability, args)
         {
             this.source = new Source(source);
+            this.ability = ability;
+            this.args = args;
             usedThisTurn = false;
             this.desc = desc;
           //  Log.Debug("Ab.Closure created. {0}: {1} ({2}): {3}", args.user, name, rank, args.price);
@@ -50,7 +50,7 @@ namespace HOA.Abilities
 
         public void Update()
         {
-            ability.Update(ability, args);
+            ability.Update(this);
         }
 
         public void Charge()

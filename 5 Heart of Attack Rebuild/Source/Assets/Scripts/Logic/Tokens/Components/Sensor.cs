@@ -1,16 +1,18 @@
 ﻿using System;
 using HOA.Abilities;
 using Cell = HOA.Board.Cell;
+using HOA.Collections;
 
 namespace HOA.Tokens
 {
 
-    public partial class Sensor : TokenComponent, ISourced
+    public partial class Sensor : ISourced
     {
         #region Properties
         
         public Source source { get; private set; }
-        
+        public readonly Token self;
+
         /// <summary> Name of sensor </summary>
         public string Name { get; private set; }
         /// <summary> Generates description </summary>
@@ -36,10 +38,10 @@ namespace HOA.Tokens
 
         #region Constructors
 
-        private Sensor(Token thisToken)
-            : base(thisToken)
+        private Sensor(Token self)
         {
-            this.source = new Source(thisToken); 
+            this.self = self;
+            this.source = new Source(self); 
 
             Name = "[Sensor]";
             Desc = Scribe.Write("[Sensor description]");

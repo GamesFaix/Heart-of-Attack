@@ -1,10 +1,11 @@
 ﻿using System;
 using Cell = HOA.Board.Cell;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {
 
-    public class NeighborMatrix : Matrix<Cell>
+    public class NeighborMatrix : HOA.Collections.Matrix<Cell>
     {
 
         public NeighborMatrix(Cell center)

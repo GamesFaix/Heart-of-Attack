@@ -1,5 +1,6 @@
 ﻿using System;
 using HOA.Abilities;
+using HOA.Collections;
 
 namespace HOA.GUI
 {

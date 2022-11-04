@@ -1,5 +1,6 @@
 ﻿using System;
 using Session = HOA.Sessions.Session;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {

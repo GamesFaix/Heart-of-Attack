@@ -1,0 +1,616 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HOA_Core</name>
+    </assembly>
+    <members>
+        <member name="T:HOA.Collections.Distribution`1">
+            <summary> List of items with weights, for weighted lottery systems. </summary>
+        </member>
+        <member name="M:HOA.Collections.Distribution`1.#ctor">
+            <summary>  Create blank list of possibilities. </summary>
+        </member>
+        <member name="M:HOA.Collections.Distribution`1.Add(HOA.Collections.Possibility{`0})">
+            <summary> Inner List.Add </summary>
+        </member>
+        <member name="M:HOA.Collections.Distribution`1.Remove(HOA.Collections.Possibility{`0})">
+            <summary> If(Contains) Remove  </summary>
+            <returns>True if found, false if never in list.</returns>
+        </member>
+        <member name="M:HOA.Collections.Distribution`1.Random">
+            <summary>  Returns a random outcome based on possibility weights. </summary>
+        </member>
+        <member name="P:HOA.Collections.Distribution`1.Possibilities">
+            <summary> List of all possibilities. </summary>
+        </member>
+        <member name="P:HOA.Collections.Distribution`1.TotalWeight">
+            <summary> Returns sum of the weights of all possibilities. </summary>
+        </member>
+        <member name="T:HOA.Collections.ListExtensionMethods">
+            <summary> Extension methods for generic List.  </summary>
+        </member>
+        <member name="M:HOA.Collections.ListExtensionMethods.Random``1(System.Collections.Generic.List{``0})">
+            <summary>  Get random item from list. </summary>
+            <param name="list">This</param>
+            <returns>Random item</returns>
+        </member>
+        <member name="M:HOA.Collections.ListExtensionMethods.Shuffle``1(System.Collections.Generic.List{``0})">
+            <summary> Randomizes order of List.  Destructive. </summary>
+            <param name="list">This</param>
+            <returns>Same list as entered, but destructively reordered.</returns>
+        </member>
+        <member name="M:HOA.Collections.ListExtensionMethods.Add``1(System.Collections.Generic.List{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>  Add a collection of items to list. </summary>
+        </member>
+        <member name="T:HOA.Collections.Matrix`1">
+            <summary> Two-dimensional array using index2 and size2 </summary>
+        </member>
+        <member name="F:HOA.Collections.Matrix`1.array">
+            <summary>
+            Inner array
+            </summary>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.#ctor(HOA.size2)">
+            <summary>
+            Initialize inner array to given size, fill with default(T).
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.#ctor(HOA.size2,System.Collections.Generic.List{`0})">
+            <summary>
+            Initialize array to given size, fill with list.
+            Throws exception if list.Count != Matrix.Count
+            </summary>
+            <param name="size"></param>
+            <param name="list"></param>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.#ctor(HOA.size2,`0[])">
+            <summary>
+            Initialize array to given size, fill with array.
+            Throws exception if array.Length != Matrix.Count.
+            </summary>
+            <param name="size"></param>
+            <param name="list"></param>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.Contains(`0)">
+            <summary>
+            Iterates through array to check for item.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.Contains(`0,HOA.index2@)">
+            <summary>
+            Iterates through array to check for item.
+            </summary>
+            <param name="item"></param>
+            <param name="i">Index of item if found. Defaults to (0,0).</param>
+            <returns></returns>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.Contains(HOA.index2)">
+            <summary>
+            Returns Size.Contains(index)
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.Contains(HOA.index2,`0@)">
+            <summary>
+            Returns Size.Contains(index)
+            </summary>
+            <param name="index"></param>
+            <param name="item">Item at index if true, default if false.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.IndexOf(`0)">
+            <summary>
+            If item is in array, returns its index.  Else, throws exception.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HOA.Collections.Matrix`1.GetEnumerator">
+            <summary>
+            Iterates through items in array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Size">
+            <summary>
+            Number of indecies in each dimension
+            </summary>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Count">
+            <summary>
+            Returns Size.x * Size.y
+            </summary>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Item(HOA.index2)">
+            <summary>
+            Basic indexer.
+            Throws IndexOutOfRangeException if index not found.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Item(System.Int32,System.Int32)">
+            <summary>
+            Simple indexer.  Throws IndexOutOfRangeException if not found.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Random">
+            <summary>
+            Returns a random item from array.
+            </summary>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.Periphery">
+            <summary>
+            List of items in outer indecies of array
+            </summary>
+        </member>
+        <member name="P:HOA.Collections.Matrix`1.PeripheralIndexes">
+            <summary>
+            List of outer indecies of array
+            </summary>
+        </member>
+        <member name="T:HOA.Collections.Possibility`1">
+            <summary> Pairing of a possible outcome and a weight factor. </summary>
+        </member>
+        <member name="F:HOA.Collections.Possibility`1.item">
+            <summary>  A possible outcome </summary>
+        </member>
+        <member name="F:HOA.Collections.Possibility`1.weight">
+            <summary> Weights are compared by a Distribution </summary>
+        </member>
+        <member name="M:HOA.Collections.Possibility`1.#ctor(`0,System.Int32)">
+            <summary> Assigns parameters.  </summary>
+            <param name="frequency">Throws exception if negative.</param>
+        </member>
+        <member name="M:HOA.Collections.PredicateExtensionMethods.AllTrue``1(System.Predicate{``0},``0)">
+            <summary>Iterates thru each predicate in multicast.
+            Return false at first false result.</summary>
+        </member>
+        <member name="M:HOA.Collections.PredicateExtensionMethods.AllFalse``1(System.Predicate{``0},``0)">
+            <summary>Iterates thru each predicate in multicast.
+            Return false at first true result.</summary>
+        </member>
+        <member name="M:HOA.Collections.PredicateExtensionMethods.AnyTrue``1(System.Predicate{``0},``0)">
+            <summary>Iterates thru each predicate in mutlicast.
+            Returns true at first true result.</summary>
+        </member>
+        <member name="M:HOA.Collections.PredicateExtensionMethods.AnyFalse``1(System.Predicate{``0},``0)">
+            <summary>Iterates thru each predicate in mutlicast.
+            Returns false at first false result.</summary>
+        </member>
+        <member name="T:HOA.Collections.Set`1">
+            <summary>
+            Collection with numbered indecies and no dupicate items.  
+            Based on inner List.
+            </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.#ctor(System.Int32)">
+            <summary>Creates empty set.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.#ctor(`0[])">
+            <summary> Creates empty set, 
+            then calls Add(T) on each argument.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.#ctor(System.Collections.Generic.IEnumerable{`0}[])">
+            <summary> Creates empty set,
+            then calls Add(T) on each item in collection.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Add(`0)">
+            <summary> If item not already in list, calls List.Add.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Add(`0,System.Boolean@)">
+            <summary> If item not already in list, calls List.Add.
+            Else, outputs true.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Add(`0[])">
+            <summary> Call Add(T) on each item.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Add(System.Collections.Generic.IEnumerable{`0})">
+            <summary> Call Add(T) on each item in collection.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Add``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary> Call Add(T) on each item of a collection of a derived type.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Insert(System.Int32,`0)">
+            <summary> If item not already in list, calls List.Insert.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Remove(System.Collections.Generic.IEnumerable{`0})">
+            <summary> Calls Remove(T) on each item in collection.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Random">
+            <summary> Returns random item.
+            Calls List extension method Random.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Shuffle">
+            <summary> Randomizes index order. 
+            Calls List extension method Shuffle.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Copy">
+            <summary> Call constructor with self as argument.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.op_Implicit(`0)~HOA.Collections.Set{`0}">
+            <summary> Call constructor with item as argument.</summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Equals(HOA.Collections.Set{`0})">
+            <summary> List.Equals </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.Equals(System.Object)">
+            <summary> List.Equals </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.GetHashCode">
+            <summary> List.GetHashCode </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.op_Addition(HOA.Collections.Set{`0},HOA.Collections.Set{`0})">
+            <summary> Union </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.op_Subtraction(HOA.Collections.Set{`0},HOA.Collections.Set{`0})">
+            <summary> Except </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.op_Division(HOA.Collections.Set{`0},System.Predicate{`0})">
+            <summary> Where </summary>
+        </member>
+        <member name="M:HOA.Collections.Set`1.op_BitwiseAnd(HOA.Collections.Set{`0},System.Predicate{`0})">
+            <summary> SingleOrDefault </summary>
+        </member>
+        <member name="M:HOA.Collections.SetExtensionMethods.Base``2(HOA.Collections.Set{``0})">
+            <summary>Convert set of T to set of T's immediate base class."/></summary>
+        </member>
+        <member name="M:HOA.Collections.SetExtensionMethods.Map``2(HOA.Collections.Set{``0},System.Func{``0,``1})">
+            <summary>Input a set of T and func(T, TOut),
+            return set of output values in analagous order.</summary>
+        </member>
+        <member name="M:HOA.Collections.SetExtensionMethods.Merge``2(HOA.Collections.Set{``0})">
+            <summary> Merge a set of collections of T into a single set of T.
+            (Removes duplicates.)</summary>
+        </member>
+        <member name="T:HOA.AmbiguousReferenceException">
+            <summary>
+            To be thrown when a property refers to the only
+            item in a collection, but the collection contains
+            more than one item fitting the property.
+            </summary>
+        </member>
+        <member name="T:HOA.InvalidSourceException">
+            <summary>
+            To be thrown by classes implementing ISourceRestricted 
+            when they are instantiated from an invalid type.
+            </summary>
+        </member>
+        <member name="M:HOA.Functionizer.Return``1(``0)">
+            <summary>Feed it X, get back a function that returns X.</summary>
+        </member>
+        <member name="T:HOA.Random">
+            <summary> Static singleton of System.Random class. </summary>
+        </member>
+        <member name="M:HOA.Random.Range(System.Int32,System.Int32)">
+            <summary> Generates Int32 between min (inclusive) and max (inclusive). </summary>
+        </member>
+        <member name="T:HOA.Description">
+            <summary> Takes no args, returns a string.</summary>
+        </member>
+        <member name="T:HOA.Scribe">
+            <summary> Creates StringMaker delegates.</summary>
+        </member>
+        <member name="M:HOA.Scribe.Write(System.String,System.Object[])">
+            <summary> Returns Description that returns string.Format(message, items). </summary>
+        </member>
+        <member name="M:HOA.Scribe.Write(System.String)">
+            <summary>Returns plain Description that just returns message.</summary>
+        </member>
+        <member name="T:HOA.Args.RE">
+            <summary>
+            aRg Effect
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RF">
+            <summary>
+            aRg Filter
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RN">
+            <summary>
+            aRg Number
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RO">
+            <summary>
+            aRg Option
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RS">
+            <summary>
+            aRg Stat
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RT">
+            <summary>
+            aRg Target
+            </summary>
+        </member>
+        <member name="T:HOA.Args.RL">
+            <summary>
+            aRg Label
+            </summary>
+        </member>
+        <member name="M:HOA.Source.ToString">
+            <summary>Source history from old to new.</summary>
+        </member>
+        <member name="M:HOA.Source.Last``1">
+            <summary> Return last T in source history, or null.</summary>
+        </member>
+        <member name="M:HOA.Source.Last``1(``0@)">
+            <summary>Returns true if T found in history, outputs last T.  
+            Otherwise returns false, outputs default(T).</summary>
+        </member>
+        <member name="M:HOA.Source.IsValid(System.Type[],System.Object)">
+            <summary> Is this object's runtime type in this type array?</summary>
+        </member>
+        <member name="P:HOA.Source.obj">
+            <summary> Inner object of source. </summary>
+        </member>
+        <member name="P:HOA.Source.history">
+            <summary>Recusive list of object, then object's object, then o's o's o...</summary>
+        </member>
+        <member name="M:HOA.StringBuilderExtensionMethods.Append(System.Text.StringBuilder,System.String,System.Object[])">
+            <summary>Append a formatted string.</summary>
+        </member>
+        <member name="M:HOA.StringBuilderExtensionMethods.Trim(System.Text.StringBuilder,System.Int32)">
+            <summary>Remove n characters from the end.</summary>
+        </member>
+        <member name="T:HOA.index2">
+            <summary>
+            Pair of int32's for two-dimensional colleciton indexing. 
+            Cannot be negative.
+            </summary>
+        </member>
+        <member name="M:HOA.index2.#ctor(System.Int32,System.Int32)">
+            <summary>  Create new index2
+            Throws exception if arguments less than 0. </summary>
+        </member>
+        <member name="M:HOA.index2.op_Explicit(HOA.index2)~HOA.int2">
+            <summary> Create new int2 from x and y components.  </summary>
+        </member>
+        <member name="M:HOA.index2.op_Explicit(HOA.int2)~HOA.index2">
+            <summary> Create new index2 from x and y components.
+            Constructor will throw exception if arguments below 0.
+            </summary>
+        </member>
+        <member name="M:HOA.index2.op_Addition(HOA.index2,HOA.int2)">
+            <summary>  Component-wise addition  </summary>
+        </member>
+        <member name="M:HOA.index2.op_Addition(HOA.int2,HOA.index2)">
+            <summary> Component-wise addition </summary>
+        </member>
+        <member name="M:HOA.index2.op_Subtraction(HOA.index2,HOA.int2)">
+            <summary>  Component-wise subtraction  </summary>
+        </member>
+        <member name="M:HOA.index2.Equals(HOA.index2)">
+            <summary> Component-wise value equality check </summary>
+        </member>
+        <member name="M:HOA.index2.Equals(System.Object)">
+            <summary> Returns true if object are equal. </summary>
+        </member>
+        <member name="M:HOA.index2.GetHashCode">
+            <summary> Returns unique identifier. </summary>
+        </member>
+        <member name="M:HOA.index2.op_Equality(HOA.index2,HOA.index2)">
+            <summary> Are both index2's equal?  </summary>
+        </member>
+        <member name="M:HOA.index2.op_Inequality(HOA.index2,HOA.index2)">
+            <summary> Are both index2's unequal? </summary>
+        </member>
+        <member name="P:HOA.index2.x">
+            <summary>  X component  </summary>
+        </member>
+        <member name="P:HOA.index2.y">
+            <summary>  Y component  </summary>
+        </member>
+        <member name="P:HOA.index2.MinValue">
+            <summary> Returns index2(limit, limit), defaults to 0.  </summary>
+        </member>
+        <member name="P:HOA.index2.MaxValue">
+            <summary> Returns index2 (int32.Max, int32.Max) </summary>
+        </member>
+        <member name="T:HOA.int2">
+            <summary> Pair of int32's </summary>
+        </member>
+        <member name="F:HOA.int2.x">
+            <summary> X component </summary>
+        </member>
+        <member name="F:HOA.int2.y">
+            <summary> Y component </summary>
+        </member>
+        <member name="M:HOA.int2.#ctor(System.Int32,System.Int32)">
+            <summary> Creat new int2  </summary>
+            <param name="x">Assigns to x component</param>
+            <param name="y">Assigns to y component</param>
+        </member>
+        <member name="M:HOA.int2.op_Addition(HOA.int2,HOA.int2)">
+            <summary> Component-wise addition </summary>
+        </member>
+        <member name="M:HOA.int2.op_Addition(HOA.int2,System.Int32)">
+            <summary> Add scalar to both components </summary>
+        </member>
+        <member name="M:HOA.int2.op_Addition(System.Int32,HOA.int2)">
+            <summary> Add Scalar to components </summary>
+        </member>
+        <member name="M:HOA.int2.op_UnaryNegation(HOA.int2)">
+            <summary> Invert each component  </summary>
+        </member>
+        <member name="M:HOA.int2.op_Subtraction(HOA.int2,HOA.int2)">
+            <summary> Component-wise subtraction </summary>
+        </member>
+        <member name="M:HOA.int2.op_Subtraction(HOA.int2,System.Int32)">
+            <summary> Subtract scalar from each component </summary>
+        </member>
+        <member name="M:HOA.int2.op_Multiply(HOA.int2,HOA.int2)">
+            <summary> Component-wise multiplication </summary>
+        </member>
+        <member name="M:HOA.int2.op_Multiply(HOA.int2,System.Int32)">
+            <summary> Mulitply each component by scalar. </summary>
+        </member>
+        <member name="M:HOA.int2.op_Multiply(System.Int32,HOA.int2)">
+            <summary> Multiply each component by scalar. </summary>
+        </member>
+        <member name="M:HOA.int2.op_Division(HOA.int2,System.Int32)">
+            <summary> Divide each component by scalar.
+            Throws exception if not evenly divisible. </summary>
+        </member>
+        <member name="M:HOA.int2.op_Division(HOA.int2,HOA.int2)">
+            <summary> Component-wise division.
+            Throws exception if does not divide evenly. </summary>
+        </member>
+        <member name="M:HOA.int2.Equals(HOA.int2)">
+            <summary>  Component-wise value equality check </summary>
+        </member>
+        <member name="M:HOA.int2.Equals(System.Object)">
+            <summary> Returns true if object are equal. </summary>
+        </member>
+        <member name="M:HOA.int2.GetHashCode">
+            <summary> Returns unique identifier. </summary>
+        </member>
+        <member name="M:HOA.int2.op_Equality(HOA.int2,HOA.int2)">
+            <summary> Are both int2's equal? </summary>
+        </member>
+        <member name="M:HOA.int2.op_Inequality(HOA.int2,HOA.int2)">
+            <summary> Are both int2's unequal?  </summary>
+        </member>
+        <member name="P:HOA.int2.MinValue">
+            <summary> Returns int2(int.Min, int.Min) </summary>
+        </member>
+        <member name="P:HOA.int2.MaxValue">
+            <summary> Returns int2(int.Max, int.Max) </summary>
+        </member>
+        <member name="P:HOA.int2.Abs">
+            <summary> Creates new int2 from absolute value of each component. </summary>
+        </member>
+        <member name="P:HOA.int2.Product">
+            <summary> Multiply components together.  </summary>
+        </member>
+        <member name="T:HOA.Range">
+            <summary>Syntatic sugar to create generic Ranges of primitive types.</summary>
+        </member>
+        <member name="T:HOA.Range`1">
+            <summary> Min and max value always inclusive, 
+            can test T to see if in range. </summary>
+        </member>
+        <member name="T:HOA.size2">
+            <summary> Pair of int32's for measuring 2-dimensional collections.
+            Components must be greater than 0. </summary>
+        </member>
+        <member name="M:HOA.size2.#ctor(System.Int32,System.Int32)">
+            <summary> Create new size2.  Throws exception if components out of range.  </summary>
+        </member>
+        <member name="M:HOA.size2.op_Explicit(HOA.size2)~HOA.int2">
+            <summary> Creates new int2(x, y) </summary>
+        </member>
+        <member name="M:HOA.size2.op_Explicit(HOA.int2)~HOA.size2">
+            <summary> Creates new size2.  Constructor throws exception if components out of range. </summary>
+        </member>
+        <member name="M:HOA.size2.op_Addition(HOA.size2,HOA.size2)">
+            <summary> Component-wise addition </summary>
+        </member>
+        <member name="M:HOA.size2.op_Addition(HOA.size2,HOA.int2)">
+            <summary> Component-wise addition </summary>
+        </member>
+        <member name="M:HOA.size2.op_Addition(HOA.int2,HOA.size2)">
+            <summary> Component-wise addition </summary>
+        </member>
+        <member name="M:HOA.size2.op_Addition(HOA.size2,System.Int32)">
+            <summary> Add scalar to each component </summary>
+        </member>
+        <member name="M:HOA.size2.op_Addition(System.Int32,HOA.size2)">
+            <summary> Add scalar to each component </summary>
+        </member>
+        <member name="M:HOA.size2.op_Subtraction(HOA.size2,HOA.size2)">
+            <summary> Component-wise subtraction </summary>
+        </member>
+        <member name="M:HOA.size2.op_Subtraction(HOA.size2,HOA.int2)">
+            <summary> Component-wise subtraction </summary>
+        </member>
+        <member name="M:HOA.size2.op_Subtraction(HOA.size2,System.Int32)">
+            <summary> Subtract scalar from each component  </summary>
+        </member>
+        <member name="M:HOA.size2.op_Multiply(HOA.size2,HOA.size2)">
+            <summary> Component-wise multiplication </summary>
+        </member>
+        <member name="M:HOA.size2.op_Multiply(HOA.size2,HOA.int2)">
+            <summary> Component-wise multiplication </summary>
+        </member>
+        <member name="M:HOA.size2.op_Multiply(HOA.int2,HOA.size2)">
+            <summary> Component-wise multiplication  </summary>
+        </member>
+        <member name="M:HOA.size2.op_Multiply(HOA.size2,System.Int32)">
+            <summary> Scalar multiplication </summary>
+        </member>
+        <member name="M:HOA.size2.op_Multiply(System.Int32,HOA.size2)">
+            <summary> Scalar multiplication </summary>
+        </member>
+        <member name="M:HOA.size2.op_Division(HOA.size2,HOA.size2)">
+            <summary> Component-wise division.
+            Throws exception if not evenly divisible.  </summary>
+        </member>
+        <member name="M:HOA.size2.Contains(HOA.index2)">
+            <summary> Checks if index would be available in a two-dimensional collection of this size. </summary>
+            <returns>True if index x and y are less than size x and y.</returns>
+        </member>
+        <member name="M:HOA.size2.SubsetOf(HOA.size2)">
+            <summary> Checks if all components less than or equal to other size </summary>
+        </member>
+        <member name="M:HOA.size2.SupersetOf(HOA.size2)">
+            <summary> Checks if all components greater than or equal to other size </summary>
+        </member>
+        <member name="M:HOA.size2.GetEnumerator">
+            <summary> Iterates through each index2 that would be available in a collection of this size. </summary>
+        </member>
+        <member name="M:HOA.size2.Equals(HOA.size2)">
+            <summary>  Component-wise value equality check </summary>
+        </member>
+        <member name="M:HOA.size2.Equals(System.Object)">
+            <summary> Returns true if object are equal. </summary>
+        </member>
+        <member name="M:HOA.size2.GetHashCode">
+            <summary> Returns unique identifier. </summary>
+        </member>
+        <member name="M:HOA.size2.op_Equality(HOA.size2,HOA.size2)">
+            <summary> Are both size2's equal? </summary>
+        </member>
+        <member name="M:HOA.size2.op_Inequality(HOA.size2,HOA.size2)">
+            <summary>  Are both size2's unequal?  </summary>
+        </member>
+        <member name="P:HOA.size2.x">
+            <summary>  X component </summary>
+        </member>
+        <member name="P:HOA.size2.y">
+            <summary> Y component  </summary>
+        </member>
+        <member name="P:HOA.size2.MinValue">
+            <summary> Returns size2(limit, limit).  Default = 1 </summary>
+        </member>
+        <member name="P:HOA.size2.MaxValue">
+            <summary> Returns size2(int32.Max, int32.Max) </summary>
+        </member>
+        <member name="P:HOA.size2.Product">
+            <summary>  Product of compnents </summary>
+        </member>
+        <member name="M:HOA.Time.Since(System.Single)">
+            <summary> Current time minus input.</summary>
+        </member>
+        <member name="M:HOA.Time.Wait(System.Single)">
+            <summary> Wrapper for UnityEngine.WaitForSeconds, but input in ms.</summary>
+        </member>
+        <member name="P:HOA.Time.time">
+            <summary> Accessor for UnityEngine.Time.time</summary>
+        </member>
+        <member name="P:HOA.Time.delta">
+            <summary> Accessor for UnityEngine.Time.deltaTime</summary>
+        </member>
+    </members>
+</doc>

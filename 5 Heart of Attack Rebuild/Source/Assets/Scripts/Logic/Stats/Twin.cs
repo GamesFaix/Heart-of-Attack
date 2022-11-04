@@ -13,7 +13,7 @@ namespace HOA.Stats
 
         public override string ToString() { return string.Format("{0}, {1}", values[0], values[1]); ; }
 
-        public static Twin Price(Tokens.Unit self, Price price)
+        public static Twin Price(Price price)
         { return new Twin(price.Energy, price.Focus); }
 
     }

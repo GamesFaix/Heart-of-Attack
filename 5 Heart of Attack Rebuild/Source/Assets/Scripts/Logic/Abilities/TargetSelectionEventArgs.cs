@@ -1,4 +1,5 @@
 ﻿using System;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {

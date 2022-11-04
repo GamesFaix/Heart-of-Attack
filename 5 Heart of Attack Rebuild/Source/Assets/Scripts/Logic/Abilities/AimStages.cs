@@ -37,7 +37,7 @@ namespace HOA.Abilities
         public static AimStage CreateDrop(AimPlan plan, Species species)
         {
             Token user = plan.source.Last<Token>();
-            Predicate<IEntity> p = (user != null ? Filter.identity(user.Cell, true) : Filter.False);
+            Predicate<IEntity> p = (user != null ? Filter.identity(user.cell, true) : Filter.False);
             return new AimStage(plan, AimPatterns.Neighbor, p, () => Content.Tokens.templates[species]);
         }
 
@@ -86,7 +86,7 @@ namespace HOA.Abilities
 
         public static AimStage MoveArcOther(AimPlan plan, Func<Token> body, Range<sbyte> range)
         {
-            AimStage a = new AimStage(plan, AimPatterns.Arc, Filter.Cell, body, () => body().Cell);
+            AimStage a = new AimStage(plan, AimPatterns.Arc, Filter.Cell, body, () => body().cell);
             a.range = range;
             return a;
         }

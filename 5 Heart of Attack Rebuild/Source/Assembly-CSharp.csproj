@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C88DC932-397E-CF30-3B15-4A63731AA09B}</ProjectGuid>
+	<ProjectGuid>{565D1A99-45D6-F951-5B2E-6DB81FADED8D}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,6 +46,37 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Content\Abilities.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\Ability.Generic.Attack.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\Ability.Generic.Create.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\Ability.Generic.Move.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\Ability.Manual.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\Ability.Special.Move.cs" />
+     <Compile Include="Assets\Scripts\Content\AbilityBuilders\AbilityMacros.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effect.Damage.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effect.Move.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effect.Queue.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\EffectSequences.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effects.CreateDestroy.cs.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effects.Other.cs" />
+     <Compile Include="Assets\Scripts\Content\EffectBuilders\Effects.Properties.cs" />
+     <Compile Include="Assets\Scripts\Content\Factions.cs" />
+     <Compile Include="Assets\Scripts\Content\Main.cs" />
+     <Compile Include="Assets\Scripts\Content\Players.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Chrono.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Gearp.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Grove.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Obstacles.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Psilent.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Psycho.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Republic.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Terrain.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Torridale.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.Voidoid.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenBuilders\TokenBuilders.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenComponentBuilders\Sensors.cs" />
+     <Compile Include="Assets\Scripts\Content\TokenComponentBuilders\Timers.cs" />
+     <Compile Include="Assets\Scripts\Content\Tokens.cs" />
      <Compile Include="Assets\Scripts\GUI\AbilityRequester.cs" />
      <Compile Include="Assets\Scripts\GUI\Master.cs" />
      <Compile Include="Assets\Scripts\GUI\TargetSelector.cs" />
@@ -53,9 +84,11 @@
      <Compile Include="Assets\Scripts\Logic\Abilities\Ability.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AbilityArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AbilityClosure.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\AbilityConditions.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AbilityProcessor.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AbilityRank.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AbilityRequestEventArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\AbilityTuple.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Adjustments.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AimPattern.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\AimPatternArgs.cs" />
@@ -67,82 +100,55 @@
      <Compile Include="Assets\Scripts\Logic\Abilities\Price.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\TargetSelectionEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\TargetSelectionRequestEventArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Abilities\UseTest.cs" />
+     <Compile Include="Assets\Scripts\Logic\Args\Arg.cs" />
+     <Compile Include="Assets\Scripts\Logic\Args\ArgTable.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Direction.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\OccupationEventArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\Board\Structs\index2.cs" />
-     <Compile Include="Assets\Scripts\Logic\Board\Structs\int2.cs" />
-     <Compile Include="Assets\Scripts\Logic\Board\Structs\size2.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\Distribution.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\ListExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\Matrix.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\NestedList.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\Possibility.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\PredicateExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\Sequence.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\Set.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\Effect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\EffectArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\EffectQueue.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\EffectSequence.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\EffectSet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Effects\IEffect.cs" />
      <Compile Include="Assets\Scripts\Logic\Entities\Filter.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\FilterBuilder.cs" />
      <Compile Include="Assets\Scripts\Logic\Entities\IEntity.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\Biome.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\BiomeEnum.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\Faction.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\FactionEnum.cs" />
-     <Compile Include="Assets\Scripts\Logic\Fargo\Arg.cs" />
-     <Compile Include="Assets\Scripts\Logic\Fargo\ArgSet.cs" />
-     <Compile Include="Assets\Scripts\Logic\Fargo\ArgTable.cs" />
-     <Compile Include="Assets\Scripts\Logic\Fargo\Enums.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Closure.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Core.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Exceptions.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Functionizer.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Log.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Range.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Scribe.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\StringBuilderExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\TurnQueue.cs" />
      <Compile Include="Assets\Scripts\Logic\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\FactionRegistry.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\PlayerRegistry.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\Session.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\SessionComponent.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\TokenRegistry.cs" />
-     <Compile Include="Assets\Scripts\Logic\Source Interfaces\ISourceRestricted.cs" />
-     <Compile Include="Assets\Scripts\Logic\Source Interfaces\ISourced.cs" />
-     <Compile Include="Assets\Scripts\Logic\Source Interfaces\Source.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Capped.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Element.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Flex.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Scalar.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Stat.cs" />
      <Compile Include="Assets\Scripts\Logic\Stats\Twin.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Arsenal.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Body.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Identity.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Components\Sensor.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\StatSheet.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Components\Timer.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\TokenComponent.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\Components\TrackList.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\General\Obstacle.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\General\Terrain.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\General\Token.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\General\Unit.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Obstacle.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Plane.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Rank.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Species.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\TokenFlags.cs" />
-     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Math.cs" />
-     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Random.cs" />
-     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Time.cs" />
-     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Updater.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\Effect.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\EffectArgs.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\IEffect.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\Queue.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\Sequence.cs" />
-     <Compile Include="Assets\Scripts\Logic\_Ef\Set.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Terrain.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Token.Body.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Token.Identity.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Token.Sources.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Token.TrackList.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Token.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Unit.Arsenal.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Unit.StatSheet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Unit.cs" />
+     <Compile Include="Assets\Scripts\Logic\_Misc\Program.cs" />
+     <Compile Include="Assets\Scripts\Logic\_Misc\TurnQueue.cs" />
      <Compile Include="Assets\Scripts\Model\GameObjectExtensionMethods.cs" />
      <Compile Include="Assets\Scripts\Resources\AVEffect.Constructors.cs" />
      <Compile Include="Assets\Scripts\Resources\AVEffect.cs" />
@@ -156,35 +162,9 @@
      <Compile Include="Assets\Scripts\Resources\Textures\Icons.cs" />
      <Compile Include="Assets\Scripts\Resources\Textures\Textures.cs" />
      <Compile Include="Assets\Scripts\Resources\Textures\Thumbnails.cs" />
-     <Compile Include="Assets\Scripts\_Ref\Abilities.cs" />
-     <Compile Include="Assets\Scripts\_Ref\AbilityConstructors\Ability.Generic.Attack.cs" />
-     <Compile Include="Assets\Scripts\_Ref\AbilityConstructors\Ability.Generic.Create.cs" />
-     <Compile Include="Assets\Scripts\_Ref\AbilityConstructors\Ability.Generic.Move.cs" />
-     <Compile Include="Assets\Scripts\_Ref\AbilityConstructors\Ability.Manual.cs" />
-     <Compile Include="Assets\Scripts\_Ref\AbilityConstructors\Ability.Special.Move.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effect.Damage.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effect.Move.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effect.Queue.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\EffectSequences.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effects.CreateDestroy.cs.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effects.Other.cs" />
-     <Compile Include="Assets\Scripts\_Ref\EffectConstructors\Effects.Properties.cs" />
-     <Compile Include="Assets\Scripts\_Ref\Factions.cs" />
-     <Compile Include="Assets\Scripts\_Ref\Main.cs" />
-     <Compile Include="Assets\Scripts\_Ref\Players.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenComponentConstructors\Sensors.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenComponentConstructors\Timers.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Chrono.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Gearp.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Grove.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Obstacles.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Psilent.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Psycho.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Republic.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Terrain.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Torridale.cs" />
-     <Compile Include="Assets\Scripts\_Ref\TokenConstructors\Voidoid.cs" />
-     <Compile Include="Assets\Scripts\_Ref\Tokens.cs" />
+ <Reference Include="HOA_Core">
+ <HintPath>E:/_Game Design/_HOA/_H05.x/H05.12 Multiple Assemblies/Assets/Assemblies/HOA_Core.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

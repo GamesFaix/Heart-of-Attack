@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HOA.Board;
 using Species = HOA.Tokens.Species;
 using Token = HOA.Tokens.Token;
+using HOA.Collections;
 
 namespace HOA.Sessions
 {

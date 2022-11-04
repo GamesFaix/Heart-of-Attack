@@ -1,16 +1,17 @@
 ﻿using System;
 using HOA.Abilities;
-using HOA.Ef;
+using HOA.Effects;
 using Cell = HOA.Board.Cell;
 using HOA.Sessions;
 
 namespace HOA.Tokens
 {
     
-    public partial class Timer : TokenComponent, ISourced
+    public partial class Timer : ISourced
     {
         #region //Properties
-       
+        public readonly Token self;
+        public Unit selfUnit { get { return self as Unit; } }
         public Source source { get; private set; }
        
         public string Name { get; private set; }
@@ -27,9 +28,9 @@ namespace HOA.Tokens
 
 
 
-        private Timer(IEffect source, Token thisToken, sbyte modifier = 0, AbilityClosure ability = null)
-            : base(thisToken)
+        private Timer(IEffect source, Token self, sbyte modifier = 0, AbilityClosure ability = null)
         {
+            this.self = self;
             this.source = new Source(source); 
             
             Name = "[Timer]";

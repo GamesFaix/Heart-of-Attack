@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HOA.Collections;
 
 namespace HOA
 {
@@ -53,7 +54,7 @@ namespace HOA
         public void Capture(Player captive)
         {
             foreach (Tokens.Token t in captive.Tokens)
-                t.Owner = this;
+                t.owner = this;
         }
 
     }

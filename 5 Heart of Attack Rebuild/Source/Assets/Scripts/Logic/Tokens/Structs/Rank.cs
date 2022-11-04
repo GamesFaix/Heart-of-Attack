@@ -4,7 +4,7 @@ namespace HOA.Tokens
 { 
     public enum UnitRank : byte
 	{
-        None,
+        None = 0,
         Minor,
         Light,
         Medium,

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using HOA.Collections;
 
 namespace HOA.Abilities
 {
     
-    public partial class Ability : ICloseable<AbilityArgs>
+    public partial class Ability
     {
         
         public string name { get; set; }
@@ -13,7 +12,7 @@ namespace HOA.Abilities
 
         public AimPlan Aims { get; private set; }
         
-        public UseTest Usable { get; private set; }
+        public AbilityCondition Usable { get; private set; }
 
         private Action PostEffects;
         private Action<AbilityArgs, NestedList<IEntity>> MainEffects;
@@ -25,11 +24,11 @@ namespace HOA.Abilities
             this.name = name;
             this.rank = rank;
             
-            Usable += UseTests.UserInQueue;
-            Usable += UseTests.UserIsTop;
-            Usable += UseTests.Unused;
-            Usable += UseTests.Affordable;
-            Usable += UseTests.AlreadyProcessing;
+            Usable += AbilityConditions.UserInQueue;
+            Usable += AbilityConditions.UserIsTop;
+            Usable += AbilityConditions.Unused;
+            Usable += AbilityConditions.Affordable;
+            Usable += AbilityConditions.AlreadyProcessing;
             
             Aims = new AimPlan(this);
 

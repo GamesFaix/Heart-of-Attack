@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HOA.Tokens;
 using Cell = HOA.Board.Cell;
+using HOA.Collections;
 
 namespace HOA.Sessions
 { 
@@ -27,7 +28,7 @@ namespace HOA.Sessions
         {
             if (Content.Tokens.templates[species].CanEnter(cell))
             {
-                Token newToken = Content.Tokens.builders[species](source);
+                Token newToken = Content.TokenBuilders.builders[species](source);
                 newToken.Enter(cell);
                 return newToken;
             }

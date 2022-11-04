@@ -1,69 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using HOA.Tokens;
+using Pred = System.Predicate<HOA.IEntity>;
 
 namespace HOA
 {
     public static class Filter
     {
-        static Predicate<IEntity> alwaysFalse = (t) => { return false; };
-        public static Predicate<IEntity> False { get { return alwaysFalse; } }
+        private static readonly Pred
+            alwaysFalse,
+            cell,
+            token,
+            unit,
+            ob,
+            terrain,
+            king,
+            heart,
+            destructible,
+            trample,
+            corpse,
+            notCorpse,
+            unitDest,
+            legal;
 
-        static Predicate<IEntity> cell = (t) => { return (t is Board.Cell); };
-        public static Predicate<IEntity> Cell { get { return cell; } }
+        public static Pred False { get { return alwaysFalse; } }
+        public static Pred Cell { get { return cell; } }
+        public static Pred Token { get { return token; } }
+        public static Pred Unit { get { return unit; } }
+        public static Pred Ob { get { return ob; } }
+        public static Pred Terrain { get { return terrain; } }
+        public static Pred King { get { return unit + king; } }
+        public static Pred Heart { get { return token + heart; } }
+        public static Pred Destructible { get { return token + destructible; } }
+        public static Pred Corpse { get { return token + corpse; } }
+        public static Pred DestNotCorpse { get { return token + destructible + notCorpse; } }
+        public static Pred Trample { get { return token + trample; } }
+        public static Pred UnitDest { get { return token + unitDest; } }
+        public static Pred Legal { get { return legal; } }
 
-        static Predicate<IEntity> token = (t) => { return (t is Token); };
-        public static Predicate<IEntity> Token { get { return token; } }
-        
-        static Predicate<IEntity> unit = (t) => { return (t is Unit); };
-        public static Predicate<IEntity> Unit { get { return unit; } }
-        
-        static Predicate<IEntity> ob = (t) => { return (t is Obstacle); };
-        public static Predicate<IEntity> Ob { get { return ob; } }
-        
-        static Predicate<IEntity> terrain = (t) => { return (t is Terrain); };
-        public static Predicate<IEntity> Terrain { get { return terrain; } }
-        
-        static Predicate<IEntity> king = Rank(UnitRank.King, true);
-        public static Predicate<IEntity> King { get { return token + king; } }
-        
-        static Predicate<IEntity> heart = (t) => { return ((Token)t).heart; };
-        public static Predicate<IEntity> Heart { get { return token + heart; } }
-        
-        static Predicate<IEntity> destructible = (t) => { return ((Token)t).destructible; };
-        public static Predicate<IEntity> Destructible { get { return token + destructible; } }
-        
-        static Predicate<IEntity> corpse = (t) => { return ((Token)t).corpse; };
-        static Predicate<IEntity> nonCorpse = (t) => { return !((Token)t).corpse; };
-        public static Predicate<IEntity> Corpse { get { return token + corpse; } }
-
-        public static Predicate<IEntity> DestNotCorpse { get { return token + destructible + nonCorpse; } }
-
-        
-        static Predicate<IEntity> trample = (t) => { return ((Token)t).trample; };
-        public static Predicate<IEntity> Trample { get { return token + trample; } }
-        
-        static Predicate<IEntity> unitDest = (t) =>
+        static Filter()
         {
-            if (t is Unit) 
-                return true;
-            if (((Token)t).destructible) 
-                return true;
-            return false;
-        };
-        public static Predicate<IEntity> UnitDest { get { return token + unitDest; } }
+            alwaysFalse = (t) => { return false; };
+            cell = (t) => { return (t is Board.Cell); };
+            token = (t) => { return (t is Token); };
+            unit = (t) => { return (t is Unit); };
+            ob = (t) => { return (t is Obstacle); };
+            terrain = (t) => { return (t is Terrain); };
+            king = Rank(UnitRank.King, true);
+            heart = (t) => { return ((Token)t).heart; };
+            destructible = (t) => { return ((Token)t).destructible; };
+            unitDest = (t) =>
+            {
+                if (t is Unit) 
+                    return true;
+                if (((Token)t).destructible) 
+                    return true;
+                return false;
+            };
+            trample = (t) => { return ((Token)t).trample; };
+            corpse = (t) => { return ((Token)t).corpse; };
+            notCorpse = (t) => { return !((Token)t).corpse; };
+            legal = (t) => { return (t.Legal); };
+        
+        
+        }
 
-        static Predicate<IEntity> legal = (t) => { return (t.Legal); };
-        public static Predicate<IEntity> Legal { get { return legal; } }
+       
 
-        public static Predicate<IEntity> Owner(Player owner, bool b)
+        public static Pred Owner(Player owner, bool b)
         {
             return (t) =>
             {
-                return ((((Token)t).Owner == owner) == b);
+                return ((((Token)t).owner == owner) == b);
             };
         }
-        public static Predicate<IEntity> Plane(Plane plane, bool b)
+        
+
+        public static Pred Plane(Plane plane, bool b)
         {
             return (t) =>
             {
@@ -72,34 +85,32 @@ namespace HOA
                 return (match == b);
             };
         }
-        public static Predicate<IEntity> Rank(UnitRank rank, bool b)
+
+        public static Pred Rank(UnitRank rank, bool b)
         {
             return (t) =>
             {
-                Unit u = t as Unit;
-                return (u.rank == rank) == b;
+                return ((t as Unit).rank == rank) == b;
             };
         }
 
-        public static Predicate<IEntity> Species(Species species, bool b)
+        public static Pred Species(Species species, bool b)
         {
             return (t) =>
             {
-                return ((((Token)t).Species == species) == b);
+                return ((((Token)t).species == species) == b);
             };
         }
 
-        public static Predicate<IEntity> identity(IEntity entity, bool b)
+        public static Pred identity(IEntity entity, bool b)
         {
             return (t) =>
             {
                 return ((t == entity) == b);
             };
         }
-        
 
-
-        public static Predicate<IEntity> Occupiable(Token token)
+        public static Pred Occupiable(Token token)
         {
             return (t) =>
             {
