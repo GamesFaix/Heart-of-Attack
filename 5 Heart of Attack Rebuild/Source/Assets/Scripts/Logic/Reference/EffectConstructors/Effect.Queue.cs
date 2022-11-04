@@ -9,7 +9,7 @@ namespace HOA.Abilities
         public static Effect Advance(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Advance", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Session.Active.Queue.Advance();
                 AVEffect.Advance.PlayNonLocal();
@@ -20,14 +20,14 @@ namespace HOA.Abilities
         public static Effect Initialize(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Initialize", user, args);
-            e.Process = () => { Session.Active.Queue.Initialize(); };
+            e.action = (a) => { Session.Active.Queue.Initialize(); };
             return e;
         }
         
         public static Effect Shift(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Shift", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 int n = args.value;
@@ -50,7 +50,7 @@ namespace HOA.Abilities
         public static Effect Shuffle(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Shuffle", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Session.Active.Queue.Shuffle();
                 Debug.Log("{0} shuffled the Queue.", user);

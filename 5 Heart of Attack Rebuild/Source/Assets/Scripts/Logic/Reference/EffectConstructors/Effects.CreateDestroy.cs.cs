@@ -11,7 +11,7 @@ namespace HOA.Abilities
         public static Effect Create(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Create", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token newToken = Session.Active.Create(user.ToTokenCreator(), args.species, args.cell);
                 AVEffect.Birth.Play(newToken);
@@ -22,14 +22,14 @@ namespace HOA.Abilities
         public static Effect DestroyCleanUp(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Destroy Clean Up", user, args);
-            e.Process = () => { args.token.Destroy(e, true); };
+            e.action = (a) => { args.token.Destroy(e, true); };
             return e;
         }
 
         public static Effect DestroyObstacle(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Destroy Obstacle", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 AVEffect.Destruct.Play(args.token);
                 if (e.Sequence == null)
@@ -43,7 +43,7 @@ namespace HOA.Abilities
         public static Effect DestroyUnit(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Destroy Unit", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 AVEffect.Death.Play(args.token);
                 if (e.Sequence == null)
@@ -57,7 +57,7 @@ namespace HOA.Abilities
         public static Effect Detonate2(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Detonate2", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 AVEffect.Detonate.Play(args.token);
                 e.Sequence.AddToList(1, Effect.DestroyCleanUp(user, args));
@@ -68,7 +68,7 @@ namespace HOA.Abilities
         public static Effect GetHeart(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Get Heart", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 EffectSet effects = new EffectSet();
                 foreach (Token t in args.token.Owner.Tokens)
@@ -84,7 +84,7 @@ namespace HOA.Abilities
         public static Effect Replace(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Replace", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token token = args.token;
                 Cell cell = token.Cell;

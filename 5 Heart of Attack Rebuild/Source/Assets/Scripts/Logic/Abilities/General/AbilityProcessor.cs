@@ -57,7 +57,7 @@ namespace HOA.Abilities
         {
             NestedList<IEntity> targets = new NestedList<IEntity>();
 
-            foreach (Aim aim in a.Aims)
+            foreach (AimStage aim in a.Aims)
             {
                 targets.AddToEnd(new Set<IEntity>());
                 Set<IEntity> options = aim.Pattern(aim.Args());
@@ -84,7 +84,7 @@ namespace HOA.Abilities
         }
 
        
-        static Set<IEntity> WaitForSelection(Aim aim)
+        static Set<IEntity> WaitForSelection(AimStage aim)
         {
             Debug.Log("Waiting for " + aim.selectionCount + " targets to be chosen."); 
             float start = (float)Time.time;

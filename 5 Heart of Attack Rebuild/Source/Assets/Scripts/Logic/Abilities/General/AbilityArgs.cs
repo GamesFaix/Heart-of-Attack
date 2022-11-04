@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace HOA.Abilities
 {
@@ -6,12 +7,22 @@ namespace HOA.Abilities
     {
         public Tokens.Species species { get; private set; }
 
-        public AbilityArgs(Tokens.Species species)
-        {
-            this.species = species;
+        public int[] values { get; private set; }
+        public int value { get { return values.Single(); } }
 
-
+        private AbilityArgs() {
+            species = Tokens.Species.None;
+            values = new int[0];            
         }
+
+        public AbilityArgs(Tokens.Species species)
+            : this()
+        {this.species = species;}
+
+        public AbilityArgs(params int[] values)
+            : this()
+        { this.values = values; }
+
 
         #region IEquatable
 

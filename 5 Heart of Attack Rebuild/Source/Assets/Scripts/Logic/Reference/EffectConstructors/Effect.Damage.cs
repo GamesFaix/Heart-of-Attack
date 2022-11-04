@@ -10,11 +10,11 @@ namespace HOA.Abilities
         public static Effect CorrodeInitial(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Corrode Initial", user, args);
-            e.Process = () =>
+            e.action = (a) => 
             {
-                int cor = Math.Floor(args.value * 0.5f);
-                Unit u = args.unit;
-                u.Damage(e, args.value);
+                int cor = Math.Floor(a.value * 0.5f);
+                Unit u = a.unit;
+                u.Damage(e, a.value);
                 AVEffect.Corrode.Play(u);
                 u.timers.Add(Timer.Corrosion(e, u, cor));
             };
@@ -23,7 +23,7 @@ namespace HOA.Abilities
         public static Effect CorrodeResidual(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Corrode Residual", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.unit.StatAdd(e, Stats.Health, 0 - args.value);
                 AVEffect.Corrode.Play(args.unit);
@@ -34,7 +34,7 @@ namespace HOA.Abilities
         public static Effect Damage(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Damage", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 if (u.Damage(e, args.value))
@@ -48,7 +48,7 @@ namespace HOA.Abilities
         public static Effect Pierce(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Pierce", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.unit.StatAdd(e, Stats.Health, 0 - args.value);
                 AVEffect.Damage.Play(args.unit);
@@ -59,7 +59,7 @@ namespace HOA.Abilities
         public static Effect Rage(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Rage", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 if (u.Damage(e, args.value)) 
@@ -75,7 +75,7 @@ namespace HOA.Abilities
         public static Effect Donate(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Donate", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 int oldHP = u.Health;
@@ -91,7 +91,7 @@ namespace HOA.Abilities
         public static Effect Leech(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Leech", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 int oldHP = u.Health;
@@ -111,13 +111,13 @@ namespace HOA.Abilities
         public static Effect ExplosionDummy(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Explosion Dummy", user, args);
-            e.Process = () => { AVEffect.Explode.Play(args.token); };
+            e.action = (a) => { AVEffect.Explode.Play(args.token); };
             return e;
         }
         public static Effect ExplosionIndividual(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Explosion Individual", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Cell c = args.cell;
 
@@ -149,7 +149,7 @@ namespace HOA.Abilities
         public static Effect Shock(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Shock", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Unit u = args.unit;
                 int dmg = args.values[0];
@@ -163,7 +163,7 @@ namespace HOA.Abilities
         public static Effect WaterLog(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("WaterLog", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.unit.Damage(e, args.value);
                 AVEffect.WaterLog.Play(args.unit);
@@ -174,7 +174,7 @@ namespace HOA.Abilities
         public static Effect FireInitial(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Fire Initial", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 EffectSet nextEffects = new EffectSet();
                 Token t = args.token;
@@ -203,7 +203,7 @@ namespace HOA.Abilities
         public static Effect FireSpread(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Fire Spread", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token t = args.token;
                 if (t.destructible)
@@ -224,7 +224,7 @@ namespace HOA.Abilities
         public static Effect LaserLine(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Laser Line", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token t = args.token;
                 Cell cell = t.Cell;
@@ -247,7 +247,7 @@ namespace HOA.Abilities
         public static Effect LaserInitial(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Laser Initial", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 int currentDmg = args.values[0];
                 int decayPercent = args.values[1];
@@ -274,7 +274,7 @@ namespace HOA.Abilities
         public static Effect LaserSpread(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Laser Spread", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 if (args.unit.Damage(e, args.value)) 
                     AVEffect.Laser.Play(args.token);

@@ -7,18 +7,12 @@ namespace HOA.Abilities
     {
         public Token user, body;
         public Cell center;
-        public Tokens.Stat range;
+        public Range range;
         public Predicate<IEntity> filter;
         public bool inclusive;
 
-        public AimPatternArgs(
-            Token user,
-            Token body,
-            Cell center,
-            Tokens.Stat range,
-            Predicate<IEntity> filter,
-            bool inclusive
-            )
+        public AimPatternArgs(Predicate<IEntity> filter, Token user, Token body = null, Cell center = null,
+            Range range = default(Range), bool inclusive = false)
         {
             if (user == null || filter == null)
                 throw new ArgumentNullException();
@@ -38,6 +32,11 @@ namespace HOA.Abilities
             this.range = range;
             this.filter = filter;
             this.inclusive = inclusive;
+        }
+
+        public static AimPatternArgs AttackNeighbor(Predicate<IEntity> filter, Token user)
+        {
+            return new AimPatternArgs(filter, user, user, user.Cell, new Range(0,1), false);
         }
     }
 }

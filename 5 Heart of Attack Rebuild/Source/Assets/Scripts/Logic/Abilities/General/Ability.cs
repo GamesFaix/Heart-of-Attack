@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -6,24 +7,22 @@ namespace HOA.Abilities
 {
     public delegate bool UsableTest(out string message);
     
-    public partial class Ability : IComparable<Ability>, IEquatable<Ability>, IEffectUser
+    public partial class Ability : ClosedFunc<AbilityArgs, IEnumerator>,
+        IComparable<Ability>, IEquatable<Ability>, IEffectUser
     {
         #region Properties
-        
-        public IAbilityUser User { get; private set; }
-        
+
         public string Name { get; private set; }
         public Description Desc;
+        public IAbilityUser User { get; private set; }
         public Rank Rank { get; private set; }
+        public Price Price { get; private set; }
+       
         public AbilityArgs Args { get; private set; }
-
-
+        public List<AimStage> Aims { get; private set; }
+        
         public bool UsedThisTurn { get; private set; }
         public UsableTest Usable { get; private set; }
-
-        public Price Price { get; private set; }
-        public List<Aim> Aims { get; private set; }
-
 
         private Action PreEffects;
         private Action<NestedList<IEntity>> MainEffects;
@@ -35,6 +34,7 @@ namespace HOA.Abilities
         #endregion 
 
         private Ability(IAbilityUser user, string name, Rank rank, Price price, AbilityArgs args)
+            : base (args)
         {
             User = user;
             Name = name;
@@ -51,7 +51,7 @@ namespace HOA.Abilities
             Usable += Affordable;
             Usable += AlreadyProcessing;
             
-            Aims = new List<Aim>();
+            Aims = new List<AimStage>();
 
             PreEffects = () => { Charge(); };
             MainEffects = (targets) => { };
@@ -61,7 +61,7 @@ namespace HOA.Abilities
             Unadjust = () => { };
         }
 
-        public void Execute(NestedList<IEntity> targets)
+        public void Execute (NestedList<IEntity> targets)
         {
             PreEffects();
             MainEffects(targets);

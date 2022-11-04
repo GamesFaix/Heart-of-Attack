@@ -12,17 +12,17 @@ namespace HOA.Abilities
             Set<IEntity> square = Square(args.center, args.range);
             return (square + Cell.Occupants) / args.filter;
         }
-        static Set<IEntity> Square(Cell start, Tokens.Stat range)
+        static Set<IEntity> Square(Cell start, Range range)
         {
             Set<IEntity> square = new Set<IEntity>();
             Cell c;
-            for (int x = (start.x - range); x <= (start.x + range); x++)
-                for (int y = (start.y - range); y <= (start.y + range); y++)
+            for (int x = (start.x - range.max); x <= (start.x + range.max); x++)
+                for (int y = (start.y - range.max); y <= (start.y + range.max); y++)
                     if (start.Board.HasCell(new index2(x, y), out c))
                         square.Add(c);
 
-            if (range.Min > 0)
-                square = RemoveMin(square, start, range.Min);
+            if (range.min > 0)
+                square = RemoveMin(square, start, range.min);
             return square;
         }
         static Set<IEntity> RemoveMin(Set<IEntity> square, Cell start, int min)
@@ -51,7 +51,7 @@ namespace HOA.Abilities
             }
             return (cells + Cell.Occupants) / args.filter;
         }
-        static Set<Set<IEntity>> Star(Cell center, int range)
+        static Set<Set<IEntity>> Star(Cell center, Range range)
         {
             Set<Set<IEntity>> star = new Set<Set<IEntity>>();
 
@@ -59,7 +59,7 @@ namespace HOA.Abilities
             {
                 Set<IEntity> line = new Set<IEntity>();
                 Cell last = center;
-                for (byte i = 1; i <= range; i++)
+                for (short i = range.min; i <= range.max; i++)
                 {
                     Cell next;
                     try
@@ -108,7 +108,7 @@ namespace HOA.Abilities
             Set<IEntity> thisRad = args.center.Neighbors;
             Set<IEntity> nextRad = new Set<IEntity>();
 
-            for (int i = 1; i <= args.range; i++)
+            for (int i = 1; i <= args.range.max; i++)
             {
                 foreach (Cell c in thisRad)
                 {

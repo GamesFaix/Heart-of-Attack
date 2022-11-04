@@ -9,7 +9,7 @@ namespace HOA.Abilities
 		public static Effect BurrowStart(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Burrow Start", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token t = args.token;
                 Cell c = args.cell;
@@ -23,7 +23,7 @@ namespace HOA.Abilities
         public static Effect BurrowFinish(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Burrow Finish", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.token.Enter(args.cell);
                 AVEffect.Burrow.Play(args.token);
@@ -34,7 +34,7 @@ namespace HOA.Abilities
         public static Effect Move(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Move", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token t = args.token;
                 Cell oldCell = t.Cell;
@@ -52,7 +52,7 @@ namespace HOA.Abilities
         public static Effect Swap(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Swap", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.tokens[0].Swap(args.tokens[1]);
                 Debug.Log("{0} swapped places with {1}.", args.tokens[0], args.tokens[1]);
@@ -63,7 +63,7 @@ namespace HOA.Abilities
         public static Effect TeleportStart(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Teleport Start", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Token t = args.token;
                 Cell c = args.cell;
@@ -78,7 +78,7 @@ namespace HOA.Abilities
         public static Effect TeleportFinish(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Teleport Finish", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 args.token.Enter(args.cell);
                 AVEffect.Teleport.Play(args.token);

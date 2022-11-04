@@ -8,7 +8,7 @@ namespace HOA.Abilities
         public static Effect Knockback(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Knockback", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 int maxCells = args.values[0];
                 int dmgPerCell = args.values[1];
@@ -68,20 +68,20 @@ namespace HOA.Abilities
         public static Effect Miss(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Miss", user, args);
-            e.Process = () => { AVEffect.Miss.Play(args.token); };
+            e.action = (a) => { AVEffect.Miss.Play(args.token); };
             return e;
         }
         
         public static Effect Stick(IEffectUser user, EffectArgs args)
         {
             Effect e = new Effect("Stick", user, args);
-            e.Process = () =>
+            e.action = (a) =>
             {
                 Ability move = args.unit.arsenal.Move;
                 if (move != null)
                 {
-                    e.userToken.trackList.Add(args.token, move.Aims[0].range);
-                    move.Aims[0].range = new Range(0,1);
+                    e.userToken.trackList.Add(args.token, move.Aims[0].Args.range);
+                    move.Aims[0].Args.range = new Range(0,1);
                     AVEffect.Stick.Play(args.token);
                 }
             };

@@ -2,20 +2,29 @@
 
 namespace HOA.Abilities
 {
-    /*
+    
     public partial class Ability
     {
         public static Ability Animate(IAbilityUser user)
         {
             AbilityArgs args = new AbilityArgs(Species.Metaterrainean);
             Ability a = new Ability(user, "Animate Metaterrainean", Rank.Create, new Price(1, 2), args);
-            a.Desc = () => { return "Replace Target non-remains destructible with Metaterrainean."; };
-            a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Dest));
+            a.Desc = Scribe.Write("Replace Target non-remains destructible with Metaterrainean.");
+            a.Aims.Add(
+                new AimStage(
+                    AimPatterns.Neighbor, 
+                    AimPatternArgs.AttackNeighbor(
+                        Filter.Destructible, 
+                        a.User.ToToken()
+                    )
+                 )
+            );
             a.MainEffects = Targets =>
-                EffectQueue.Add(Effect.Replace(new Source(a.Parent), (Token)Targets[0], Species.Metaterrainean));
-           
+                EffectQueue.Add(Effect.Replace(a, 
+                    new EffectArgs(Targets[new index2(0,0)], Species.Metaterrainean)));
             return a;
         }
+        /*
         public static Ability Arise(Unit parent)
         {
             Ability a = new Ability(parent, "Arise", 4, new Price(2, 0), Species.Ashes);
@@ -150,6 +159,7 @@ namespace HOA.Abilities
             
             return a;
         }
-    }
-     * */
+    */
+     }
+    
 }
