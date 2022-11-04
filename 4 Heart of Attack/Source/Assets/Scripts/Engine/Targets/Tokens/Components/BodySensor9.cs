@@ -18,7 +18,7 @@ namespace HOA {
 
 		protected override void EnterSpecial (Cell newCell) {
 			sensors = new List<Sensor>();
-			TargetGroup cells = Cell.Neighbors(true);
+			CellSet cells = Cell.Neighbors(true);
 			foreach (Cell c in cells)
 				if (!(c is ExoCell)) {
 					Sensor s = sc(Parent, c);

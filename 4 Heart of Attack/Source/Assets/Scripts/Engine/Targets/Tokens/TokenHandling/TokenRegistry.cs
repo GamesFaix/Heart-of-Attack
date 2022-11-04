@@ -6,7 +6,7 @@ namespace HOA {
     public static class TokenRegistry 
     {
         public static Dictionary<Species, Token> Templates { get; private set; }
-        public static TargetGroup Tokens { get; private set; }
+        public static TokenSet Tokens { get; private set; }
 
         public static void BuildTemplates()
         {
@@ -41,7 +41,7 @@ namespace HOA {
                 for (int i = Tokens.Count - 1; i >= 0; i--)
                     ((Token)(Tokens[i])).Destroy(new Source(), false, false);
             }
-            Tokens = new TargetGroup();
+            Tokens = new TokenSet();
         }
 
         public static void ClearLegal() { Tokens.Legalize(false); }

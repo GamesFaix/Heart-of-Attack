@@ -260,7 +260,7 @@ namespace HOA {
                 if (token is Unit)
                 {
                    Unit u = token as Unit;
-                   s.Parent.WatchList.Remove(new TokenRecord(token));
+                   s.Parent.WatchList.Remove(token);
                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
                 }
             };
@@ -293,7 +293,7 @@ namespace HOA {
                 if (token is Unit)
                 {
                     Unit u = token as Unit;
-                    s.Parent.WatchList.Remove(new TokenRecord(token));
+                    s.Parent.WatchList.Remove(token);
                     EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
                 }
             };

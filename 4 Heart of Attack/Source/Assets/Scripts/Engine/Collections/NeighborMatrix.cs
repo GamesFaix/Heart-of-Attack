@@ -117,8 +117,8 @@ namespace HOA {
 			}
 		}
 
-		public TargetGroup Ring (Cell first, Cell second) {
-			TargetGroup ring = new TargetGroup(first);
+		public CellSet Ring (Cell first, Cell second) {
+            CellSet ring = new CellSet(first);
 			bool clockwise;
 
 			Cell nextClockwise;

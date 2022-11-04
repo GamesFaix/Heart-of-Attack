@@ -27,7 +27,7 @@ namespace HOA {
         public bool Used { get; private set; }
 
         protected Action PreEffects;
-        protected Action<TargetGroup> MainEffects;
+        protected Action<TargetSet> MainEffects;
         protected Action PostEffects;
         
         protected Func<bool> Restrict;
@@ -88,7 +88,7 @@ namespace HOA {
 
 		
 		
-		public void Execute (TargetGroup Targets) {
+		public void Execute (TargetSet Targets) {
 			PreEffects();
 			MainEffects(Targets);
 			PostEffects();

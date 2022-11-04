@@ -31,7 +31,7 @@ namespace HOA {
 			int finalTokenCount = (int)Mathf.Round(density * totalCells);
 			int currentCount = FullIndexes.Count;
 			int newTokenCount = finalTokenCount - currentCount;
-			Group<index2> empty = EmptyIndexes;
+            ListSet<index2> empty = EmptyIndexes;
 
 			for (int i=0; i<newTokenCount; i++) {
 				index2 index = empty.Random();
@@ -42,7 +42,7 @@ namespace HOA {
 		}
 
 		public void Build () {
-			EffectGroup effects = new EffectGroup();
+			EffectSet effects = new EffectSet();
 			foreach (index2 index in Tokens.Size) {
 				if (Tokens[index] != Species.None) {
 					Cell cell = Board.Cell(index);
@@ -52,9 +52,9 @@ namespace HOA {
 			EffectQueue.Add(effects);
 		}
 
-		Group<index2> EmptyIndexes {
+		ListSet<index2> EmptyIndexes {
 			get {
-				Group<index2> empty = new Group<index2>();
+                ListSet<index2> empty = new ListSet<index2>();
 				foreach (index2 index in Tokens.Size) {
 					if (!Tokens.PeripheralIndexes.Contains(index)
 					 && Tokens[index] == Species.None) {empty.Add(index);}
@@ -63,9 +63,10 @@ namespace HOA {
 			}
 		}
 
-		Group<index2> FullIndexes {
+        ListSet<index2> FullIndexes
+        {
 			get {
-				Group<index2> full = new Group<index2>();
+                ListSet<index2> full = new ListSet<index2>();
 				foreach (index2 index in Tokens.Size) {
 					if (!Tokens.PeripheralIndexes.Contains(index)
 					    && Tokens[index] != Species.None) {full.Add(index);}

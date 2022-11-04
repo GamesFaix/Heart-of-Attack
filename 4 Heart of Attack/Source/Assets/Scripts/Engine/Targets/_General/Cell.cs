@@ -10,14 +10,14 @@ namespace HOA {
         #region //Properties
 
         public Board Board {get; protected set;}
-        public TargetGroup Occupants { get; protected set; }
+        public TokenSet Occupants { get; protected set; }
 		public index2 Index {get; protected set;}
 		public int X {get {return Index.x;} }
 		public int Y {get {return Index.y;} }
         public Plane Stop { get; set; }
         public Vector3 Location { get { return Display.gameObject.transform.position; } }
         public List<Sensor> Sensors { get; set; }
-        public List<Cell> Links { get; set; }
+        public CellSet Links { get; set; }
 
         #endregion
 
@@ -29,9 +29,9 @@ namespace HOA {
 			Board = board;
 			Index = index;
 			CellDisplay.Attach(this);
-			Links = new List<Cell>();
+			Links = new CellSet();
             Stop = Plane.None;
-            Occupants = new TargetGroup();
+            Occupants = new TokenSet();
             Sensors = new List<Sensor>();
 		}
 
@@ -66,8 +66,8 @@ namespace HOA {
 
 		void ExitSunken () {((CellDisplay)Display).ExitSunken();}
 
-		public TargetGroup Neighbors (bool self=false) {
-			TargetGroup neighbors = new TargetGroup();
+		public CellSet Neighbors (bool self=false) {
+            CellSet neighbors = new CellSet();
 			
 			foreach (int2 dir in Direction.Directions) {
 				Cell neighbor;

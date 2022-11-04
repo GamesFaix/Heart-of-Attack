@@ -6,16 +6,16 @@ namespace HOA {
 
    
 	public static class TurnQueue {
-		static Group<Unit> units;
+        static TokenSet units;
 
 		public static int Count {get {return units.Count;} }
 		public static bool Contains (Unit u) {return ((units.Contains(u)) ? true : false);}
 		public static void Add (Unit u) {units.Add(u); Skip(u);}
 		public static void Remove (Unit u) {units.Remove(u);}	
-		public static Unit Index (int i) {return units[i];}
+		public static Unit Index (int i) {return units[i] as Unit;}
 		public static int IndexOf (Unit u) {return units.IndexOf(u);}
-		public static Unit Top {get {return units[0];} }
-		public static Unit Bottom {get {return units[Count-1];} }
+        public static Unit Top { get { return units[0] as Unit; } }
+        public static Unit Bottom { get { return units[Count - 1] as Unit; } }
 
 		public static void Shuffle() {units.Shuffle();}
 
@@ -88,7 +88,7 @@ namespace HOA {
 			while (i > 1) {
 				int index = units.IndexOf(oldTop);
 				if (index > 1) {
-					Unit other = units[index-1];
+                    Unit other = units[index - 1] as Unit;
 					int oldTopRandom = UnityEngine.Random.Range(0,i);
 					int otherRandom = UnityEngine.Random.Range(0,other.IN);
 					if (oldTopRandom > otherRandom) {
@@ -103,7 +103,7 @@ namespace HOA {
 
 		static void Stun () {
 			for (int i=Count-1; i>=0; i--) {
-				Unit u = units[i];
+                Unit u = units[i] as Unit;
 				if (u.STUN > 0) {
 					MoveDown(u, 1);
 					u.AddStat(Source.Neutral, Stats.Stun, -1);
@@ -112,7 +112,7 @@ namespace HOA {
 		}
 
 		public static void Reset () {
-			units = new Group<Unit>();
+            units = new TokenSet();
 			GUIInspector.Inspected = null;
 		}
 

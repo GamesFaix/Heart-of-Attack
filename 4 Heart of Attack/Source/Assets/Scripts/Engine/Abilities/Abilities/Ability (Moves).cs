@@ -36,7 +36,7 @@ namespace HOA {
             {
                 Cell start = a.Parent.Body.Cell;
                 Cell endCell = (Cell)Targets[0];
-                TargetGroup line = new TargetGroup();
+                CellSet line = new CellSet();
                 int2 dir = Direction.FromCells(a.Parent.Body.Cell, endCell);
                 int length = Mathf.Max(
                     Mathf.Abs(start.X - endCell.X),

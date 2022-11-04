@@ -102,9 +102,10 @@ namespace HOA {
 		}
 		IEnumerator IEnumerable.GetEnumerator() {return GetEnumerator();}
 
-		public Group<T> Periphery {
+        public ListSet<T> Periphery
+        {
 			get {
-				Group<T> periphery = new Group<T>();
+                ListSet<T> periphery = new ListSet<T>();
 				for (int i=0; i<Size.x; i++) {periphery.Add(array[i, 0]);}
 				for (int i=0; i<Size.y; i++) {periphery.Add(array[Size.x-1, i]);}
 				for (int i=Size.x-1; i>=0; i--) {periphery.Add(array[i, Size.y-1]);}
@@ -113,9 +114,10 @@ namespace HOA {
 			}
 		}
 
-		public Group<index2> PeripheralIndexes {
+        public ListSet<index2> PeripheralIndexes
+        {
 			get {
-				Group<index2> periphery = new Group<index2>();
+                ListSet<index2> periphery = new ListSet<index2>();
 				for (int i=0; i<Size.x; i++) {periphery.Add(new index2(i, 0));}
 				for (int i=0; i<Size.y; i++) {periphery.Add(new index2(Size.x-1, i));}
 				for (int i=Size.x-1; i>=0; i--) {periphery.Add(new index2(i, Size.y-1));}

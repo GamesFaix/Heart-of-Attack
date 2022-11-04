@@ -43,16 +43,16 @@ namespace HOA {
 
 		protected static bool TrampleCell (Token trampler, Cell newCell) {
 			if (CanTrample (trampler, newCell)) {
-				TargetGroup occupants = newCell.Occupants;
-				EffectGroup effects = new EffectGroup();
+				TokenSet occupants = newCell.Occupants;
+				EffectSet effects = new EffectSet();
 			
 				if (TrampleVsDestructible(trampler, newCell)) {
-					TargetGroup destructibles = occupants - TargetFilter.Dest;
+                    TokenSet destructibles = occupants - TargetFilter.Dest;
 					for (int i=destructibles.Count-1; i>=0; i--) 
 						effects.Add(Effect.DestroyObstacle(new Source(trampler), (Token)(destructibles[i])));
 				}
 				if (KingVsHeart(trampler, newCell)) {
-					TargetGroup hearts = occupants - TargetFilter.Heart;
+                    TokenSet hearts = occupants - TargetFilter.Heart;
 					if (hearts.Count>0)
 						effects.Add(Effect.GetHeart(new Source(trampler.Owner), (Token)(hearts[0])));
 				}

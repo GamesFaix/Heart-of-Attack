@@ -6,12 +6,12 @@ namespace HOA {
 
 	public partial class Aim {
 	
-		TargetGroup FindNeighbor (Token actor, Cell center, Token other) {
+		TargetSet FindNeighbor (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup Targets = new TargetGroup();
+            TargetSet Targets = new TargetSet();
 			
-			TargetGroup neighborCells = center.Neighbors(true);
+			CellSet neighborCells = center.Neighbors(true);
 			if (Purpose == EPurp.MOVE) {neighborCells.Remove(center);}
 			
 			if (Filter.Contains(FilterTests.Cell)) 
@@ -23,9 +23,10 @@ namespace HOA {
 			return Targets;
 		}
 
-		TargetGroup FindFree (Token actor, Cell center, Token other) {
+        TargetSet FindFree(Token actor, Cell center, Token other)
+        {
 			//center does nothing
-			TargetGroup Targets = new TargetGroup();
+            TargetSet Targets = new TargetSet();
 
             if (Filter.Contains(FilterTests.Cell))
             {
@@ -36,16 +37,17 @@ namespace HOA {
 			return Targets;
 		}
 
-		TargetGroup FindPath (Token actor, Cell center, Token other=null) {
+        TargetSet FindPath(Token actor, Cell center, Token other = null)
+        {
 			if (center == null) {center = actor.Body.Cell;}
 
             if (!Filter.Contains(FilterTests.Cell))
             {
-				TargetGroup Targets = new TargetGroup();
-				
-				TargetGroup thisRad = center.Neighbors();
-				TargetGroup nextRad = new TargetGroup();
-				TargetGroup marked = new TargetGroup();
+                TargetSet Targets = new TargetSet();
+
+                CellSet thisRad = center.Neighbors();
+                CellSet nextRad = new CellSet();
+                CellSet marked = new CellSet();
 				
 				for (int i=1; i<=Range; i++) {
 					
@@ -63,26 +65,28 @@ namespace HOA {
 						}
 					}
 					thisRad = nextRad;
-					nextRad = new TargetGroup();
+                    nextRad = new CellSet();
 				}
 				return Targets;
 			}
 			else {throw new ArgumentException("Path trajectory can only be used to Target tokens.  Cell Targets must use repeated neighbor trajectory.");}
 		}
 
-		TargetGroup FindLine (Token actor, Cell center, Token other) {
+        TargetSet FindLine(Token actor, Cell center, Token other)
+        {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup Targets = new TargetGroup();
-			List<TargetGroup> star = CellStar(center, Range);
-			foreach (TargetGroup line in star) {
+            TargetSet Targets = new TargetSet();
+            List<CellSet> star = CellStar(center, Range);
+            foreach (CellSet line in star)
+            {
                 if (Filter.Contains(FilterTests.Cell))
                 {
 					if (Purpose == EPurp.MOVE) {Targets.Add(LineUntilStop(line, actor));}
 					if (Purpose == EPurp.CREATE) {Targets.Add(LineUntilStop(line, other));}
 				}
 				else {
-                    TargetGroup cells = LineUntilStop(line, actor, true);
+                    CellSet cells = LineUntilStop(line, actor, true);
                     cells.Add(center);
                     Targets.Add(cells.Occupants - Filter);
 				}
@@ -90,11 +94,11 @@ namespace HOA {
 			return Targets;
 		}
 
-		static List<TargetGroup> CellStar (Cell start, int range) {
-			List<TargetGroup> star = new List<TargetGroup>();
+		static List<CellSet> CellStar (Cell start, int range) {
+			List<CellSet> star = new List<CellSet>();
 			
 			foreach (int2 dir in Direction.Directions) {
-				TargetGroup line = new TargetGroup();
+				CellSet line = new CellSet();
 				Cell last = start;
 				for (int j=1; j<=range; j++) {
 					Cell next;
@@ -111,8 +115,8 @@ namespace HOA {
 			return star;
 		}
 		
-		static TargetGroup LineUntilStop (TargetGroup line, Token Parent, bool inclusive=false) {
-			TargetGroup legal = new TargetGroup();
+		static CellSet LineUntilStop (CellSet line, Token Parent, bool inclusive=false) {
+			CellSet legal = new CellSet();
 			foreach (Cell c in line) {
 				if (Parent.Body.CanEnter(c)) {legal.Add(c);}
 				else {
@@ -124,8 +128,8 @@ namespace HOA {
 			return legal;
 		}
 		
-		static TargetGroup LineUntilToken (TargetGroup line) {
-			TargetGroup legal = new TargetGroup();
+		static CellSet LineUntilToken (CellSet line) {
+			CellSet legal = new CellSet();
 			foreach (Cell c in line) {
 				legal.Add(c);
 				if (c.Occupants.Count > 0 
@@ -135,14 +139,14 @@ namespace HOA {
 			return legal;
 		}
 
-		TargetGroup FindRadial (Token actor, Cell firstCell, Token other) {
+		TargetSet FindRadial (Token actor, Cell firstCell, Token other) {
 			Cell center = actor.Body.Cell;
 			NeighborMatrix neighbors = new NeighborMatrix(center);
 			
 			Cell nextClockwise;
 			Cell nextCounter;
 			
-			TargetGroup Targets = new TargetGroup();
+			TargetSet Targets = new TargetSet();
 			
 			if (neighbors.CellClockwise(firstCell, out nextClockwise)) {
 				Targets.Add(nextClockwise);
@@ -153,11 +157,11 @@ namespace HOA {
 			return Targets;
 		}
 
-		TargetGroup FindArc (Token actor, Cell center, Token other) {
+		TargetSet FindArc (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup Targets = new TargetGroup();
-			TargetGroup square = CellSquare (center, Range, MinRange);
+			TargetSet Targets = new TargetSet();
+			CellSet square = CellSquare (center, Range, MinRange);
 
             if (Filter.Contains(FilterTests.Cell))
             {
@@ -172,8 +176,8 @@ namespace HOA {
 			return Targets;
 		}
 
-		static TargetGroup CellSquare (Cell start, int range, int min) {
-			TargetGroup square = new TargetGroup();
+		static CellSet CellSquare (Cell start, int range, int min) {
+			CellSet square = new CellSet();
 			Cell c;
 			for (int x=(start.X-range); x<=(start.X+range); x++) {
 				for (int y=(start.Y-range); y<=(start.Y+range); y++) {
@@ -184,8 +188,8 @@ namespace HOA {
 			return square;
 		}
 		
-		static TargetGroup RemoveMin (TargetGroup square, Cell start, int min) {
-			TargetGroup ring = new TargetGroup();
+		static CellSet RemoveMin (CellSet square, Cell start, int min) {
+            CellSet ring = new CellSet();
 			foreach (Cell c in square) {
 				if ((Math.Abs(c.X - start.X) >= min) 
 				    || (Math.Abs(c.Y - start.Y) >= min)) {
@@ -195,11 +199,11 @@ namespace HOA {
 			return ring;
 		}
 
-		TargetGroup FindCreateAren (Token actor, Cell center, Token other) {
-			TargetGroup Targets = new TargetGroup();
+		TargetSet FindCreateAren (Token actor, Cell center, Token other) {
+			TargetSet Targets = new TargetSet();
 
 			center = actor.Body.Cell;
-			TargetGroup cells = NeighborsExtra(center);
+			CellSet cells = NeighborsExtra(center);
 			foreach (Cell c in cells) {
 				if (TokenRegistry.Templates[Species.Arena].Body.CanEnter(c)) {
 					Targets.Add(c);
@@ -209,9 +213,9 @@ namespace HOA {
 			return Targets;
 		}
 
-		TargetGroup NeighborsExtra (Cell center) {
-			TargetGroup cells = center.Neighbors(true);
-			TargetGroup extras = new TargetGroup();
+		CellSet NeighborsExtra (Cell center) {
+            CellSet cells = center.Neighbors(true);
+            CellSet extras = new CellSet();
 			Cell extra;
 			List<int2> directions = new List<int2> {Direction.Up, Direction.Left, Direction.UpLeft};
 
@@ -230,7 +234,7 @@ namespace HOA {
 		}
 
 		bool ArenSquare (Token aren, Cell head) {
-			TargetGroup square = new TargetGroup(head);
+            CellSet square = new CellSet(head);
 			Cell tail;
 			List<int2> directions = new List<int2> {Direction.Down, Direction.Right, Direction.DownRight};
 			foreach (int2 dir in directions) {

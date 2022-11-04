@@ -33,10 +33,12 @@ namespace HOA {
 		
 		public override string ToString() {return name;}
 		
-		public TargetGroup Tokens {
+		public TokenSet Tokens {
 			get {
-				TargetGroup owned = new TargetGroup();
-				foreach (Token t in TokenRegistry.Tokens) {if (t.Owner == this){owned.Add(t);} }
+                TokenSet owned = new TokenSet();
+				foreach (Token t in TokenRegistry.Tokens) 
+                    if (t.Owner == this)
+                        owned.Add(t);
 				return owned;
 			}
 		}

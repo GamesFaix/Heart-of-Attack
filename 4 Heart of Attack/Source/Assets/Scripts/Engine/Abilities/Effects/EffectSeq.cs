@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HOA {
 	
-	public class EffectSeq : Group<EffectGroup>, IEffect {
+	public class EffectSeq : ListSet<EffectSet>, IEffect {
 
         public string Name { get; protected set; }
         public new Func<string> ToString;
@@ -20,16 +20,17 @@ namespace HOA {
 			Source = s;
             Target = t;
             Modifier = i;
-			list = new List<EffectGroup>();
+			list = new List<EffectSet>();
 		}
 		public EffectSeq (Source s, Effect e) : this (s){
-			list.Add(new EffectGroup(e));
+			list.Add(new EffectSet(e));
 		}
-		public EffectSeq (Source s, EffectGroup e) : this(s) {
+		public EffectSeq (Source s, EffectSet e) : this(s) {
 			list.Add(e);
 		}
 
-		public void AddToNext (EffectGroup e) {
+
+		public void AddToNext (EffectSet e) {
 			if (list.Count>1) {
 				list[1].Add(e);
 			}
@@ -39,7 +40,7 @@ namespace HOA {
 			if (list.Count>1) {
 				list[1].Add(e);
 			}
-			else {list.Add(new EffectGroup(e));}
+			else {list.Add(new EffectSet(e));}
 		}
 
 		public void AddToNext (EffectSeq e) {
@@ -48,17 +49,17 @@ namespace HOA {
 			AddToNext(e[0]);
 		}
 
-		public EffectGroup Pop () {
+		public EffectSet Pop () {
 			if (list.Count > 0) {
-				EffectGroup e = list[0];
+				EffectSet e = list[0];
 				list.Remove(e);
 				return e;
 			}
-			return new EffectGroup();
+			return new EffectSet();
 		}
 
 		public void Process2 () {
-			EffectGroup top = Pop();
+			EffectSet top = Pop();
 			top.Process2();
 		}
 	}

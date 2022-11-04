@@ -20,7 +20,7 @@ namespace HOA {
 				Rect box = p.IconBox;
 				if (GUI.Button(box, "")) {TipInspector.Inspect(ETip.PLANE);}
 				GUI.Box(box, Icons.Planes[plane], p.s);
-                TargetGroup group = c.Occupants - TargetFilter.Plane(plane, true);
+                TokenSet group = c.Occupants - TargetFilter.Plane(plane, true);
                 if (group.Count > 0) {
                     foreach (Token t in group)
                     {

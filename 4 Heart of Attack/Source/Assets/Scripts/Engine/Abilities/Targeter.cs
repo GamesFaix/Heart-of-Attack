@@ -7,7 +7,7 @@ namespace HOA {
 		public static bool Ready {get; private set;}
 		public static bool Passable {get; private set;}
 		public static Ability Pending {get; private set;}
-		static TargetGroup Targets;
+		static TargetSet Targets;
 		static List<Aim> aims;
 		static int steps, step;
 
@@ -35,7 +35,7 @@ namespace HOA {
 				Pending.Unadjust();
 				Pending = null;
 			}
-			Targets = new TargetGroup();
+			Targets = new TargetSet();
 			Ready = false;
 			Passable = false;
 			steps = 0;
@@ -103,7 +103,7 @@ namespace HOA {
 		}
 
 		static bool Find (Aim aim, Token actor, Cell center=null, Token other=null) {
-			TargetGroup Targets = aim.Targets(actor, center, other);
+			TargetSet Targets = aim.Targets(actor, center, other);
 			Targets.Legalize();
 			return (Targets.Count>0 ? true : false);
 		}

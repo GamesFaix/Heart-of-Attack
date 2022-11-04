@@ -21,14 +21,15 @@ namespace HOA {
 		}
 
 
-		TargetGroup ToTargetGroup () {
-			TargetGroup group = new TargetGroup();
-			foreach (index2 index in size) {group.Add(cells[index]);}
-			return group;
+		CellSet ToCellSet () {
+			CellSet set = new CellSet();
+			foreach (index2 index in size) 
+                set.Add(cells[index]);
+			return set;
 		}
 
 		public bool RandomLegalCell (Token t, out Cell outCell) {
-			TargetGroup remainingCells = ToTargetGroup();
+			CellSet remainingCells = ToCellSet();
 
 			while (remainingCells.Count > 0){
 				Cell cell = (Cell)(remainingCells.Random());

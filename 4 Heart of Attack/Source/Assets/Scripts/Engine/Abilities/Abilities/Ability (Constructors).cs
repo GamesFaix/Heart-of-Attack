@@ -30,7 +30,7 @@ namespace HOA
                     aim.Range -= 2;
                     Target.timers.Add(Timer.ArcticGust(new Source(a.Parent), Target, 2, move));
                 }
-                TargetGroup neighborUnits = Target.Body.Neighbors() - TargetFilter.Unit;
+                TokenSet neighborUnits = Target.Body.Neighbors() - TargetFilter.Unit;
                 foreach (Unit u in neighborUnits)
                 {
                     if (u != a.Parent
@@ -61,7 +61,7 @@ namespace HOA
             a.Aims.Add(Aim.AttackNeighbor(f));
             a.MainEffects = Targets =>
             {
-                EffectGroup e = new EffectGroup();
+                EffectSet e = new EffectSet();
                 e.Add(Effect.DestroyUnit(new Source(a.Parent), (Token)Targets[0]));
                 e.Add(Effect.AddStat(new Source(a.Parent), (Unit)a.Parent, Stats.Initiative, a.Modifier));
                 a.Parent.timers.Add(Timer.Altaration(new Source(a.Parent), a.Parent));
@@ -90,7 +90,7 @@ namespace HOA
                 {
                     Cell endCell = (Cell)Targets[i];
                     Debug.Log("creating line from " + start + " to " + endCell);
-                    TargetGroup line = new TargetGroup();
+                    CellSet line = new CellSet();
                     int2 dir = Direction.FromCells(start, endCell);
 
                     int length = Mathf.Max(
@@ -155,8 +155,8 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup victims = a.Parent.Body.Neighbors(true) - TargetFilter.Unit;
-                EffectGroup nextEffects = new EffectGroup();
+                TokenSet victims = a.Parent.Body.Neighbors(true) - TargetFilter.Unit;
+                EffectSet nextEffects = new EffectSet();
                 nextEffects.Add(Effect.DestroyUnit(new Source(a.Parent), a.Parent));
                 foreach (Unit u in victims)
                     nextEffects.Add(Effect.CorrodeInitial(new Source(a.Parent), u, a.Damage));
@@ -188,7 +188,7 @@ namespace HOA
             a.MainEffects = Targets =>
             {
                 Token t = (Token)Targets[0];
-                EffectGroup e = new EffectGroup();
+                EffectSet e = new EffectSet();
                 e.Add(Effect.DestroyUnit(new Source(a.Parent), t));
                 e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, 10));
                 e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Health, 10));
@@ -260,13 +260,13 @@ namespace HOA
                 int endX = start.X + a.Modifier;
                 int startY = start.Y - a.Modifier;
                 int endY = start.Y + a.Modifier;
-                TargetGroup cells = new TargetGroup();
+                CellSet cells = new CellSet();
                 Cell cell;
                 for (int i = startX; i <= endX; i++)
                     for (int j = startY; j <= endY; j++)
                         if (Game.Board.HasCell(i, j, out cell))
                             cells.Add(cell);
-                TargetGroup affected = cells.Occupants - TargetFilter.Unit;
+                TokenSet affected = cells.Occupants - TargetFilter.Unit;
                 affected.Remove(a.Parent);
                 foreach (Unit u in affected)
                     EffectQueue.Add(Effect.Leech(new Source(a.Parent), u, a.Damage));
@@ -280,8 +280,8 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup mines = a.Parent.Owner.Tokens - TargetFilter.Species(Species.Mine, true);
-                EffectGroup e = new EffectGroup();
+                TokenSet mines = a.Parent.Owner.Tokens - TargetFilter.Species(Species.Mine, true);
+                EffectSet e = new EffectSet();
                 foreach (Token mine in mines)
                     e.Add(Effect.DestroyObstacle(new Source(a.Parent), mine));
                 EffectQueue.Add(e);
@@ -299,9 +299,9 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup cells = a.Parent.Body.Cell.Neighbors(true);
-                TargetGroup units = cells.Occupants - TargetFilter.Unit;
-                EffectGroup nextEffects = new EffectGroup();
+                CellSet cells = a.Parent.Body.Cell.Neighbors(true);
+                TokenSet units = cells.Occupants - TargetFilter.Unit;
+                EffectSet nextEffects = new EffectSet();
                 foreach (Unit u in units)
                     nextEffects.Add(Effect.Shock(new Source(a.Parent), u, a.Damage, a.Modifier));
                 EffectQueue.Add(nextEffects);
@@ -495,7 +495,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                EffectGroup nextEffects = new EffectGroup();
+                EffectSet nextEffects = new EffectSet();
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, 10));
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Health, 10));
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 1));
@@ -598,9 +598,9 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup group = a.Parent.Body.Cell.Occupants;
-                group -= TargetFilter.Plane(Plane.Ground, true);
-                foreach (Token t in group)
+                TokenSet tokens = a.Parent.Body.Cell.Occupants;
+                tokens -= TargetFilter.Plane(Plane.Ground, true);
+                foreach (Token t in tokens)
                     if (t.Body.Destructible)
                         EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 2));
@@ -620,11 +620,11 @@ namespace HOA
 
             a.Restrict = () =>
             {
-                TargetGroup group = a.Parent.Body.Cell.Occupants;
-                group -= TargetFilter.Plane(Plane.Ground, true);
-                if (group.Count < 1) return false;
-                if (group.Count == 1) 
-                    foreach (Token t in group)   
+                TokenSet tokens = a.Parent.Body.Cell.Occupants;
+                tokens -= TargetFilter.Plane(Plane.Ground, true);
+                if (tokens.Count < 1) return false;
+                if (tokens.Count == 1)
+                    foreach (Token t in tokens)   
                         if (t.Body.Destructible) return false;
                 return true;
             };
@@ -665,7 +665,7 @@ namespace HOA
                 Cell start = first.Body.Cell;
                 Cell next = (Cell)Targets[1];
                 NeighborMatrix neighbors = new NeighborMatrix(center);
-                TargetGroup ring = neighbors.Ring(start, next);
+                CellSet ring = neighbors.Ring(start, next);
                 EffectQueue.Add(Effect.LaserInitial(new Source(a.Parent), ring, a.Damage, 50));
             };
             return a;
@@ -724,10 +724,10 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup units = a.Parent.Body.CellMates
+                TokenSet units = a.Parent.Body.CellMates
                     - TargetFilter.Unit
                     - TargetFilter.Owner(a.Parent.Owner, false);
-                EffectGroup effects = new EffectGroup();
+                EffectSet effects = new EffectSet();
                 foreach (Unit u in units)
                     effects.Add(Effect.Leech(new Source(a.Parent), u, a.Damage));
                 EffectQueue.Add(effects);
@@ -749,7 +749,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                EffectGroup nextEffects = new EffectGroup();
+                EffectSet nextEffects = new EffectSet();
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, -10));
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Health, -10));
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, -1));
@@ -808,10 +808,10 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup units = a.Parent.Body.CellMates
+                TokenSet units = a.Parent.Body.CellMates
                     - TargetFilter.Unit
                     - TargetFilter.Owner(a.Parent.Owner, true);
-                EffectGroup effects = new EffectGroup();
+                EffectSet effects = new EffectSet();
                 foreach (Unit u in units)
                     effects.Add(Effect.Donate(new Source(a.Parent), u, a.Damage));
                 EffectQueue.Add(effects);
@@ -1082,7 +1082,7 @@ namespace HOA
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.UnitDest));
             a.MainEffects = Targets =>
             {
-                EffectGroup e = new EffectGroup();
+                EffectSet e = new EffectSet();
                 e.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
                 e.Add(Effect.Knockback(new Source(a.Parent), (Unit)Targets[0], a.Modifier, 2));
                 EffectQueue.Add(e);
@@ -1104,8 +1104,8 @@ namespace HOA
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0, false);
                 Unit Target = (Unit)Targets[0];
                 EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
-                TargetGroup neighbors = Target.Body.Neighbors(true) - TargetFilter.Unit;
-                EffectGroup nextEffects = new EffectGroup();
+                TokenSet neighbors = Target.Body.Neighbors(true) - TargetFilter.Unit;
+                EffectSet nextEffects = new EffectSet();
                 foreach (Unit u2 in neighbors)
                     nextEffects.Add(Effect.Damage(new Source(a.Parent), u2, a.Damage));
                 EffectQueue.Add(nextEffects);
@@ -1230,19 +1230,19 @@ namespace HOA
                 Cell next = (Cell)Targets[1];
 
                 NeighborMatrix neighbors = new NeighborMatrix(center);
-                TargetGroup ring = neighbors.Ring(start, next);
+                CellSet ring = neighbors.Ring(start, next);
 
                 foreach (Cell cell in ring)
                 {
-                    TargetGroup units = cell.Occupants - TargetFilter.Unit;
-                    EffectGroup effects = new EffectGroup();
+                    TokenSet units = cell.Occupants - TargetFilter.Unit;
+                    EffectSet effects = new EffectSet();
                     foreach (Unit u in units)
                         effects.Add(Effect.Damage(new Source(a.Parent), u, a.Damage));
-                    TargetGroup dests = cell.Occupants - TargetFilter.Dest;
+                    TokenSet dests = cell.Occupants - TargetFilter.Dest;
                     foreach (Token t in dests)
                         effects.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
                     EffectQueue.Add(effects);
-                    TargetGroup obstacles = cell.Occupants - TargetFilter.Ob;
+                    TokenSet obstacles = cell.Occupants - TargetFilter.Ob;
                     bool stop = false;
                     foreach (Token t in obstacles)
                         if (t.Plane.ContainsAny(Plane.Tall)
@@ -1283,7 +1283,7 @@ namespace HOA
 
             a.Restrict = () => 
             {
-                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                TokenSet group = a.Parent.Body.Cell.Occupants;
                 group -= TargetFilter.Plane(Plane.Air, true);
                 return (group.Count > 0);
             };
@@ -1344,15 +1344,15 @@ namespace HOA
             {
                 Cell c = (Cell)Targets[0];
                 EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), c, a.Damage, false));
-                EffectGroup e = new EffectGroup();
+                EffectSet e = new EffectSet();
 
-                TargetGroup affected = c.Occupants - TargetFilter.Unit;
+                TokenSet affected = c.Occupants - TargetFilter.Unit;
                 foreach (Unit u in affected)
                 {
                     e.Add(Effect.AddStat(new Source(a.Parent), u, Stats.Initiative, -2));
                     u.timers.Add(Timer.TimeBomb(new Source(a.Parent), u, 2));
                 }
-                affected = c.Neighbors() - TargetFilter.Unit;
+                affected = c.Neighbors().Occupants - TargetFilter.Unit;
                 foreach (Unit u in affected)
                 {
                     e.Add(Effect.AddStat(new Source(a.Parent), u, Stats.Initiative, -1));
@@ -1398,7 +1398,7 @@ namespace HOA
                 Token t = (Token)Targets[0];
                 Cell c = t.Body.Cell;
                 EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
-                EffectGroup nextEffects = new EffectGroup();
+                EffectSet nextEffects = new EffectSet();
                 if (a.Parent.IN < 7)
                     nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Initiative, 1));
                 if (a.Parent.Body.CanEnter(c))
@@ -1420,7 +1420,7 @@ namespace HOA
             a.MainEffects = Targets =>
             {
                 Unit Target = (Unit)Targets[0];
-                EffectGroup e = new EffectGroup();
+                EffectSet e = new EffectSet();
                 e.Add(Effect.Swap(new Source(a.Parent), a.Parent, Target));
                 e.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
                 e.Add(Effect.AddStat(new Source(a.Parent), Target, Stats.Initiative, -2));
@@ -1476,7 +1476,7 @@ namespace HOA
             {
                 Unit Target = (Unit)Targets[0];
                 EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
-                TargetGroup group = Target.Body.Cell.Occupants;
+                TokenSet group = Target.Body.Cell.Occupants;
                 group -= TargetFilter.Dest;
                 if (group.Count == 1)
                     a.Parent.Body.Swap((Token)group[0]);
@@ -1510,7 +1510,7 @@ namespace HOA
 
             a.Restrict = () =>
             {
-                TargetGroup neighbors = a.Parent.Body.Neighbors(true)
+                TokenSet neighbors = a.Parent.Body.Neighbors(true)
                     - TargetFilter.Owner(a.Parent.Owner, true)
                     - TargetFilter.Species(Species.Rook, false);
                 return (neighbors.Count < 1);
@@ -1542,7 +1542,7 @@ namespace HOA
             {
                 Cell c = (Cell)Targets[0];
                 EffectQueue.Add(Effect.Create(new Source(a.Parent), c, Species.Web));
-                TargetGroup occupants = c.Occupants - TargetFilter.Unit;
+                TokenSet occupants = c.Occupants - TargetFilter.Unit;
                 foreach (Unit u in occupants)
                     EffectQueue.Add(Effect.Damage(new Source(a.Parent), u, a.Damage));
             };

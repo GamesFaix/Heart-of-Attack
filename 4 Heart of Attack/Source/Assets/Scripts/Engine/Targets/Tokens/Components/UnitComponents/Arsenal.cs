@@ -3,31 +3,32 @@ using UnityEngine;
 using System;
 
 namespace HOA {
-	public class Arsenal : Group<Ability> {
+	public class Arsenal : ListSet<Ability>{
 		public Unit Parent {get; private set;}
 
-		public Arsenal (Unit parent) {
+        public Arsenal (Unit parent) {
 			Parent = parent;
-			list = new List<Ability>();	
 		}
 
-		public void Sort () {list.Sort();}
+        public void Add(IEnumerable<Ability> collection)
+        {
+            foreach (Ability a in collection)
+                Add(a);
+        }
 
 		public void Reset () {foreach (Ability a in list) {a.Reset();} }
 
 		public Ability Move {
 			get {
-				foreach (Ability a in list) {
-					if (a.Weight == 1) {return a;}
-				}
+				foreach (Ability a in list) 
+					if (a.Weight == 1) return a;
 				return default(Ability);
 			}
 		}
 
 		public Ability Ability (string name) {
-			foreach (Ability a in list) {
-				if (a.Name == name) {return a;}
-			}
+			foreach (Ability a in list) 
+				if (a.Name == name) return a;
 			return default(Ability);
 		}
 

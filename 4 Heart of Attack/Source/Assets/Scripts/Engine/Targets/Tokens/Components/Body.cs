@@ -18,15 +18,16 @@ namespace HOA {
 		public Cell Cell {get; set;}
         public virtual void DestroySensors() { }
 
-		public TargetGroup Neighbors (bool cellMates = false) {
-			TargetGroup neighbors = Cell.Neighbors().Occupants;
+		public TokenSet Neighbors (bool cellMates = false) {
+            TokenSet neighbors = Cell.Neighbors().Occupants;
 			if (cellMates) {neighbors.Add(CellMates);}
 			return neighbors;
 		}
-		
-		public virtual TargetGroup CellMates {
+
+        public virtual TokenSet CellMates
+        {
 			get {
-				TargetGroup cellMates = Cell.Occupants;
+                TokenSet cellMates = Cell.Occupants;
 				cellMates.Remove(Parent);
 				return cellMates;
 			}
@@ -34,9 +35,9 @@ namespace HOA {
 
 		public virtual bool CanEnter (Cell newCell) {
             if (newCell is ExoCell) return false;
-            TargetGroup group = newCell.Occupants;
-            group -= TargetFilter.Plane(Parent.Plane, true);
-            if (group.Count == 0 
+            TokenSet set = newCell.Occupants;
+            set -= TargetFilter.Plane(Parent.Plane, true);
+            if (set.Count == 0 
                 || CanTrample(Parent, newCell)) 
             	return true;
             return false;

@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{0565342E-F32D-662C-D07A-2676937A27B6}</ProjectGuid>
+	<ProjectGuid>{4C8CC78E-87EA-2E56-5441-61F26C43DF7A}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -59,15 +59,14 @@
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\AVEffect.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\Effect (Constructors).cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\Effect.cs" />
-     <Compile Include="Assets\Scripts\Engine\Abilities\Effects\EffectGroup.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\EffectQueue.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\EffectSeq.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\EffectSeqs.cs" />
+     <Compile Include="Assets\Scripts\Engine\Abilities\Effects\EffectSet.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Effects\IEffect.cs" />
      <Compile Include="Assets\Scripts\Engine\Abilities\Targeter.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\BoardFactory.cs" />
-     <Compile Include="Assets\Scripts\Engine\Board\Cell.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\CellDisplay.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\Direction.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\ExoCell.cs" />
@@ -84,7 +83,9 @@
      <Compile Include="Assets\Scripts\Engine\Board\Maps\Preset\Void.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\Terrain.cs" />
      <Compile Include="Assets\Scripts\Engine\Board\Zone.cs" />
-     <Compile Include="Assets\Scripts\Engine\Collections\Group.cs" />
+     <Compile Include="Assets\Scripts\Engine\Collections\IMarkableCollection.cs" />
+     <Compile Include="Assets\Scripts\Engine\Collections\ListExtensionMethods.cs" />
+     <Compile Include="Assets\Scripts\Engine\Collections\ListSet.cs" />
      <Compile Include="Assets\Scripts\Engine\Collections\Matrix.cs" />
      <Compile Include="Assets\Scripts\Engine\Collections\NeighborMatrix.cs" />
      <Compile Include="Assets\Scripts\Engine\Collections\Probability\Distribution.cs" />
@@ -108,6 +109,9 @@
      <Compile Include="Assets\Scripts\Engine\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Referee.cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Roster.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Collections\CellSet.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Collections\TargetSet.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Collections\TokenSet.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\Body.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\Body2.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\BodyAper.cs" />
@@ -158,12 +162,12 @@
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRecord.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRegistry.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Unit.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\_General\Cell.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\FilterTests.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\Target.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\TargetClass.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\TargetFilter (Filters).cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\TargetFilter.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\_General\TargetGroup.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\FancyText.cs" />
      <Compile Include="Assets\Scripts\GUI\Devices\Panel.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIMaster.cs" />

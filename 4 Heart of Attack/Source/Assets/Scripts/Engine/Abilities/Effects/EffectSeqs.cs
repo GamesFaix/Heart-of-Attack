@@ -7,8 +7,8 @@ namespace HOA.Effects {
 	public class Detonate : EffectSeq {
         public Detonate (Source s, Token t) : base(s,t){
 			Name = "Detonate";
-			list = new List<EffectGroup>();
-			EffectGroup group = new EffectGroup();
+			list = new List<EffectSet>();
+			EffectSet group = new EffectSet();
 			group.Add(Effect.Detonate2 (new Source(Source.Token, this), (Token)Target));
 			list.Add(group);
 		}
@@ -21,18 +21,18 @@ namespace HOA.Effects {
         {
             Name = "Explosion Sequence";
 
-            list = new List<EffectGroup>();
+            list = new List<EffectSet>();
 
-            TargetGroup affected = new TargetGroup();
-            TargetGroup thisRad = new TargetGroup(Target);
-            TargetGroup nextRad = new TargetGroup();
+            CellSet affected = new CellSet();
+            CellSet thisRad = new CellSet(c);
+            CellSet nextRad = new CellSet();
 
             int currentDmg = Modifier;
 
             int i = 0;
             while (currentDmg > 0 && i <= 2)
             {
-                EffectGroup group = new EffectGroup();
+                EffectSet group = new EffectSet();
                 for (int j = 0; j < thisRad.Count; j++)
                 {
                     Cell next;
@@ -52,7 +52,7 @@ namespace HOA.Effects {
                     }
                 }
                 thisRad = nextRad;
-                nextRad = new TargetGroup();
+                nextRad = new CellSet();
                 currentDmg = (int)Mathf.Floor(currentDmg * 0.5f);
                 list.Add(group);
                 i++;

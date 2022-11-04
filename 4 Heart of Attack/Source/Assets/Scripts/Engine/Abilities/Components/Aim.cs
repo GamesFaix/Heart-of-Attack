@@ -12,7 +12,7 @@ namespace HOA {
 		public int Range {get; set;}
 		public int MinRange {get; set;}
 		
-		public delegate TargetGroup TargetFinder (Token actor, Cell center, Token other);
+		public delegate TargetSet TargetFinder (Token actor, Cell center, Token other);
 		public TargetFinder Targets {get; private set;}
 
 		private Aim () {

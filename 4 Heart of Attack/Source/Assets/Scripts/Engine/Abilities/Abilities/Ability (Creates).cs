@@ -39,7 +39,7 @@ namespace HOA {
 
             a.Restrict = () =>
             {
-                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                TokenSet group = a.Parent.Body.Cell.Occupants;
                 group -= TargetFilter.Plane(Plane.Air, true);
                 return (group.Count > 0); 
             
@@ -131,7 +131,7 @@ namespace HOA {
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                TokenSet group = a.Parent.Body.Cell.Occupants;
                 group -= TargetFilter.Plane(Plane.Ground, true);
                 if (group.Count > 0)
                 {

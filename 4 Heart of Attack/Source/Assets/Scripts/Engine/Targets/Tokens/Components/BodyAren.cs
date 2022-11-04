@@ -25,10 +25,10 @@ namespace HOA {
 
 		public new BodyAren DeepCopy (Token parent) {return new BodyAren(parent);}
 
-		public override TargetGroup CellMates {
+		public override TokenSet CellMates {
 			get {
-				TargetGroup square;
-				TargetGroup cellMates = new TargetGroup();
+				CellSet square;
+                TokenSet cellMates = new TokenSet();
 				if (SquareExists(Cell, out square)) {
 					cellMates.Add(square.Occupants);
 					cellMates.Remove(Parent);
@@ -39,13 +39,13 @@ namespace HOA {
 		}
 
 		public override bool CanEnter (Cell newCell) {
-			TargetGroup square;
+			CellSet square;
 			if (SquareExists(newCell, out square)) {
 				foreach (Cell corner in square) {
 					if (corner is ExoCell) return false;
-                    TargetGroup group = corner.Occupants - TargetFilter.Plane(Plane.Ethereal, true);
-					if (group.Count > 0)
-						foreach (Token t in group)
+                    TokenSet set = corner.Occupants - TargetFilter.Plane(Plane.Ethereal, true);
+					if (set.Count > 0)
+						foreach (Token t in set)
                             if (t.ID != Parent.ID) 
                                 return false;
 				}
@@ -54,8 +54,8 @@ namespace HOA {
 			return false;
 		}
 
-		static bool SquareExists (Cell cell, out TargetGroup square) {
-			square = new TargetGroup();
+		static bool SquareExists (Cell cell, out CellSet square) {
+			square = new CellSet();
 
 			List<index2> indexes = new List<index2> {
 				cell.Index,

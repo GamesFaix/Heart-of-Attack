@@ -97,11 +97,11 @@ namespace HOA {
 			return Mathf.Min(8, peripheralZones/2);
 		}
 	
-		public TargetGroup Cells {
+		public CellSet Cells {
 			get {
-				TargetGroup TargetGroup = new TargetGroup();
-				foreach (Cell c in cells) {TargetGroup.Add(c);}
-				return TargetGroup;
+                CellSet cellSet = new CellSet();
+				foreach (Cell c in cells) {cellSet.Add(c);}
+				return cellSet;
 			}
 		}
 		
@@ -126,7 +126,7 @@ namespace HOA {
 		public Cell RandomCell {get {return cells.Random;} }
 
 		public bool RandomLegalCell (Token t, out Cell outCell) {
-			TargetGroup remainingCells = Cells;
+			CellSet remainingCells = Cells;
 			while (remainingCells.Count > 0){
 				Cell cell = (Cell)(remainingCells.Random());
 				if (!t.Body.CanEnter(cell)) {remainingCells.Remove(cell);}

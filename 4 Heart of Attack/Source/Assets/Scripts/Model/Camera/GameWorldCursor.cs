@@ -68,7 +68,7 @@ namespace HOA {
 			return ClosestTarget(TargetsFromCamToMouse() - TargetFilter.Token);
 		}
 
-		TargetGroup TargetsFromCamToMouse () {
+		TargetSet TargetsFromCamToMouse () {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit[] hits = Physics.RaycastAll(ray, 500);
 			GameObject[] objects = HitObjects(hits);
@@ -84,15 +84,15 @@ namespace HOA {
 			return objects;
 		}
 		
-		TargetGroup TargetableGameObjects (GameObject[] objects) {
-			TargetGroup Targets = new TargetGroup();
+		TargetSet TargetableGameObjects (GameObject[] objects) {
+            TargetSet Targets = new TargetSet();
 			foreach (GameObject g in objects) {
 				TargetDisplay display = null;
 				if (g.GetComponent("CellDisplay")) {
 					display = g.GetComponent("CellDisplay") as TargetDisplay;
 					Cell c = (Cell)display.Parent;
 					Targets.Add(c);
-                    TargetGroup group = c.Occupants - TargetFilter.Plane(Plane.Sunken, true);
+                    TargetSet group = c.Occupants - TargetFilter.Plane(Plane.Sunken, true);
                     foreach (Token t in group)
                         Targets.Add(t);
 				}
@@ -104,7 +104,8 @@ namespace HOA {
 			return Targets;
 		}
 
-		Target ClosestTarget (TargetGroup Targets) {
+        Target ClosestTarget(TargetSet Targets)
+        {
 			float shortestDist = 100000;
 			Target closest = null;
 

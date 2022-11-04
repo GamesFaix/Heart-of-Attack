@@ -5,11 +5,11 @@ namespace HOA {
 
 	public static class BoardFactory {
 
-		public static Group<Zone> SpawnZones (Group<Zone> periphery) {
+		public static ListSet<Zone> SpawnZones (ListSet<Zone> periphery) {
 			int playerCount = Roster.Players().Count;
 			int playerSpacing = (int)Mathf.Floor(periphery.Count/playerCount);
 			
-			Group<Zone> spawnZones = new Group<Zone>();
+			ListSet<Zone> spawnZones = new ListSet<Zone>();
 			Zone firstZone = periphery.Random();
 			spawnZones.Add(firstZone);
 			int index = periphery.IndexOf(firstZone);
@@ -22,11 +22,11 @@ namespace HOA {
 			return spawnZones;
 		}
 		
-		public static void SpawnKings (Group<Zone> spawnZones) {
+		public static void SpawnKings (ListSet<Zone> spawnZones) {
 			spawnZones.Shuffle();
 			int zoneIndex = 0;
 			
-			EffectGroup heroSpawn = new EffectGroup();
+			EffectSet heroSpawn = new EffectSet();
 			
 			foreach (Player p in Roster.Players()) {
 				Cell cell;

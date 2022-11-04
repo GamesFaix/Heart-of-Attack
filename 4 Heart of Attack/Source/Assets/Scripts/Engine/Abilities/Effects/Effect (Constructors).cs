@@ -70,7 +70,7 @@ namespace HOA
             Effect e = new Effect("Get Heart", source, Target);
             e.Process = () =>
             {
-                EffectGroup effects = new EffectGroup();
+                EffectSet effects = new EffectSet();
                 foreach (Token token in ((Token)e.Target).Owner.Tokens)
                     effects.Add(Effect.SetOwner(e.Source, token, e.Source.Player));
                 AVEffect.GetHeart.Play(e.Target);
@@ -348,7 +348,7 @@ namespace HOA
             {
                 Cell c = (Cell)e.Target;
 
-                TargetGroup Targets = c.Occupants - TargetFilter.UnitDest;
+                TokenSet Targets = c.Occupants - TargetFilter.UnitDest;
                 if (e.Flag) Targets.Remove(e.Source.Token);
 
                 foreach (Token t in Targets)
@@ -402,7 +402,7 @@ namespace HOA
             Effect e = new Effect("Fire Initial", source, Target, damage);
             e.Process = () =>
             {
-                EffectGroup nextEffects = new EffectGroup();
+                EffectSet nextEffects = new EffectSet();
                 Token t = (Token)e.Target;
 
                 if (t.Body.Destructible)
@@ -416,7 +416,7 @@ namespace HOA
                     AVEffect.Fire.Play(t);
                 }
 
-                TargetGroup neighbors = t.Body.Neighbors(true) - TargetFilter.UnitDest;
+                TokenSet neighbors = t.Body.Neighbors(true) - TargetFilter.UnitDest;
 
                 int newDmg = (int)Mathf.Floor(e.Modifier * 0.5f);
                 foreach (Token t2 in neighbors)
@@ -456,7 +456,7 @@ namespace HOA
                 Cell cell = t.Body.Cell;
                 int2 direction = Direction.FromCells(cell, e.Source.Token.Body.Cell);
 
-                TargetGroup cells = new TargetGroup(cell);
+                CellSet cells = new CellSet(cell);
                 bool stop = false;
 
                 while (!stop)
@@ -469,7 +469,7 @@ namespace HOA
             };
             return e;
         }
-        public static Effect LaserInitial(Source source, TargetGroup Targets, int damage, int decayPercent)
+        public static Effect LaserInitial(Source source, CellSet Targets, int damage, int decayPercent)
         {
             Effect e = new Effect("Laser Initial", source, Targets.ToArray(), new int[2]{damage, decayPercent});
             e.Process = () =>
@@ -477,7 +477,7 @@ namespace HOA
                 int currentDmg = e.Modifiers[0];
                 foreach (Cell cell in e.Targets)
                 {
-                    TargetGroup units = cell.Occupants - TargetFilter.Unit;
+                    TokenSet units = cell.Occupants - TargetFilter.Unit;
                     foreach (Unit u in units)
                     {
                         if (u.Damage(e.Source, currentDmg)) AVEffect.Laser.Play(u);
@@ -519,7 +519,7 @@ namespace HOA
 
                 int2 dir = Direction.FromCells(actorCell, start);
 
-                TargetGroup line = new TargetGroup();
+                CellSet line = new CellSet();
 
                 for (int i = 0; i < e.Modifiers[0]; i++)
                 {
