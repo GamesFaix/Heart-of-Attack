@@ -22,7 +22,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(Planes.Sunken), p.s);
+			GUI.Box(p.IconBox, Icons.Planes[Plane.Sunken], p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 				"Sunken" +
@@ -36,7 +36,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(Planes.Ground), p.s);
+			GUI.Box(p.IconBox, Icons.Planes[Plane.Ground], p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Ground" +
@@ -48,7 +48,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(Planes.Air), p.s);
+			GUI.Box(p.IconBox, Icons.Planes[Plane.Air], p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Air" +
@@ -65,7 +65,7 @@ namespace HOA {
 			p.NextLine();
 
 			p.NudgeX();
-			GUI.Box(p.IconBox, Icons.Plane(Planes.Ethereal), p.s);
+			GUI.Box(p.IconBox, Icons.Planes[Plane.Ethereal], p.s);
 			p.NudgeX();
 			GUI.Label(p.Box(0.5f), 
 			          "Ethereal" +

@@ -39,11 +39,11 @@ namespace HOA {
 
         #region //TriggerTests
         
-        public static bool GroundTokenTrigger(Token t) { return (t.Plane[Planes.Ground]); }
-        public static bool GroundUnitTrigger(Token t) { return (t.Plane[Planes.Ground] && (t is Unit)); }
+        public static bool GroundTokenTrigger(Token t) { return (t.Plane.ContainsAny(Plane.Ground)); }
+        public static bool GroundUnitTrigger(Token t) { return (t.Plane.ContainsAny(Plane.Ground) && (t is Unit)); }
         public static bool TallUnitTrigger(Token t)
         {
-            return ((t is Unit) && (t.Plane[Planes.Ground] || t.Plane[Planes.Air]));
+            return ((t is Unit) && t.Plane.ContainsAny(Plane.Tall));
         }
         public static bool UnitTrigger(Token t) { return (t is Unit); }
         public static bool EverythingTrigger(Token t) { return true; }
@@ -84,23 +84,15 @@ namespace HOA {
         public void NoEffects(Token token) { }
 
         protected void Stop (Cell cell) {
-			if (PlanesToStop != Plane.None) {
-				foreach (Planes plane in PlanesToStop) {
-					cell.SetStop(plane, true);
-				}
-			}
+            cell.Stop = cell.Stop | PlanesToStop;
 		}
 		protected void ReleaseStop (Cell cell) {
-			if (PlanesToStop != Plane.None) {
-				foreach (Planes plane in PlanesToStop) {
-					cell.SetStop(plane, false);
-				}
-			}
+            cell.Stop = ~(cell.Stop & PlanesToStop);
 		}
 
         public void Delete () {
 			Exit();
-			Cell.RemoveSensor(this);
+			Cell.Sensors.Remove(this);
 		}
 
         public override string ToString() {return Name + ", " + Desc();}

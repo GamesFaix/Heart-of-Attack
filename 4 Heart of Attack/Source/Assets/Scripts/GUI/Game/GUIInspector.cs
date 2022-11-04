@@ -101,11 +101,11 @@ public static class GUIInspector {
 			if (RightClick) {TipInspector.Inspect(ETip.CELL);}
 		}
 		p.ResetX();
-		GUI.Box(p.IconBox, Icons.TargetClass(TargetClasses.Cell), p.s);
+		GUI.Box(p.IconBox, Icons.TargetClasses[TargetClasses.Cell], p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(50), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);
-		if (t.Body.Cell.Sensors().Count > 0) {
+		if (t.Body.Cell.Sensors.Count > 0) {
 			Rect box = p.IconBox;
 			if (GUI.Button(box, "")) {
 				TipInspector.Inspect(ETip.SENSOR);

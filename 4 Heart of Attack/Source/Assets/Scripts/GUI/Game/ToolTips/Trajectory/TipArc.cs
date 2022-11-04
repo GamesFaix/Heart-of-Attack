@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipArc () {
 			Name = "Arc";
-			Icon = Icons.Traj(ETraj.ARC);
+			Icon = Icons.Trajectories[ETraj.ARC];
 			ETip = ETip.ARC;
 		}
 		

@@ -42,12 +42,12 @@ public static class GUIQueue {
 				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
 
 			////watch
-				GUI.Box(p.Box(iconSize), Icons.Stat(Stats.Initiative), p.s);
+				GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Initiative], p.s);
 				p.x2 += 5;
 				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
 				
 				if (u.IsStunned()) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(Stats.Stun), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Stun], p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
 				}
@@ -59,7 +59,7 @@ public static class GUIQueue {
 			////wallet
 				p.NudgeX();		
 				if (u.FP > 0) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(Stats.Focus), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Focus], p.s);
 					p.NudgeX();
 					GUI.Label(p.Box(iconSize), u.FP+"", p.s);
 				}
@@ -68,12 +68,12 @@ public static class GUIQueue {
 
 			////health
 				//p.NudgeX();
-				GUI.Box(p.Box(iconSize), Icons.Stat(Stats.Health), p.s);
+				GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Health], p.s);
 				p.NudgeX();
 				GUI.Label (p.Box(iconSize*3), u.Health.HP.ToString(), p.s);
 				
 				if (u.DEF > 0) {
-					GUI.Box(p.Box(iconSize), Icons.Stat(Stats.Defense), p.s);
+					GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Defense], p.s);
 					p.x2 += 5;
 					GUI.Label(p.Box(iconSize), u.DEF+"", p.s);
 				}

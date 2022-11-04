@@ -44,7 +44,7 @@ namespace HOA {
 				Token occupant;
 				foreach (Cell corner in square) {
 					if (corner is ExoCell) {return false;}
-					if (corner.Contains(Planes.Ethereal, out occupant)) {
+					if (corner.Contains(Plane.Ethereal, out occupant)) {
 						if (occupant.ID != parent.ID) {return false;}
 					}
 				}

@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipRem () {
 			Name = "Remains";
-			Icon = Icons.TargetClass(TargetClasses.Corpse);
+			Icon = Icons.TargetClasses[TargetClasses.Corpse];
 			ETip = ETip.REM;
 		}
 		

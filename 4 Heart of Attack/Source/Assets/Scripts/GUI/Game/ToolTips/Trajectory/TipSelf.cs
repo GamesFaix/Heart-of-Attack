@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipSelf () {
 			Name = "Self";
-			Icon = Icons.Traj(ETraj.SELF);
+			Icon = Icons.Trajectories[ETraj.SELF];
 			ETip = ETip.SELF;
 		}
 		

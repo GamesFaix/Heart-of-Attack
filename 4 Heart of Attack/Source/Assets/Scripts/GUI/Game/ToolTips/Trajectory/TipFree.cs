@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipFree () {
 			Name = "Free";
-			Icon = Icons.Traj(ETraj.FREE);
+			Icon = Icons.Trajectories[ETraj.FREE];
 			ETip = ETip.FREE;
 		}
 		

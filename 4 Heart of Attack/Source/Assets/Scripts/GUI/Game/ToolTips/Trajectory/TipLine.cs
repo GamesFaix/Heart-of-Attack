@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipLine () {
 			Name = "Line";
-			Icon = Icons.Traj(ETraj.LINE);
+			Icon = Icons.Trajectories[ETraj.LINE];
 			ETip = ETip.LINE;
 		}
 		

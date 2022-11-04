@@ -17,11 +17,18 @@ namespace HOA {
         public int Modifier { get { return Modifiers[0]; } }
         public EToken EToken { get; protected set; }
         public bool[] Flags { get; protected set; }
-        public bool Flag { get { return Flags[0]; } }
+        public bool Flag 
+        { 
+            get 
+            { 
+                if (Flags.Length < 1) return false;
+                return Flags[0]; 
+            } 
+        }
         public Stats Stat { get; protected set; }
         public Player Player { get; protected set; }
 
-        protected Effect(
+        private Effect(
           string name,
           Source source,
           Action process,
@@ -43,7 +50,7 @@ namespace HOA {
             Stat = stat;
             Player = player;
         }
-        protected Effect(
+        private Effect(
             string name,
             Source source,
             Action process,
@@ -51,70 +58,70 @@ namespace HOA {
             int[] modifiers,
             bool[] flags,
             EToken etoken) : this (name, source, process, targets, modifiers, flags, etoken, Stats.Health, null) {}
-        
-        protected Effect(string name, Source source, Action process, Target[] targets, int[] modifiers, EToken etoken)
+
+        private Effect(string name, Source source, Action process, Target[] targets, int[] modifiers, EToken etoken)
             :this (name, source, process, targets, modifiers, new bool[0], etoken) {}
 
-        protected Effect(string name, Source source, Action process, Target[] targets, int[] modifiers)
+        private Effect(string name, Source source, Action process, Target[] targets, int[] modifiers)
             :this (name, source, process, targets, modifiers, EToken.NONE) {}
 
-        protected Effect(string name, Source source, Target[] targets, int[] modifiers)
+        private Effect(string name, Source source, Target[] targets, int[] modifiers)
             : this(name, source, () => { }, targets, modifiers) { }
 
-        protected Effect(string name, Source source, Target target, int[] modifiers)
+        private Effect(string name, Source source, Target target, int[] modifiers)
             : this(name, source, new Target[1]{target}, modifiers) { }
 
-        protected Effect(string name, Source source, Target target, int modifier)
+        private Effect(string name, Source source, Target target, int modifier)
             : this(name, source, new Target[1] { target }, new int[1] { modifier }) { }
 
-        protected Effect(string name, Source source, Target target)
+        private Effect(string name, Source source, Target target)
             : this(name, source, new Target[1] { target }, new int[0]) { }
 
-        protected Effect(string name, Source source, Target[] targets)
+        private Effect(string name, Source source, Target[] targets)
             : this(name, source, targets, new int[0]) { }
 
-        protected Effect(string name, Source source, int[] modifiers)
+        private Effect(string name, Source source, int[] modifiers)
             : this(name, source, new Target[0], new int[0]) { }
 
-        protected Effect(string name, Source source, Target target, EToken etoken)
+        private Effect(string name, Source source, Target target, EToken etoken)
             : this(name, source, () => { }, new Target[1] { target }, new int[0], etoken) { }
 
-        protected Effect(string name, Source source, bool flag) : this(name, source, () => { }, new Target[0], new int[0], new bool[1] { flag }, EToken.NONE) { }
+        private Effect(string name, Source source, bool flag) : this(name, source, () => { }, new Target[0], new int[0], new bool[1] { flag }, EToken.NONE) { }
 
 
-        protected Effect(Source source, Target[] targets, int[] modifiers) 
+        private Effect(Source source, Target[] targets, int[] modifiers) 
             : this("Default Effect Name", source, targets, modifiers) {}
 
-        protected Effect(Source source, Target[] targets) 
+        private Effect(Source source, Target[] targets) 
             : this(source, targets, new int[1] { 0 }) { }
-        
-        protected Effect(Source source, Target target = null, int modifier = 0) 
+
+        private Effect(Source source, Target target = null, int modifier = 0) 
             : this (source, new Target[1]{target}, new int[1]{modifier}) { }
 
-        protected Effect(Source source, Target target, int[] modifiers) 
+        private Effect(Source source, Target target, int[] modifiers) 
             : this(source, new Target[1]{target}, modifiers) { }
 
-        protected Effect(Source source, int modifier) 
+        private Effect(Source source, int modifier) 
             : this(source, null, modifier) { }
 
-        protected Effect(string name, Source source)
+        private Effect(string name, Source source)
             : this(name, source, new Target[0]) { }
 
 
-        protected Effect(string name, Source source, Target target, int modifier, bool flag)
+        private Effect(string name, Source source, Target target, int modifier, bool flag)
             : this(name, source, () => { }, 
             new Target[1] { target }, 
             new int[1] { modifier }, 
             new bool[1] { flag },
             EToken.NONE) { }
 
-        protected Effect(string name, Source source, Target target, Player player) :
+        private Effect(string name, Source source, Target target, Player player) :
             this(name, source, () => { },
             new Target[1] { target },
             new int[0], new bool[0],
             EToken.NONE, Stats.Health, player) { }
 
-        protected Effect(string name, Source source, Target target, Stats stat, int change)
+        private Effect(string name, Source source, Target target, Stats stat, int change)
             : this(name, source, () => { }, new Target[1] { target }, new int[1] { change }, new bool[0], EToken.NONE, stat, null) { } 
 
     }

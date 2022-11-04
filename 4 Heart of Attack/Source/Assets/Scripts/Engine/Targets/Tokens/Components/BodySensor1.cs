@@ -16,7 +16,7 @@ namespace HOA {
 		protected override void EnterSpecial (Cell newCell) {
 			if (sensor != default(Sensor)) {sensor.Delete();}
 			sensor = sc(parent, newCell);
-			newCell.AddSensor(sensor);
+			newCell.Sensors.Add(sensor);
 		}
 
 		public override void Exit () {

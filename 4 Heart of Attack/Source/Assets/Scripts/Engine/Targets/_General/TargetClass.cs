@@ -4,8 +4,21 @@ using System;
 using System.Collections;
 
 namespace HOA {
-	public enum TargetClasses : byte { Cell, Token, Unit, Ob, King, Heart, Tram, Dest, Corpse }
+    //[Flags]
+	public enum TargetClasses : byte 
+    { 
+        Cell, 
+        Token, 
+        Unit, 
+        Ob, 
+        King, 
+        Heart, 
+        Tram, 
+        Dest, 
+        Corpse 
+    }
 
+    
 	public struct TargetClass : IEnumerable, IEquatable<TargetClass> {
         
         private bool[] targetClasses;
@@ -137,10 +150,11 @@ namespace HOA {
 							TipInspector.Inspect(Tip.Special((TargetClasses)i));
 						//}
 					}
-					GUI.Box(box, Icons.TargetClass((TargetClasses)i), p.s);
+					GUI.Box(box, Icons.TargetClasses[(TargetClasses)i], p.s);
 					p.NudgeX();
 				}
 			}
 		}
 	}
+    
 }

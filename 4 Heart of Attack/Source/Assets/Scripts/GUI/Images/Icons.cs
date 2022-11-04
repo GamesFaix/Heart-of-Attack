@@ -1,45 +1,46 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace HOA {
 
 	public static class Icons {
 
-		static Dictionary<Stats, Texture2D> stats;
-		static Dictionary<Planes, Texture2D> planes;
-		static Dictionary<TargetClasses, Texture2D> targetClasses;
-		static Dictionary<ETraj, Texture2D> trajectories;
+        public static Dictionary<HOA.Stats, Texture2D> Stats { get; private set; }
+        public static Dictionary<Plane, Texture2D> Planes { get; private set; }
+        public static Dictionary<TargetClasses, Texture2D> TargetClasses { get; private set; }
+        public static Dictionary<ETraj, Texture2D> Trajectories { get; private set; }
 
 		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
 
 		public static void Load() {
-			stats = new Dictionary<Stats, Texture2D>();
-			AddStat (Stats.Health, "HP");  
-			AddStat (Stats.Defense, "DEF"); 
-			AddStat (Stats.Initiative, "IN"); 
-			AddStat (Stats.Stun, "STUN"); 
-			AddStat (Stats.Energy, "AP"); 
-			AddStat (Stats.Focus, "FP");
+			Stats = new Dictionary<Stats, Texture2D>();
+			AddStat (HOA.Stats.Health, "HP");  
+			AddStat (HOA.Stats.Defense, "DEF");
+            AddStat(HOA.Stats.Initiative, "IN"); 
+			AddStat (HOA.Stats.Stun, "STUN"); 
+			AddStat (HOA.Stats.Energy, "AP"); 
+			AddStat (HOA.Stats.Focus, "FP");
 
-			planes = new Dictionary<Planes, Texture2D>();
-            AddPlane(Planes.Sunken, "Sunken");
-            AddPlane(Planes.Ground, "Ground"); 
-			AddPlane (Planes.Air, "Air"); 
-			AddPlane (Planes.Ethereal, "Ethereal");
+			Planes = new Dictionary<Plane, Texture2D>();
+            AddPlane(Plane.Sunken, "Sunken");
+            AddPlane(Plane.Ground, "Ground");
+            AddPlane(Plane.Air, "Air");
+            AddPlane(Plane.Ethereal, "Ethereal");
 			
-			targetClasses = new Dictionary<TargetClasses, Texture2D>();
-            AddType(TargetClasses.Cell, "Cell");
-            AddType(TargetClasses.Token, "Token");
-            AddType(TargetClasses.Unit, "Unit");
-            AddType(TargetClasses.Ob, "Ob");
-            AddType(TargetClasses.King, "King");
-            AddType(TargetClasses.Heart, "Heart");
-            AddType(TargetClasses.Tram, "Tram");
-            AddType(TargetClasses.Dest, "Dest"); 
-			AddType (TargetClasses.Corpse, "Corpse"); 
+			TargetClasses = new Dictionary<TargetClasses, Texture2D>();
+            AddType(HOA.TargetClasses.Cell, "Cell");
+            AddType(HOA.TargetClasses.Token, "Token");
+            AddType(HOA.TargetClasses.Unit, "Unit");
+            AddType(HOA.TargetClasses.Ob, "Ob");
+            AddType(HOA.TargetClasses.King, "King");
+            AddType(HOA.TargetClasses.Heart, "Heart");
+            AddType(HOA.TargetClasses.Tram, "Tram");
+            AddType(HOA.TargetClasses.Dest, "Dest");
+            AddType(HOA.TargetClasses.Corpse, "Corpse"); 
 			
-			trajectories = new Dictionary<ETraj, Texture2D>();
+			Trajectories = new Dictionary<ETraj, Texture2D>();
 			AddTraj (ETraj.NEIGHBOR, "NEIGHBOR"); 
 			AddTraj (ETraj.PATH, "PATH"); 
 			AddTraj (ETraj.LINE, "LINE");
@@ -61,15 +62,10 @@ namespace HOA {
 
 		static Texture2D LoadFile (string name) {return (Resources.Load("Images/Icons/"+name) as Texture2D);}
 
-		static void AddStat (Stats s, string fileName) {stats.Add(s, LoadFile("Stats/"+fileName));}
-		static void AddPlane (Planes p, string fileName) {planes.Add(p, LoadFile("Planes/"+fileName));}
-		static void AddType (TargetClasses tc, string fileName) {targetClasses.Add(tc, LoadFile("TargetClasses/"+fileName));}
-		static void AddTraj (ETraj a, string fileName) {trajectories.Add(a, LoadFile("Trajectories/"+fileName));}
-
-		public static Texture2D Stat(Stats s) {return stats[s];}
-		public static Texture2D Plane(Planes p) {return planes[p];}
-		public static Texture2D TargetClass(TargetClasses tc) {return targetClasses[tc];}
-		public static Texture2D Traj(ETraj a) {return trajectories[a];}
+		static void AddStat (Stats s, string fileName) {Stats.Add(s, LoadFile("Stats/"+fileName));}
+		static void AddPlane (Plane p, string fileName) {Planes.Add(p, LoadFile("Planes/"+fileName));}
+		static void AddType (TargetClasses tc, string fileName) {TargetClasses.Add(tc, LoadFile("TargetClasses/"+fileName));}
+		static void AddTraj (ETraj a, string fileName) {Trajectories.Add(a, LoadFile("Trajectories/"+fileName));}
 
 		public static Texture2D SKIP() {return skip;}
 		public static Texture2D ONDEATH() {return onDeath;}

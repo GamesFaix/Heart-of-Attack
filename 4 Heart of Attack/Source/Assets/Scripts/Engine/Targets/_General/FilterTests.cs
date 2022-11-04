@@ -18,6 +18,7 @@ namespace HOA
         public static readonly FilterTest Corpse  = (t) => { return (t.TargetClass[TargetClasses.Corpse]); };
         public static readonly FilterTest King  = (t) => { return (t.TargetClass[TargetClasses.King]); };
         public static readonly FilterTest Heart  = (t) => { return (t.TargetClass[TargetClasses.Heart]); };
+        public static readonly FilterTest Tram = (t) => { return (t.TargetClass[TargetClasses.Tram]); };
         public static readonly FilterTest UnitDest = (t) => { return (t.TargetClass[TargetClasses.Unit] || t.TargetClass[TargetClasses.Dest]); };
         public static readonly FilterTest Legal = (t) => { return (t.Legal); };
 
@@ -28,11 +29,13 @@ namespace HOA
                 return ( ( ((Token)t).Owner == owner ) == b);
             };
         }
-        public static FilterTest Plane(Planes plane, bool b)
+        public static FilterTest Plane(Plane plane, bool b)
         {
             return (t) =>
             {
-                return ((((Token)t).Plane[plane]) == b);
+                Token token = (Token)t;
+                bool match = ((token.Plane & plane) == plane);
+                return match = b;
             };
         }
         public static FilterTest EToken(EToken token, bool b)

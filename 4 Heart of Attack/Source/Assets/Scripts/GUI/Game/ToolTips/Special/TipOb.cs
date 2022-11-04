@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipOb () {
 			Name = "Obstacle";
-			Icon = Icons.TargetClass(TargetClasses.Ob);
+			Icon = Icons.TargetClasses[TargetClasses.Ob];
 			ETip = ETip.OB;
 		}
 		

@@ -188,8 +188,10 @@ namespace HOA
                 //	target.SpriteMove(cell);
                 t.Body.MoveTo(((Cell)e.Targets[1]));
                 Cell newCell = t.Body.Cell;
-                if (t.Plane[Planes.Ground]) { AVEffect.Walk.Play(t); }
-                else if (t.Plane[Planes.Air]) { AVEffect.Fly.Play(t); }
+                if (t.Plane.ContainsAny(Plane.Ground)) 
+                    AVEffect.Walk.Play(t);
+                else if (t.Plane.ContainsAny(Plane.Air)) 
+                    AVEffect.Fly.Play(t);
                 GameLog.Out(e.Target + " moved from " + oldCell + " to " + newCell + ".");
             };
             return e;
@@ -481,7 +483,7 @@ namespace HOA
                         if (u.Damage(e.Source, currentDmg)) AVEffect.Laser.Play(u);
                         else AVEffect.Miss.Play(u);
                     }
-                    TargetFilter f = TargetFilter.Ob + FilterTests.Plane(Planes.Sunken, false);
+                    TargetFilter f = TargetFilter.Ob + FilterTests.Plane(Plane.Sunken, false);
 
                     if ( (cell.Occupants - f).Count > 0 ) return;
                     if (units.Count > 0)

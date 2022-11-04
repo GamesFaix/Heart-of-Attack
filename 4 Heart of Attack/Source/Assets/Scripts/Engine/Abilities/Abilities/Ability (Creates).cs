@@ -38,7 +38,7 @@ namespace HOA {
             };
 
             a.Restrict = () =>
-            { return a.Parent.Body.Cell.Contains(Planes.Air); };
+            { return a.Parent.Body.Cell.Contains(Plane.Air); };
 
             a.DrawSpecial = (p) =>
             {
@@ -126,7 +126,7 @@ namespace HOA {
             a.Aims.Add(Aim.Self());
             a.MainEffects = targets =>
             {
-                if (!a.Parent.Body.Cell.Occupied(Planes.Ground))
+                if (!a.Parent.Body.Cell.Contains(Plane.Ground))
                 {
                     a.Charge();
                     TokenFactory.Create(new Source(a.Parent), EToken.ROOK, a.Parent.Body.Cell);

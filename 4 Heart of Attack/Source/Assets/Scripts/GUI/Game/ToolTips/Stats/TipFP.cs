@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipFP () {
 			Name = "Focus";
-			Icon = Icons.Stat(Stats.Focus);
+			Icon = Icons.Stats[Stats.Focus];
 			ETip = ETip.FP;
 		}
 		

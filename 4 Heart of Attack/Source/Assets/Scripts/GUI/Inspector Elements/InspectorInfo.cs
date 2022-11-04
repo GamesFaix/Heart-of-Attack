@@ -10,7 +10,7 @@ namespace HOA {
             if (GUI.Button(box, ""))
                 if (GUIInspector.RightClick) 
                     TipInspector.Inspect(ETip.AP);
-            GUI.Box(box, Icons.Stat(Stats.Energy), panel.s);
+            GUI.Box(box, Icons.Stats[Stats.Energy], panel.s);
             box = panel.IconBox;
             GUI.Label(box, price.Energy + "", panel.s);
             panel.NudgeX();
@@ -19,7 +19,7 @@ namespace HOA {
             if (GUI.Button(box, ""))
                 if (GUIInspector.RightClick) 
                     TipInspector.Inspect(ETip.FP);
-            GUI.Box(box, Icons.Stat(Stats.Focus), panel.s);
+            GUI.Box(box, Icons.Stats[Stats.Focus], panel.s);
             box = panel.IconBox;
             GUI.Label(box, price.Focus + "", panel.s);
         }
@@ -39,7 +39,7 @@ namespace HOA {
 
             p.NudgeX(); p.NudgeX();
             GUI.Label(p.Box(30), "(Max");
-            GUI.Box(p.Box(20), Icons.Stat(Stats.Defense), p.s);
+            GUI.Box(p.Box(20), Icons.Stats[Stats.Defense], p.s);
             GUI.Label(p.Box(40), "= " + health.cap + ")");
         }
         public static void HealthHalfDodge(HealthHalfDodge health, Panel p)
@@ -64,9 +64,9 @@ namespace HOA {
             wallet.FP.Draw(new Panel(p.Box(p.IconSize * 2 + 5), p.LineH, p.s, p.IconSize));
 
             p.NudgeX(); p.NudgeX();
-            GUI.Box(p.Box(20), Icons.Stat(Stats.Defense), p.s);
+            GUI.Box(p.Box(20), Icons.Stats[Stats.Defense], p.s);
             GUI.Label(p.Box(40), "+1 per ");
-            GUI.Box(p.Box(20), Icons.Stat(Stats.Focus), p.s);
+            GUI.Box(p.Box(20), Icons.Stats[Stats.Focus], p.s);
             p.NudgeX();
             GUI.Label(p.Box(60), "(Max +" + wallet.cap + ")");
         }
@@ -76,9 +76,9 @@ namespace HOA {
             wallet.FP.Draw(new Panel(p.Box(p.IconSize * 2 + 5), p.LineH, p.s, p.IconSize));
 
             p.NudgeX(); p.NudgeX();
-            GUI.Box(p.Box(20), Icons.Stat(Stats.Initiative), p.s);
+            GUI.Box(p.Box(20), Icons.Stats[Stats.Initiative], p.s);
             GUI.Label(p.Box(40), "+1 per ");
-            GUI.Box(p.Box(20), Icons.Stat(Stats.Focus), p.s);
+            GUI.Box(p.Box(20), Icons.Stats[Stats.Focus], p.s);
         }
 
         public static void Watch(Watch watch, Panel p)
@@ -100,7 +100,7 @@ namespace HOA {
                 p.x2 = x3;
                 p.NudgeX();
                 box = p.Box(p.IconSize);
-                GUI.Box(p.Box(p.IconSize), Icons.Stat(Stats.Stun), p.s);
+                GUI.Box(p.Box(p.IconSize), Icons.Stats[Stats.Stun], p.s);
                 p.NudgeX();
                 p.NudgeY();
                 box = p.Box(p.IconSize);
@@ -121,17 +121,21 @@ namespace HOA {
 
         public static void Plane(Plane plane, Panel panel)
         {
-            foreach (Planes p in plane)
+            Plane[] planes = new Plane[4] { HOA.Plane.Sunken, HOA.Plane.Ground, HOA.Plane.Air, HOA.Plane.Ethereal };
+            foreach (Plane p in planes)
             {
-                Rect box = panel.Box(panel.LineH);
-                if (GUI.Button(box, ""))
+                if ((p & plane) != HOA.Plane.None)
                 {
-                    //if (GUIInspector.RightClick) {
-                    TipInspector.Inspect(ETip.PLANE);
-                    //}
+                    Rect box = panel.Box(panel.LineH);
+                    if (GUI.Button(box, ""))
+                    {
+                        //if (GUIInspector.RightClick) {
+                        TipInspector.Inspect(ETip.PLANE);
+                        //}
+                    }
+                    GUI.Box(box, Icons.Planes[p], panel.s);
+                    panel.NudgeX();
                 }
-                GUI.Box(box, Icons.Plane(p), panel.s);
-                panel.NudgeX();
             }
         }
         public static void Sensor(Sensor sensor, Panel p)
@@ -168,7 +172,7 @@ namespace HOA {
         {
             if (stat.Stats == Stats.Health) { HP(stat, p); return; }
            // if (GUI.Button(p.FullBox, "")) { TipInspector.Inspect(stat.ETip); }
-            GUI.Box(p.Box(p.IconSize), Icons.Stat(stat.Stats), p.s);
+            GUI.Box(p.Box(p.IconSize), Icons.Stats[stat.Stats], p.s);
             p.NudgeX();
             p.NudgeY();
 
@@ -183,7 +187,7 @@ namespace HOA {
         {
             //if (GUI.Button(p.FullBox, "")) { TipInspector.Inspect(stat.ETip); }
 
-            GUI.Box(p.Box(p.IconSize), Icons.Stat(stat.Stats), p.s);
+            GUI.Box(p.Box(p.IconSize), Icons.Stats[stat.Stats], p.s);
             p.NudgeX();
             p.NudgeY();
 
@@ -225,13 +229,13 @@ namespace HOA {
             float iconSize = p.LineH;
 
 			Rect iconBox = p.Box(iconSize);
-			if (Icons.Traj(a.Trajectory) != default(Texture2D)) {
+			if (Icons.Trajectories[a.Trajectory] != null) {
 				if (GUI.Button(iconBox, "")) {
 					//if (GUIInspector.RightClick) {
 						TipInspector.Inspect(Tip.Trajectory(a.Trajectory));
 					//}
 				}
-				GUI.Box(iconBox, Icons.Traj(a.Trajectory));
+				GUI.Box(iconBox, Icons.Trajectories[a.Trajectory]);
 			}
 			if (a.RangeString != "") {
 				GUI.Label(p.Box(iconSize), a.RangeString, p.s);

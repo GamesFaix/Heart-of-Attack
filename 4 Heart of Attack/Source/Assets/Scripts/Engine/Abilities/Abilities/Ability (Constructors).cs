@@ -470,7 +470,7 @@ namespace HOA
             {
                 Rect box = p.IconBox;
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.FP);
-                GUI.Box(box, Icons.Stat(Stats.Focus), p.s);
+                GUI.Box(box, Icons.Stats[Stats.Focus], p.s);
                 p.NudgeX();
                 GUI.Label(p.Box(40), "+1", p.s);
             };
@@ -595,7 +595,7 @@ namespace HOA
             a.MainEffects = targets =>
             {
                 Token t;
-                if (a.Parent.Body.Cell.Contains(Planes.Ground, out t))
+                if (a.Parent.Body.Cell.Contains(Plane.Ground, out t))
                     if (t.TargetClass[TargetClasses.Dest])
                         EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 2));
@@ -615,9 +615,9 @@ namespace HOA
 
             a.Restrict = () =>
             {
-                if (!a.Parent.Body.Cell.Contains(Planes.Ground)) return false;
+                if (!a.Parent.Body.Cell.Contains(Plane.Ground)) return false;
                 Token t;
-                if (a.Parent.Body.Cell.Contains(Planes.Ground, out t))
+                if (a.Parent.Body.Cell.Contains(Plane.Ground, out t))
                     if (t.TargetClass[TargetClasses.Dest]) return false;
                 return true;
             };
@@ -1238,7 +1238,7 @@ namespace HOA
                     TargetGroup obstacles = cell.Occupants - TargetFilter.Ob;
                     bool stop = false;
                     foreach (Token t in obstacles)
-                        if ((t.Plane[Planes.Ground] || t.Plane[Planes.Air])
+                        if (t.Plane.ContainsAny(Plane.Tall)
                             && !t.TargetClass[TargetClasses.Dest])
                             stop = true;
                     if (stop) break;
@@ -1274,7 +1274,7 @@ namespace HOA
                 a.Parent.Arsenal.Sort();
             };
 
-            a.Restrict = () => { return a.Parent.Body.Cell.Contains(Planes.Air); };
+            a.Restrict = () => { return a.Parent.Body.Cell.Contains(Plane.Air); };
             return a;
         }
         public static Ability ThrowGrenade(Unit parent)
@@ -1359,14 +1359,14 @@ namespace HOA
                 p.NextLine();
                 box = p.IconBox;
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.IN);
-                GUI.Box(box, Icons.Stat(Stats.Initiative));
+                GUI.Box(box, Icons.Stats[Stats.Initiative]);
                 p.NudgeX();
                 GUI.Label(p.Box(0.9f), "-2: Units in target Cell");
 
                 p.NextLine();
                 box = p.IconBox;
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.IN);
-                GUI.Box(box, Icons.Stat(Stats.Initiative));
+                GUI.Box(box, Icons.Stats[Stats.Initiative]);
                 p.NudgeX();
                 GUI.Label(p.Box(0.9f), "-1: Units in target Cell's neighbors");
             };

@@ -21,7 +21,7 @@ namespace HOA {
 				if (!(c is ExoCell)) {
 					Sensor s = sc(parent, c);
 					sensors.Add(s);
-					c.AddSensor(s);
+					c.Sensors.Add(s);
 				}
 			}
 		}

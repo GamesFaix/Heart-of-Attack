@@ -13,7 +13,7 @@ namespace HOA {
             Sensor s = new Sensor(parent, cell);
             s.Name = "Aperture Sensor";
             s.Desc = () => { return "Stops all Tokens."; };
-            s.PlanesToStop = Plane.GroundAirEth;
+            s.PlanesToStop = (Plane.Ground|Plane.Air|Plane.Ethereal);
             s.TriggerTest = EverythingTrigger;
 
             s.SNCE = (Token token) =>

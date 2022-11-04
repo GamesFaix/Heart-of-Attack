@@ -33,15 +33,7 @@ namespace HOA {
 			return false;
 		}
 		static bool CanTakePlaceOf (Token taker, Token taken) {
-			Cell otherCell = taken.Body.Cell;
-			Token blocker;
-			
-			foreach (Planes plane in taker.Plane) {
-				if (otherCell.Contains(plane, out blocker)) {
-					if (blocker != taken) {return false;}
-				}
-			}
-			return true;
+            return (taker.Plane == taken.Plane);
 		}
 		
 		public static bool CanSwap (Token a, Token b) {

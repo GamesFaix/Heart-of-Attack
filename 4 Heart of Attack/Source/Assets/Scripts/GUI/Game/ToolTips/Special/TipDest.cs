@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipDest () {
 			Name = "Destructible";
-			Icon = Icons.TargetClass(TargetClasses.Dest);
+			Icon = Icons.TargetClasses[TargetClasses.Dest];
 			ETip = ETip.DEST;
 		}
 		

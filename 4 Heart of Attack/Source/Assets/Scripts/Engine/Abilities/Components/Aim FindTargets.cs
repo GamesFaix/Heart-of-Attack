@@ -54,7 +54,7 @@ namespace HOA {
 						marked.Add(c);
 						
 						if (c.Occupants.Count==0 ||
-						    (c.Occupants.Count==1 && c.Contains(Planes.Sunken))) {
+						    (c.Occupants.Count==1 && c.Contains(Plane.Sunken))) {
 							
 							foreach (Cell d in c.Neighbors()) {
 								if (!marked.Contains(d)) {nextRad.Add(d);}		
@@ -127,8 +127,9 @@ namespace HOA {
 			TargetGroup legal = new TargetGroup();
 			foreach (Cell c in line) {
 				legal.Add(c);
-				if (!(c.IsEmpty() || c.ContainsOnly(Planes.Sunken))) {
-					break;
+				if (!(c.IsEmpty() || c.ContainsOnly(Plane.Sunken))) 
+                {
+				    break;
 				}
 			}
 			return legal;

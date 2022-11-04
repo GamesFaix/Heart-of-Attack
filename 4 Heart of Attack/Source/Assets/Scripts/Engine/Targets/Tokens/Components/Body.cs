@@ -31,7 +31,7 @@ namespace HOA {
 
 		public virtual bool CanEnter (Cell newCell) {
 			if (!(newCell is ExoCell)) {
-				if (!newCell.Occupied(parent.Plane) 
+				if (!newCell.Contains(parent.Plane) 
 				    || CanTrample(parent, newCell)) {
 					return true;
 				}
