@@ -14,7 +14,19 @@ namespace HOA
                 + "to more than one item in the underlying collection." 
                + "\n" + message)
         { }
+    }
 
+    /// <summary>
+    /// To be thrown by classes implementing ISourceRestricted 
+    /// when they are instantiated from an invalid type.
+    /// </summary>
+    public class InvalidSourceException : ApplicationException
+    {
+        public InvalidSourceException(string message = "")
+            : base("The type you are trying to instantiate must be "
+            + "cannot be instantiated from the current type."
+            + "\n" + message)
+        { }
     }
 
 

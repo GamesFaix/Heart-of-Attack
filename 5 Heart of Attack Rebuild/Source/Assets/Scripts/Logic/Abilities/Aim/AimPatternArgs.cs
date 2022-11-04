@@ -1,42 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 
-
-namespace HOA.Abilities
+namespace HOA.Abilities 
 {
-    public class AimPatternArgs
+	
+    public class AimPatternArgs 
     {
         public Token user, body;
         public Cell center;
-        public Range range;
         public Predicate<IEntity> filter;
+        public Range range;
         public bool inclusive;
 
-        public AimPatternArgs(Predicate<IEntity> filter, Token user, Token body = null, Cell center = null,
-            Range range = default(Range), bool inclusive = false)
+        public AimPatternArgs(Token user, Token body, Cell center, Predicate<IEntity> filter, Range range, bool inclusive)
         {
-            if (user == null || filter == null)
-                throw new ArgumentNullException();
-
             this.user = user;
-
-            if (body == null)
-                this.body = user;
-            else
-                this.body = body;
-
-            if (center == null && user != null)
-                this.center = user.Cell;
-            else
-                this.center = center;
-
-            this.range = range;
+            this.body = body;
+            this.center = center;
             this.filter = filter;
+            this.range = range;
             this.inclusive = inclusive;
         }
 
-        public static AimPatternArgs AttackNeighbor(Predicate<IEntity> filter, Token user)
-        {
-            return new AimPatternArgs(filter, user, user, user.Cell, new Range(0,1), false);
-        }
-    }
+	}
 }

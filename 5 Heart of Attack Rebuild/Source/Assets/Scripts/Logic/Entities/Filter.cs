@@ -34,7 +34,11 @@ namespace HOA
         public static Predicate<IEntity> Destructible { get { return token + destructible; } }
         
         static Predicate<IEntity> corpse = (t) => { return ((Token)t).corpse; };
+        static Predicate<IEntity> nonCorpse = (t) => { return !((Token)t).corpse; };
         public static Predicate<IEntity> Corpse { get { return token + corpse; } }
+
+        public static Predicate<IEntity> DestNotCorpse { get { return token + destructible + nonCorpse; } }
+
         
         static Predicate<IEntity> trample = (t) => { return ((Token)t).trample; };
         public static Predicate<IEntity> Trample { get { return token + trample; } }

@@ -7,8 +7,8 @@ namespace HOA
 
     public partial class Obstacle : Token
     {
-        public Obstacle(ITokenCreator creator, Species species)
-            : base(creator, species)
+        public Obstacle(object source, Species species)
+            : base(source, species)
         {
             Remains = Species.None;
         }

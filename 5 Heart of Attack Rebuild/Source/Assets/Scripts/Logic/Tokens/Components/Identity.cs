@@ -11,7 +11,7 @@ namespace HOA.Tokens
         public int Instance { get; private set; }
         public Player Owner { get; set; }
 
-        public Identity(ITokenCreator creator, Token thisToken, Species species)
+        public Identity(Source source, Token thisToken, Species species)
             : base (thisToken)
         {
             Name = Reference.Tokens.names[species];
@@ -20,7 +20,7 @@ namespace HOA.Tokens
                 Instance = Session.Active.NextAvailableInstance(species);
             else //(only if template)
                 Instance = -1;
-            Owner = creator as Player;
+            Owner = source.Last<Player>();
         }
         
         public override string ToString() { return Name + " " + Instance; }

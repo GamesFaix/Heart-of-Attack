@@ -20,7 +20,8 @@ namespace HOA.Abilities
         public Plane plane { get; private set; }
         public Player player { get; private set; }
         public Ability ability { get; private set; }
-        public TokenComponent component { get; private set; }
+        public EffectConstructor effectConstructor { get; private set; }
+        public TokenComponent component { get; set; }
 
         public Set<Cell> cells { get { return new Set<Cell>(targets.OfType<Cell>()); } }
         public Set<Token> tokens { get { return new Set<Token>(targets.OfType<Token>()); } }
@@ -95,6 +96,12 @@ namespace HOA.Abilities
             : this(target)
         {
             this.species = species;
+        }
+
+        public EffectArgs(IEntity target, Species species, EffectConstructor e)
+            : this(target, species)
+        {
+            this.effectConstructor = e;
         }
 
         #endregion

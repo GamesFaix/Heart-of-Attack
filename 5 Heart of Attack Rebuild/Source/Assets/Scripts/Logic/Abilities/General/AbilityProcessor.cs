@@ -57,20 +57,20 @@ namespace HOA.Abilities
         {
             NestedList<IEntity> targets = new NestedList<IEntity>();
 
-            foreach (AimStage aim in a.Aims)
+            foreach (AimStage stage in a.Aims)
             {
                 targets.AddToEnd(new Set<IEntity>());
-                Set<IEntity> options = aim.Pattern(aim.Args());
-                if (aim.autoSelect)
+                Set<IEntity> options = stage.pattern(stage.Args());
+                if (stage.autoSelect)
                     for (int i = 0;
-                        i < options.Count && i <= aim.selectionCount.max;
+                        i < options.Count && i <= stage.selectionCount.max;
                         i++)
                         targets.AddToLast(options[i]);
                 else
                 {
                     selection = null;
-                    EntitySelectionRequestPublish(options, aim.selectionCount);
-                    selection = WaitForSelection(aim);
+                    EntitySelectionRequestPublish(options, stage.selectionCount);
+                    selection = WaitForSelection(stage);
                     if (selection == null)
                     {
                         targets = null;

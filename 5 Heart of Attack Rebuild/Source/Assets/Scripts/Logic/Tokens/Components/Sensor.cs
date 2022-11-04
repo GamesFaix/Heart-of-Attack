@@ -4,11 +4,12 @@ using HOA.Abilities;
 namespace HOA.Tokens
 {
 
-    public partial class Sensor : TokenComponent, Abilities.IEffectUser
+    public partial class Sensor : TokenComponent, ISourced
     {
         #region Properties
-
-        public IEffect Source { get; private set; }
+        
+        public Source source { get; private set; }
+        
         /// <summary> Name of sensor </summary>
         public string Name { get; private set; }
         /// <summary> Generates description </summary>
@@ -34,10 +35,11 @@ namespace HOA.Tokens
 
         #region Constructors
 
-        private Sensor(IEffect source, Token thisToken)
+        private Sensor(Token thisToken)
             : base(thisToken)
         {
-            Source = source;
+            this.source = new Source(thisToken); 
+
             Name = "[Sensor]";
             Desc = Scribe.Write("[Sensor description]");
             Subscriptions = new Set<Cell>(1);
@@ -59,16 +61,16 @@ namespace HOA.Tokens
             OnOtherExit = (t) => { };
         }
 
-        private Sensor(IEffect source, Token thisToken, string name)
-            : this(source, thisToken)
+        private Sensor(Token thisToken, string name)
+            : this(thisToken)
         { Name = name; }
 
-        private Sensor(IEffect source, Token thisToken, string name, Predicate<IEntity> trigger)
-            : this(source, thisToken, name)
+        private Sensor(Token thisToken, string name, Predicate<IEntity> trigger)
+            : this(thisToken, name)
         { Trigger = trigger; }
 
-        private Sensor(IEffect source, Token thisToken, string name, Predicate<IEntity> trigger, Predicate<IEntity> trap)
-            : this(source, thisToken, name, trigger)
+        private Sensor(Token thisToken, string name, Predicate<IEntity> trigger, Predicate<IEntity> trap)
+            : this(thisToken, name, trigger)
         { Trap = trap; }
 
         #endregion
@@ -112,9 +114,6 @@ namespace HOA.Tokens
             }
         }
 
-        public Ability ToAbility() { return (Source as Effect).User.ToAbility(); }
-        public IAbilityUser ToAbilityUser() { return ToAbility().User; }
-        public ITokenCreator ToTokenCreator() { return ToAbilityUser().ToTokenCreator(); }
 
     }
 

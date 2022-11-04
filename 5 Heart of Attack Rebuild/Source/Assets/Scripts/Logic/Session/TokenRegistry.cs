@@ -21,11 +21,11 @@ namespace HOA.Tokens
             return instanceCounts[species];
         }
 
-        public Token Create(ITokenCreator creator, Species species, Cell cell)
+        public Token Create(object source, Species species, Cell cell)
         {
             if (HOA.Reference.Tokens.templates[species].CanEnter(cell))
             {
-                Token newToken = HOA.Reference.Tokens.constructors[species](creator);
+                Token newToken = HOA.Reference.Tokens.constructors[species](source);
                 newToken.Enter(cell);
                 return newToken;
             }

@@ -8,8 +8,8 @@ namespace HOA
 	public partial class Terrain : Token
 	{
        
-        private Terrain(ITokenCreator creator, Species species)
-            : base(creator, species)
+        private Terrain(object source, Species species)
+            : base(source, species)
         {
         }
 

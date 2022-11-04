@@ -7,7 +7,7 @@ namespace HOA
     /// <summary>
     /// A player.
     /// </summary>
-    public class Player : Tokens.ITokenCreator
+    public class Player
     {
         #region Properties
 
@@ -75,8 +75,6 @@ namespace HOA
             foreach (Token t in captive.Tokens)
                 t.Owner = this;
         }
-
-        public Player ToPlayer() { return this; }
 
     }
 }

@@ -62,9 +62,9 @@ namespace HOA
         public Set<IEntity> tokens { get { return tokenReg.Tokens; } }
         public int NextAvailableInstance(Tokens.Species s) { return tokenReg.NextAvailableInstance(s); }
 
-        public Token Create(Tokens.ITokenCreator creator, Tokens.Species species, Cell cell)
+        public Token Create(object source, Tokens.Species species, Cell cell)
         {
-            return tokenReg.Create(creator, species, cell);
+            return tokenReg.Create(source, species, cell);
         }
 
         #endregion

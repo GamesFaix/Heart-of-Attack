@@ -7,19 +7,31 @@ namespace HOA.Abilities
 {
     public delegate bool UsableTest(out string message);
     
-    public partial class Ability : ClosedFunc<AbilityArgs, IEnumerator>,
-        IComparable<Ability>, IEquatable<Ability>, IEffectUser
+    public partial class Ability : ClosedFunc<AbilityArgs, IEnumerator>, 
+        IComparable<Ability>, IEquatable<Ability>
     {
+        #region ISourced
+
+        Source source;
+        Token sourceToken { get { return source.Last<Token>(); } }
+        Unit sourceUnit { get { return source.Last<Unit>(); } }
+        Player sourcePlayer { get { return source.Last<Player>(); } }
+
+        Type[] validSources { get { return new Type[1] { typeof(Token) }; } }
+        bool IsValidSource(object obj) { return Source.IsValid(validSources, obj); }
+
+        #endregion
+
+
         #region Properties
 
         public string Name { get; private set; }
         public Description Desc;
-        public IAbilityUser User { get; private set; }
         public Rank Rank { get; private set; }
         public Price Price { get; private set; }
        
         public AbilityArgs Args { get; private set; }
-        public List<AimStage> Aims { get; private set; }
+        public AimPlan Aims { get; private set; }
         
         public bool UsedThisTurn { get; private set; }
         public UsableTest Usable { get; private set; }
@@ -33,10 +45,12 @@ namespace HOA.Abilities
         
         #endregion 
 
-        private Ability(IAbilityUser user, string name, Rank rank, Price price, AbilityArgs args)
+        private Ability(object source, string name, Rank rank, Price price, AbilityArgs args)
             : base (args)
         {
-            User = user;
+            if (!IsValidSource(source))
+                throw new InvalidSourceException();
+            this.source = new Source(source);
             Name = name;
             Rank = rank;
             Price = price;
@@ -51,7 +65,7 @@ namespace HOA.Abilities
             Usable += Affordable;
             Usable += AlreadyProcessing;
             
-            Aims = new List<AimStage>();
+            Aims = new AimPlan(this);
 
             PreEffects = () => { Charge(); };
             MainEffects = (targets) => { };
@@ -72,10 +86,11 @@ namespace HOA.Abilities
 
         public void Charge()
         {
-            if (User is Unit)
+            Unit u;
+            if (source.Last<Unit>(out u))
             {
                 UsedThisTurn = true;
-                (User as Unit).Charge(Price);
+                u.Charge(Price);
             }
         }
 
@@ -125,15 +140,15 @@ namespace HOA.Abilities
 
         private bool UserIsTop(out string message) 
         {
-            bool b = (User == Session.Active.Queue.Top);
-            message = (b ? "" : "It is not currently " + User + "'s turn.");
+            bool b = (source.Last<Unit>() == Session.Active.Queue.Top);
+            message = (b ? "" : "It is not currently " + source + "'s turn.");
             return b; 
         }
 
         private bool UserInQueue(out string message)
         {
-            bool b = (Session.Active.Queue.Contains(User as Unit));
-            message = (b ? "" : User + " is not in the TurnQueue.");
+            bool b = (Session.Active.Queue.Contains(source.Last<Unit>()));
+            message = (b ? "" : source + " is not in the TurnQueue.");
             return b;
         }
 
@@ -145,8 +160,9 @@ namespace HOA.Abilities
 
         private bool Affordable(out string message)
         {
-            bool b = (User is Unit && (User as Unit).CanAfford(Price));
-            message = (b ? "" : User + " cannot afford " + Name + ".");
+            Unit u;
+            bool b = (source.Last<Unit>(out u) && u.CanAfford(Price));
+            message = (b ? "" : source + " cannot afford " + Name + ".");
             return b;
         }
         private bool AlreadyProcessing(out string message)
@@ -155,19 +171,25 @@ namespace HOA.Abilities
             return !EffectQueue.Active;
         }
 
+        private bool AirClear(out string message)
+        {
+            bool b = (sourceToken.Cell.occupants
+                / Filter.Plane(Tokens.Plane.Air, true))
+                .Count < 1;
+            message = (b ? "" : "A token occupies the required air space.");
+            return b;
+        }
+
+        private bool GroundClear(out string message)
+        {
+            bool b = (sourceToken.Cell.occupants
+                / Filter.Plane(Tokens.Plane.Ground, true))
+                .Count < 1;
+            message = (b ? "" : "A token occupies the required ground space.");
+            return b;
+        }
+
         #endregion
 
-        public Ability ToAbility() { return this; }
-        public IAbilityUser ToAbilityUser() { return User; }
-        public Tokens.ITokenCreator ToTokenCreator()
-        {
-            if (ToAbilityUser() != null)
-            {
-                Token t = ToAbilityUser().ToToken();
-                if (t != null)
-                    return t.Owner;
-            }
-            return null;
-        }
     }
 }

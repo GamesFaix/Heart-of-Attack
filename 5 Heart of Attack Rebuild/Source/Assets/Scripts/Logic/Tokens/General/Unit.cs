@@ -26,8 +26,8 @@ namespace HOA
 
         public Arsenal arsenal { get; private set; }
 
-        public Unit (ITokenCreator creator, Species species, Tokens.Rank rank, Species remains = Species.Corpse) 
-            : base (creator, species)
+        public Unit (object source, Species species, Tokens.Rank rank, Species remains = Species.Corpse) 
+            : base (source, species)
         {
             this.rank = rank;
             Remains = remains;
@@ -37,11 +37,11 @@ namespace HOA
             arsenal = new Arsenal(this);
         }
 
-        public void StatAdd(IEffect effect, Stats stat, int n) { }
-        public void StatAddMax(IEffect effect, Stats stat, int n) { }
-        public void StatSet(IEffect effect, Stats stat, int n) { }
-        public void StatSetMax(IEffect effect, Stats stat, int n) { }
-        public bool Damage(IEffect effect, int n) { return vitality.Damage(n); }
+        public void StatAdd(object source, Stats stat, int n) { }
+        public void StatAddMax(object source, Stats stat, int n) { }
+        public void StatSet(object source, Stats stat, int n) { }
+        public void StatSetMax(object source, Stats stat, int n) { }
+        public bool Damage(object source, int n) { return vitality.Damage(n); }
 
         public void OnTurnStart() { }
         public void OnTurnEnd() { }

@@ -4,36 +4,38 @@ using System.Collections.Generic;
 
 namespace HOA.Abilities
 {
-    public partial class EffectSequence : NestedList<Effect>, IEffect
+    public partial class EffectSequence : NestedList<Effect>, IEffect, ISourced, ISourceRestricted
     {
         #region Properties
 
         public string Name { get; private set; }
-        public IEffectUser User { get; private set; }
         public EffectArgs Args { get; private set; }
         
         #endregion
 
         #region Constructors
 
-        private EffectSequence(string name, IEffectUser user, EffectArgs args)
+        private EffectSequence(object source, string name, EffectArgs args)
         {
-            if (name == "" || user == null || args == null)
+            if (!IsValidSource(source))
+                throw new InvalidSourceException();
+            this.source = new Source(source); 
+            
+            if (name == "" || args == null)
                 throw new ArgumentNullException();
             Name = name;
-            User = user;
             Args = args;
             mainList = new List<IList<Effect>>();
         }
 
-        private EffectSequence(string name, IEffectUser user, EffectArgs args, Effect e)
-            : this(name, user, args)
+        private EffectSequence(object source, string name, EffectArgs args, Effect e)
+            : this(source, name, args)
         {
             AddToEnd(e);
         }
 
-        private EffectSequence(string name, IEffectUser user, EffectArgs args, EffectSet e)
-            : this(name, user, args)
+        private EffectSequence(object source, string name, EffectArgs args, EffectSet e)
+            : this(source, name, args)
         {
             AddToEnd(e);
         }
@@ -63,6 +65,31 @@ namespace HOA.Abilities
             AddToEnd(e);
         }
 
+        #region Sources
+
+        public Source source { get; private set; }
+        public Type[] validSources
+        {
+            get
+            {
+                return new Type[10]
+                {
+                    typeof(Ability), 
+                    typeof(Effect),
+                    typeof(EffectSequence),
+                    typeof(Set<Effect>),
+                    typeof(Tokens.Timer), 
+                    typeof(Tokens.Sensor),
+                    typeof(Token),
+                    typeof(Unit),
+                    typeof(Obstacle),
+                    typeof(Terrain)
+                };
+            }
+        }
+        public bool IsValidSource(object obj) { return Source.IsValid(validSources, obj); }
+
+        #endregion
 
 
 

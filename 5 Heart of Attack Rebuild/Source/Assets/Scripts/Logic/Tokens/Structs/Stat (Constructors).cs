@@ -6,12 +6,12 @@
 
         public static Stat Energy(Unit parent, int max)
         {
-            return new Stat("Energy", parent, Stats.Energy, 0, 0, max);
+            return new Stat(parent, "Energy", Stats.Energy, 0, 0, max);
         }
 
         public static Stat Focus(Unit parent)
         {
-            return new Stat("Focus", parent, Stats.Focus, 0, 0, 100);
+            return new Stat(parent, "Focus", Stats.Focus, 0, 0, 100);
         }
 
         public static Stat FocusAddsInitiative(Unit parent)
@@ -20,7 +20,7 @@
             s.Add = (n) =>
             {
                 s.Current += n;
-                s.Parent.StatAdd(Force.Effect, Stats.Initiative, n);
+                s.Parent.StatAdd(s, Stats.Initiative, n);
                 s.Clamp();
                 return s.Current;
             };
@@ -29,7 +29,7 @@
 
         public static Stat FocusAddsDefense(Unit parent, int cap)
         {
-            Stat s = new Stat("Focus", parent, Stats.Focus, 0, 0, 100, cap);
+            Stat s = new Stat(parent, "Focus", Stats.Focus, 0, 0, 100, cap);
             s.Add = (n) =>
             {
                 sbyte defChange = 0;
@@ -41,7 +41,7 @@
                     for (int i = 1; i <= (-n); i++)
                         if (s.Current - i < s.Modifier)
                             defChange--;
-                s.Parent.StatAdd(Force.Effect, Stats.Defense, defChange);
+                s.Parent.StatAdd(s, Stats.Defense, defChange);
 
                 s.Current += n;
                 s.Clamp();
@@ -52,7 +52,7 @@
 
         public static Stat Defense(Unit parent, int normal, int max = 100)
         {
-            return new Stat("Defense", parent, Stats.Defense, normal, 0, max);
+            return new Stat(parent, "Defense", Stats.Defense, normal, 0, max);
         }
 
         public static Stat DefenseBonus(Unit parent, int normal)
@@ -64,7 +64,7 @@
 
         public static Stat Health(Unit parent, int normal)
         {
-            Stat s = new Stat("Health", parent, Stats.Health, normal, 0, normal);
+            Stat s = new Stat(parent, "Health", Stats.Health, normal, 0, normal);
             s.Mod = () =>
             {
                 int comparison = s.Current.CompareTo(s.Max);
@@ -82,7 +82,7 @@
 
         public static Stat Initiative(Unit parent, int normal)
         {
-            return new Stat("Initiative", parent, Stats.Initiative, normal, 1, 100);
+            return new Stat(parent, "Initiative", Stats.Initiative, normal, 1, 100);
         }
 
     }

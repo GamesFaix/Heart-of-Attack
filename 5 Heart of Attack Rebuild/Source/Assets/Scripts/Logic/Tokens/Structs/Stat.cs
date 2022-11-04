@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace HOA.Tokens
 {
-    public partial class Stat : IEquatable<Stat>
+    public partial class Stat : IEquatable<Stat>, ISourced
     {
+        
         #region Properties
+        public Source source { get; private set; }
         /// <summary>
         /// Name of stat
         /// </summary>
@@ -74,10 +76,12 @@ namespace HOA.Tokens
 
         #endregion
 
-        private Stat(string name, Unit parent, Stats stats, 
+        private Stat(Unit parent, string name, Stats stats, 
             int normal, int min = 0, int max = 100, 
             int modifier = 0, bool debuff = false)
         {
+            source = new Source(parent); 
+            
             Name = name;
             Parent = parent;
             Stats = stats;
