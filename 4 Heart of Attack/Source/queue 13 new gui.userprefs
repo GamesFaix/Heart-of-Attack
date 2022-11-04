@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Actions/Specials/ABeesDeathSting.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Console/Requests.cs" Line="96" Column="20" />
+      <File FileName="Assets/Scripts/Console/RequestHandler.cs" Line="87" Column="24" />
+      <File FileName="Assets/Scripts/Actions/FindCells.cs" Line="18" Column="4" />
+      <File FileName="Assets/Scripts/Actions/FindTokens.cs" Line="190" Column="50" />
+      <File FileName="Assets/Scripts/TokenSpecific/UnitsPT.cs" Line="37" Column="1" />
+      <File FileName="Assets/Scripts/Actions/Specials/ABeesDeathSting.cs" Line="13" Column="44" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

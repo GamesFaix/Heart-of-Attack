@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tokens\Components\Sensor.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Tokens\Components\Sensor.cs" Line="58" Column="65" />
+      <File FileName="Assets\Scripts\Tokens\Components\Sensors.cs" Line="381" Column="6" />
+      <File FileName="Assets\Scripts\GUI\Game\GUIInspectorCell.cs" Line="29" Column="18" />
+      <File FileName="Assets\Scripts\GUI\Devices\Panel.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tokens\Components\BodySensor9.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Graphics\Icons.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\Game\GUIInspector.cs" Line="106" Column="54" />
+      <File FileName="Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs" Line="27" Column="26" />
+      <File FileName="Assets\Scripts\GUI\Game\NewTips\Tip.cs" Line="98" Column="45" />
+      <File FileName="Assets\Scripts\GUI\Game\ToolTips\General\TipToken.cs" Line="49" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
