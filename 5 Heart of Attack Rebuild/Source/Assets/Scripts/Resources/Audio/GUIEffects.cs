@@ -65,7 +65,7 @@ namespace HOA.Storage.Audio
         /// <returns>True if sound non-null.</returns>
         static bool Add(string name)
         {
-            AudioClip sound = Resources.Load("Audio/GUI/" + name) as AudioClip;
+            AudioClip sound = UnityEngine.Resources.Load("Audio/GUI/" + name) as AudioClip;
             Archive.Add(name, sound);
             return (sound != null);
         }

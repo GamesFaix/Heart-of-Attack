@@ -4,28 +4,19 @@ using HOA.Collections;
 
 namespace HOA.Abilities
 {
-
-    public enum Rank {
-        None = 0,
-        Move,
-        Focus,
-        Attack,
-        Special,
-        Create
-    }
-
     public delegate bool UsableTest(out string message);
-        
-
-    public class Ability : IComparable<Ability>, IEffectUser
+    
+    public partial class Ability : IComparable<Ability>, IEquatable<Ability>, IEffectUser
     {
         #region Properties
         
         public IAbilityUser User { get; private set; }
         
         public string Name { get; private set; }
-        public Func<string> Desc;
+        public Description Desc;
         public Rank Rank { get; private set; }
+        public AbilityArgs Args { get; private set; }
+
 
         public bool UsedThisTurn { get; private set; }
         public UsableTest Usable { get; private set; }
@@ -43,11 +34,15 @@ namespace HOA.Abilities
         
         #endregion 
 
-        private Ability(string name, Rank rank, Price price)
+        private Ability(IAbilityUser user, string name, Rank rank, Price price, AbilityArgs args)
         {
+            User = user;
             Name = name;
-            Desc = () => { return "[Ability description]"; };
             Rank = rank;
+            Price = price;
+            Args = args;
+
+            Desc = Scribe.Write("[Ability description]");
 
             UsedThisTurn = false;
             Usable += UserInQueue;
@@ -56,7 +51,6 @@ namespace HOA.Abilities
             Usable += Affordable;
             Usable += AlreadyProcessing;
             
-            Price = price;
             Aims = new List<Aim>();
 
             PreEffects = () => { Charge(); };
@@ -85,28 +79,47 @@ namespace HOA.Abilities
             }
         }
 
+        #region IComparable & IEquatable
+
+        /// <summary> Compare by Rank, then Price, then Name </summary>
         public int CompareTo(Ability other)
         {
-            try
+            if (Rank < other.Rank) 
+                return -1;
+            else if (Rank > other.Rank) 
+                return 1;
+            else
             {
-                if (Rank < other.Rank) 
-                    return -1;
-                else if (Rank > other.Rank) 
-                    return 1;
-                else
-                {
-                    int i = Price.CompareTo(other.Price);
-                    if (i != 0) 
-                        return i;
-                    else 
-                        return (Name.CompareTo(other.Name));
-                }
-            }
-            catch
-            {
-                return 0;
+                int i = Price.CompareTo(other.Price);
+                if (i != 0) 
+                    return i;
+                else 
+                    return (Name.CompareTo(other.Name));
             }
         }
+
+        public bool Equals(Ability other)
+        {
+            if (Name != other.Name)
+                return false;
+            return Args == other.Args;
+        }
+
+        public override bool Equals(object other)
+        {
+            return (other is Ability && (other as Ability).Equals(this));
+        }
+
+        public override int GetHashCode() 
+        {
+            Debug.Log("No custom implementation.");
+            return base.GetHashCode(); 
+        }
+
+        public static bool operator ==(Ability a, Ability b) { return a.Equals(b); }
+        public static bool operator !=(Ability a, Ability b) { return !a.Equals(b); }
+
+        #endregion
 
         #region Usable tests
 
@@ -143,5 +156,18 @@ namespace HOA.Abilities
         }
 
         #endregion
+
+        public Ability ToAbility() { return this; }
+        public IAbilityUser ToAbilityUser() { return User; }
+        public Tokens.ITokenCreator ToTokenCreator()
+        {
+            if (ToAbilityUser() != null)
+            {
+                Token t = ToAbilityUser().ToToken();
+                if (t != null)
+                    return t.Owner;
+            }
+            return null;
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace HOA.Tokens
         /// <param name="thisToken">Assigns to TokenComponent.ThisToken</param>
         /// <param name="flags">Assigns to Flags</param>
         /// <param name="plane">Assigns to Plane</param>
-        public Body(Token thisToken, TokenFlags flags, Plane plane)
+        public Body(Token thisToken, Plane plane, TokenFlags flags = TokenFlags.None)
             : base (thisToken)
         {
             Flags = flags;
@@ -52,6 +52,25 @@ namespace HOA.Tokens
         public TokenSet Cellmates { get { return Cell.Occupants - ThisToken; } }
         public TokenSet Neighbors { get { return Cell.Neighbors.Occupants; } }
         public TokenSet NeighborsAndCellmates { get { return Cell.NeighborsAndSelf.Occupants; } }
+
+        public void Enter(Cell cell)
+        {
+            if (!CanEnter(cell))
+                throw new Exception("Illegal cell entrance!");
+            cell.Enter(ThisToken);
+        }
+
+        public void Swap(Token other)
+        {
+            if (!CanSwapWith(other))
+                throw new Exception("Illegal cell swap!");
+
+            Cell c = Cell;
+            Cell otherC = other.Cell;
+            Exit();
+            other.Enter(c);
+            Enter(otherC);
+        }
 
         public void DefaultExit()
         {

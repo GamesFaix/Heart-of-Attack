@@ -6,7 +6,7 @@
         {
             Factions.Load();
             Players.Load();
-            TokenTemplates.Load();
+            Tokens.Load();
         }
     }
 

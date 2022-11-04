@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA 
+namespace HOA.Tokens
 { 
     [Flags]
     public enum TokenFlags : byte
@@ -25,7 +25,14 @@ namespace HOA
             return !((a & b) == TokenFlags.None);
         }
 
-
+        public static void Add(this TokenFlags flags, TokenFlags newFlags)
+        {
+            flags |= newFlags;
+        }
+        
+        public static void Remove(this TokenFlags flags, TokenFlags oldFlags)
+        {
+            flags &= ~oldFlags;
+        }
     }
-
 }

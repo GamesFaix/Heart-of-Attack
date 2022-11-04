@@ -4,7 +4,7 @@ using HOA.Collections;
 
 namespace HOA.Abilities
 {
-    public class EffectSequence : NestedList<Effect>, IEffect
+    public partial class EffectSequence : NestedList<Effect>, IEffect
     {
         #region Properties
 
@@ -57,7 +57,11 @@ namespace HOA.Abilities
             }
         }
 
-
+        public override void AddToEnd(Effect e)
+        {
+            e.Sequence = this;
+            AddToEnd(e);
+        }
 
 
 

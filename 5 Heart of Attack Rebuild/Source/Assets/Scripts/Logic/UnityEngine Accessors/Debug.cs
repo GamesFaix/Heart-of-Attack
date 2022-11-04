@@ -5,10 +5,16 @@
     /// </summary>
     public static class Debug
     {
-        /// <summary>
-        /// UnityEngine.Debug.Log
+        /// <summary> Forwards message to UnityEngine.Debug.Log </summary>
+        public static void Log(string message) { UnityEngine.Debug.Log(message); }
+
+        /// <summary> 
+        /// Processes message with String.Format, 
+        /// then forwards to UnityEngine.Debug.Log.
         /// </summary>
-        /// <param name="str"></param>
-        public static void Log(string str) { UnityEngine.Debug.Log(str); }
+        public static void Log(string message, params object[] objects)
+        {
+            Log(string.Format(message, objects));
+        }
     }
 }

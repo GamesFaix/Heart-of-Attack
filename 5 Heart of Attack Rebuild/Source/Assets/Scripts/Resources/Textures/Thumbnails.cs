@@ -115,7 +115,7 @@ namespace HOA.Storage.Textures
         }
         static void Add(Species species, string fileName)
         {
-            Archive.Add(species, Resources.Load("Images/Thumbnails/" + fileName) as Texture2D);
+            Archive.Add(species, UnityEngine.Resources.Load("Images/Thumbnails/" + fileName) as Texture2D);
 
 #if DEBUG
             if (species != Species.None)

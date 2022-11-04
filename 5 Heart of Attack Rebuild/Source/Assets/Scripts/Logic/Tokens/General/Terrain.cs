@@ -8,12 +8,9 @@ namespace HOA
 	public partial class Terrain : Token
 	{
        
-        private Terrain(string name, Species species)
-            : base(Force.Player, name, species)
+        private Terrain(ITokenCreator creator, Species species)
+            : base(creator, species)
         {
-            body = new Body(this, TokenFlags.None, Plane.Terrain); 
-        
-        
         }
 
 

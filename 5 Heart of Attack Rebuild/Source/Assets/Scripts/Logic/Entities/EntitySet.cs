@@ -7,11 +7,11 @@ namespace HOA
 
     public class EntitySet : ListSet<IEntity>, IEnumerable<IEntity>
     {
-        public EntitySet() { list = new List<IEntity>(); }
+        public EntitySet(int capacity = 4) { list = new List<IEntity>(capacity); }
 
-        public EntitySet(IEntity t)
+        public EntitySet(IEntity t, int capacity = 4)
         {
-            list = new List<IEntity>();
+            list = new List<IEntity>(capacity);
             list.Add(t);
         }
 
@@ -72,6 +72,33 @@ namespace HOA
             set.Add(set2);
             return set;
         }
+
+        public CellSet Cells
+        {
+            get
+            {
+                CellSet cells = new CellSet();
+                foreach (IEntity e in this)
+                    if (e is Cell)
+                        cells.Add(e as Cell);
+                return cells;
+            }
+
+        }
+
+        public TokenSet Tokens
+        {
+            get
+            {
+                TokenSet tokens = new TokenSet();
+                foreach (IEntity e in this)
+                    if (e is Token)
+                        tokens.Add(e as Token);
+                return tokens;
+            }
+
+        }
+
 
     }
 }

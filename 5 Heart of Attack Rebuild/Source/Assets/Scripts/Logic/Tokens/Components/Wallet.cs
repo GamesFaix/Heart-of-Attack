@@ -9,7 +9,7 @@ namespace HOA.Tokens
         public Stat Focus { get; protected set; }
 
         private Wallet(Unit thisToken, Stat energy, Stat focus)
-            : base (thisToken)
+            : base ((Token)thisToken)
         {
             Energy = energy;
             Focus = focus;

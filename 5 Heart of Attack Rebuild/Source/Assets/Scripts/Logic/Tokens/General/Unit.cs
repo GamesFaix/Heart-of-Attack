@@ -6,7 +6,7 @@ using HOA.Abilities;
 namespace HOA 
 { 
 
-	public class Unit : Token, IAbilityUser
+	public partial class Unit : Token
 	{
         public Rank rank { get; set; }
         
@@ -23,19 +23,25 @@ namespace HOA
         public bool Skipped { get { return watch.Skipped; } }
         public Stat Health { get { return vitality.Health; } }
         public Stat Defense {get {return vitality.Defense;}}
-        
-        private Unit (IPlayer player, string name, Species species) 
-            : base (player, name, species)
+
+        public Arsenal arsenal { get; private set; }
+
+        public Unit (ITokenCreator creator, Species species, Rank rank, Species remains = Species.Corpse) 
+            : base (creator, species)
         {
+            this.rank = rank;
+            Remains = remains;
             wallet = new Wallet(this, 2);
             watch = new Watch(this, 0);
             vitality = new Vitality(this, 1);
+            arsenal = new Arsenal(this);
         }
 
         public void StatAdd(IEffect effect, Stats stat, int n) { }
         public void StatAddMax(IEffect effect, Stats stat, int n) { }
         public void StatSet(IEffect effect, Stats stat, int n) { }
         public void StatSetMax(IEffect effect, Stats stat, int n) { }
+        public bool Damage(IEffect effect, int n) { return vitality.Damage(n); }
 
         public void OnTurnStart() { }
         public void OnTurnEnd() { }

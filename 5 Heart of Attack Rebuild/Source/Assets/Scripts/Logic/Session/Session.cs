@@ -16,6 +16,8 @@ namespace HOA
         private PlayerRegistry playerReg { get; set; }
         private Tokens.TokenRegistry tokenReg { get; set; }
         public TurnQueue Queue {get; private set;}
+        public bool paused { get; private set; }
+
 
         #endregion
 
@@ -59,6 +61,11 @@ namespace HOA
 
         public TokenSet tokens { get { return tokenReg.Tokens; } }
         public int NextAvailableInstance(Tokens.Species s) { return tokenReg.NextAvailableInstance(s); }
+
+        public Token Create(Tokens.ITokenCreator creator, Tokens.Species species, Cell cell)
+        {
+            return tokenReg.Create(creator, species, cell);
+        }
 
         #endregion
 

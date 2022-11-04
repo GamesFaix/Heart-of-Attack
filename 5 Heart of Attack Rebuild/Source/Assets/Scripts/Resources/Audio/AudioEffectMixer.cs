@@ -18,7 +18,7 @@ namespace HOA
 
         void Awake()
         {
-            channelPrefab = Resources.Load("Prefabs/Audio Channel") as GameObject;
+            channelPrefab = UnityEngine.Resources.Load("Prefabs/Audio Channel") as GameObject;
             channelCount = 8;
             sources = new List<AudioSource>();
             startTimes = new Dictionary<AudioSource, float>();

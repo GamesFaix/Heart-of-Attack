@@ -34,13 +34,13 @@ namespace HOA {
         void LoadAudioSystem()
         {
             HOA.Audio.Load();
-            GameObject mixerPrefab = Resources.Load("Prefabs/Audio Mixer") as GameObject;
+            GameObject mixerPrefab = UnityEngine.Resources.Load("Prefabs/Audio Mixer") as GameObject;
             mixerPrefab.InstantiateNowhereUnder(gameObject, "Audio Effect Mixer");
         }
         void LoadGUISystem()
         {
             HOA.Textures.Load();
-            GameObject guiPrefab = Resources.Load("Prefabs/GUI Anchor") as GameObject;
+            GameObject guiPrefab = UnityEngine.Resources.Load("Prefabs/GUI Anchor") as GameObject;
             guiPrefab.InstantiateNowhereUnder(gameObject, "GUI Anchor");   
         }
     

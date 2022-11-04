@@ -21,8 +21,20 @@ namespace HOA.Tokens
             return instanceCounts[species];
         }
 
+        public Token Create(ITokenCreator creator, Species species, Cell cell)
+        {
+            if (HOA.Reference.Tokens.templates[species].CanEnter(cell))
+            {
+                Token newToken = HOA.Reference.Tokens.constructors[species](creator);
+                newToken.Enter(cell);
+                return newToken;
+            }
+            else
+                throw new Exception(species + " cannot be created in " + cell + ".");
+        }
 
-        public void Add(Token t, Species species)
+
+        void Add(Token t, Species species)
         {
             Tokens.Add(t);
             instanceCounts[species]++;            

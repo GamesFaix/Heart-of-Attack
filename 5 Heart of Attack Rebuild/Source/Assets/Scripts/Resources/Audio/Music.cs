@@ -49,7 +49,7 @@ namespace HOA.Storage.Audio
 
         static void Add(FactionEnum f, string fileName)
         {
-            Archive.Add(f, Resources.Load("Audio/Music/" + fileName) as AudioClip);
+            Archive.Add(f, UnityEngine.Resources.Load("Audio/Music/" + fileName) as AudioClip);
 #if DEBUG
             total++;
             if (Archive[f] == null)

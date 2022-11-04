@@ -11,13 +11,16 @@ namespace HOA.Tokens
         public int Instance { get; private set; }
         public Player Owner { get; set; }
 
-        public Identity(IPlayer owner, Token thisToken, string name, Species species)
+        public Identity(ITokenCreator creator, Token thisToken, Species species)
             : base (thisToken)
         {
-            Name = name;
+            Name = Reference.Tokens.names[species];
             Species = species;
-            Instance = Session.Active.NextAvailableInstance(species);
-            Owner = owner as Player;
+            if (Session.Active != null) 
+                Instance = Session.Active.NextAvailableInstance(species);
+            else //(only if template)
+                Instance = -1;
+            Owner = creator as Player;
         }
         
         public override string ToString() { return Name + " " + Instance; }

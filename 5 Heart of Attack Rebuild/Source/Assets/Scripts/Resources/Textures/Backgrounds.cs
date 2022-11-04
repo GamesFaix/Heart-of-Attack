@@ -53,7 +53,7 @@ namespace HOA.Storage.Textures
         /// <param name="name">File name in Images/Textures/Backgrounds/ and dictionary key.</param>
         static void Add(string name)
         {
-            Archive.Add(name, Resources.Load("Images/Textures/Backgrounds/" + name) as Texture2D); 
+            Archive.Add(name, UnityEngine.Resources.Load("Images/Textures/Backgrounds/" + name) as Texture2D); 
         }
 
         /// <summary>

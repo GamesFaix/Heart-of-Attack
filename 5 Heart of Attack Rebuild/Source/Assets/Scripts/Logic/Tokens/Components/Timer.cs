@@ -4,19 +4,17 @@ using HOA.Abilities;
 namespace HOA.Tokens
 {
     
-    public class Timer : TokenComponent
+    public partial class Timer : TokenComponent, IEffectUser
     {
-        public delegate bool TimerCondition(TurnChangeEventArgs args);
-
         #region //Properties
 
         public string Name { get; private set; }
-        public Func<string> Desc { get; private set; }
+        public Description Desc { get; private set; }
         public IEffect Source { get; private set; }
         public int Modifier { get; private set; }
         public Ability Ability { get; private set; }
         public int Turns { get; private set; }
-        public TimerCondition Test { get; private set; }
+        public Predicate<TurnChangeEventArgs> Test { get; private set; }
         public Action Activate { get; private set; }
 
         #endregion
@@ -29,7 +27,7 @@ namespace HOA.Tokens
             : base(thisToken)
         {
             Name = "[Timer]";
-            Desc = () => { return "[Timer description.]"; };
+            Desc = Scribe.Write("[Timer description.]");
             this.Source = source;
             this.Modifier = modifier;
             this.Ability = ability;
@@ -86,5 +84,9 @@ namespace HOA.Tokens
         }
 
         public override string ToString() { return Name; }
+
+        public Ability ToAbility() { return (Source as Effect).User.ToAbility(); }
+        public IAbilityUser ToAbilityUser() { return ToAbility().User; }
+        public ITokenCreator ToTokenCreator() { return ToAbilityUser().ToTokenCreator(); }
     }
 }

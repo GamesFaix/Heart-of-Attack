@@ -80,7 +80,7 @@ namespace HOA.Storage.Textures
         /// <returns>True if texture non-null.</returns>
         static bool Add(string folder, string name)
         {
-            Texture2D icon = Resources.Load("Images/Icons/" + folder +"/" + name) as Texture2D;
+            Texture2D icon = UnityEngine.Resources.Load("Images/Icons/" + folder + "/" + name) as Texture2D;
             Archive.Add(name, icon);
             return (icon != null);
         }

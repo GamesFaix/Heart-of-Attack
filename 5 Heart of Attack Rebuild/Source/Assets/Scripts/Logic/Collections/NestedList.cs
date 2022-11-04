@@ -37,7 +37,7 @@ namespace HOA.Collections
 
         #region Add/Remove/Contains
 
-        public void AddToEnd(T item)
+        public virtual void AddToEnd(T item)
         {
             List<T> subList = new List<T>();
             subList.Add(item);
