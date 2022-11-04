@@ -3,19 +3,15 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Obstacle : Token{
+	public partial class Obstacle : Token{
 
-		public Obstacle () {
+		protected Obstacle (Source source, Species species, string name, bool unique=false, bool template=false) 
+            : base (source, species, name, unique, template)
+        {
 			Body = new Body(this);
-			TargetClass += TargetClasses.Ob;
 			Plane = Plane.Ground;
-			OnDeath = EToken.NONE;
-		}
+			OnDeath = Species.None;
 
-		protected void BuildHeart () {
-			Plane = Plane.Tall;
-            TargetClass += TargetClasses.Heart;
-			Neutralize();
 		}
 
 		protected void Neutralize () {

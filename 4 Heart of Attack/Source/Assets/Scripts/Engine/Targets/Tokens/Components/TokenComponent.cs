@@ -6,13 +6,13 @@ namespace HOA {
 
         public Token Parent { get; protected set; }
         
-        public abstract void Draw(Panel panel);
-
         public TokenComponent(Token parent)
         {
             Parent = parent;
         }
-    
-    
+
+        public abstract void Draw(Panel panel);
+
+        public override abstract string ToString();
     }
 }

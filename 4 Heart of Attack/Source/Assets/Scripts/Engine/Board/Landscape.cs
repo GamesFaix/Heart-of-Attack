@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace HOA { 
 
 	public class Landscape {
-		public Matrix<EToken> Tokens {get; private set;}
+		public Matrix<Species> Tokens {get; private set;}
 		public Board Board {get; private set;}
 
 		public Landscape (Board board) {
 			Board = board;
-			Tokens = new Matrix<EToken> (Board.CellCount);
-			foreach (index2 index in Tokens.Size) {Tokens[index] = EToken.NONE;}
+			Tokens = new Matrix<Species> (Board.CellCount);
+			foreach (index2 index in Tokens.Size) {Tokens[index] = Species.None;}
 		}
 
-		public void Add (index2 index, EToken token) {
+		public void Add (index2 index, Species token) {
 			if (Tokens.PeripheralIndexes.Contains(index)) {
 				Debug.Log("Landscape cannot contain Token in border cell.");
 			}
@@ -26,7 +26,7 @@ namespace HOA {
 			}
 		}
 	
-		public void AddRandom (float density, Distribution<EToken> dist) {
+		public void AddRandom (float density, Distribution<Species> dist) {
 			int totalCells = Tokens.Size.Count - Tokens.PeripheralIndexes.Count;
 			int finalTokenCount = (int)Mathf.Round(density * totalCells);
 			int currentCount = FullIndexes.Count;
@@ -35,7 +35,7 @@ namespace HOA {
 
 			for (int i=0; i<newTokenCount; i++) {
 				index2 index = empty.Random();
-				EToken token = dist.Random();
+				Species token = dist.Random();
 				Tokens[index] = token;
 				empty.Remove(index);
 			}
@@ -44,7 +44,7 @@ namespace HOA {
 		public void Build () {
 			EffectGroup effects = new EffectGroup();
 			foreach (index2 index in Tokens.Size) {
-				if (Tokens[index] != EToken.NONE) {
+				if (Tokens[index] != Species.None) {
 					Cell cell = Board.Cell(index);
                     effects.Add(Effect.Create(Source.Neutral, cell, Tokens[index]));
 				}
@@ -57,7 +57,7 @@ namespace HOA {
 				Group<index2> empty = new Group<index2>();
 				foreach (index2 index in Tokens.Size) {
 					if (!Tokens.PeripheralIndexes.Contains(index)
-					 && Tokens[index] == EToken.NONE) {empty.Add(index);}
+					 && Tokens[index] == Species.None) {empty.Add(index);}
 				}
 				return empty;
 			}
@@ -68,7 +68,7 @@ namespace HOA {
 				Group<index2> full = new Group<index2>();
 				foreach (index2 index in Tokens.Size) {
 					if (!Tokens.PeripheralIndexes.Contains(index)
-					    && Tokens[index] != EToken.NONE) {full.Add(index);}
+					    && Tokens[index] != Species.None) {full.Add(index);}
 				}
 				return full;
 			}

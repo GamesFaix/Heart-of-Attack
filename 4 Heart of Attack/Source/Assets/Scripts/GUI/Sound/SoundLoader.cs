@@ -8,7 +8,7 @@ namespace HOA {
 		static List<AudioClip> themes;
 		public static AudioClip click;
 		public static AudioClip inspect;
-		public static AudioClip target;
+		public static AudioClip Target;
 		
 		public static void Load () {
 			themes = new List<AudioClip>();
@@ -23,7 +23,7 @@ namespace HOA {
 
 			click = LoadSound("GUI/Click");
 			inspect = LoadSound("GUI/Inspect");
-			target = LoadSound("GUI/Target");
+			Target = LoadSound("GUI/Target");
 
 		}
 

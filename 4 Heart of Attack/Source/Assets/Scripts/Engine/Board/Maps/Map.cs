@@ -9,7 +9,7 @@ namespace HOA {
 		public Board Board {get; protected set;}
 		public Landscape Landscape {get; protected set;}
 		public float Density {get; protected set;}
-		public Distribution<EToken> Dist {get; protected set;}
+		public Distribution<Species> Dist {get; protected set;}
 
 		public abstract Board Build ();
 

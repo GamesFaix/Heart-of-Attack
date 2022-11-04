@@ -7,11 +7,11 @@
 			Size = new size2(5,5);
 			
 			Density = 0.5f;
-			Dist = new Distribution<EToken> ();
-			Dist.Add(new Possibility<EToken>(EToken.ANTE,3));
-			//Dist.Add(new Possibility<EToken>(EToken.HOLE,1));
-			Dist.Add(new Possibility<EToken>(EToken.PYLO,1));
-			//Dist.Add(new Possibility<EToken>(EToken.EXHA,1));
+			Dist = new Distribution<Species> ();
+			Dist.Add(new Possibility<Species>(Species.Antenna,3));
+			//Dist.Add(new Possibility<Species>(Species.Gap,1));
+			Dist.Add(new Possibility<Species>(Species.Pylon,1));
+			//Dist.Add(new Possibility<Species>(Species.Exhaust,1));
 		}
 		
 		public override Board Build () {
@@ -32,10 +32,10 @@
 			Landscape.Add(new index2(4,10), CornerPass.FlipVer());
 			Landscape.Add(new index2(10,10), CornerPass.FlipHor().FlipVer());
 
-			Landscape.Add(new index2(4,8), EToken.EXHA);
-			Landscape.Add(new index2(8,4), EToken.EXHA);
-			Landscape.Add(new index2(8,12), EToken.EXHA);
-			Landscape.Add(new index2(12,8), EToken.EXHA);
+			Landscape.Add(new index2(4,8), Species.Exhaust);
+			Landscape.Add(new index2(8,4), Species.Exhaust);
+			Landscape.Add(new index2(8,12), Species.Exhaust);
+			Landscape.Add(new index2(12,8), Species.Exhaust);
 
 
 
@@ -45,20 +45,20 @@
 
 		Terrain Gap {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.HOLE, EToken.HOLE, EToken.HOLE,
-					EToken.HOLE, EToken.HOLE, EToken.HOLE,
-					EToken.NONE, EToken.HOLE, EToken.HOLE
+				return new Terrain (new Species[] {
+					Species.Gap, Species.Gap, Species.Gap,
+					Species.Gap, Species.Gap, Species.Gap,
+					Species.None, Species.Gap, Species.Gap
 				});
 			}
 		}
 
 		Terrain CornerPass {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.EXHA, EToken.NONE, EToken.HOLE,
-					EToken.NONE, EToken.NONE, EToken.NONE,
-					EToken.HOLE, EToken.NONE, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.Exhaust, Species.None, Species.Gap,
+					Species.None, Species.None, Species.None,
+					Species.Gap, Species.None, Species.None
 				});
 			}
 		}

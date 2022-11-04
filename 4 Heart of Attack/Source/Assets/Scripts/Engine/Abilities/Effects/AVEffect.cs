@@ -22,9 +22,9 @@ namespace HOA {
 
         public AVEffect(string fileName) : this(fileName, fileName) { }
 
-        public void Play(Target target)
+        public void Play(Target Target)
         {
-            if (Image != null) target.Display.Effect(Image);
+            if (Image != null) Target.Display.Effect(Image);
             if (Sound != null) Mixer.Play(Sound);
         }
 

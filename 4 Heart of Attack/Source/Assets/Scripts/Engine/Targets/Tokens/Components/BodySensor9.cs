@@ -4,7 +4,9 @@ namespace HOA {
 	
 	public class BodySensor9 : Body, IDeepCopyToken<BodySensor9> {
 		
-		public BodySensor9 (Token parent, SensorContructor sc) : base(parent) {
+		public BodySensor9 (Token parent, SensorContructor sc) 
+            : base(parent) 
+        {
 			this.sc = sc;
 		}
 
@@ -17,24 +19,26 @@ namespace HOA {
 		protected override void EnterSpecial (Cell newCell) {
 			sensors = new List<Sensor>();
 			TargetGroup cells = Cell.Neighbors(true);
-			foreach (Cell c in cells) {
+			foreach (Cell c in cells)
 				if (!(c is ExoCell)) {
-					Sensor s = sc(parent, c);
+					Sensor s = sc(Parent, c);
 					sensors.Add(s);
 					c.Sensors.Add(s);
 				}
-			}
 		}
 		
 		public override void Exit () {
-			if (sensors != null) {
-				for (int i=sensors.Count-1; i>=0; i--) {
+			if (sensors != null)
+				for (int i=sensors.Count-1; i>=0; i--)
 					sensors[i].Delete();
-				}
-			}
-			if (Cell != null) {Cell.Exit(parent);}
+			if (Cell != null) 
+                Cell.Exit(Parent);
 		}
 		
-		public void DestroySensors () {foreach (Sensor s in sensors) {s.Delete();} }
+		public override void DestroySensors () 
+        {
+            foreach (Sensor s in sensors) 
+                s.Delete(); 
+        }
 	}
 }

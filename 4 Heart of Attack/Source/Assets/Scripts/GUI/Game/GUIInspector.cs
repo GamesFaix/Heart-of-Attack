@@ -62,7 +62,7 @@ public static class GUIInspector {
 		float yStart = p.y2;
 
 		p.NudgeX();
-		t.DisplayThumbName(new Panel (p.Box(250), p.LineH, p.s));
+		InspectorInfo.InspectTokenButton(t, new Panel (p.Box(250), p.LineH, p.s));
 
 		p.NudgeX();
 		if (t.Owner != default(Player) && t.Owner!=Roster.Neutral) {Owner (t, new Panel (p.Box(100), p.LineH, p.s), super);}
@@ -70,7 +70,7 @@ public static class GUIInspector {
 		p.NextLine();
 		p.NudgeX();p.NudgeX();p.NudgeX();
 
-		t.DisplayOnDeath(new Panel (p.Box(200), p.LineH, p.s));
+		InspectorInfo.InspectOnDeathButton(t, new Panel (p.Box(200), p.LineH, p.s));
 		p.NextLine();
 		p.NudgeY();
 		p.NudgeY();
@@ -79,10 +79,10 @@ public static class GUIInspector {
 		t.Plane.Draw(new Panel (p.Box(iconSize*3), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		t.TargetClass.Display(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
+		t.Body.Draw(new Panel (p.Box(iconSize*3.5f), p.LineH, p.s));
 
 		p.NudgeX(); p.NudgeX();
-		if (!t.IsTemplate) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
+		if (!t.ID.Template) {Cell(t, new Panel (p.Box(iconSize*4), p.LineH, p.s), super);}
 
 
 		p.NextLine();
@@ -101,7 +101,7 @@ public static class GUIInspector {
 			if (RightClick) {TipInspector.Inspect(ETip.CELL);}
 		}
 		p.ResetX();
-		GUI.Box(p.IconBox, Icons.TargetClasses[TargetClasses.Cell], p.s);
+		GUI.Box(p.IconBox, Icons.Cell, p.s);
 		p.NudgeY(); p.NudgeX();
 		GUI.Label (p.Box(50), t.Body.Cell.ToString(), p.s);
 		p.NudgeY(false);

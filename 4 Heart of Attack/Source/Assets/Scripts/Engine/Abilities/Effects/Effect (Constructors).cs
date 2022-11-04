@@ -7,26 +7,26 @@ namespace HOA
     public partial class Effect
     {
         #region //Create & Destroy
-        public static Effect Create(Source source, Cell target, EToken etoken)
+        public static Effect Create(Source source, Cell Target, Species Species)
         {
-            Effect e = new Effect("Create", source, target, etoken);
+            Effect e = new Effect("Create", source, Target, Species);
             e.Process = () =>
             {
                 Token newToken;
-                if (TokenFactory.Create(e.Source, e.EToken, (Cell)e.Target, out newToken))
+                if (TokenFactory.Create(e.Source, e.Species, (Cell)e.Target, out newToken))
                     AVEffect.Birth.Play(newToken);
             };
             return e;
         }
-        public static Effect DestroyCleanUp(Source source, Token target)
+        public static Effect DestroyCleanUp(Source source, Token Target)
         {
-            Effect e = new Effect("Destroy Clean Up", source, target);
-            e.Process = () => { ((Token)e.Target).Die(e.Source); };
+            Effect e = new Effect("Destroy Clean Up", source, Target);
+            e.Process = () => { ((Token)e.Target).Destroy(e.Source, true, true); };
             return e;
         }
-        public static Effect DestroyObstacle(Source source, Token target)
+        public static Effect DestroyObstacle(Source source, Token Target)
         {
-            Effect e = new Effect("Destroy Obstacle", source, target);
+            Effect e = new Effect("Destroy Obstacle", source, Target);
             e.Process = () =>
             {
                 AVEffect.Destruct.Play(e.Target);
@@ -37,9 +37,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect DestroyUnit(Source source, Token target)
+        public static Effect DestroyUnit(Source source, Token Target)
         {
-            Effect e = new Effect("Destroy Unit", source, target);
+            Effect e = new Effect("Destroy Unit", source, Target);
             e.Process = () =>
             {
                 AVEffect.Death.Play(e.Target);
@@ -50,14 +50,14 @@ namespace HOA
             };
             return e;
         }
-        public static EffectSeq Detonate(Source source, Token target)
+        public static EffectSeq Detonate(Source source, Token Target)
         {
-            return new Effects.Detonate(source, target);
+            return new Effects.Detonate(source, Target);
         }
 
-        public static Effect Detonate2(Source source, Token target)
+        public static Effect Detonate2(Source source, Token Target)
         {
-            Effect e = new Effect("Detonate2", source, target);
+            Effect e = new Effect("Detonate2", source, Target);
             e.Process = () =>
             {
                 AVEffect.Detonate.Play(e.Target);
@@ -65,9 +65,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect GetHeart(Source source, Token target)
+        public static Effect GetHeart(Source source, Token Target)
         {
-            Effect e = new Effect("Get Heart", source, target);
+            Effect e = new Effect("Get Heart", source, Target);
             e.Process = () =>
             {
                 EffectGroup effects = new EffectGroup();
@@ -80,15 +80,15 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Replace(Source source, Token target, EToken etoken)
+        public static Effect Replace(Source source, Token Target, Species Species)
         {
-            Effect e = new Effect("Replace", source, target, etoken);
+            Effect e = new Effect("Replace", source, Target, Species);
             e.Process = () =>
             {
                 Token token = (Token)e.Target;
                 Cell cell = token.Body.Cell;
-                token.Die(e.Source, false, false);
-                TokenFactory.Create(e.Source, e.EToken, cell, false);
+                token.Destroy(e.Source, false, false);
+                TokenFactory.Create(e.Source, e.Species, cell, false);
             };
             return e;
         }
@@ -115,9 +115,9 @@ namespace HOA
             e.Process = () => { TurnQueue.Initialize(); };
             return e;
         }
-        public static Effect Shift(Source source, Unit target, int distance)
+        public static Effect Shift(Source source, Unit Target, int distance)
         {
-            Effect e = new Effect("Shift", source, target, distance);
+            Effect e = new Effect("Shift", source, Target, distance);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -185,7 +185,7 @@ namespace HOA
             {
                 Token t = (Token)e.Targets[0];
                 Cell oldCell = t.Body.Cell;
-                //	target.SpriteMove(cell);
+                //	Target.SpriteMove(cell);
                 t.Body.MoveTo(((Cell)e.Targets[1]));
                 Cell newCell = t.Body.Cell;
                 if (t.Plane.ContainsAny(Plane.Ground)) 
@@ -196,15 +196,15 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Swap(Source source, Token target1, Token target2)
+        public static Effect Swap(Source source, Token Target1, Token Target2)
         {
-            Effect e = new Effect("Swap", source, new Target[2] { target1, target2 });
+            Effect e = new Effect("Swap", source, new Target[2] { Target1, Target2 });
             e.Process = () =>
             {
                 Token t1 = (Token)e.Targets[0];
                 Token t2 = (Token)e.Targets[1];
-                //	target.SpriteMove(other.Cell);
-                //	other.SpriteMove(target.Cell);
+                //	Target.SpriteMove(other.Cell);
+                //	other.SpriteMove(Target.Cell);
                 t1.Body.Swap(t2);
                 GameLog.Out(t1 + " swapped places with " + t2 + ".");
             };
@@ -240,9 +240,9 @@ namespace HOA
 
         #region //Damage
         
-        public static Effect CorrodeInitial(Source source, Unit target, int damage)
+        public static Effect CorrodeInitial(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Corrode Initial", source, target, damage);
+            Effect e = new Effect("Corrode Initial", source, Target, damage);
             e.Process = () =>
             {
                 int cor = (int)Mathf.Floor(e.Modifier * 0.5f);
@@ -253,9 +253,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect CorrodeResidual(Source source, Unit target, int damage)
+        public static Effect CorrodeResidual(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Corrode Residual", source, target, damage);
+            Effect e = new Effect("Corrode Residual", source, Target, damage);
             e.Process = () =>
             {
                 ((Unit)e.Target).AddStat(e.Source, Stats.Health, 0 - e.Modifier);
@@ -264,9 +264,9 @@ namespace HOA
             return e;
         }
 
-        public static Effect Damage(Source source, Unit target, int damage)
+        public static Effect Damage(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Damage", source, target, damage);
+            Effect e = new Effect("Damage", source, Target, damage);
             e.Process = () =>
             {
                 if (((Unit)e.Target).Damage(e.Source, e.Modifier))
@@ -275,9 +275,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Pierce(Source source, Unit target, int damage)
+        public static Effect Pierce(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Pierce", source, target, damage);
+            Effect e = new Effect("Pierce", source, Target, damage);
             e.Process = () =>
             {
                 ((Unit)e.Target).AddStat(e.Source, Stats.Health, 0 - e.Modifier);
@@ -285,9 +285,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Rage(Source source, Unit target, int damage)
+        public static Effect Rage(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Rage", source, target, damage);
+            Effect e = new Effect("Rage", source, Target, damage);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -299,9 +299,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Donate(Source source, Unit target, int damage)
+        public static Effect Donate(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Donate", source, target, damage);
+            Effect e = new Effect("Donate", source, Target, damage);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -315,9 +315,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Leech(Source source, Unit target, int damage)
+        public static Effect Leech(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("Leech", source, target, damage);
+            Effect e = new Effect("Leech", source, Target, damage);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -335,25 +335,25 @@ namespace HOA
             return e;
         }
         
-        public static Effect ExplosionDummy(Source source, Cell target)
+        public static Effect ExplosionDummy(Source source, Cell Target)
         {
-            Effect e = new Effect("Explosion Dummy", source, target);
+            Effect e = new Effect("Explosion Dummy", source, Target);
             e.Process = () => { AVEffect.Explode.Play(e.Target); };
             return e;
         }
-        public static Effect ExplosionIndividual(Source source, Cell target, int damage, bool selfImmune)
+        public static Effect ExplosionIndividual(Source source, Cell Target, int damage, bool selfImmune)
         {
-            Effect e = new Effect("Explosion Individual", source, target, damage, selfImmune);
+            Effect e = new Effect("Explosion Individual", source, Target, damage, selfImmune);
             e.Process = () =>
             {
                 Cell c = (Cell)e.Target;
 
-                TargetGroup targets = c.Occupants - TargetFilter.UnitDest;
-                if (e.Flag) targets.Remove(e.Source.Token);
+                TargetGroup Targets = c.Occupants - TargetFilter.UnitDest;
+                if (e.Flag) Targets.Remove(e.Source.Token);
 
-                foreach (Token t in targets)
+                foreach (Token t in Targets)
                 {
-                    if (t.TargetClass[TargetClasses.Dest])
+                    if (t.Body.Destructible)
                     {
                         AVEffect.Explode.Play(t);
                         e.Source.Sequence.AddToNext(Effect.DestroyObstacle(e.Source, t));
@@ -369,14 +369,14 @@ namespace HOA
             };
             return e;
         }
-        public static EffectSeq ExplosionSequence(Source source, Cell target, int damage, bool selfImmune)
+        public static EffectSeq ExplosionSequence(Source source, Cell Target, int damage, bool selfImmune)
         {
-            return new Effects.Explosion(source, target, damage, selfImmune);
+            return new Effects.Explosion(source, Target, damage, selfImmune);
         }
 
-        public static Effect Shock(Source source, Unit target, int damage, int stun)
+        public static Effect Shock(Source source, Unit Target, int damage, int stun)
         {
-            Effect e = new Effect("Shock", source, target, new int[2] { damage, stun });
+            Effect e = new Effect("Shock", source, Target, new int[2] { damage, stun });
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -386,9 +386,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect WaterLog(Source source, Unit target, int damage)
+        public static Effect WaterLog(Source source, Unit Target, int damage)
         {
-            Effect e = new Effect("WaterLog", source, target, damage);
+            Effect e = new Effect("WaterLog", source, Target, damage);
             e.Process = () =>
             {
                 ((Unit)e.Target).Damage(e.Source, e.Modifier);
@@ -397,15 +397,15 @@ namespace HOA
             return e;
         }
 
-        public static Effect FireInitial(Source source, Token target, int damage)
+        public static Effect FireInitial(Source source, Token Target, int damage)
         {
-            Effect e = new Effect("Fire Initial", source, target, damage);
+            Effect e = new Effect("Fire Initial", source, Target, damage);
             e.Process = () =>
             {
                 EffectGroup nextEffects = new EffectGroup();
                 Token t = (Token)e.Target;
 
-                if (t.TargetClass[TargetClasses.Dest])
+                if (t.Body.Destructible)
                 {
                     nextEffects.Add(Effect.DestroyObstacle(e.Source, t));
                     AVEffect.Fire.Play(t);
@@ -426,13 +426,13 @@ namespace HOA
             return e;
         }
 
-        public static Effect FireSpread(Source source, Token target, int damage)
+        public static Effect FireSpread(Source source, Token Target, int damage)
         {
-            Effect e = new Effect("Fire Spread", source, target, damage);
+            Effect e = new Effect("Fire Spread", source, Target, damage);
             e.Process = () =>
             {
                 Token t = (Token)e.Target;
-                if (t.TargetClass[TargetClasses.Dest])
+                if (t.Body.Destructible)
                 {
                     AVEffect.Fire.Play(t);
                     EffectQueue.Add(Effect.DestroyObstacle(e.Source, t));
@@ -447,9 +447,9 @@ namespace HOA
             return e;
         }
 
-        public static Effect LaserLine(Source source, Unit target, int damage, int decayPercent)
+        public static Effect LaserLine(Source source, Unit Target, int damage, int decayPercent)
         {
-            Effect e = new Effect("Laser Line", source, target, new int[2] { damage, decayPercent });
+            Effect e = new Effect("Laser Line", source, Target, new int[2] { damage, decayPercent });
             e.Process = () =>
             {
                 Token t = (Token)e.Target;
@@ -469,9 +469,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect LaserInitial(Source source, TargetGroup targets, int damage, int decayPercent)
+        public static Effect LaserInitial(Source source, TargetGroup Targets, int damage, int decayPercent)
         {
-            Effect e = new Effect("Laser Initial", source, targets.ToArray(), new int[2]{damage, decayPercent});
+            Effect e = new Effect("Laser Initial", source, Targets.ToArray(), new int[2]{damage, decayPercent});
             e.Process = () =>
             {
                 int currentDmg = e.Modifiers[0];
@@ -492,9 +492,9 @@ namespace HOA
             };
             return e;
         }
-        public static Effect LaserSpread(Source source, Token target, int damage)
+        public static Effect LaserSpread(Source source, Token Target, int damage)
         {
-            Effect e = new Effect("Laser Spread", source, target, damage);
+            Effect e = new Effect("Laser Spread", source, Target, damage);
             e.Process = () =>
             {
                 if (((Unit)e.Target).Damage(e.Source, e.Modifier)) AVEffect.Laser.Play(e.Target);
@@ -508,9 +508,9 @@ namespace HOA
 
         #region //Misc.
 
-        public static Effect Knockback(Source source, Token target, int range, int damage)
+        public static Effect Knockback(Source source, Token Target, int range, int damage)
         {
-            Effect e = new Effect("Knockback", source, target, new int[2] { range, damage });
+            Effect e = new Effect("Knockback", source, Target, new int[2] { range, damage });
             e.Process = () =>
             {
                 Token t = (Token)e.Target;
@@ -562,14 +562,14 @@ namespace HOA
             };
             return e;
         }
-        public static Effect Miss(Source source, Token target)
+        public static Effect Miss(Source source, Token Target)
         {
-            Effect e = new Effect("Miss", source, target);
+            Effect e = new Effect("Miss", source, Target);
             e.Process = () => { AVEffect.Miss.Play(e.Target); };
             return e;
         }
-        public static Effect Stick(Source source, Unit target) {
-            Effect e = new Effect("Stick", source, target);
+        public static Effect Stick(Source source, Unit Target) {
+            Effect e = new Effect("Stick", source, Target);
             e.Process = () =>
             {
                 Ability move = ((Unit)e.Target).Arsenal.Move;
@@ -587,15 +587,15 @@ namespace HOA
 
         #region //Token Properties
 
-        public static Effect AddStat(Source source, Unit target, Stats stat, int change)
+        public static Effect AddStat(Source source, Unit Target, Stats stat, int change)
         {
-            Effect e = new Effect("Add Stat", source, target, stat, change);
+            Effect e = new Effect("Add Stat", source, Target, stat, change);
             e.Process = () => { ((Unit)e.Target).SetStat(e.Source, e.Stat, e.Modifier); };
             return e;
         }
-        public static Effect SetStat(Source source, Unit target, Stats stat, int change)
+        public static Effect SetStat(Source source, Unit Target, Stats stat, int change)
         {
-            Effect e = new Effect("Set Stat", source, target, stat, change);
+            Effect e = new Effect("Set Stat", source, Target, stat, change);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -606,9 +606,9 @@ namespace HOA
             return e;
         }
 
-        public static Effect SetOwner(Source source, Token target, Player owner)
+        public static Effect SetOwner(Source source, Token Target, Player owner)
         {
-            Effect e = new Effect("Set Owner", source, target, owner);
+            Effect e = new Effect("Set Owner", source, Target, owner);
             e.Process = () =>
             {
                 Token t = (Token)e.Target;

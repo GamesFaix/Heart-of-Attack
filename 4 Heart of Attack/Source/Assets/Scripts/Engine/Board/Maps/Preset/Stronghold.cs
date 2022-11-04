@@ -7,12 +7,12 @@
 			Size = new size2(4,4);
 			
 			Density = 0.4f;
-			Dist = new Distribution<EToken> ();
-			//Dist.Add(new Possibility<EToken>(EToken.RAMP,1));
-			Dist.Add(new Possibility<EToken>(EToken.COTT,1));
-			Dist.Add(new Possibility<EToken>(EToken.ROCK,2));
-			Dist.Add(new Possibility<EToken>(EToken.LAVA,1));
-			Dist.Add(new Possibility<EToken>(EToken.MNTN,1));
+			Dist = new Distribution<Species> ();
+			//Dist.Add(new Possibility<Species>(Species.Rampart,1));
+			Dist.Add(new Possibility<Species>(Species.Cottage,1));
+			Dist.Add(new Possibility<Species>(Species.Rock,2));
+			Dist.Add(new Possibility<Species>(Species.Lava,1));
+			Dist.Add(new Possibility<Species>(Species.Mountain,1));
 
 		}
 		
@@ -30,10 +30,10 @@
 			Landscape.Add(new index2(8,3), Corner.FlipHor());
 			Landscape.Add(new index2(8,8), Corner.FlipVer().FlipHor());
 
-			Landscape.Add(new index2(6,1), EToken.LAVA);
-			Landscape.Add(new index2(7,1), EToken.LAVA);
-			Landscape.Add(new index2(6,12), EToken.LAVA);
-			Landscape.Add(new index2(7,12), EToken.LAVA);
+			Landscape.Add(new index2(6,1), Species.Lava);
+			Landscape.Add(new index2(7,1), Species.Lava);
+			Landscape.Add(new index2(6,12), Species.Lava);
+			Landscape.Add(new index2(7,12), Species.Lava);
 
 
 			Populate();
@@ -42,30 +42,30 @@
 
 		Terrain Corner {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.MNTN, EToken.WATR, EToken.WATR,
-					EToken.WATR, EToken.MNTN, EToken.RAMP,
-					EToken.WATR, EToken.RAMP, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.Mountain, Species.Water, Species.Water,
+					Species.Water, Species.Mountain, Species.Rampart,
+					Species.Water, Species.Rampart, Species.None
 				});
 			}
 		}
 
 		Terrain Side {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.LAVA, EToken.NONE, EToken.WATR,
-					EToken.LAVA, EToken.NONE, EToken.WATR,
-					EToken.NONE, EToken.NONE, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.Lava, Species.None, Species.Water,
+					Species.Lava, Species.None, Species.Water,
+					Species.None, Species.None, Species.None
 				});
 			}
 		}
 
 		Terrain Inside {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.RAMP, EToken.NONE, EToken.LAVA,
-					EToken.RAMP, EToken.NONE, EToken.LAVA,
-					EToken.NONE, EToken.NONE, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.Rampart, Species.None, Species.Lava,
+					Species.Rampart, Species.None, Species.Lava,
+					Species.None, Species.None, Species.None
 				});
 			}
 		}

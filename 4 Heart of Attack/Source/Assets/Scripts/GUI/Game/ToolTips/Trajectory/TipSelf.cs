@@ -13,8 +13,8 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions that are Self targeting do not " +
-			          "\nrequire the selection of any target. ",
+			          "Actions that are Self Targeting do not " +
+			          "\nrequire the selection of any Target. ",
 			          p.s);
 		}	
 		public override void SeeAlso (Panel p) {

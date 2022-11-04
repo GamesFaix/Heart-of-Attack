@@ -42,7 +42,7 @@
 		SNCE {
 			if (sender == null) {
 				Token otherAper = null;
-				foreach (Token token in TokenFactory.Tokens) {
+				foreach (Token token in TokenRegistry.Tokens) {
 					if (token is Tokens.Aperture && token != parent) {otherAper = token;}
 				}
 				if (otherAper != null) {
@@ -58,7 +58,7 @@
 		ONE {
 			if (sender == null) {
 				Token otherAper = null;
-				foreach (Token token in TokenFactory.Tokens) {
+				foreach (Token token in TokenRegistry.Tokens) {
 					if (token is Tokens.Aperture && token != parent) {otherAper = token;}
 				}
 				if (otherAper != null) {

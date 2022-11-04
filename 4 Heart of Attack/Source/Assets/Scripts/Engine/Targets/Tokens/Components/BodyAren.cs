@@ -14,9 +14,9 @@ namespace HOA {
 		public BodyAren (Token parent, bool template=false) : base(parent){
 			if (!template) {
 				aliases = new Alias[3];
-				aliases[0] = new ArenaAlias(parent);
-				aliases[1] = new ArenaAlias(parent);
-				aliases[2] = new ArenaAlias(parent);
+				aliases[0] = Alias.Arena(new Source(parent));
+                aliases[1] = Alias.Arena(new Source(parent));
+                aliases[2] = Alias.Arena(new Source(parent));
 				foreach (Alias alias in aliases) {
 					TokenDisplay.Attach(alias);
 				}
@@ -31,7 +31,7 @@ namespace HOA {
 				TargetGroup cellMates = new TargetGroup();
 				if (SquareExists(Cell, out square)) {
 					cellMates.Add(square.Occupants);
-					cellMates.Remove(parent);
+					cellMates.Remove(Parent);
 					foreach (Alias a in aliases) {cellMates.Remove(a);}
 				}
 				return cellMates;
@@ -41,12 +41,13 @@ namespace HOA {
 		public override bool CanEnter (Cell newCell) {
 			TargetGroup square;
 			if (SquareExists(newCell, out square)) {
-				Token occupant;
 				foreach (Cell corner in square) {
-					if (corner is ExoCell) {return false;}
-					if (corner.Contains(Plane.Ethereal, out occupant)) {
-						if (occupant.ID != parent.ID) {return false;}
-					}
+					if (corner is ExoCell) return false;
+                    TargetGroup group = corner.Occupants - TargetFilter.Plane(Plane.Ethereal, true);
+					if (group.Count > 0)
+						foreach (Token t in group)
+                            if (t.ID != Parent.ID) 
+                                return false;
 				}
 				return true;
 			}

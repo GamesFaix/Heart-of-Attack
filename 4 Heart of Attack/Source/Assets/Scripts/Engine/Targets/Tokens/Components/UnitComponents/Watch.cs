@@ -31,5 +31,9 @@ namespace HOA {
 		}
 
 		public override void Draw (Panel p) {InspectorInfo.Watch(this, p);}
+        public override string ToString()
+        {
+            return Parent + "'s Watch";
+        }
 	}
 }

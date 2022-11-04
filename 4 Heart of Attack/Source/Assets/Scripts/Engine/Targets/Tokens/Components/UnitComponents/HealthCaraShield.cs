@@ -20,7 +20,7 @@ namespace HOA {
 		}
 
 		public void Remove () {
-			if (OverShield == null) {((Unit)Parent).SetHealth(Original);}
+			if (OverShield == null) {((Unit)Parent).Health = Original;}
 			else {OverShield.Original = Original;}
 		}
 		
@@ -28,7 +28,7 @@ namespace HOA {
 			get {
 				checked {
 					byte d = (byte)(Original.DEF);
-					if (Parent.ID.Code != EToken.CARA) {d += (byte)(carapace.DEF);}
+					if (Parent.ID.Species != Species.Carapace) {d += (byte)(carapace.DEF);}
 					return Stat.DefenseBonus((Unit)Parent, d);
 				}
 			}

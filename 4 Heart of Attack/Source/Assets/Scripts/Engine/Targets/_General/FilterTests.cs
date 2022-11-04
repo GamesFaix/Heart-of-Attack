@@ -10,16 +10,26 @@ namespace HOA
     public static class FilterTests
     {
 
-        public static readonly FilterTest Cell = (t) => { return (t.TargetClass[TargetClasses.Cell]); };
-        public static readonly FilterTest Token = (t) => { return (t.TargetClass[TargetClasses.Token]); };
-        public static readonly FilterTest Unit  = (t) => { return (t.TargetClass[TargetClasses.Unit]); };
-        public static readonly FilterTest Ob  = (t) => { return (t.TargetClass[TargetClasses.Ob]); };
-        public static readonly FilterTest Dest  = (t) => { return (t.TargetClass[TargetClasses.Dest]); };
-        public static readonly FilterTest Corpse  = (t) => { return (t.TargetClass[TargetClasses.Corpse]); };
-        public static readonly FilterTest King  = (t) => { return (t.TargetClass[TargetClasses.King]); };
-        public static readonly FilterTest Heart  = (t) => { return (t.TargetClass[TargetClasses.Heart]); };
-        public static readonly FilterTest Tram = (t) => { return (t.TargetClass[TargetClasses.Tram]); };
-        public static readonly FilterTest UnitDest = (t) => { return (t.TargetClass[TargetClasses.Unit] || t.TargetClass[TargetClasses.Dest]); };
+        public static readonly FilterTest Cell = (t) => { return (t is Cell); };
+        public static readonly FilterTest Token = (t) => { return (t is Token); };
+        public static readonly FilterTest Unit  = (t) => { return (t is Unit); };
+        public static readonly FilterTest Ob  = (t) => { return (t is Obstacle); };
+        public static readonly FilterTest King = (t) => { return (t is King); };
+        public static readonly FilterTest Heart = (t) => { return (t is Heart); };
+
+
+        public static readonly FilterTest Destructible  = (t) => 
+        { return (t is Token ? ((Token)t).Body.Destructible : false); };
+        public static readonly FilterTest Corpse  = (t) => 
+        { return (t is Token ? ((Token)t).Body.Corpse : false); };
+        public static readonly FilterTest Trample = (t) => 
+        { return (t is Token ? ((Token)t).Body.Trample : false); };
+        public static readonly FilterTest UnitDest = (t) =>
+        {
+            if (t is Unit) return true;
+            if (t is Token && ((Token)t).Body.Destructible) return true;
+            return false;
+        };
         public static readonly FilterTest Legal = (t) => { return (t.Legal); };
 
         public static FilterTest Owner(Player owner, bool b)
@@ -35,30 +45,24 @@ namespace HOA
             {
                 Token token = (Token)t;
                 bool match = ((token.Plane & plane) == plane);
-                return match = b;
+                return (match == b);
             };
         }
-        public static FilterTest EToken(EToken token, bool b)
+        public static FilterTest Species(Species token, bool b)
         {
             return (t) =>
             {
-                return ((((Token)t).ID.Code == token) == b);
+                return ((((Token)t).ID.Species == token) == b);
             };
         }
-        public static FilterTest SpecificTarget(Target target, bool b)
+        public static FilterTest SpecificTarget(Target Target, bool b)
         {
             return (t) =>
             {
-                return ((t == target) == b);
+                return ((t == Target) == b);
             };
         }
-        public static FilterTest TargetClass(TargetClasses tc, bool b)
-        {
-            return (t) =>
-            {
-                return (t.TargetClass[tc] == b);
-            };
-        }
+
         public static FilterTest Occupiable (Token token)
         {
             return (t) => 

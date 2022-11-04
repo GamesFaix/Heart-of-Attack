@@ -15,7 +15,7 @@ namespace HOA {
         public Price Price { get; private set; }
 		
         public Func<string> Desc;
-        public EToken TokenType { get; private set; }
+        public Species Species { get; private set; }
         public virtual Token Template { get; private set; }
         public int Damage { get; private set; }
         public int Modifier { get; private set; }
@@ -44,7 +44,7 @@ namespace HOA {
             Price price, 
             int damage = 0, 
             int modifier = 0,
-            EToken tokenType = EToken.NONE)
+            Species species = Species.None)
         {
             Parent = parent;
             Name = name;
@@ -52,7 +52,7 @@ namespace HOA {
             Price = price;
 
             Desc = () => { return "Default Ability description."; };
-            TokenType = tokenType;
+            Species = species;
             Template = null;
             Damage = damage;
             Modifier = modifier;
@@ -62,7 +62,7 @@ namespace HOA {
             Aims = new List<Aim>();
 
             PreEffects = () => { Charge(); };
-            MainEffects = targets => { };
+            MainEffects = Targets => { };
             PostEffects = () => Targeter.Reset();
 
             Restrict = () => { return false; };
@@ -81,16 +81,16 @@ namespace HOA {
         }
 
 
-        private Ability(Unit parent, string name, int weight, Price price, EToken tokenType)
-            : this(parent, name, weight, price, 0, 0, tokenType) { }
+        private Ability(Unit parent, string name, int weight, Price price, Species species)
+            : this(parent, name, weight, price, 0, 0, species) { }
 
 
 
 		
 		
-		public void Execute (TargetGroup targets) {
+		public void Execute (TargetGroup Targets) {
 			PreEffects();
-			MainEffects(targets);
+			MainEffects(Targets);
 			PostEffects();
 		}
 

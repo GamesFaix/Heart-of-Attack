@@ -7,13 +7,13 @@ namespace HOA {
 			Name = "Random";
 			
 			Density = 0.3f;
-			Dist = new Distribution<EToken>();
-			Dist.Add(new Possibility<EToken>(EToken.TREE,4));
-			Dist.Add(new Possibility<EToken>(EToken.ROCK,2));
-			Dist.Add(new Possibility<EToken>(EToken.WATR,2));
-			Dist.Add(new Possibility<EToken>(EToken.LAVA,1));
-			Dist.Add(new Possibility<EToken>(EToken.MNTN,3));
-			Dist.Add(new Possibility<EToken>(EToken.HILL,1));
+			Dist = new Distribution<Species>();
+			Dist.Add(new Possibility<Species>(Species.Tree,4));
+			Dist.Add(new Possibility<Species>(Species.Rock,2));
+			Dist.Add(new Possibility<Species>(Species.Water,2));
+			Dist.Add(new Possibility<Species>(Species.Lava,1));
+			Dist.Add(new Possibility<Species>(Species.Mountain,3));
+			Dist.Add(new Possibility<Species>(Species.Hill,1));
 		}
 		
 		public Board Build (size2 size) {

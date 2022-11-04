@@ -9,7 +9,6 @@ namespace HOA {
 
         public static Dictionary<HOA.Stats, Texture2D> Stats { get; private set; }
         public static Dictionary<Plane, Texture2D> Planes { get; private set; }
-        public static Dictionary<TargetClasses, Texture2D> TargetClasses { get; private set; }
         public static Dictionary<ETraj, Texture2D> Trajectories { get; private set; }
 
 		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
@@ -28,18 +27,18 @@ namespace HOA {
             AddPlane(Plane.Ground, "Ground");
             AddPlane(Plane.Air, "Air");
             AddPlane(Plane.Ethereal, "Ethereal");
-			
-			TargetClasses = new Dictionary<TargetClasses, Texture2D>();
-            AddType(HOA.TargetClasses.Cell, "Cell");
-            AddType(HOA.TargetClasses.Token, "Token");
-            AddType(HOA.TargetClasses.Unit, "Unit");
-            AddType(HOA.TargetClasses.Ob, "Ob");
-            AddType(HOA.TargetClasses.King, "King");
-            AddType(HOA.TargetClasses.Heart, "Heart");
-            AddType(HOA.TargetClasses.Tram, "Tram");
-            AddType(HOA.TargetClasses.Dest, "Dest");
-            AddType(HOA.TargetClasses.Corpse, "Corpse"); 
-			
+
+            Cell = LoadFile("TargetClasses/Cell");
+            Token = LoadFile("TargetClasses/Token");
+            Unit = LoadFile("TargetClasses/Unit");
+            Ob = LoadFile("TargetClasses/Obstacle");
+            King = LoadFile("TargetClasses/King");
+            Heart = LoadFile("TargetClasses/Heart");
+            Trample = LoadFile("TargetClasses/Trample");
+            Destructible = LoadFile("TargetClasses/Destructible");
+            Corpse = LoadFile("TargetClasses/Corpse");
+
+            Cell = LoadFile("TargetClasses/Cell");
 			Trajectories = new Dictionary<ETraj, Texture2D>();
 			AddTraj (ETraj.NEIGHBOR, "NEIGHBOR"); 
 			AddTraj (ETraj.PATH, "PATH"); 
@@ -64,7 +63,6 @@ namespace HOA {
 
 		static void AddStat (Stats s, string fileName) {Stats.Add(s, LoadFile("Stats/"+fileName));}
 		static void AddPlane (Plane p, string fileName) {Planes.Add(p, LoadFile("Planes/"+fileName));}
-		static void AddType (TargetClasses tc, string fileName) {TargetClasses.Add(tc, LoadFile("TargetClasses/"+fileName));}
 		static void AddTraj (ETraj a, string fileName) {Trajectories.Add(a, LoadFile("Trajectories/"+fileName));}
 
 		public static Texture2D SKIP() {return skip;}
@@ -76,5 +74,15 @@ namespace HOA {
 		public static Texture2D FIR() {return fir;}
 		public static Texture2D EXP() {return exp;}
 		public static Texture2D DMG() {return dmg;}
-	}
+
+        public static Texture2D Cell { get; private set; }
+        public static Texture2D Token { get; private set; }
+        public static Texture2D Unit { get; private set; }
+        public static Texture2D Ob { get; private set; }
+        public static Texture2D King { get; private set; }
+        public static Texture2D Heart { get; private set; }
+        public static Texture2D Trample { get; private set; }
+        public static Texture2D Destructible { get; private set; }
+        public static Texture2D Corpse { get; private set; }
+    }
 }

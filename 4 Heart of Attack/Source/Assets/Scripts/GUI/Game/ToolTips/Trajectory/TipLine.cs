@@ -13,18 +13,18 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions targeting in a Line may select " +
-			          "\ntargets in one of 8 directions. " +
+			          "Actions Targeting in a Line may select " +
+			          "\nTargets in one of 8 directions. " +
 			          "\n(Horizontal, vertical, and basic diagonals) " +
 
-			          "\n\nLine targets may not be further from the " +
+			          "\n\nLine Targets may not be further from the " +
 			          "\npeforming Unit than the aim's Range." +
 
-			          "\n\nMovement actions targeting in a Line may " +
-			          "\nnot target Cells beyond a token in the same " +
+			          "\n\nMovement actions Targeting in a Line may " +
+			          "\nnot Target Cells beyond a token in the same " +
 			          "\nPlane as the moving Unit." +
 
-			          "\n\nAttacks targetting in a Line may not target " +
+			          "\n\nAttacks Targetting in a Line may not Target " +
 			          "\ntokens or Cells beyond any token, except " +
 			          "\nSunken tokens.",
 			          p.s);

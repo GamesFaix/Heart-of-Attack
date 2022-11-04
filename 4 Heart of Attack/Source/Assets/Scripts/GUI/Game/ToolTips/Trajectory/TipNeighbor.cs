@@ -13,12 +13,12 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions targeting Neighbor Cells' may " +
-			          "\ntarget any Cell touching the performing " +
+			          "Actions Targeting Neighbor Cells' may " +
+			          "\nTarget any Cell touching the performing " +
 			          "\nUnit's Cell, or the performing Unit's Cell." +
 
-			          "\n\nActions targeting Neighbor Units' may " +
-			          "\ntarget any Unit in a Cell touching the " +
+			          "\n\nActions Targeting Neighbor Units' may " +
+			          "\nTarget any Unit in a Cell touching the " +
 			          "\nperforming Unit's Cell, or the performing " +
 			          "\nUnit's Cell.",
 			          p.s);

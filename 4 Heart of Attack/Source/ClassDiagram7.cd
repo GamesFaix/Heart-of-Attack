@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HOA.Ability" BaseTypeListCollapsed="true">
+    <Position X="66.75" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="HOA.Ability.LegalTest" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Engine\Abilities\Abilities\Ability.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QKYXx6KhHeyCJoc0wEQlQM5AeCnPq0q0J3IQQyAkSsQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Abilities\Ability (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.Aim" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="68.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIACAACAAECoQCAEALCAAgABgMAMFiIAAZACQAABI=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Components\Aim Constructors.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.AVEffect" Collapsed="true">
+    <Position X="70.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAjRBgCIgQAQgAgAGAQIAAgEigAEMNokhDBJJAAAUQY=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\AVEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Effect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="75.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAiABCCoCoBACQgkAgAIoCTAgBgJAEYQAEIYAQAFEKA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\Effect (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.EffectGroup" Collapsed="true">
+    <Position X="3.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\EffectGroup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.EffectQueue" Collapsed="true">
+    <Position X="77.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAIAAgAAAAAAAgAgAAAGAACIAgAAAAAAAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\EffectQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.EffectSeq" Collapsed="true">
+    <Position X="6.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAgAAAAAEAAAAACQAAAiIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\EffectSeq.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Targeter" Collapsed="true">
+    <Position X="68.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IARAAAAAASAADAUAAQABAAAAAAAoAAhAAABAYAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Targeter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Board" Collapsed="true">
+    <Position X="72" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAgEAAACBAAAAAAJEAAACAgBAAAAIAIACQAIACAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Board.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.BoardFactory" Collapsed="true">
+    <Position X="73.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\BoardFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Cell" Collapsed="true">
+    <Position X="0.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAEAAAAAAEAAIAAAAgBAAEAAgAKAUACCAQYAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Cell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.CellDisplay" Collapsed="true">
+    <Position X="0.5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAABAAAAAgAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\CellDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Direction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="72" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAgIAAAAAABAAAAAAAAAAAAAAAAAEDACAIAABAAY=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Direction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.ExoCell" Collapsed="true">
+    <Position X="0.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgBAAEAAAQIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\ExoCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.ExoCellDisplay" Collapsed="true">
+    <Position X="0.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAEAAAAAAABgAAAAgAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\ExoCellDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Landscape" Collapsed="true">
+    <Position X="73.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAgAQAgAAAICABAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Landscape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Map" Collapsed="true">
+    <Position X="9" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAEAAAAAAAgACAAAAAAAQBAAAAgAAAAAAAACCAAgA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.MapBlank" Collapsed="true">
+    <Position X="8" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\MapBlank.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.MapRandom" Collapsed="true">
+    <Position X="10.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\MapRandom.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Terrain" Collapsed="true">
+    <Position X="19.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECAAAACAAJAAgAAAQAQAAAAAEAAAAAAAAQCAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Terrain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Zone" Collapsed="true">
+    <Position X="72" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAASIAAAAACAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Zone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Matrix&lt;T&gt;" Collapsed="true">
+    <Position X="20.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAABAAAAAAgBQ4CAgAAAQAAAAABAAEAAAAAAAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Matrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.NeighborMatrix" Collapsed="true">
+    <Position X="21.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgQABAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\NeighborMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Distribution&lt;T&gt;" Collapsed="true">
+    <Position X="73.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAAAAAAAAAAABAAAAAAABAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Probability\Distribution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Possibility&lt;T&gt;" Collapsed="true">
+    <Position X="68.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Probability\Possibility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.DiceCoin" Collapsed="true">
+    <Position X="70.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAABAAAAAAAAABAAgAAAQIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\DiceCoin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Game" Collapsed="true">
+    <Position X="70.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAQDAAAABAAAAAAAAAAAAAAAAgAAAAACAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GameLog" Collapsed="true">
+    <Position X="72" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAAABIAAAgCAAAQAAAACAAAAAAEAEAIAACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\GameLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Source" Collapsed="true">
+    <Position X="79" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAACEAAAAAAAAAAAAIAABAQAAAQUBAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\Source.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TurnQueue" Collapsed="true">
+    <Position X="70.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEMAAAAIAAAABwAAAAAQBAQAAAAYABggQAEAAAAQEAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\TurnQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TurnChangeEventArgs" Collapsed="true">
+    <Position X="68.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\TurnQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Faction" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAABAgABAUKgAAAAYAAAAEAACAAAAAoAARACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Faction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FactionRef" Collapsed="true">
+    <Position X="79" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAQACAAAAYCAAgAIAIAAAEABBAAAAY=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\FactionRef.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FGearp" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FNewRepublic" Collapsed="true">
+    <Position X="8" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FTorridale" Collapsed="true">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FGrove" Collapsed="true">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FChrono" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FPsycho" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FPsilent" Collapsed="true">
+    <Position X="19.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FVoidoid" Collapsed="true">
+    <Position X="1.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FObstacle" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Factions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Player" Collapsed="true">
+    <Position X="66.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAgAAAEAAAAAAAABAAEIAQAQBAggACBgAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Referee" Collapsed="true">
+    <Position X="72" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Referee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Roster" Collapsed="true">
+    <Position X="73.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAAAAARAAAAAgABAQgAAAgIAAAIAEAABAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Players\Roster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.FilterTests" Collapsed="true">
+    <Position X="68.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAAAAkgAAQICBAAAAIAAAAAAIQAAoAAAABACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\FilterTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Target" Collapsed="true">
+    <Position X="4" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAQAAABAACAAQAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\Target.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TargetFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="70.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAgACAAAAkgAAQ4CFABQAIAAAAAAIQAAoACAERAiA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\TargetFilter (Filters).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.TargetGroup" Collapsed="true">
+    <Position X="12.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAIAEAAAAAAAAAEABAAAAhAAAAAAAAAACABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\TargetGroup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Body" Collapsed="true">
+    <Position X="14" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAABAAAAAEAAABAACDAAAAAIEANAAAAIAAAABAEAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Body.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodyAper" Collapsed="true">
+    <Position X="17.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodyAper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodyAren" Collapsed="true">
+    <Position X="10.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABAAgAAACAAAAACAAAAABAEAIAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodyAren.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodySensor1" Collapsed="true">
+    <Position X="13" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodySensor1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodySensor9" Collapsed="true">
+    <Position X="15.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodySensor9.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.PlaneExtensionMethods" Collapsed="true">
+    <Position X="79" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Plane.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Sensor" Collapsed="true">
+    <Position X="15.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAIAACAAABIgQmAEAAFEBQRCAAVmBAAQJAKAQIAAQEA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Sensor (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Timer" Collapsed="true">
+    <Position X="20.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAghACAAgMAAgBAAAAhAAQEAABAAAwEBMAASAEAQUQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Timer (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.TokenComponent" Collapsed="true">
+    <Position X="19" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\TokenComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.TokenID" Collapsed="true">
+    <Position X="79" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAiAAAAAAIAAAAAgAAQAgAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\TokenID.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Arsenal" Collapsed="true">
+    <Position X="10" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAABgAAAAAQRAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Arsenal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Health" Collapsed="true">
+    <Position X="24.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAACAgAIAAIAAAAAQAAIAAAAAAAAAACAAIA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Health.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.HealthCaraShield" Collapsed="true">
+    <Position X="22.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAgDAAAACAAAAAAAABAAAQAAAAAAAAAAAAACAAIQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthCaraShield.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.HealthDEFCap" Collapsed="true">
+    <Position X="24.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthDEFCap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.HealthHalfDodge" Collapsed="true">
+    <Position X="27" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthHalfDodge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Stat" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="66.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADIADAABABABBpAEEBCEQAUAECAIAAgAAABAEgBAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stats\Stat (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HOA.Wallet" Collapsed="true">
+    <Position X="12.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAgAAAAAAAAAwAAAIAAEBAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Wallet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.WalletDEF" Collapsed="true">
+    <Position X="11.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletDEF.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.WalletIN" Collapsed="true">
+    <Position X="13.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletIN.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Watch" Collapsed="true">
+    <Position X="18" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAEAAAAAAAAAAgAAAAAAAAAQAAQIAAAAAAAAAAAAGAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Watch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.WatchList" Collapsed="true">
+    <Position X="1" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\WatchList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Alias" Collapsed="true">
+    <Position X="3" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAgAAUAAAAQYAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Constructors\Alias (Constructors).cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Obstacle" Collapsed="true">
+    <Position X="5.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIIIAgAAACCcCQgIGEQAwgRAAwgAAAQTAYBIAEAQEA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Constructors\Obstacle (Destructible).cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Unit" Collapsed="true">
+    <Position X="7.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oEsACEShAAECAAoIAGACFEBwzCTJAEOAAAASBkBEGAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Chrono).cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Token" Collapsed="true">
+    <Position X="5.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQsAASAEEBAgAAMJAABAIACACBAAAAABAIEIAAgAAQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TokenFactory" Collapsed="true">
+    <Position X="77.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QADAAAAACEAABABAAAQABAAAAAgBAEIAAAAAAAABAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TokenRecord" Collapsed="true">
+    <Position X="6.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.CarapaceShieldRecord" Collapsed="true">
+    <Position X="7.75" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.WebRecord" Collapsed="true">
+    <Position X="5.5" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TokenRef" Collapsed="true">
+    <Position X="66.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAIAAAACAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRef.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GUICheats" Collapsed="true">
+    <Position X="75.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQEEBABQMAjAAAAAAgAQQAABgAAAAABAAAAAgIAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUICheats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GUIInspectorCell" Collapsed="true">
+    <Position X="68.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUIInspectorCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GUIInspectorAbility" Collapsed="true">
+    <Position X="66.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAgAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUIInspectorTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipDamage" Collapsed="true">
+    <Position X="23.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\General\TipDamage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipToken" Collapsed="true">
+    <Position X="30.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\General\TipToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipCell" Collapsed="true">
+    <Position X="37.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipDest" Collapsed="true">
+    <Position X="44" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipDest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipHeart" Collapsed="true">
+    <Position X="48.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipHeart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipKing" Collapsed="true">
+    <Position X="53" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipKing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipOb" Collapsed="true">
+    <Position X="55.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipOb.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipRem" Collapsed="true">
+    <Position X="57.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipRem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipTram" Collapsed="true">
+    <Position X="62" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipTram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipUnit" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Special\TipUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipAP" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipAP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipDEF" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipDEF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipFP" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipFP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipHP" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipHP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipIN" Collapsed="true">
+    <Position X="26" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipIN.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipOnDeath" Collapsed="true">
+    <Position X="32.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipOnDeath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipPlane" Collapsed="true">
+    <Position X="39.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipPlane.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipSensor" Collapsed="true">
+    <Position X="46.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipSensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipTimer" Collapsed="true">
+    <Position X="50.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Stats\TipTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Tip" Collapsed="true">
+    <Position X="33.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAEgAAAAAIABAAAAQAAgAAAAACAAAAQAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Tip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipCOR" Collapsed="true">
+    <Position X="59.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\TipCOR.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipEXP" Collapsed="true">
+    <Position X="64.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\TipEXP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipFIR" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\TipFIR.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipInspector" Collapsed="true">
+    <Position X="75.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAQAAAAAAQAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\TipInspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipArc" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipArc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipFree" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipFree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipLine" Collapsed="true">
+    <Position X="21.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipNeighbor" Collapsed="true">
+    <Position X="28.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipNeighbor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipPath" Collapsed="true">
+    <Position X="35" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipPath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TipSelf" Collapsed="true">
+    <Position X="41.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipSelf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Icons" Collapsed="true">
+    <Position X="68.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ghQBgAAAQMEAgIAAAAIAAQAAAACAAChAABIQAAAABwA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Images\Icons.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.ImageLoader" Collapsed="true">
+    <Position X="70.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAABACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Images\ImageLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.InspectorInfo" Collapsed="true">
+    <Position X="72" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAECAAAAQAAAggCAQAAAAAAQCAABABAAAIAAAAEAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Inspector Elements\InspectorInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GUILobby" Collapsed="true">
+    <Position X="70.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Lobby\GUILobby.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GUILobbyMap" Collapsed="true">
+    <Position X="72" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABEAQAABAAAAAAAAAAAQAAAAAAAAAAAUAAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Lobby\GUILobbyBoard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.SoundLoader" Collapsed="true">
+    <Position X="77.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAABAAAAAQIAAAAABIAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Sound\SoundLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.BoardPhysical" Collapsed="true">
+    <Position X="75.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAIAAEJAAAAAoAAgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Model\BoardPhysical.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.GameWorldCursor" Collapsed="true">
+    <Position X="73.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAIAIAAAAAAIAkgAAAAgAAAAEQAUgAAAAQAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Model\Camera\GameWorldCursor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Card" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAgAAAEIAAAAAAAIAEAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Graphics\Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.EffectCard" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAgCAAAAAAQAAAgAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Graphics\EffectCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TargetDisplay" Collapsed="true">
+    <Position X="1.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAEAhAAAhAAAQAYABAgICAAIARQQCAIAAgAIA=</HashCode>
+      <FileName>Assets\Scripts\Model\Graphics\TargetDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Thumbs" Collapsed="true">
+    <Position X="72" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Graphics\Thumbs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TileSet" Collapsed="true">
+    <Position X="73.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIEAAAAADACAACAAAAAAAAAAAAAAJBAAAQAUAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Graphics\TileSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.TokenDisplay" Collapsed="true">
+    <Position X="2.75" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAQAAAAAAAAgAAAAAAAAAAMQAAAAACQAAAFBAI=</HashCode>
+      <FileName>Assets\Scripts\Model\TokenDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Effects.Detonate" Collapsed="true">
+    <Position X="5.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\EffectSeqs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Effects.Explosion" Collapsed="true">
+    <Position X="7.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\EffectSeqs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Frontier" Collapsed="true">
+    <Position X="12.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAACAAAgAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Frontier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Grove" Collapsed="true">
+    <Position X="14.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Grove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Minefield" Collapsed="true">
+    <Position X="17" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAhAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Minefield.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Orbit" Collapsed="true">
+    <Position X="1.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Orbit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Stronghold" Collapsed="true">
+    <Position X="3.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAACAAAgAAAAAABAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Stronghold.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Maps.Void" Collapsed="true">
+    <Position X="5.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Preset\Void.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Group&lt;t&gt;" Collapsed="true">
+    <Position X="6.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAkAAAAAACBAQCAAABQQCAAECBAAEGACAAABQMAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Group.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Core" Collapsed="true">
+    <Position X="68.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAEACCABAAAgAAAAAAAAABAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\Core.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RandomSync" Collapsed="true">
+    <Position X="70.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\RandomSync.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FancyText" Collapsed="true">
+    <Position X="66.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Devices\FancyText.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Panel" Collapsed="true">
+    <Position X="77.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQACBAQAACAABAAAAAgIAQBAAxMIAACCQIhgAEAIcAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Devices\Panel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIGame" Collapsed="true">
+    <Position X="77.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAIAAAEAAAAQAgAAAAAAAAAIAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUIGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIInspector" Collapsed="true">
+    <Position X="79" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAACAAAAAAAAAAABAAQSAAAEAAAAAEQAIAQIBAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUIInspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUILog" Collapsed="true">
+    <Position X="77.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAAAAAAAAQAAwCAIAAAABAAAAAAAgIAEAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUILog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIQueue" Collapsed="true">
+    <Position X="66.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAQSAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\GUIQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIMaster" Collapsed="true">
+    <Position X="79" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAABAAAAIAAAAAAAAgAAAAEABAIAICAAACAAEA=</HashCode>
+      <FileName>Assets\Scripts\GUI\GUIMaster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUILobbyNetwork" Collapsed="true">
+    <Position X="73.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUILobbyPlayers" Collapsed="true">
+    <Position X="75.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAACgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Lobby\GUILobbyPlayers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixer" Collapsed="true">
+    <Position X="75.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAAAACAAAABAQAAAAAAAEgAAAAAACAEA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Sound\Mixer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraPanner" Collapsed="true">
+    <Position X="77.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAoBAEKAAggAAECAAAAoAEBAIAAAAAADAAAAAoAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Camera\CameraPanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraPanner2" Collapsed="true">
+    <Position X="79" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQCAABAEIAAAAAAEAAAgCgAEBAAAAAAAECAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Camera\CameraPanner2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraRigBuilder" Collapsed="true">
+    <Position X="66.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAAAEAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Model\Camera\CameraRigBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyboxControl" Collapsed="true">
+    <Position X="75.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Model\Camera\SkyboxControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="HOA.Price" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="72" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAEAAgQEgAAEAAAAAAAAQIAAAAAAAAAAAiI=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Components\Price.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="HOA.float2" Collapsed="true">
+    <Position X="66.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAIABAAAAAAAAAAAAAAABgAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Tuples New\float2.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="HOA.index2" Collapsed="true">
+    <Position X="68.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEIAAAAAQAAAAQAEAAAAAAAAAAAAAAABgABAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Tuples New\index2.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="HOA.int2" Collapsed="true">
+    <Position X="70.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAA4AUAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Tuples New\int2.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="HOA.size2" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="73.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEIAAAAAQABAAYCUAAAQAAACAAAAEAADgAAAwAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Collections\Tuples New\size2.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="HOA.TargetClass" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="75.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgAgAAAAAABBAA6AFAAQQAAAAAAIAEAAAAgAEBAiA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\TargetClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="HOA.IEffect" Collapsed="true">
+    <Position X="72" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Effects\IEffect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.IMapCustom" Collapsed="true">
+    <Position X="75.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Board\Maps\Map.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.IDeepCopy&lt;T&gt;" Collapsed="true">
+    <Position X="66.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\IDeepCopy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.IDeepCopyToken&lt;T&gt;" Collapsed="true">
+    <Position X="68.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\IDeepCopy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.IDeepCopyUnit&lt;T&gt;" Collapsed="true">
+    <Position X="70.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\IDeepCopy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.ISource" Collapsed="true">
+    <Position X="77.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\ISource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HOA.IInspectable" Collapsed="true">
+    <Position X="73.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\Inspector Elements\IInspectable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="HOA.ETraj" Collapsed="true">
+    <Position X="77.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAgAAAAAEEIAAAAIAAAAEAAgAAAAEAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Components\Aim.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.EPurp" Collapsed="true">
+    <Position X="72" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAAAAQAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Abilities\Components\Aim.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.EDice" Collapsed="true">
+    <Position X="66.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAQAAAAAAAAAAAAQAAAAAAAIAAAAAAEEAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\DiceCoin.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.EToken" Collapsed="true">
+    <Position X="75.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEIiLCiChQIQIUEgCWECAiDAIACqcUAlkYBRgShgUAM=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.ELog" Collapsed="true">
+    <Position X="70.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgEAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Misc\GameLog.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.TargetClasses" Collapsed="true">
+    <Position X="68.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAICBAAAAAAAAAAAAAAAgAAAABACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\TargetClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.Plane" Collapsed="true">
+    <Position X="79" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAQAAAAAAAAAAAAIEAIACAAEAEAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Plane.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.Stats" Collapsed="true">
+    <Position X="66.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAACAAAAAABCAAAAAAEAAgAAAAAAAgAAAAAAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stats\Stat.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HOA.ETip" Collapsed="true">
+    <Position X="73.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAAAACCQgEChIEIIQAAAIAwQAEIAiAAABAAAAgACwg=</HashCode>
+      <FileName>Assets\Scripts\GUI\Game\ToolTips\Tip.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EGUISound" Collapsed="true">
+    <Position X="68.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUI\GUIMaster.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="HOA.FilterTest" Collapsed="true">
+    <Position X="66.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\_General\FilterTests.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

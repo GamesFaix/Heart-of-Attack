@@ -57,15 +57,15 @@ namespace HOA {
 			return ETip.NONE;
 		}
 		
-		public static ETip Special (TargetClasses special) {
-			if (special == TargetClasses.King) {return ETip.KING;}
-			else if (special == TargetClasses.Heart) {return ETip.HEART;}
-			else if (special == TargetClasses.Dest) {return ETip.DEST;}
-			else if (special == TargetClasses.Corpse) {return ETip.REM;}
-			else if (special == TargetClasses.Tram) {return ETip.TRAM;}
-			else if (special == TargetClasses.Unit) {return ETip.UNIT;}
-			else if (special == TargetClasses.Ob) {return ETip.OB;}
-			else if (special == TargetClasses.Cell) {return ETip.CELL;}
+		public static ETip Special (TargetClass special) {
+			if (special == TargetClass.King) {return ETip.KING;}
+			else if (special == TargetClass.Heart) {return ETip.HEART;}
+			else if (special == TargetClass.Dest) {return ETip.DEST;}
+			else if (special == TargetClass.Corpse) {return ETip.REM;}
+			else if (special == TargetClass.Tram) {return ETip.TRAM;}
+			else if (special == TargetClass.Unit) {return ETip.UNIT;}
+			else if (special == TargetClass.Ob) {return ETip.OB;}
+			else if (special == TargetClass.Cell) {return ETip.CELL;}
 			return ETip.NONE;
 		}
 

@@ -13,41 +13,41 @@ namespace HOA {
 		static float moveDuration = 0.3f;
 		float MovePercent () {return MoveElapsedTime()/moveDuration;}
 		Vector3 startPos;
-		Vector3 targetPos;
+		Vector3 TargetPos;
 
 		public void MoveTo (Cell c) {
 			startPos = gameObject.transform.position;
-			targetPos = c.Location;
+			TargetPos = c.Location;
 
-			targetPos.y += Token.SpriteScale.z*4;
+			TargetPos.y += Token.SpriteScale.z*4;
 
 			if (Token.Plane.ContainsAny(Plane.Air | Plane.Ethereal)) {
-				if (Token.Plane.ContainsAny(Plane.Ground)) {targetPos.y += 5;}
-				else {targetPos.y +=20;}
+				if (Token.Plane.ContainsAny(Plane.Ground)) {TargetPos.y += 5;}
+				else {TargetPos.y +=20;}
 			}
 			moveStartTime = Time.time;
 			moving = true;
 		}
 
 		public void Enter (Cell c) {
-			targetPos = c.Location;
+			TargetPos = c.Location;
 			
-			targetPos.y += Token.SpriteScale.z*4;
+			TargetPos.y += Token.SpriteScale.z*4;
 
             if (Token.Plane.ContainsAny(Plane.Air | Plane.Ethereal))
             {
-                if (Token.Plane.ContainsAny(Plane.Ground)) { targetPos.y += 5; }
-				else {targetPos.y +=20;}
+                if (Token.Plane.ContainsAny(Plane.Ground)) { TargetPos.y += 5; }
+				else {TargetPos.y +=20;}
 			}
-			gameObject.transform.position = targetPos;
+			gameObject.transform.position = TargetPos;
 		}
 
 		void Update () {
 			if (moving) {
-				gameObject.transform.position = Vector3.Lerp(startPos, targetPos, MovePercent());
+				gameObject.transform.position = Vector3.Lerp(startPos, TargetPos, MovePercent());
 
 				if (MovePercent() > 0.995f) {
-					gameObject.transform.position = targetPos;
+					gameObject.transform.position = TargetPos;
 					moving = false;
 					moveStartTime = 0;
 				}

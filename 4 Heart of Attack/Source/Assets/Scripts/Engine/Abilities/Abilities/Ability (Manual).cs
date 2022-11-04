@@ -15,11 +15,11 @@ namespace HOA {
                 a.Aims.Add(Aim.Free(TargetFilter.Unit, EPurp.ATTACK));
 
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
+                foreach (Target Target in Targets)
                     EffectQueue.Add(
-                        Effect.AddStat(new Source(Roster.Neutral), (Unit)target, a.Stat, a.Modifier));
+                        Effect.AddStat(new Source(Roster.Neutral), (Unit)Target, a.Stat, a.Modifier));
             };
 
             a.Legal = delegate(out string message)
@@ -35,22 +35,22 @@ namespace HOA {
             return a;
         }
 
-        public static Ability ManualCreate(Unit parent, EToken tokenType)
+        public static Ability ManualCreate(Unit parent, Species species)
         {
-            Ability a = new Ability(parent, "", 5, Price.Free, tokenType);
+            Ability a = new Ability(parent, "", 5, Price.Free, species);
             a.multiTarget = true;
 
-            a.Template = TokenFactory.Template(a.TokenType);
+            a.Template = TokenRegistry.Templates[a.Species];
             a.Name = "Manual Create " + a.Template.ID.Name;
             a.Desc = () => { return "Create " + a.Template.ID.Name + " in upto 10 cells."; };
             a.Aims.Add(Aim.Free(TargetFilter.Cell, EPurp.CREATE));
             for (int i = 2; i <= 10; i++)
                 a.Aims.Add(Aim.Free(TargetFilter.Cell, EPurp.CREATE));
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
-                    EffectQueue.Add(Effect.Create(new Source(a.Parent), (Cell)target, a.TokenType));
+                foreach (Target Target in Targets)
+                    EffectQueue.Add(Effect.Create(new Source(a.Parent), (Cell)Target, a.Species));
             };
 
             a.Legal = delegate(out string message)
@@ -76,14 +76,14 @@ namespace HOA {
             for (int i = 2; i <= 10; i++)
                 a.Aims.Add(Aim.Free(TargetFilter.Token, EPurp.ATTACK));
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
+                foreach (Target Target in Targets)
                 {
-                    if (target is Unit)
-                        EffectQueue.Add(Effect.DestroyUnit(new Source(Roster.Neutral), (Token)target));
+                    if (Target is Unit)
+                        EffectQueue.Add(Effect.DestroyUnit(new Source(Roster.Neutral), (Token)Target));
                     else
-                        EffectQueue.Add(Effect.DestroyObstacle(new Source(Roster.Neutral), (Token)target));
+                        EffectQueue.Add(Effect.DestroyObstacle(new Source(Roster.Neutral), (Token)Target));
                 }
             };
 
@@ -107,7 +107,7 @@ namespace HOA {
             a.Desc = () => { return "End current turn."; };
             a.Aims.Add(Aim.Self());
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
                 EffectQueue.Add(Effect.Advance(new Source(Roster.Neutral), true));
 
             a.Legal = delegate(out string message)
@@ -128,12 +128,12 @@ namespace HOA {
             Ability a = new Ability(null, "Manual Move", 0, Price.Free);
             a.manualFree = true;
             a.teleport = true;
-            a.Desc = () => { return "Move target token to target cell."; };
+            a.Desc = () => { return "Move Target token to Target cell."; };
             a.Aims.Add(Aim.Free(TargetFilter.Token, EPurp.ATTACK));
             a.Aims.Add(Aim.Free(TargetFilter.Cell, EPurp.MOVE));
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.TeleportStart(new Source(Roster.Neutral), (Token)targets[0], (Cell)targets[1]));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.TeleportStart(new Source(Roster.Neutral), (Token)Targets[0], (Cell)Targets[1]));
 
             a.Legal = delegate(out string message)
             {
@@ -160,10 +160,10 @@ namespace HOA {
             for (int i = 2; i <= 10; i++)
                 a.Aims.Add(Aim.Free(TargetFilter.Token, EPurp.ATTACK));
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
-                    EffectQueue.Add(Effect.SetOwner(new Source(Roster.Neutral), (Token)target, owner));
+                foreach (Target Target in Targets)
+                    EffectQueue.Add(Effect.SetOwner(new Source(Roster.Neutral), (Token)Target, owner));
             };
 
             a.Legal = delegate(out string message)
@@ -190,10 +190,10 @@ namespace HOA {
             for (int i = 2; i <= 10; i++)
                 a.Aims.Add(Aim.Free(TargetFilter.Unit, EPurp.ATTACK));
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
-                    EffectQueue.Add(Effect.SetStat(new Source(Roster.Neutral), (Unit)target, a.Stat, a.Modifier));
+                foreach (Target Target in Targets)
+                    EffectQueue.Add(Effect.SetStat(new Source(Roster.Neutral), (Unit)Target, a.Stat, a.Modifier));
             };
 
             a.Legal = delegate(out string message)
@@ -220,10 +220,10 @@ namespace HOA {
                 a.Aims.Add(Aim.Free(TargetFilter.Unit, EPurp.ATTACK));
 
             a.PreEffects = () => { };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                foreach (Target target in targets)
-                    EffectQueue.Add(Effect.Shift(new Source(Roster.Neutral), (Unit)target, a.Modifier));
+                foreach (Target Target in Targets)
+                    EffectQueue.Add(Effect.Shift(new Source(Roster.Neutral), (Unit)Target, a.Modifier));
             };
 
             a.Legal = delegate(out string message)

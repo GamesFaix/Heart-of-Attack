@@ -13,7 +13,7 @@ namespace HOA {
 			Active = false;
 			if (Roster.Count() > 1) {
 				Mixer.Mute(true);
-				TokenFactory.Reset();
+				TokenRegistry.Reset();
 				GameLog.Reset();
 				TurnQueue.Reset();
 				GUILobbyMap.Assign();
@@ -36,7 +36,7 @@ namespace HOA {
 
 		public static void ClearLegal () {
 			Board.ClearLegal();
-			TokenFactory.ClearLegal();
+			TokenRegistry.ClearLegal();
 		}
 
 		public static void Quit () {
@@ -45,7 +45,7 @@ namespace HOA {
 			Board.Destroy();
 			TurnQueue.Reset();
 			GameLog.Reset();
-			TokenFactory.Reset();
+			TokenRegistry.Reset();
 			Roster.Reset();
 			GUIMaster.Toggle();
 			Active = false;

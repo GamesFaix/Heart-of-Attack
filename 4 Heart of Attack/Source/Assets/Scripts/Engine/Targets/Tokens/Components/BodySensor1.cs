@@ -15,15 +15,15 @@ namespace HOA {
 
 		protected override void EnterSpecial (Cell newCell) {
 			if (sensor != default(Sensor)) {sensor.Delete();}
-			sensor = sc(parent, newCell);
+			sensor = sc(Parent, newCell);
 			newCell.Sensors.Add(sensor);
 		}
 
 		public override void Exit () {
 			if (sensor != null) {sensor.Exit();}
-			if (Cell != null) {Cell.Exit(parent);}
+			if (Cell != null) {Cell.Exit(Parent);}
 		}
 		
-		public void DestroySensors () {sensor.Delete();}
+		public override void DestroySensors () {sensor.Delete();}
 	}
 }

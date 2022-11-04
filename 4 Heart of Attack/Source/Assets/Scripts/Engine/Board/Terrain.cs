@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace HOA { 
 
-	public class Terrain : Matrix<EToken> {
+	public class Terrain : Matrix<Species> {
 	
 		public override size2 Size {get {return Zone.size;} }
 
 		public Terrain () {
-			array = new EToken[Size.x, Size.y];
+			array = new Species[Size.x, Size.y];
 			foreach (index2 index in Size) {
-				this[index] = EToken.NONE;
+				this[index] = Species.None;
 			}
 		}
 		
-		public Terrain (IList<EToken> list) {
+		public Terrain (IList<Species> list) {
 			if (list.Count != Count) {InvalidArgumentCount();}
-			array = new EToken[Size.x, Size.y];
+			array = new Species[Size.x, Size.y];
 			
 			int listIndex = 0;
 			for (int j=0; j<Size.y; j++) {
@@ -26,15 +26,14 @@ namespace HOA {
 				}
 			}
 		}
-		public Terrain (EToken[] list) : this(new List<EToken>(list)){}
+		public Terrain (Species[] list) : this(new List<Species>(list)){}
 		
 		public Terrain (Terrain source) {
-			array = new EToken[Size.x, Size.y];
+			array = new Species[Size.x, Size.y];
 			foreach (index2 index in Size) {
-				this[index] = EToken.NONE;
-				if (source[index] != EToken.NONE) {
-					this[index] = source[index];
-				}
+                this[index] = Species.None;
+                if (source[index] != Species.None)
+                    this[index] = source[index];
 			}
 		}
 
@@ -104,50 +103,50 @@ namespace HOA {
 
 		public static Terrain Lake {
 			get {
-				return new Terrain( new EToken[] {
-					EToken.WATR, EToken.WATR, EToken.WATR,
-					EToken.WATR, EToken.WATR, EToken.WATR,
-					EToken.WATR, EToken.WATR, EToken.WATR
+				return new Terrain( new Species[] {
+					Species.Water, Species.Water, Species.Water,
+					Species.Water, Species.Water, Species.Water,
+					Species.Water, Species.Water, Species.Water
 				});
 			}
 		}
 
 		public static Terrain FrozenLake {
 			get {
-				return new Terrain( new EToken[] {
-					EToken.ICE, EToken.ICE, EToken.ICE,
-					EToken.ICE, EToken.ICE, EToken.ICE,
-					EToken.ICE, EToken.ICE, EToken.ICE
+				return new Terrain( new Species[] {
+					Species.Ice, Species.Ice, Species.Ice,
+					Species.Ice, Species.Ice, Species.Ice,
+					Species.Ice, Species.Ice, Species.Ice
 				});
 			}
 		}
 
 		public static Terrain Volcano {
 			get {
-				return new Terrain( new EToken[] {
-					EToken.LAVA, EToken.NONE, EToken.LAVA,
-					EToken.NONE, EToken.MNTN, EToken.NONE,
-					EToken.LAVA, EToken.NONE, EToken.LAVA
+				return new Terrain( new Species[] {
+					Species.Lava, Species.None, Species.Lava,
+					Species.None, Species.Mountain, Species.None,
+					Species.Lava, Species.None, Species.Lava
 				});
 			}
 		}
 
 		public static Terrain MountainPlus {
 			get {
-				return new Terrain( new EToken[] {
-					EToken.NONE, EToken.MNTN, EToken.NONE,
-					EToken.MNTN, EToken.MNTN, EToken.MNTN,
-					EToken.NONE, EToken.MNTN, EToken.NONE
+				return new Terrain( new Species[] {
+					Species.None, Species.Mountain, Species.None,
+					Species.Mountain, Species.Mountain, Species.Mountain,
+					Species.None, Species.Mountain, Species.None
 				});
 			}
 		}
 
 		public static Terrain RockCorner {
 			get {
-				return new Terrain( new EToken[] {
-					EToken.NONE, EToken.ROCK, EToken.ROCK,
-					EToken.NONE, EToken.NONE, EToken.ROCK,
-					EToken.NONE, EToken.NONE, EToken.NONE
+				return new Terrain( new Species[] {
+					Species.None, Species.Rock, Species.Rock,
+					Species.None, Species.None, Species.Rock,
+					Species.None, Species.None, Species.None
 				});
 			}
 		}

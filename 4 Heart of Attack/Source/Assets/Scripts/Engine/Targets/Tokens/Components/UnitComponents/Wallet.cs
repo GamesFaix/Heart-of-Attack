@@ -34,5 +34,9 @@ namespace HOA {
 		}
 
         public override void Draw(Panel panel) { InspectorInfo.Wallet(this, panel); }
+        public override string ToString()
+        {
+            return Parent + "'s Wallet";
+        }
 	}
 }

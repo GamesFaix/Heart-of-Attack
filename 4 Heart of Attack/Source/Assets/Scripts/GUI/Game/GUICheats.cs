@@ -98,7 +98,7 @@ namespace HOA {
 			GUI.Box (p.FullBox, "");
 			
 			float internalW = btnW;
-			float internalH = btnH * (FactionRef.Count + Enum.GetValues(typeof(EToken)).Length);
+			float internalH = btnH * (FactionRef.Count + Enum.GetValues(typeof(Species)).Length);
 
 			tokenScroll = GUI.BeginScrollView (p.FullBox, tokenScroll, new Rect(p.X, p.Y, internalW, internalH));
 			
@@ -111,8 +111,8 @@ namespace HOA {
 						GUIMaster.PlaySound(EGUISound.CLICK);
 						Targeter.Start(Ability.ManualCreate (TurnQueue.Top, faction[j]));
 					}
-					GUI.Box (p.Box(btnH), Thumbs.CodeToThumb(faction[j]));
-					GUI.Label (p.Box(p.W-btnH), TokenFactory.Template(faction[j]).ID.Name);
+					GUI.Box (p.Box(btnH), TokenThumbnails.BySpecies(faction[j]));
+					GUI.Label (p.Box(p.W-btnH), TokenRegistry.Templates[faction[j]].ID.Name);
 					p.NextLine();
 				}
 			}

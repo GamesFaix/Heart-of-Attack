@@ -13,10 +13,10 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions targeting in a Path may target " +
+			          "Actions Targeting in a Path may Target " +
 			          "\n'around corners'." +
 
-			          "\n\nMovement actions targeting in a Path " +
+			          "\n\nMovement actions Targeting in a Path " +
 			          "\nrequire the selection of each Cell to move " +
 			          "\nthrough, each successive selection can be " +
 			          "\nany Cell touching the last selection, as " +
@@ -25,8 +25,8 @@ namespace HOA {
 			          "\nThe number of Cells selected cannot " +
 			          "\nexceed the aim's Range." +
 
-			          "\n\nAttacks targeting in a Path only require " +
-			          "\nthe selection of one target, which can be " +
+			          "\n\nAttacks Targeting in a Path only require " +
+			          "\nthe selection of one Target, which can be " +
 			          "\nselected 'around corners' in any " +
 			          "\ncombination of directions, so long as the " +
 			          "\nnumber of Cells in the path is less than " +

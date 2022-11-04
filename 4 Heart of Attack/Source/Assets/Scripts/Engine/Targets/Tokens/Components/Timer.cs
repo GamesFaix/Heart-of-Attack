@@ -53,7 +53,7 @@ namespace HOA {
         }
 
         public bool EveryTurnTest(TurnChangeEventArgs args) { return true; }
-        
+
         public bool ParentTurnBeginTest(TurnChangeEventArgs args)
         {
             return (args.NewUnit == Parent ? true : false);
@@ -87,5 +87,10 @@ namespace HOA {
         public static Texture2D Icon { get { return Icons.TIMER(); } }
 
         public override void Draw(Panel p) { InspectorInfo.Timer(this, p); }
+
+        public override string ToString()
+        {
+            return Parent + "'s " + Name;
+        }
     }
 }

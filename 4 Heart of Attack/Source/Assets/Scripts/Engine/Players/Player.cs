@@ -36,7 +36,7 @@ namespace HOA {
 		public TargetGroup Tokens {
 			get {
 				TargetGroup owned = new TargetGroup();
-				foreach (Token t in TokenFactory.Tokens) {if (t.Owner == this){owned.Add(t);} }
+				foreach (Token t in TokenRegistry.Tokens) {if (t.Owner == this){owned.Add(t);} }
 				return owned;
 			}
 		}
@@ -45,7 +45,7 @@ namespace HOA {
 			foreach (Token t in captive.Tokens) t.Owner = this;
 		}
 		
-		public EToken King {get {return Faction.King;} }
+		public Species King {get {return Faction.King;} }
 		public Color[] Colors {get {return Faction.Colors;} }
 		
 		static List<string> defaultNames = new List<string> {

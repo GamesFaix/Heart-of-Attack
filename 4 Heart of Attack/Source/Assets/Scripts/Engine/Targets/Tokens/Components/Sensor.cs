@@ -71,9 +71,9 @@ namespace HOA {
 
         public void RemoveTimer(Token token, string timerName)
         {
-            Unit u;
-            if (token.IsUnit(out u))
+            if (token is Unit)
             {
+                Unit u = token as Unit;
                 for (int i = u.timers.Count - 1; i >= 0; i--)
                 {
                     Timer timer = u.timers[i];

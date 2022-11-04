@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipCell () {
 			Name = "Cell";
-			Icon = Icons.TargetClasses[TargetClasses.Cell];
+			Icon = Icons.Cell;
 			ETip = ETip.CELL;
 		}
 		

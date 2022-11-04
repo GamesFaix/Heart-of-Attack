@@ -6,7 +6,7 @@ namespace HOA {
 		public MapBlank () {
 			Name = "Blank";
 			Density = 0f;
-			Dist = new Distribution<EToken>();
+			Dist = new Distribution<Species>();
 		}
 		
 		public Board Build (size2 size) {

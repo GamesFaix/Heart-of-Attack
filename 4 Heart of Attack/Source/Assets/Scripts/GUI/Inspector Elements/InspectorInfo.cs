@@ -1,4 +1,5 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
+using System;
 
 namespace HOA { 
 
@@ -250,5 +251,67 @@ namespace HOA {
 			*
              */
         }
+
+        public static void Body(Body body, Panel p)
+        {
+            GUI.Label(p.FullBox, "Body.Draw not finished.");
+        
+        }
+
+        public static void TokenID(TokenID tokenID, Panel p)
+        {
+            GUI.Label(p.FullBox, "TokenID.Draw not finished.");
+
+        }
+
+        public static void InspectTemplateButton(Token t, Panel p)
+        {
+            if (GUI.Button(p.FullBox, ""))
+                if (GUIInspector.LeftClick)
+                    GUIInspector.Inspected = t.Template();
+            GUI.Box(p.Box(p.LineH), TokenThumbnails.BySpecies(t.ID.Species), p.s);
+            p.NudgeX();
+            GUI.Label(p.Box(0.8f), t.ID.Name);
+        }
+        public static void InspectTokenButton(Token t, Panel p)
+        {
+            if (GUI.Button(p.FullBox, ""))
+            {
+                if (GUIInspector.LeftClick)
+                {
+                    GUIInspector.Inspected = t;
+                    AVEffect.Highlight.Play(t);
+                    CameraPanner.MoveTo(t);
+                }
+                //				if (GUIInspector.RightClick) {GUIInspector.ToolTip("Name");}
+            }
+            GUI.Box(p.Box(p.LineH), TokenThumbnails.BySpecies(t.ID.Species), p.s);
+            p.NudgeX();
+            p.NudgeY();
+            FancyText.Highlight(p.Box(150), t.ID.FullName, p.s, t.Owner.Colors);
+        }
+        public static void InspectOnDeathButton(Token t, Panel p)
+        {
+            if (GUI.Button(p.FullBox, ""))
+            {
+                if (GUIInspector.LeftClick) 
+                    GUIInspector.Inspected = TokenRegistry.Templates[t.OnDeath];
+                if (GUIInspector.RightClick) 
+                    TipInspector.Inspect(ETip.ONDEATH);
+            }
+            GUI.Box(p.Box(p.LineH), Icons.ONDEATH(), p.s);
+            p.NudgeX();
+            if (t.OnDeath == Species.None)
+            {
+                GUI.Label(p.Box(250), "(Leaves no remains)");
+            }
+            else
+            {
+                InspectTemplateButton(TokenRegistry.Templates[t.OnDeath], new Panel(p.Box(250), p.LineH, p.s));
+            }
+
+
+        }
+
     }
 }

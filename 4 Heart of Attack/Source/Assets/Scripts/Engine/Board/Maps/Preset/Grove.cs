@@ -7,11 +7,11 @@
 			Size = new size2(3,3);
 			
 			Density = 0.0f;
-			Dist = new Distribution<EToken> ();
-			Dist.Add(new Possibility<EToken>(EToken.TREE3,4));
-			Dist.Add(new Possibility<EToken>(EToken.ICE,2));
-			Dist.Add(new Possibility<EToken>(EToken.MNTN,1));
-			Dist.Add(new Possibility<EToken>(EToken.HILL,1));
+			Dist = new Distribution<Species> ();
+			Dist.Add(new Possibility<Species>(Species.Tree3,4));
+			Dist.Add(new Possibility<Species>(Species.Ice,2));
+			Dist.Add(new Possibility<Species>(Species.Mountain,1));
+			Dist.Add(new Possibility<Species>(Species.Hill,1));
 		}
 		
 		public override Board Build () {

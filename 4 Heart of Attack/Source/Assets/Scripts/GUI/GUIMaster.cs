@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using HOA;
 
-public enum EGUISound {CLICK, INSPECT, TARGET}
+public enum EGUISound {CLICK, INSPECT, BombingRangeET}
 
 public class GUIMaster : MonoBehaviour {
 
@@ -25,7 +25,7 @@ public class GUIMaster : MonoBehaviour {
 	public static void PlaySound (EGUISound s) {
 		if (s == EGUISound.CLICK) {sound.clip = SoundLoader.click;}
 		if (s == EGUISound.INSPECT) {sound.clip = SoundLoader.inspect;}
-		if (s == EGUISound.TARGET) {sound.clip = SoundLoader.target;}
+		if (s == EGUISound.BombingRangeET) {sound.clip = SoundLoader.Target;}
 		sound.Play();
 	}
 

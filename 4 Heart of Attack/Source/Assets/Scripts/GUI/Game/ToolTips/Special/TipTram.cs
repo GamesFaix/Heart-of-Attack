@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipTram () {
 			Name = "Trample";
-			Icon = Icons.TargetClasses[TargetClasses.Tram];
+			Icon = Icons.Trample;
 			ETip = ETip.TRAM;
 		}
 		

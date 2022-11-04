@@ -86,7 +86,7 @@ namespace HOA {
 
 
 			if (t is Token) {
-				display.Sprite = Thumbs.CodeToThumb(((Token)t).ID.Code);
+				display.Sprite = TokenThumbnails.BySpecies(((Token)t).ID.Species);
 				if (((Token)t).Plane.ContainsAny(Plane.Sunken)) {
 					display.HideSprite();
 					display.Clickable = false;

@@ -4,17 +4,20 @@ using UnityEngine;
 
 namespace HOA {
 
-	public partial class Body : IDeepCopyToken<Body>{
+	public partial class Body : TokenComponent, IDeepCopyToken<Body>, IInspectable{
 
-		protected Token parent;
+		public bool Destructible { get; set; }
+        public bool Trample { get; set; }
+        public bool Corpse { get; set; }
 
-		public Body() {}
-		public Body(Token t) {parent = t;}
+		public Body(Token Parent) 
+            : base (Parent) { }
 
 		public Body DeepCopy (Token parent) {return new Body(parent);}
 
 		public Cell Cell {get; set;}
-		
+        public virtual void DestroySensors() { }
+
 		public TargetGroup Neighbors (bool cellMates = false) {
 			TargetGroup neighbors = Cell.Neighbors().Occupants;
 			if (cellMates) {neighbors.Add(CellMates);}
@@ -24,29 +27,29 @@ namespace HOA {
 		public virtual TargetGroup CellMates {
 			get {
 				TargetGroup cellMates = Cell.Occupants;
-				cellMates.Remove(parent);
+				cellMates.Remove(Parent);
 				return cellMates;
 			}
 		}
 
 		public virtual bool CanEnter (Cell newCell) {
-			if (!(newCell is ExoCell)) {
-				if (!newCell.Contains(parent.Plane) 
-				    || CanTrample(parent, newCell)) {
-					return true;
-				}
-			}
-			return false;
+            if (newCell is ExoCell) return false;
+            TargetGroup group = newCell.Occupants;
+            group -= TargetFilter.Plane(Parent.Plane, true);
+            if (group.Count == 0 
+                || CanTrample(Parent, newCell)) 
+            	return true;
+            return false;
 		}
 
 		public bool Enter (Cell newCell) {
 			if (CanEnter(newCell)) {
 				if (Cell != null) {Exit();}
 				Cell = newCell;
-				Trample(parent, newCell);
-				newCell.Enter(parent);
+				TrampleCell(Parent, newCell);
+				newCell.Enter(Parent);
 				EnterSpecial(newCell);
-				if (parent.Display != null) {((TokenDisplay)parent.Display).Enter(Cell);}
+				if (Parent.Display != null) {((TokenDisplay)Parent.Display).Enter(Cell);}
 				return true;
 			}	
 			return false;
@@ -56,10 +59,10 @@ namespace HOA {
 			if (CanEnter(newCell)) {
 				if (Cell != null) {Exit();}
 				Cell = newCell;
-				Trample(parent, newCell);
-				newCell.Enter(parent);
+				TrampleCell(Parent, newCell);
+				newCell.Enter(Parent);
 				EnterSpecial(newCell);
-				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(Cell);}
+				if (Parent.Display != null) {((TokenDisplay)Parent.Display).MoveTo(Cell);}
 				return true;
 			}	
 			return false;
@@ -68,7 +71,7 @@ namespace HOA {
 		protected virtual void EnterSpecial (Cell newCell) {}
 
 		public bool Swap (Token other) {
-			if (CanSwap(parent, other)) {
+			if (CanSwap(Parent, other)) {
 				Cell oldCell = Cell;
 				Cell newCell = other.Body.Cell;
 
@@ -76,8 +79,8 @@ namespace HOA {
 				other.Body.Exit();
 
 				Cell = newCell;
-				newCell.Enter(parent);
-				if (parent.Display != null) {((TokenDisplay)parent.Display).MoveTo(newCell);}
+				newCell.Enter(Parent);
+				if (Parent.Display != null) {((TokenDisplay)Parent.Display).MoveTo(newCell);}
 
 				other.Body.Cell = oldCell;
 				oldCell.Enter(other);
@@ -88,6 +91,13 @@ namespace HOA {
 			return false;
 		}
 
-		public virtual void Exit () {Cell.Exit(parent);}
+        public override void Draw(Panel p) { InspectorInfo.Body(this, p); }
+
+        public override string ToString()
+        {
+            return Parent + "'s Body";
+        }
+
+		public virtual void Exit () {Cell.Exit(Parent);}
 	}
 }

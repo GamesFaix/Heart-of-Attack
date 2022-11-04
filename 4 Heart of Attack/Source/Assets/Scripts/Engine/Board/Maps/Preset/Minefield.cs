@@ -7,11 +7,11 @@
 			Size = new size2(5,5);
 			
 			Density = 0.4f;
-			Dist = new Distribution<EToken> ();
-			Dist.Add(new Possibility<EToken>(EToken.TREE,4));
-			Dist.Add(new Possibility<EToken>(EToken.HOUS,2));
-			Dist.Add(new Possibility<EToken>(EToken.MNTN,1));
-			Dist.Add(new Possibility<EToken>(EToken.HILL,1));
+			Dist = new Distribution<Species> ();
+			Dist.Add(new Possibility<Species>(Species.Tree,4));
+			Dist.Add(new Possibility<Species>(Species.House,2));
+			Dist.Add(new Possibility<Species>(Species.Mountain,1));
+			Dist.Add(new Possibility<Species>(Species.Hill,1));
 		}
 		
 		public override Board Build () {
@@ -48,50 +48,50 @@
 
 		Terrain MountainLine {
 			get {
-				return new Terrain ( new EToken[] {
-					EToken.NONE, EToken.MNTN, EToken.NONE,
-					EToken.NONE, EToken.MNTN, EToken.NONE,
-					EToken.NONE, EToken.MNTN, EToken.NONE
+				return new Terrain ( new Species[] {
+					Species.None, Species.Mountain, Species.None,
+					Species.None, Species.Mountain, Species.None,
+					Species.None, Species.Mountain, Species.None
 				});
 			}
 		}
 		
 		Terrain MineWall {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.NONE, EToken.HOUS, EToken.NONE,
-					EToken.NONE, EToken.MINE, EToken.NONE,
-					EToken.NONE, EToken.HOUS, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.None, Species.House, Species.None,
+					Species.None, Species.Mine, Species.None,
+					Species.None, Species.House, Species.None
 				});
 			}
 		}
 		
 		Terrain MineCorner {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.HOUS, EToken.HOUS, EToken.NONE,
-					EToken.HOUS, EToken.MINE, EToken.NONE,
-					EToken.NONE, EToken.NONE, EToken.TARG
+				return new Terrain (new Species[] {
+					Species.House, Species.House, Species.None,
+					Species.House, Species.Mine, Species.None,
+					Species.None, Species.None, Species.BombingRange
 				});
 			}
 		}
 		
 		Terrain MineHill {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.NONE, EToken.NONE, EToken.NONE,
-					EToken.NONE, EToken.MINE, EToken.NONE,
-					EToken.HILL, EToken.NONE, EToken.HILL
+				return new Terrain (new Species[] {
+					Species.None, Species.None, Species.None,
+					Species.None, Species.Mine, Species.None,
+					Species.Hill, Species.None, Species.Hill
 				});
 			}
 		}
 
 		Terrain Center {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.HOUS, EToken.NONE, EToken.HOUS,
-					EToken.NONE, EToken.MINE, EToken.NONE,
-					EToken.HOUS, EToken.NONE, EToken.HOUS
+				return new Terrain (new Species[] {
+					Species.House, Species.None, Species.House,
+					Species.None, Species.Mine, Species.None,
+					Species.House, Species.None, Species.House
 				});
 			}
 		}

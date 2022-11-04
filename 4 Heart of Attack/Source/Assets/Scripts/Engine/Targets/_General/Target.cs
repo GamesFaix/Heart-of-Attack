@@ -4,9 +4,7 @@ namespace HOA {
 
 	public abstract class Target {
 	
-        public virtual TargetClass TargetClass {get; set;}
-
-		public TargetDisplay Display {get; set;}
+       public TargetDisplay Display {get; set;}
 
         bool legal;
 		public virtual bool Legal {
@@ -19,7 +17,6 @@ namespace HOA {
 
         public Target()
         {
-            TargetClass = TargetClass.None();
         }
 
         public bool IsToken(out Token t)

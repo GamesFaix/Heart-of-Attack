@@ -13,12 +13,12 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Explosive effects target Cells." +
+			          "Explosive effects Target Cells." +
 			          
-			          "\n\nAll Units in the target Cell take the " +
+			          "\n\nAll Units in the Target Cell take the " +
 			          "\namount of Damage specified in the effect." +
 
-			          "\n\nUnits in Cells Neighboring the target take " +
+			          "\n\nUnits in Cells Neighboring the Target take " +
 			          "\nhalf the Damage of the effect (rounded " +
 			          "\ndown)." +
 

@@ -1,7 +1,7 @@
 ﻿/*
 	public class APiecAper : Ability {
-		public override string Desc {get {return "Create Aperture in target cell.";} }
-		public override Token Template {get {return TemplateFactory.Template(EToken.APER);} }
+		public override string Desc {get {return "Create Aperture in Target cell.";} }
+		public override Token Template {get {return TemplateFactory.Template(Species.Aperture);} }
 		
 		public APieceAper (Unit par) {
 			Name = "Open Aperture";
@@ -11,10 +11,10 @@
 			Aims.Add(HOA.Aim.CreateArc(3));
 		}
 		
-		protected override void ExecuteMain (TargetGroup targets) {
-			Cell c = (Cell)targets[0];
+		protected override void ExecuteMain (TargetGroup Targets) {
+			Cell c = (Cell)Targets[0];
 			
-			EffectQueue.Add(new ECreate(new Source(Parent), EToken.APER, c));
+			EffectQueue.Add(new ECreate(new Source(Parent), Species.Aperture, c));
 			
 		}
 		
@@ -45,12 +45,12 @@
 			damage = 20;
 			
 			name = "Eternal Flame";
-			desc = "Do "+damage+" damage to target unit. \nTarget's neighbors and cellmates take 50% damage (rounded down). \nDamage continues spreading until less than 1. \nDestroy all destructible tokens that would take damage.";
+			desc = "Do "+damage+" damage to Target unit. \nTarget's neighbors and cellmates take 50% damage (rounded down). \nDamage continues spreading until less than 1. \nDestroy all destructible tokens that would take damage.";
 		}
 		
-		public override void Execute (TargetGroup targets) {
+		public override void Execute (TargetGroup Targets) {
 			Charge();
-			Token tar = (Token)targets[0];
+			Token tar = (Token)Targets[0];
 
 			TargetGroup affected = new TargetGroup(Parent);
 			TargetGroup thisRad = new TargetGroup(tar);

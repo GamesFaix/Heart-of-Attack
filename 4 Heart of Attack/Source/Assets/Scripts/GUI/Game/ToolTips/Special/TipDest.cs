@@ -6,7 +6,7 @@ namespace HOA {
 		
 		public TipDest () {
 			Name = "Destructible";
-			Icon = Icons.TargetClasses[TargetClasses.Dest];
+			Icon = Icons.Destructible;
 			ETip = ETip.DEST;
 		}
 		
@@ -18,7 +18,7 @@ namespace HOA {
 			          "\n\n-Fire attacks" +
 			          "\n-Explosive attacks" +
 			          "\n-Units with Trample entering their Cell" +
-			          "\n-Any action specifically targeting " +
+			          "\n-Any action specifically Targeting " +
 			          "\nDestructible tokens",
 			          p.s);
 		}	

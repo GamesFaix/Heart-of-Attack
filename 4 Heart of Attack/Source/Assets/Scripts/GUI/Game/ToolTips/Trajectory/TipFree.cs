@@ -13,8 +13,8 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions with Free targetting may select " +
-			          "\ntargets anywhere on the board.",
+			          "Actions with Free Targetting may select " +
+			          "\nTargets anywhere on the board.",
 			          p.s);
 		}	
 		public override void SeeAlso (Panel p) {

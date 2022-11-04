@@ -13,8 +13,8 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Actions targeting in an Arc are not blocked " +
-			          "\nby any tokens, but targets must be within " +
+			          "Actions Targeting in an Arc are not blocked " +
+			          "\nby any tokens, but Targets must be within " +
 			          "\nthe aim's Range. " +
 
 			          "\n\nArc aims may have a Minimum Range in " +

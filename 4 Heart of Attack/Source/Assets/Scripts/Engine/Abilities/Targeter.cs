@@ -7,7 +7,7 @@ namespace HOA {
 		public static bool Ready {get; private set;}
 		public static bool Passable {get; private set;}
 		public static Ability Pending {get; private set;}
-		static TargetGroup targets;
+		static TargetGroup Targets;
 		static List<Aim> aims;
 		static int steps, step;
 
@@ -35,7 +35,7 @@ namespace HOA {
 				Pending.Unadjust();
 				Pending = null;
 			}
-			targets = new TargetGroup();
+			Targets = new TargetGroup();
 			Ready = false;
 			Passable = false;
 			steps = 0;
@@ -59,7 +59,7 @@ namespace HOA {
 			Cell start = null;
 			if (actor != null) {start = actor.Body.Cell;}
 			Token child = Pending.Template;
-			if (Pending.recursiveMove && step > 0) {start = (Cell)(targets[targets.Count-1]);}
+			if (Pending.recursiveMove && step > 0) {start = (Cell)(Targets[Targets.Count-1]);}
 
 			if (Pending.multiMove) {
 				if (step == 0) {
@@ -73,8 +73,8 @@ namespace HOA {
 				}
 				else if (step > 1) {
 					Passable = true;
-					int index = targets.Count-1;
-					Target last = targets[index];
+					int index = Targets.Count-1;
+					Target last = Targets[index];
 
 					if (last is Cell) {start = (Cell)last;}
 					else if (last is Token) {start = ((Token)last).Body.Cell;}
@@ -90,12 +90,12 @@ namespace HOA {
 
 			else if (Pending.teleport && step > 0) {
 				start = Pending.Parent.Body.Cell;
-				actor = (Token)targets[0];
+				actor = (Token)Targets[0];
 			}
 
 			if (aim.Trajectory == ETraj.RADIAL) {
-				Token target1 = (Token)targets[step-1];
-				if (!Find(aim, actor, target1.Body.Cell, null)) {NoLegalTargets();}
+				Token Target1 = (Token)Targets[step-1];
+				if (!Find(aim, actor, Target1.Body.Cell, null)) {NoLegalTargets();}
 			}
 			else {
 				if (!Find(aim, actor, start, child)) {NoLegalTargets();}
@@ -103,9 +103,9 @@ namespace HOA {
 		}
 
 		static bool Find (Aim aim, Token actor, Cell center=null, Token other=null) {
-			TargetGroup targets = aim.Targets(actor, center, other);
-			targets.Legalize();
-			return (targets.Count>0 ? true : false);
+			TargetGroup Targets = aim.Targets(actor, center, other);
+			Targets.Legalize();
+			return (Targets.Count>0 ? true : false);
 		}
 
 		static void FinishStep () {
@@ -119,18 +119,18 @@ namespace HOA {
 
 		public static void Select (Target t) {
 			if (t.Legal) {
-				targets.Add(t);
+				Targets.Add(t);
 				FinishStep();
 			}
 		}
 
 		public static void Execute () {
-			if (Passable || Ready) {Pending.Execute(targets);}
-			else {GameLog.Out("Please finish selecting targets.");}
+			if (Passable || Ready) {Pending.Execute(Targets);}
+			else {GameLog.Out("Please finish selecting Targets.");}
 		}
 
 		static void NoLegalTargets () {
-			GameLog.Out("No legal targets.");
+			GameLog.Out("No legal Targets.");
 			Reset();
 		}
 
@@ -138,7 +138,7 @@ namespace HOA {
 			string str = "";
 			if (Pending != default(Ability)) {
 				str = Pending.Name;
-				foreach (Target t in targets) {
+				foreach (Target t in Targets) {
 					if (t != default(Target)) {
 						str += "\n"+t.ToString();
 					}

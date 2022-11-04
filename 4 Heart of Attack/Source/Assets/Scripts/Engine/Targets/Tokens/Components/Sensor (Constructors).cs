@@ -39,9 +39,11 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
                     u.timers.Add(Timer.Bombing(new Source(s.Parent), u));
+                }
             };
             s.ONE = s.SNCE;
             
@@ -66,7 +68,7 @@ namespace HOA {
             s.TriggerTest = (Token token) =>
             {
                 return ((token is Unit) 
-                    && (token.ID.Code != EToken.CARA) 
+                    && (token.ID.Species != Species.Carapace) 
                     && (token.Owner == s.Parent.Owner));
             };
 
@@ -96,16 +98,20 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
                     u.timers.Add(Timer.Cursed(new Source(s.Parent), u));
+                }
             };
             s.ONE = (Token token) =>
             {
                 s.SNCE(token);
-                Unit u;
-                if (Game.Active && token.IsUnit(out u))
+                if (Game.Active && token is Unit)
+                {
+                    Unit u = token as Unit;
                     EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 2));
+                }
             };
             
             s.SXCE = (Token token) => { s.RemoveTimer(token, "Cursed"); };
@@ -130,16 +136,20 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
                     u.timers.Add(Timer.Exhaust(new Source(s.Parent), u));
+                }
             };
             s.ONE = (Token token) =>
             {
                 s.SNCE(token);
-                Unit u;
-                if (Game.Active && token.IsUnit(out u))
+                if (Game.Active && token is Unit)
+                {
+                    Unit u = token as Unit;
                     EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 5));
+                }
             };
 
             s.SXCE = (Token token) => { s.RemoveTimer(token, "Exhaust"); };
@@ -166,7 +176,7 @@ namespace HOA {
                 if (Game.Active)
                 {
                     int random = DiceCoin.Throw(new Source(s.Parent), EDice.D4);
-                    if (random == 1) EffectQueue.Add(Effect.Replace(new Source(s.Parent), s.Parent, EToken.WATR));
+                    if (random == 1) EffectQueue.Add(Effect.Replace(new Source(s.Parent), s.Parent, Species.Water));
                 }
             };
             s.Enter(s.Cell);
@@ -188,9 +198,11 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
                     u.timers.Add(Timer.Incineration(new Source(s.Parent), u));
+                }
             };
             s.ONE = (Token token) =>
             {
@@ -234,23 +246,23 @@ namespace HOA {
 
             s.SNCE = (Token token) => 
             {
-               Unit u;
-               if (token.IsUnit(out u))
-               {
-                    s.Parent.WatchList.Add(new TokenRecord(token));
-                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
-                }
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
+                   s.Parent.WatchList.Add(new TokenRecord(token));
+                   EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
+               }
             };
             s.ONE = s.SNCE;
 
             s.SXCE = (Token token) => 
             {
-               Unit u;
-               if (token.IsUnit(out u))
-               {
+                if (token is Unit)
+                {
+                   Unit u = token as Unit;
                    s.Parent.WatchList.Remove(new TokenRecord(token));
                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
-               }
+                }
             };
             s.OXE = s.SXCE;
 
@@ -267,20 +279,20 @@ namespace HOA {
 
             s.SNCE = (Token token) => 
             {
-               Unit u;
-               if (token.IsUnit(out u))
-               {
-                   s.Parent.WatchList.Add(new TokenRecord(token));
-                   EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
-               }
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
+                    s.Parent.WatchList.Add(new TokenRecord(token));
+                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
+                }
             };
             s.ONE = s.SNCE;
 
             s.SXCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
                 {
+                    Unit u = token as Unit;
                     s.Parent.WatchList.Remove(new TokenRecord(token));
                     EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
                 }
@@ -305,9 +317,11 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
                     u.timers.Add(Timer.WaterLogged(new Source(s.Parent), u));
+                }
             };
             s.ONE = (Token token) =>
             {
@@ -338,18 +352,20 @@ namespace HOA {
 
             s.SNCE = (Token token) =>
             {
-                Unit u;
-                if (token.IsUnit(out u))
-                   EffectQueue.Add(Effect.Stick(new Source(s.Parent), u));
+                if (token is Unit)
+                {
+                    Unit u = token as Unit;
+                    EffectQueue.Add(Effect.Stick(new Source(s.Parent), u));
+                }
             };
             s.ONE = s.SNCE;
 
             s.SXCE = (Token token) => 
             {
                 foreach (WebRecord record in s.Parent.WatchList) {
-                    Unit u;
-                    if (record.Token.IsUnit(out u)) 
-                    { 
+                    if (token is Unit)
+                    {
+                        Unit u = token as Unit;
                         Ability move = u.Arsenal.Move;
                         if (move != null) {
                             move.Aims[0].Range = record.RangeLost;
@@ -361,9 +377,9 @@ namespace HOA {
             
             s.OXE = (Token token) => 
             {
-                Unit u;
-                if (token.IsUnit(out u))
+                if (token is Unit)
                 {
+                    Unit u = token as Unit;
                     Ability move = u.Arsenal.Move;
                     if (move != default(Ability))
                     {

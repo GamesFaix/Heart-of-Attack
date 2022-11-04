@@ -8,7 +8,7 @@ namespace HOA {
 		public static Texture2D parchment;
 
 		public static void Load() {
-			Thumbs.Load();
+			TokenThumbnails.Load();
 			Icons.Load();
 			
 			wood = new Texture2D[2] {

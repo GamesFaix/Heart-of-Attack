@@ -34,10 +34,10 @@ namespace HOA {
 
 		public static Faction Neutral () {return factions[Count-1];}
 		
-		public static List<EToken> Kings {
+		public static List<Species> Kings {
 			get {
-				List<EToken> kings = new List<EToken>();
-				foreach (Faction f in factions) {if (f.King != EToken.NONE) {kings.Add(f.King);} }
+				List<Species> kings = new List<Species>();
+				foreach (Faction f in factions) {if (f.King != Species.None) {kings.Add(f.King);} }
 				return kings;
 			}
 		}

@@ -6,11 +6,11 @@
 			Size = new size2(4,4);
 			
 			Density = 0.5f;
-			Dist = new Distribution<EToken> ();
-			Dist.Add(new Possibility<EToken>(EToken.MNTN,2));
-			Dist.Add(new Possibility<EToken>(EToken.COTT,1));
-			Dist.Add(new Possibility<EToken>(EToken.TREE,2));
-			Dist.Add(new Possibility<EToken>(EToken.ROCK,2));
+			Dist = new Distribution<Species> ();
+			Dist.Add(new Possibility<Species>(Species.Mountain,2));
+			Dist.Add(new Possibility<Species>(Species.Cottage,1));
+			Dist.Add(new Possibility<Species>(Species.Tree,2));
+			Dist.Add(new Possibility<Species>(Species.Rock,2));
 		}
 		
 		public override Board Build () {
@@ -40,30 +40,30 @@
 
 		Terrain Sink {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.TSNK, EToken.TSNK, EToken.NONE,
-					EToken.TSNK, EToken.TSNK, EToken.NONE,
-					EToken.NONE, EToken.NONE, EToken.NONE
+				return new Terrain (new Species[] {
+					Species.TimeSink, Species.TimeSink, Species.None,
+					Species.TimeSink, Species.TimeSink, Species.None,
+					Species.None, Species.None, Species.None
 				});
 			}
 		}
 
 		Terrain Well {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.NONE, EToken.TWEL, EToken.TWEL,
-					EToken.TWEL, EToken.TWEL, EToken.TWEL,
-					EToken.TWEL, EToken.TWEL, EToken.TWEL
+				return new Terrain (new Species[] {
+					Species.None, Species.TimeWell, Species.TimeWell,
+					Species.TimeWell, Species.TimeWell, Species.TimeWell,
+					Species.TimeWell, Species.TimeWell, Species.TimeWell
 				});
 			}
 		}
 
 		Terrain Corner {
 			get {
-				return new Terrain (new EToken[] {
-					EToken.NONE, EToken.MNTN, EToken.NONE,
-					EToken.MNTN, EToken.NONE, EToken.ROCK,
-					EToken.NONE, EToken.ROCK, EToken.WATR
+				return new Terrain (new Species[] {
+					Species.None, Species.Mountain, Species.None,
+					Species.Mountain, Species.None, Species.Rock,
+					Species.None, Species.Rock, Species.Water
 				});
 			}
 		}

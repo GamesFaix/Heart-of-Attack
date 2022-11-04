@@ -10,9 +10,9 @@ namespace HOA {
 		}
 		
 		static bool TrampleVsDestructible (Token token, Cell newCell) {
-			if (token.TargetClass[TargetClasses.Tram]) {
+			if (token.Body.Trample) {
 				foreach (Token occupant in newCell.Occupants) {
-					if (occupant.TargetClass[TargetClasses.Dest] 
+					if (occupant.Body.Destructible
 					    && CanTakePlaceOf(token, occupant)) {
 						return true;
 					}
@@ -22,9 +22,9 @@ namespace HOA {
 		}
 		
 		static bool KingVsHeart (Token token, Cell newCell) {
-			if (token.TargetClass[TargetClasses.King]) {
+			if (token is King) {
 				foreach (Token occupant in newCell.Occupants) {
-					if (occupant.TargetClass[TargetClasses.Heart]
+					if (occupant is Heart
 					    && CanTakePlaceOf(token, occupant)) {
 						return true;
 					}
@@ -41,7 +41,7 @@ namespace HOA {
 			return false;
 		}
 
-		protected static bool Trample (Token trampler, Cell newCell) {
+		protected static bool TrampleCell (Token trampler, Cell newCell) {
 			if (CanTrample (trampler, newCell)) {
 				TargetGroup occupants = newCell.Occupants;
 				EffectGroup effects = new EffectGroup();

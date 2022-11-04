@@ -4,29 +4,22 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Unit : Token{
+	public partial class Unit : Token{
 	
-		public Health Health {get; protected set;}
-		public void SetHealth (Health health) {Health = health;}
+		public Health Health {get; set;}
 		public Wallet Wallet {get; protected set;}
 		public Watch Watch {get; protected set;}
 		public Arsenal Arsenal {get; protected set;}
-		
-		protected void NewHealth (byte h=0, byte d=0) {Health = new Health(this, h, d);}
-		protected void NewWallet (byte maxAP=2) {Wallet = new Wallet(this, maxAP);}
-		protected void NewWatch (byte init=0) {Watch = new Watch(this, init);}
 
-		public Unit () {
+        public Unit (Source source, Species species, string name, bool unique = false, bool template = false)
+            : base (source, species, name, unique, template)
+        {
 			Body = new Body(this);
-            TargetClass += TargetClasses.Unit;
-			OnDeath = EToken.CORP;
-			NewWallet();
-		}
-
-		protected virtual void BuildArsenal () {
-			Arsenal = new Arsenal(this);
-			Arsenal.Add(Ability.Focus(this));
-		}
+            OnDeath = Species.Corpse;
+			Wallet = new Wallet(this, 2);
+            Arsenal = new Arsenal(this);
+            Arsenal.Add(Ability.Focus(this));
+        }
 
 		public int SetStat (Source s, Stats stat, int n, bool log=true) {
 			checked {

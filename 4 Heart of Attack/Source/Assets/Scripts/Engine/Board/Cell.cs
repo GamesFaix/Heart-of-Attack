@@ -30,7 +30,6 @@ namespace HOA {
 			Index = index;
 			CellDisplay.Attach(this);
 			Links = new List<Cell>();
-            TargetClass = TargetClass.Cell();
             Stop = Plane.None;
             Occupants = new TargetGroup();
             Sensors = new List<Sensor>();
@@ -47,60 +46,6 @@ namespace HOA {
             }
         }
 
-        public bool Contains(Plane p, out Token t)
-        {
-            t = null;
-            TargetGroup matches = Occupants - TargetFilter.Plane(p, true);
-            if (matches.Count > 0)
-            {
-                if (matches.Count > 1)
-                    Debug.Log(ToString() + " contains two tokens in (" + p + ").");
-                t = matches[0] as Token;
-                return true;
-            }
-            else
-            {
-                t = null;
-                return false;
-            }
-        }
-        public bool Contains(Plane p)
-        {
-            Token t;
-            return Contains(p, out t);
-        }
-
-        public bool ContainsOnly(Plane p)
-        {
-            return ((Occupied | p) == p); 
-        }
-
-        public bool IsEmpty() { return (Occupants.Count == 0); }
-
-        public bool Contains(TargetClasses tc, out Token t)
-        {
-            t = null;
-            TargetGroup matches = Occupants - TargetFilter.TargetClass(tc, true);
-            if (matches.Count > 0)
-            {
-                if (matches.Count > 1)
-                    Debug.Log(ToString() + " contains two " + tc + " tokens.");
-                t = matches[0] as Token;
-                return true;
-            }
-            else
-            {
-                t = null;
-                return false;
-            }
-        }
-
-        public bool Contains(TargetClasses tc)
-        {
-            Token t;
-            return Contains(tc, out t);
-        }
-		
 		public virtual void Enter (Token t) {
             Occupants.Add(t);
             if ((t.Plane & Plane.Sunken) == Plane.Sunken) 

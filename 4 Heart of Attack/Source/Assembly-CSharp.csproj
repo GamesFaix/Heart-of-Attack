@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C383136B-8978-A065-A862-EC738C2F0E5F}</ProjectGuid>
+	<ProjectGuid>{0565342E-F32D-662C-D07A-2676937A27B6}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -95,7 +95,6 @@
      <Compile Include="Assets\Scripts\Engine\Collections\Tuples New\size2.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\DiceCoin.cs" />
-     <Compile Include="Assets\Scripts\Engine\Misc\Enums.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\Game.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\GameLog.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\IDeepCopy.cs" />
@@ -135,63 +134,29 @@
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletIN.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Watch.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\WatchList.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Chrono\Aper.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Chrono\Oldt.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Chrono\Piec.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Chrono\Repr.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Chrono\Revo.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\GEARP\Cara.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\GEARP\Kabu.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\GEARP\Kata.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\GEARP\Mawt.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Grove\Griz.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Grove\Meta.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Grove\Talo.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Grove\Ultr.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\New Rep\Deci.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\New Rep\Demo.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\New Rep\Mein.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\New Rep\Mine.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\New Rep\Pano.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Curse.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Destructible.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Exhaust.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Hearts.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Ice.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Lava.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Obstacles.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Tall.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Targ.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\TimeSink.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\TimeWell.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Obstacles\Water.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psilent\Aren.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psilent\ArenAlias.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psilent\Drea.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psilent\Prie.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psilent\Pris.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Bees.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Blac.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Lich.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Mart.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Myco.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Psycho\Webb.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Ashe.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Batt.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Conf.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Garg.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Rook.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Torridale\Smas.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Voidoid\Gate.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Voidoid\Monolith.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Voidoid\Necr.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Specific\Voidoid\Recy.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Alias (Constructors).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Obstacle (Destructible).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Obstacle (Other).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Obstacle (Player).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Obstacle (Traps).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Chrono).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (GEARP).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Grove).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (New Rep).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Psilent).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Psycho).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Torridale).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Constructors\Unit (Voidoid).cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Alias.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Heart.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\King.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Obstacle.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Species.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Token (Constructor Collection).cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Token.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenFactory.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRecord.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRef.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\TokenRegistry.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\TokenHandling\Unit.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\FilterTests.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\_General\Target.cs" />
@@ -241,6 +206,7 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipSelf.cs" />
      <Compile Include="Assets\Scripts\GUI\Images\Icons.cs" />
      <Compile Include="Assets\Scripts\GUI\Images\ImageLoader.cs" />
+     <Compile Include="Assets\Scripts\GUI\Images\TokenThumbnails.cs" />
      <Compile Include="Assets\Scripts\GUI\Inspector Elements\IInspectable.cs" />
      <Compile Include="Assets\Scripts\GUI\Inspector Elements\InspectorInfo.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobby.cs" />
@@ -258,7 +224,6 @@
      <Compile Include="Assets\Scripts\Model\Graphics\Card.cs" />
      <Compile Include="Assets\Scripts\Model\Graphics\EffectCard.cs" />
      <Compile Include="Assets\Scripts\Model\Graphics\TargetDisplay.cs" />
-     <Compile Include="Assets\Scripts\Model\Graphics\Thumbs.cs" />
      <Compile Include="Assets\Scripts\Model\Graphics\TileSet.cs" />
      <Compile Include="Assets\Scripts\Model\TokenDisplay.cs" />
   </ItemGroup>

@@ -6,9 +6,15 @@ namespace HOA {
 	public class FGearp : Faction {
 		public FGearp () {
 			name = "G.E.A.R.P.";
-			tokens = new List<EToken> {EToken.KABU, EToken.MAWT, EToken.CARA, EToken.KATA, EToken.HSIL};
-			king = EToken.KABU;
-			heart = EToken.HSIL;
+			tokens = new List<Species> {
+                Species.Kabutomachine, 
+                Species.Mawth, 
+                Species.Carapace, 
+                Species.Katandroid, 
+                Species.SilkHeart
+            };
+			king = Species.Kabutomachine;
+			heart = Species.SilkHeart;
 			color1 = new Color(0, 0, 1, 1);
 			color2 = Color.white;
 			playable = true;
@@ -19,9 +25,16 @@ namespace HOA {
 	public class FNewRepublic : Faction {
 		public FNewRepublic () {
 			name = "New Republic";
-			tokens =  new List<EToken> {EToken.DECI, EToken.PANO, EToken.MEIN, EToken.DEMO, EToken.MINE, EToken.HSTE};
-			king = EToken.DECI;
-			heart = EToken.HSTE;
+			tokens =  new List<Species> {
+                Species.Decimatrix, 
+                Species.Panopticannon, 
+                Species.MeinSchutz, 
+                Species.Demolitia, 
+                Species.Mine, 
+                Species.SteelHeart
+            };
+			king = Species.Decimatrix;
+			heart = Species.SteelHeart;
 			color1 = new Color(0, 0.2f, 0, 1);
 			color2 = new Color(0.8f, 0.8f, 0.8f, 1);
 			playable = true;
@@ -32,9 +45,17 @@ namespace HOA {
 	public class FTorridale : Faction {
 		public FTorridale () {
 			name = "Torridale";
-			tokens = new List<EToken> {EToken.GARG, EToken.BATT, EToken.CONF, EToken.ASHE, EToken.SMAS, EToken.ROOK, EToken.HSTO};
-			king = EToken.GARG;
-			heart = EToken.HSTO;
+			tokens = new List<Species> {
+                Species.Gargoliath, 
+                Species.Rambuchet, 
+                Species.Conflagragon, 
+                Species.Ashes, 
+                Species.Smashbuckler, 
+                Species.Rook, 
+                Species.StoneHeart
+            };
+			king = Species.Gargoliath;
+			heart = Species.StoneHeart;
 			color1 = new Color(0.5f, 0.5f, 0.5f ,1);
 			color2 = new Color(0.6f, 0.1f, 0.1f, 1);
 			playable = true;
@@ -45,9 +66,15 @@ namespace HOA {
 	public class FGrove : Faction {
 		public FGrove () {
 			name = "Forgotten Grove";
-			tokens = new List<EToken> {EToken.ULTR, EToken.META, EToken.TALO, EToken.GRIZ, EToken.HFIR};
-			king = EToken.ULTR;
-			heart = EToken.HFIR;
+			tokens = new List<Species> {
+                Species.Ultratherium, 
+                Species.Metaterrainean, 
+                Species.TalonedScout, 
+                Species.Grizzly, 
+                Species.FirHeart
+            };
+			king = Species.Ultratherium;
+			heart = Species.FirHeart;
 			color1 = new Color(0.7f, 0.5f, 0, 1);
 			color2 = new Color(0, 0.2f, 0, 1);
 			playable = true;
@@ -57,9 +84,9 @@ namespace HOA {
 	public class FChrono : Faction {
 		public FChrono () {
 			name = "Chrononistas";
-			tokens = new List<EToken> {EToken.OLDT, EToken.REPR, EToken.PIEC, EToken.REVO, EToken.APER, EToken.HBRA};
-			king = EToken.OLDT;
-			heart = EToken.HBRA;
+			tokens = new List<Species> {Species.OldThreeHands, Species.Reprospector, Species.Piecemaker, Species.RevolvingTom, Species.Aperture, Species.BrassHeart};
+			king = Species.OldThreeHands;
+			heart = Species.BrassHeart;
 			color1 = new Color(1, 0.8f, 0, 1);
 			color2 = Color.magenta;
 			playable = true;
@@ -70,9 +97,16 @@ namespace HOA {
 	public class FPsycho : Faction {
 		public FPsycho () {
 			name = "Psycho Tropics";
-			tokens = new List<EToken> {EToken.BLAC, EToken.MART, EToken.MYCO, EToken.BEES, EToken.LICH, EToken.WEBB, EToken.HSLK};
-			king = EToken.BLAC;
-			heart = EToken.HSLK;
+			tokens = new List<Species> {
+                Species.BlackWinnow, 
+                Species.ManTrap, 
+                Species.Mycolonist, 
+                Species.Beesassin, 
+                Species.Lichenthrope, 
+                Species.Web, 
+                Species.SilkHeart};
+			king = Species.BlackWinnow;
+			heart = Species.SilkHeart;
 			color1 = new Color(0.3f, 0, 0.5f, 1);
 			color2 = Color.green;
 			playable = true;
@@ -83,9 +117,14 @@ namespace HOA {
 	public class FPsilent : Faction {
 		public FPsilent () {
 			name = "Psilent";
-			tokens = new List<EToken> {EToken.DREA, EToken.PRIE, EToken.AREN, EToken.PRIS, EToken.HGLA};
-			king = EToken.DREA;
-			heart = EToken.HGLA;
+			tokens = new List<Species> {
+                Species.DreamReaver, 
+                Species.Priest, 
+                Species.Arena, 
+                Species.PrismGuard, 
+                Species.GlassHeart};
+			king = Species.DreamReaver;
+			heart = Species.GlassHeart;
 			color1 = new Color(0.4f, 0.8f, 1, 1);
 			color2 = new Color(1, 0.8f, 0, 1);
 			playable = true;
@@ -96,9 +135,14 @@ namespace HOA {
 	public class FVoidoid : Faction {
 		public FVoidoid () {
 			name = "Voidoids";
-			tokens = new List<EToken> {EToken.MONO, EToken.GATE, EToken.NECR, EToken.RECY, EToken.HBLO};
-			king = EToken.MONO;
-			heart = EToken.HBLO;
+			tokens = new List<Species> {
+                Species.Monolith, 
+                Species.Gatecreeper, 
+                Species.Necro, 
+                Species.Recyclops, 
+                Species.BloodHeart};
+			king = Species.Monolith;
+			heart = Species.BloodHeart;
 			color1 = new Color(0.6f, 0.1f, 0.1f, 1);
 			color2 = Color.black;
 			playable = true;
@@ -109,17 +153,17 @@ namespace HOA {
 	public class FObstacle : Faction {
 		public FObstacle () {
 			name = "(Obstacles)";
-			tokens = new List<EToken> {
-				EToken.MNTN, EToken.HILL, EToken.ROCK, 
-				EToken.TREE, EToken.TREE2, EToken.TREE3, EToken.TREE4, 
-				EToken.WATR, EToken.ICE, EToken.LAVA, 
-				EToken.CORP, EToken.CURS,
-				EToken.PYRA, EToken.TEMP, EToken.HOUS, EToken.COTT, EToken.RAMP,
-				EToken.TARG, EToken.TSNK, EToken.TWEL,
-				EToken.PYLO, EToken.HOLE, EToken.ANTE, EToken.EXHA
+			tokens = new List<Species> {
+				Species.Mountain, Species.Hill, Species.Rock, 
+				Species.Tree, Species.Tree2, Species.Tree3, Species.Tree4, 
+				Species.Water, Species.Ice, Species.Lava, 
+				Species.Corpse, Species.Curse,
+				Species.Pyramid, Species.Temple, Species.House, Species.Cottage, Species.Rampart,
+				Species.BombingRange, Species.TimeSink, Species.TimeWell,
+				Species.Pylon, Species.Gap, Species.Antenna, Species.Exhaust
 			};
-			king = EToken.NONE; 
-			heart = EToken.NONE;
+			king = Species.None; 
+			heart = Species.None;
 			color1 = Color.white;
 			color2 = Color.grey;
 			playable = false;

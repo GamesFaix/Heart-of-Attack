@@ -52,6 +52,9 @@ namespace HOA {
 		}
 
         public override void Draw (Panel p) {InspectorInfo.Health(this, p);}
-
+        public override string ToString()
+        {
+            return Parent + "'s Health";
+        }
 	}
 }

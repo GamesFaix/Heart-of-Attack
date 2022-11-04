@@ -13,9 +13,9 @@ namespace HOA {
 		public override void Content (Panel p) {
 			p.NudgeX();
 			GUI.Label(p.Box(0.9f), 
-			          "Corrosion effects target Units." +
+			          "Corrosion effects Target Units." +
 
-			          "\n\nThe target Unit takes the damage" +
+			          "\n\nThe Target Unit takes the damage" +
 			          "\nspecified by the effect and receives a " +
 			          "\nCorrosion timer with a value equal to half " +
 			          "\nthe Damage taken (rounded down)." +

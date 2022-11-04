@@ -9,31 +9,31 @@ namespace HOA {
 		TargetGroup FindNeighbor (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 			
 			TargetGroup neighborCells = center.Neighbors(true);
 			if (Purpose == EPurp.MOVE) {neighborCells.Remove(center);}
 			
 			if (Filter.Contains(FilterTests.Cell)) 
             {
-				if (Purpose == EPurp.CREATE) {targets.Add(neighborCells - TargetFilter.Occupiable(other));}
-				if (Purpose == EPurp.MOVE) {targets.Add(neighborCells - TargetFilter.Occupiable(actor));}
+				if (Purpose == EPurp.CREATE) {Targets.Add(neighborCells - TargetFilter.Occupiable(other));}
+				if (Purpose == EPurp.MOVE) {Targets.Add(neighborCells - TargetFilter.Occupiable(actor));}
 			}
-			else {targets.Add(neighborCells.Occupants - Filter);}
-			return targets;
+			else {Targets.Add(neighborCells.Occupants - Filter);}
+			return Targets;
 		}
 
 		TargetGroup FindFree (Token actor, Cell center, Token other) {
 			//center does nothing
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 
             if (Filter.Contains(FilterTests.Cell))
             {
-				if (Purpose == EPurp.CREATE) {targets.Add(Game.Board.Cells - TargetFilter.Occupiable(other));}
-				if (Purpose == EPurp.MOVE) {targets.Add(Game.Board.Cells -TargetFilter.Occupiable(actor));}
+				if (Purpose == EPurp.CREATE) {Targets.Add(Game.Board.Cells - TargetFilter.Occupiable(other));}
+				if (Purpose == EPurp.MOVE) {Targets.Add(Game.Board.Cells -TargetFilter.Occupiable(actor));}
 			}
-			else {targets.Add(TokenFactory.Tokens - Filter);}
-			return targets;
+			else {Targets.Add(TokenRegistry.Tokens - Filter);}
+			return Targets;
 		}
 
 		TargetGroup FindPath (Token actor, Cell center, Token other=null) {
@@ -41,7 +41,7 @@ namespace HOA {
 
             if (!Filter.Contains(FilterTests.Cell))
             {
-				TargetGroup targets = new TargetGroup();
+				TargetGroup Targets = new TargetGroup();
 				
 				TargetGroup thisRad = center.Neighbors();
 				TargetGroup nextRad = new TargetGroup();
@@ -50,11 +50,12 @@ namespace HOA {
 				for (int i=1; i<=Range; i++) {
 					
 					foreach (Cell c in thisRad) {
-						targets.Add(c.Occupants - Filter);
+						Targets.Add(c.Occupants - Filter);
 						marked.Add(c);
 						
-						if (c.Occupants.Count==0 ||
-						    (c.Occupants.Count==1 && c.Contains(Plane.Sunken))) {
+						if (c.Occupants.Count==0 
+                            || (c.Occupants.Count==1 
+                                && (c.Occupants - TargetFilter.Plane(Plane.Sunken, true)).Count > 0)) {
 							
 							foreach (Cell d in c.Neighbors()) {
 								if (!marked.Contains(d)) {nextRad.Add(d);}		
@@ -64,29 +65,29 @@ namespace HOA {
 					thisRad = nextRad;
 					nextRad = new TargetGroup();
 				}
-				return targets;
+				return Targets;
 			}
-			else {throw new ArgumentException("Path trajectory can only be used to target tokens.  Cell targets must use repeated neighbor trajectory.");}
+			else {throw new ArgumentException("Path trajectory can only be used to Target tokens.  Cell Targets must use repeated neighbor trajectory.");}
 		}
 
 		TargetGroup FindLine (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 			List<TargetGroup> star = CellStar(center, Range);
 			foreach (TargetGroup line in star) {
                 if (Filter.Contains(FilterTests.Cell))
                 {
-					if (Purpose == EPurp.MOVE) {targets.Add(LineUntilStop(line, actor));}
-					if (Purpose == EPurp.CREATE) {targets.Add(LineUntilStop(line, other));}
+					if (Purpose == EPurp.MOVE) {Targets.Add(LineUntilStop(line, actor));}
+					if (Purpose == EPurp.CREATE) {Targets.Add(LineUntilStop(line, other));}
 				}
 				else {
                     TargetGroup cells = LineUntilStop(line, actor, true);
                     cells.Add(center);
-                    targets.Add(cells.Occupants - Filter);
+                    Targets.Add(cells.Occupants - Filter);
 				}
 			}
-			return targets;
+			return Targets;
 		}
 
 		static List<TargetGroup> CellStar (Cell start, int range) {
@@ -127,10 +128,9 @@ namespace HOA {
 			TargetGroup legal = new TargetGroup();
 			foreach (Cell c in line) {
 				legal.Add(c);
-				if (!(c.IsEmpty() || c.ContainsOnly(Plane.Sunken))) 
-                {
-				    break;
-				}
+				if (c.Occupants.Count > 0 
+                    || (c.Occupants - TargetFilter.Plane(Plane.Sunken, true)).Count == c.Occupants.Count) 
+                    break;
 			}
 			return legal;
 		}
@@ -142,34 +142,34 @@ namespace HOA {
 			Cell nextClockwise;
 			Cell nextCounter;
 			
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 			
 			if (neighbors.CellClockwise(firstCell, out nextClockwise)) {
-				targets.Add(nextClockwise);
+				Targets.Add(nextClockwise);
 			}
 			if (neighbors.CellCounter(firstCell, out nextCounter)) {
-				targets.Add(nextCounter);
+				Targets.Add(nextCounter);
 			}
-			return targets;
+			return Targets;
 		}
 
 		TargetGroup FindArc (Token actor, Cell center, Token other) {
 			if (center == null) {center = actor.Body.Cell;}
 
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 			TargetGroup square = CellSquare (center, Range, MinRange);
 
             if (Filter.Contains(FilterTests.Cell))
             {
-				if (Purpose == EPurp.ATTACK) {targets.Add(square);}
-				if (Purpose == EPurp.CREATE) {targets.Add(square - TargetFilter.Occupiable(other));}
+				if (Purpose == EPurp.ATTACK) {Targets.Add(square);}
+				if (Purpose == EPurp.CREATE) {Targets.Add(square - TargetFilter.Occupiable(other));}
 				if (Purpose == EPurp.MOVE) {
-					if (other == default(Token)) {targets.Add(square - TargetFilter.Occupiable(actor));}
-					else {targets.Add(square - TargetFilter.Occupiable(other));}
+					if (other == default(Token)) {Targets.Add(square - TargetFilter.Occupiable(actor));}
+					else {Targets.Add(square - TargetFilter.Occupiable(other));}
 				}
 			}
-			else {targets.Add(square.Occupants - Filter);}
-			return targets;
+			else {Targets.Add(square.Occupants - Filter);}
+			return Targets;
 		}
 
 		static TargetGroup CellSquare (Cell start, int range, int min) {
@@ -196,17 +196,17 @@ namespace HOA {
 		}
 
 		TargetGroup FindCreateAren (Token actor, Cell center, Token other) {
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 
 			center = actor.Body.Cell;
 			TargetGroup cells = NeighborsExtra(center);
 			foreach (Cell c in cells) {
-				if (TokenFactory.Template(EToken.AREN).Body.CanEnter(c)) {
-					targets.Add(c);
+				if (TokenRegistry.Templates[Species.Arena].Body.CanEnter(c)) {
+					Targets.Add(c);
 				}
 			}
-			targets.Add(cells);
-			return targets;
+			Targets.Add(cells);
+			return Targets;
 		}
 
 		TargetGroup NeighborsExtra (Cell center) {

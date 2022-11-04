@@ -35,24 +35,24 @@ namespace HOA {
 		}
 
 		void Select () {
-			Target target = ClosestLegalTargetToCamera();
-			if (target != null) {
-				Targeter.Select(target);
-				GUIMaster.PlaySound(EGUISound.TARGET);
+			Target Target = ClosestLegalTargetToCamera();
+			if (Target != null) {
+				Targeter.Select(Target);
+				GUIMaster.PlaySound(EGUISound.BombingRangeET);
 			}
 		}
 
 		void Inspect () {
-			Target target = null;
+			Target Target = null;
 			if (Input.GetKey("left shift") || Input.GetKey("right shift")){
-				target = ClosestCellToCamera();
+				Target = ClosestCellToCamera();
 			}
 			else {
-				target = ClosestTokenToCamera();
+				Target = ClosestTokenToCamera();
 			}
 			
-			if (target != null) {
-				GUIInspector.Inspected = target;
+			if (Target != null) {
+				GUIInspector.Inspected = Target;
 				GUIMaster.PlaySound(EGUISound.INSPECT);
 			}
 		}
@@ -85,29 +85,30 @@ namespace HOA {
 		}
 		
 		TargetGroup TargetableGameObjects (GameObject[] objects) {
-			TargetGroup targets = new TargetGroup();
+			TargetGroup Targets = new TargetGroup();
 			foreach (GameObject g in objects) {
 				TargetDisplay display = null;
 				if (g.GetComponent("CellDisplay")) {
 					display = g.GetComponent("CellDisplay") as TargetDisplay;
 					Cell c = (Cell)display.Parent;
-					targets.Add(c);
-					Token sunk;
-					if (c.Contains(Plane.Sunken, out sunk)) {targets.Add(sunk);}
+					Targets.Add(c);
+                    TargetGroup group = c.Occupants - TargetFilter.Plane(Plane.Sunken, true);
+                    foreach (Token t in group)
+                        Targets.Add(t);
 				}
 				if (g.GetComponent("TokenDisplay")) {
 					display = g.GetComponent("TokenDisplay") as TargetDisplay;
-					targets.Add(display.Parent);
+					Targets.Add(display.Parent);
 				}
 			}
-			return targets;
+			return Targets;
 		}
 
-		Target ClosestTarget (TargetGroup targets) {
+		Target ClosestTarget (TargetGroup Targets) {
 			float shortestDist = 100000;
 			Target closest = null;
 
-			foreach (Target t in targets) {
+			foreach (Target t in Targets) {
 				GameObject go = t.Display.GO;
 
 				float dist = Vector3.Distance(go.transform.position, Camera.main.transform.position);

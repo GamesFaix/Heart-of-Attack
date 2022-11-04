@@ -13,24 +13,24 @@ namespace HOA
             Ability a = new Ability(parent, "Arctic Gust", 4, new Price(1, 1), 15);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage target Unit." +
+                return "Do " + a.Damage + " damage Target Unit." +
                 "\nTarget's Move range -2 until end of its next turn." +
                 "\nTarget's neighbors and cellmates' Move range -1 until end of their next turn." +
                 "\n(" + a.Parent.ID.Name + "'s Move range is not affected.)";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                if (target.Arsenal.Move != default(Ability))
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                if (Target.Arsenal.Move != default(Ability))
                 {
-                    Ability move = target.Arsenal.Move;
+                    Ability move = Target.Arsenal.Move;
                     Aim aim = move.Aims[0];
                     aim.Range -= 2;
-                    target.timers.Add(Timer.ArcticGust(new Source(a.Parent), target, 2, move));
+                    Target.timers.Add(Timer.ArcticGust(new Source(a.Parent), Target, 2, move));
                 }
-                TargetGroup neighborUnits = target.Body.Neighbors() - TargetFilter.Unit;
+                TargetGroup neighborUnits = Target.Body.Neighbors() - TargetFilter.Unit;
                 foreach (Unit u in neighborUnits)
                 {
                     if (u != a.Parent
@@ -59,10 +59,10 @@ namespace HOA
             TargetFilter f = TargetFilter.Unit
                 + FilterTests.Owner(a.Parent.Owner, true);
             a.Aims.Add(Aim.AttackNeighbor(f));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectGroup e = new EffectGroup();
-                e.Add(Effect.DestroyUnit(new Source(a.Parent), (Token)targets[0]));
+                e.Add(Effect.DestroyUnit(new Source(a.Parent), (Token)Targets[0]));
                 e.Add(Effect.AddStat(new Source(a.Parent), (Unit)a.Parent, Stats.Initiative, a.Modifier));
                 a.Parent.timers.Add(Timer.Altaration(new Source(a.Parent), a.Parent));
             };
@@ -82,13 +82,13 @@ namespace HOA
                 "\nLose all Focus.";
             };
             a.Aims.Add(Aim.MoveLine(a.Modifier));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0);
                 Cell start = a.Parent.Body.Cell;
-                for (int i = 0; i < targets.Count; i++)
+                for (int i = 0; i < Targets.Count; i++)
                 {
-                    Cell endCell = (Cell)targets[i];
+                    Cell endCell = (Cell)Targets[i];
                     Debug.Log("creating line from " + start + " to " + endCell);
                     TargetGroup line = new TargetGroup();
                     int2 dir = Direction.FromCells(start, endCell);
@@ -134,10 +134,10 @@ namespace HOA
         public static Ability Burrow(Unit parent)
         {
             Ability a = new Ability(parent, "Burrow", 1, Price.Cheap);
-            a.Desc = () => { return "Move " + a.Parent + " to target cell."; };
+            a.Desc = () => { return "Move " + a.Parent + " to Target cell."; };
             a.Aims.Add(Aim.MoveArc(0, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.BurrowStart(new Source(a.Parent), a.Parent, (Cell)targets[0]));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.BurrowStart(new Source(a.Parent), a.Parent, (Cell)Targets[0]));
             return a;
         }
         public static Ability Burst(Unit parent)
@@ -153,7 +153,7 @@ namespace HOA
                 "then removes half the counters (rounded up).)";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 TargetGroup victims = a.Parent.Body.Neighbors(true) - TargetFilter.Unit;
                 EffectGroup nextEffects = new EffectGroup();
@@ -181,16 +181,18 @@ namespace HOA
             Ability a = new Ability(parent, "Cannibalize", 4, Price.Cheap);
             a.Desc = () =>
             {
-                return "Destroy target remains." +
+                return "Destroy Target remains." +
                 "\nHealth +10/10";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Corpse));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Token t = (Token)targets[0];
-                t.Die(new Source(a.Parent));
-                a.Parent.AddStat(new Source(a.Parent), Stats.MaxHealth, 10);
-                a.Parent.AddStat(new Source(a.Parent), Stats.Health, 10);
+                Token t = (Token)Targets[0];
+                EffectGroup e = new EffectGroup();
+                e.Add(Effect.DestroyUnit(new Source(a.Parent), t));
+                e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, 10));
+                e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Health, 10));
+                EffectQueue.Add(e);
             };
             return a;
         }
@@ -199,12 +201,12 @@ namespace HOA
             Ability a = new Ability(parent, "Cannon", 3, price, damage);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit.  " +
+                return "Do " + a.Damage + " damage to Target unit.  " +
                 "\nMax range +1 per focus (up to +3).";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 2, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.Adjust = () => a.Aims[0].Range += Mathf.Min(a.Parent.FP, 3);
             a.Unadjust = () => a.Aims[0].Range -= Mathf.Min(a.Parent.FP, 3);
             a.DrawSpecial = (p) =>
@@ -224,13 +226,13 @@ namespace HOA
             Ability a = new Ability(parent, "Cocktail", 3, new Price(1, 2), 20);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
                 "\nDestroy all destructible tokens that would take damage.";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.UnitDest, 0, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.FireInitial(new Source(a.Parent), (Token)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.FireInitial(new Source(a.Parent), (Token)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -251,7 +253,7 @@ namespace HOA
                 "\n" + a.Parent.ID.Name + " gains Health equal to damage successfully dealt.";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 Cell start = a.Parent.Body.Cell;
                 int startX = start.X - a.Modifier;
@@ -276,11 +278,13 @@ namespace HOA
             Ability a = new Ability(parent, "Detonate", 4, new Price(1, 1));
             a.Desc = () => { return "Destroy all mines on team."; };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                TargetGroup mines = a.Parent.Owner.Tokens - TargetFilter.EToken(EToken.MINE, true);
-                foreach (Token t in mines)
-                    t.Die(new Source(a.Parent));
+                TargetGroup mines = a.Parent.Owner.Tokens - TargetFilter.Species(Species.Mine, true);
+                EffectGroup e = new EffectGroup();
+                foreach (Token mine in mines)
+                    e.Add(Effect.DestroyObstacle(new Source(a.Parent), mine));
+                EffectQueue.Add(e);
             };
             return a;
         }
@@ -293,7 +297,7 @@ namespace HOA
                 "\nAll damaged units are stunned for " + a.Modifier + " turns.";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 TargetGroup cells = a.Parent.Body.Cell.Neighbors(true);
                 TargetGroup units = cells.Occupants - TargetFilter.Unit;
@@ -313,8 +317,8 @@ namespace HOA
                 "\n" + a.Parent + " takes damage equal to health successfully gained.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Donate(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Donate(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             return a;
         }
 
@@ -323,7 +327,7 @@ namespace HOA
             Ability a = new Ability(parent, "End turn", 0, Price.Free);
             a.Desc = () => { return "End current turn."; };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
                 EffectQueue.Add(Effect.Advance(new Source(a.Parent), true));
             return a;
         }
@@ -336,9 +340,9 @@ namespace HOA
                 "\n" + a.Parent + " gains " + a.Damage + " health.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Dest));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), (Token)targets[0]));
+                EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), (Token)Targets[0]));
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), parent, Stats.Health, a.Damage));
             };
             return a;
@@ -350,17 +354,17 @@ namespace HOA
             a.Desc = () =>
             {
                 return "Destroy " + a.Parent + "." +
-                "\nDo " + a.Damage + " damage to target unit. " +
+                "\nDo " + a.Damage + " damage to Target unit. " +
                 "\nTarget takes " + ((int)Mathf.Floor(a.Damage * 0.5f)) + " corrosion counters. " +
                 "\n(If a unit has corrosion counters, at the beginning of its turn " +
                 "it takes damage equal to the number of counters, " +
                 "then removes half the counters (rounded up).)";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), target, a.Damage));
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), Target, a.Damage));
                 EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), a.Parent));
             };
             a.DrawSpecial = (p) =>
@@ -380,12 +384,12 @@ namespace HOA
             Ability a = new Ability(parent, "Feast", 3, Price.Cheap, 12);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nGain health equal to damage successfully dealt.";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 2, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Leech(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Leech(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             return a;
         }
         public static Ability Feed(Unit parent)
@@ -393,12 +397,12 @@ namespace HOA
             Ability a = new Ability(parent, "Feed", 3, Price.Cheap, 5);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nGain health equal to damage successfully dealt.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Leech(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Leech(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             return a;
         }
         public static Ability FireBreath(Unit parent)
@@ -406,13 +410,13 @@ namespace HOA
             Ability a = new Ability(parent, "Fire Breath", 3, new Price(2, 0), 10);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nTarget's neighbors and cellmates take 50% damage (rounded down).  " +
                 "\nDestroy all destructible tokens that would take damage.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.UnitDest, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.FireInitial(new Source(a.Parent), (Token)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.FireInitial(new Source(a.Parent), (Token)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -428,15 +432,15 @@ namespace HOA
             Ability a = new Ability(parent, "Flail", 3, Price.Cheap, 8);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit.  " +
+                return "Do " + a.Damage + " damage to Target unit.  " +
                 "\nRange +1 per focus (Up to +3).  " +
                 "\n" + a.Parent + " loses all focus.";
             };
             a.Aims.Add(Aim.AttackPath(TargetFilter.Unit, 1));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0, false);
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
                 a.Unadjust();
             };
             a.Adjust = () => a.Aims[0].Range += Mathf.Min(a.Parent.FP, 3);
@@ -453,10 +457,10 @@ namespace HOA
         public static Ability Fling(Unit parent)
         {
             Ability a = new Ability(parent, "Fling", 3, new Price(1, 1), 16);
-            a.Desc = () => { return "Do " + a.Damage + " damage to target unit."; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to Target unit."; };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 0, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             return a;
         }
         public static Ability Focus(Unit parent)
@@ -464,7 +468,7 @@ namespace HOA
             Ability a = new Ability(parent, "Focus", 2, Price.Cheap);
             a.Desc = () => { return "Focus +1."; };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Focus, 1));
             a.DrawSpecial = (p) =>
             {
@@ -489,7 +493,7 @@ namespace HOA
                 "\nLearn 'Mortar'";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectGroup nextEffects = new EffectGroup();
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, 10));
@@ -513,10 +517,10 @@ namespace HOA
         public static Ability GammaBurst(Unit parent)
         {
             Ability a = new Ability(parent, "Gamma Burst", 4, new Price(2, 1), 16);
-            a.Desc = () => { return "Do " + a.Damage + " damage to all units in target direction"; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to all units in Target direction"; };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 20));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)targets[0], a.Damage, 1));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)Targets[0], a.Damage, 1));
             return a;
         }
         public static Ability Grow(Unit parent)
@@ -524,15 +528,15 @@ namespace HOA
             Ability a = new Ability(parent, "Grow", 2, Price.Cheap);
             a.Desc = () =>
             {
-                return "Switch cells with target Destructible. " +
+                return "Switch cells with Target Destructible. " +
                 "\nRange +1 per focus.  " +
                 "\n" + a.Parent + " +1 Focus.";
             };
             a.Aims.Add(Aim.AttackPath(TargetFilter.Dest, 1));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 a.Parent.AddStat(new Source(a.Parent), Stats.Focus, 1, false);
-                Token t = (Token)targets[0];
+                Token t = (Token)Targets[0];
                 a.Parent.Body.Swap(t);
                 a.Unadjust();
             };
@@ -553,13 +557,13 @@ namespace HOA
             Ability a = new Ability(parent, "Hour Saviour", 4, new Price(0, 2));
             a.Desc = () => { return "Target Unit shifts to the bottom of the Queue"; };
             a.Aims.Add(Aim.Free(TargetFilter.Unit, EPurp.ATTACK));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
+                Unit Target = (Unit)Targets[0];
                 int last = TurnQueue.Count - 1;
-                int current = TurnQueue.IndexOf(target);
+                int current = TurnQueue.IndexOf(Target);
                 int magnitude = 0 - (last - current);
-                EffectQueue.Add(Effect.Shift(new Source(a.Parent), target, magnitude));
+                EffectQueue.Add(Effect.Shift(new Source(a.Parent), Target, magnitude));
             };
             return a;
         }
@@ -569,12 +573,12 @@ namespace HOA
             Ability a = new Ability(parent, "Ice Blast", 4, new Price(1, 1), 20);
             a.Desc = () => { return "Target Unit takes " + a.Damage + " damage and loses 2 Initiative for 2 turns."; };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 2));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), target, Stats.Initiative, -2));
-                target.timers.Add(Timer.IceBlast(new Source(a.Parent), target));
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), Target, Stats.Initiative, -2));
+                Target.timers.Add(Timer.IceBlast(new Source(a.Parent), Target));
             };
             return a;
         }
@@ -592,11 +596,12 @@ namespace HOA
                 "\nLearn 'Tail Whip'";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Token t;
-                if (a.Parent.Body.Cell.Contains(Plane.Ground, out t))
-                    if (t.TargetClass[TargetClasses.Dest])
+                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                group -= TargetFilter.Plane(Plane.Ground, true);
+                foreach (Token t in group)
+                    if (t.Body.Destructible)
                         EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 2));
                 a.Parent.Plane = Plane.Ground;
@@ -605,7 +610,7 @@ namespace HOA
                 a.Parent.Body.Exit();
                 a.Parent.Body.Enter(cell);
 
-                a.Parent.TargetClass += TargetClasses.Tram;
+                a.Parent.Body.Trample = true;
 
                 a.Parent.Arsenal.Replace("Move", Ability.Move(a.Parent, 3));
                 a.Parent.Arsenal.Replace("Land", Ability.TakeFlight(a.Parent));
@@ -615,10 +620,12 @@ namespace HOA
 
             a.Restrict = () =>
             {
-                if (!a.Parent.Body.Cell.Contains(Plane.Ground)) return false;
-                Token t;
-                if (a.Parent.Body.Cell.Contains(Plane.Ground, out t))
-                    if (t.TargetClass[TargetClasses.Dest]) return false;
+                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                group -= TargetFilter.Plane(Plane.Ground, true);
+                if (group.Count < 1) return false;
+                if (group.Count == 1) 
+                    foreach (Token t in group)   
+                        if (t.Body.Destructible) return false;
                 return true;
             };
             return a;
@@ -628,14 +635,14 @@ namespace HOA
             Ability a = new Ability(parent, "Laser Shot", 3, Price.Cheap, 12);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to all units in target cell." +
-                "\nIf there are no obstacles in target cell, do reduce damage 50% (rounded up) " +
+                return "Do " + a.Damage + " damage to all units in Target cell." +
+                "\nIf there are no obstacles in Target cell, do reduce damage 50% (rounded up) " +
                 "and damage all units in the next occupied cell in the same direction.  " +
                 "Repeat until damage is 1 or an obstacle is hit.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)targets[0], a.Damage, 50));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)Targets[0], a.Damage, 50));
             return a;
         }
         public static Ability LaserSpin(Unit parent)
@@ -643,20 +650,20 @@ namespace HOA
             Ability a = new Ability(parent, "Laser Spin", 4, new Price(1, 1), 10);
             a.Desc = () =>
             {
-                return "Select target Unit and a direction (clockwise or counterclockwise)." +
-                "\nDo " + a.Damage + " damage to target unit and its cellmates," +
+                return "Select Target Unit and a direction (clockwise or counterclockwise)." +
+                "\nDo " + a.Damage + " damage to Target unit and its cellmates," +
                 "\nHalf damage (rounded down) to Units in the next cell in the direction." +
                 "\nHalf of that damage to Units in the next cell, and so on," +
                 "\nuntil damage is less than 1 or a cell contains a non-Sunken Obstacle.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
             a.Aims.Add(Aim.Radial(TargetFilter.Cell));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 Cell center = a.Parent.Body.Cell;
-                Unit first = (Unit)targets[0];
+                Unit first = (Unit)Targets[0];
                 Cell start = first.Body.Cell;
-                Cell next = (Cell)targets[1];
+                Cell next = (Cell)Targets[1];
                 NeighborMatrix neighbors = new NeighborMatrix(center);
                 TargetGroup ring = neighbors.Ring(start, next);
                 EffectQueue.Add(Effect.LaserInitial(new Source(a.Parent), ring, a.Damage, 50));
@@ -666,10 +673,10 @@ namespace HOA
         public static Ability Lob(Unit parent, int range, int damage)
         {
             Ability a = new Ability(parent, "Lob", 3, Price.Cheap, damage, range);
-            a.Desc = () => { return "Do " + a.Damage + " damage to target unit."; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to Target unit."; };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 0, a.Modifier));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -684,10 +691,10 @@ namespace HOA
         public static Ability Maul(Unit parent)
         {
             Ability a = new Ability(parent, "Maul", 3, new Price(0, 1), 12);
-            a.Desc = () => { return "Do " + a.Damage + " damage to target unit."; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to Target unit."; };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             return a;
         }
         public static Ability MinuteWaltz(Unit parent)
@@ -699,7 +706,7 @@ namespace HOA
                 "\n(End " + a.Parent.ID.Name + "'s turn.)";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectQueue.Add(Effect.Shuffle(new Source(a.Parent)));
                 EffectQueue.Add(Effect.Advance(new Source(a.Parent), false));
@@ -715,7 +722,7 @@ namespace HOA
                 "\nGain health equal to damage successfully dealt.";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 TargetGroup units = a.Parent.Body.CellMates
                     - TargetFilter.Unit
@@ -740,7 +747,7 @@ namespace HOA
                 "\nForget 'Mortar'";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectGroup nextEffects = new EffectGroup();
                 nextEffects.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.MaxHealth, -10));
@@ -761,15 +768,15 @@ namespace HOA
             Ability a = new Ability(parent, "Mortar", 4, new Price(2, 1), 18);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to all units in target cell. " +
+                return "Do " + a.Damage + " damage to all units in Target cell. " +
                 "\nAll units in neighboring cells take 50% damage (rounded down). " +
                 "\nDamage continues to spread outward with 50% reduction until 1. " +
                 "\nDestroy all destructible tokens that would take damage." +
                 "\nRange +1 per Focus (up to 3)";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Cell, 2, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), (Cell)targets[0], a.Damage, false));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), (Cell)Targets[0], a.Damage, false));
             a.Adjust = () => a.Aims[0].Range += Mathf.Min(a.Parent.FP, 3);
             a.Unadjust = () => a.Aims[0].Range -= Mathf.Min(a.Parent.FP, 3);
 
@@ -799,7 +806,7 @@ namespace HOA
                 "\nLose health equal to health successfully given.";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 TargetGroup units = a.Parent.Body.CellMates
                     - TargetFilter.Unit
@@ -817,15 +824,15 @@ namespace HOA
             Ability a = new Ability(parent, "Petrify", 4, new Price(1, 1), 15);
             a.Desc = () => { return "Target Unit takes " + a.Damage + " damage and cannot move on its next turn."; };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 2));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                if (target.Arsenal.Move != default(Ability))
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                if (Target.Arsenal.Move != default(Ability))
                 {
-                    Ability move = target.Arsenal.Move;
-                    target.timers.Add(Timer.Petrified(new Source(a.Parent), target, move));
-                    target.Arsenal.Remove(move);
+                    Ability move = Target.Arsenal.Move;
+                    Target.timers.Add(Timer.Petrified(new Source(a.Parent), Target, move));
+                    Target.Arsenal.Remove(move);
                 }
             };
             return a;
@@ -835,12 +842,12 @@ namespace HOA
             Ability a = new Ability(parent, "Pierce", 4, price, damage);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit (ignore defense).  " +
+                return "Do " + a.Damage + " damage to Target unit (ignore defense).  " +
                 "\nMax range +1 per focus (up to +3).";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 2, 3));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Pierce(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Pierce(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.Adjust = () => a.Aims[0].Range += Mathf.Min(a.Parent.FP, 3);
             a.Unadjust = () => a.Aims[0].Range -= Mathf.Min(a.Parent.FP, 3);
             return a;
@@ -850,25 +857,25 @@ namespace HOA
             Ability a = new Ability(parent, "Plant Grenade", 4, Price.Cheap, 10);
             a.Desc = () =>
             {
-                return "At the end of target Unit's next turn, do " + a.Damage + " damage to all units in its cell. " +
+                return "At the end of Target Unit's next turn, do " + a.Damage + " damage to all units in its cell. " +
                 "\nAll units in neighboring cells take 50% damage (rounded down). " +
                 "\nDamage continues to spread outward with 50% reduction until 1. " +
                 "\nDestroy all destructible tokens that would take damage.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                target.timers.Add(Timer.ActiveGrenade(new Source(a.Parent), target));
+                Unit Target = (Unit)Targets[0];
+                Target.timers.Add(Timer.ActiveGrenade(new Source(a.Parent), Target));
             };
             a.DrawSpecial = (p) =>
             {
-                GUI.Label(p.LineBox, "Attach timer to target:");
+                GUI.Label(p.LineBox, "Attach timer to Target:");
                 Rect box = p.IconBox;
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.EXP);
                 GUI.Box(box, Icons.EXP(), p.s);
                 p.NudgeX();
-                GUI.Label(p.Box(0.9f), a.Damage + " at end of target's next turn.");
+                GUI.Label(p.Box(0.9f), a.Damage + " at end of Target's next turn.");
             };
             return a;
         }
@@ -877,15 +884,15 @@ namespace HOA
             Ability a = new Ability(parent, "Psi Beam", 4, new Price(1, 1), 12);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit." +
+                return "Do " + a.Damage + " damage to Target unit." +
                 "\nTarget loses all Focus.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 3));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), target, Stats.Focus, 0 - target.FP));
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), Target, Stats.Focus, 0 - Target.FP));
             };
             return a;
         }
@@ -896,15 +903,15 @@ namespace HOA
             a.multiTarget = true;
             a.Desc = () =>
             {
-                return "Once per Focus (Max: 5), select and deal " + a.Damage + " damage to target unit." +
-                "\n(You may choose the same target multiple times.)" +
+                return "Once per Focus (Max: 5), select and deal " + a.Damage + " damage to Target unit." +
+                "\n(You may choose the same Target multiple times.)" +
                 "\nLose all Focus.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 3));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                for (int i = 0; i < targets.Count; i++)
-                    EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[i], a.Damage));
+                for (int i = 0; i < Targets.Count; i++)
+                    EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[i], a.Damage));
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0);
             };
 
@@ -933,12 +940,12 @@ namespace HOA
             Ability a = new Ability(parent, "Rage", 3, Price.Cheap, damage);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\n" + a.Parent + " takes 50% damage (rounded down).";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Rage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Rage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -961,18 +968,18 @@ namespace HOA
             Ability a = new Ability(parent, "Refract", 4, new Price(1, 1), 10);
             a.Desc = () =>
             {
-                return "50% chance of missing target." +
-                "\nDo " + a.Damage + " damage to all units in target cell." +
-                "\nIf there are no obstacles in target cell, do reduce damage 50% (rounded up) " +
+                return "50% chance of missing Target." +
+                "\nDo " + a.Damage + " damage to all units in Target cell." +
+                "\nIf there are no obstacles in Target cell, do reduce damage 50% (rounded up) " +
                 "and damage all units in the next occupied cell in the same direction.  " +
                 "Repeat until damage is 1 or an obstacle is hit.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 3));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 int flip = DiceCoin.Throw(new Source(a.Parent), EDice.COIN);
                 if (flip == 1)
-                    EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)targets[0], a.Damage, 50));
+                    EffectQueue.Add(Effect.LaserLine(new Source(a.Parent), (Unit)Targets[0], a.Damage, 50));
                 else
                 {
                     EffectQueue.Add(Effect.Miss(new Source(a.Parent), a.Parent));
@@ -987,11 +994,11 @@ namespace HOA
             a.Desc = () =>
             {
                 return "Target unit gains " + a.Damage + " health." +
-                "\n(Can target self.)";
+                "\n(Can Target self.)";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 0, 2));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), (Unit)targets[0], Stats.Health, a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), (Unit)Targets[0], Stats.Health, a.Damage));
             return a;
         }
 
@@ -1005,28 +1012,28 @@ namespace HOA
             a.Desc = () =>
             {
                 return "Target unit takes the next turn." +
-                "\n(Cannot target self.)";
+                "\n(Cannot Target self.)";
             };
             TargetFilter f = TargetFilter.Unit + FilterTests.SpecificTarget(a.Parent, false);
             a.Aims.Add(Aim.Free(f, EPurp.ATTACK));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                int magnitude = TurnQueue.IndexOf(target) - 1;
-                EffectQueue.Add(Effect.Shift(new Source(a.Parent), target, magnitude));
+                Unit Target = (Unit)Targets[0];
+                int magnitude = TurnQueue.IndexOf(Target) - 1;
+                EffectQueue.Add(Effect.Shift(new Source(a.Parent), Target, magnitude));
             };
             return a;
         }
         public static Ability Seed(Unit parent)
         {
-            Ability a = new Ability(parent, "Seed", 5, new Price(1, 1), EToken.LICH);
-            a.Desc = () => { return "Replace target non-Remains destructible with Lichenthrope."; };
+            Ability a = new Ability(parent, "Seed", 5, new Price(1, 1), Species.Lichenthrope);
+            a.Desc = () => { return "Replace Target non-Remains destructible with Lichenthrope."; };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Dest, 0, 2));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Replace(new Source(a.Parent), (Token)targets[0], EToken.LICH));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Replace(new Source(a.Parent), (Token)Targets[0], Species.Lichenthrope));
             a.DrawSpecial = (p) =>
             {
-                a.Template.DisplayThumbNameTemplate(p.LinePanel);
+                InspectorInfo.InspectTemplateButton(a.Template, p.LinePanel);
                 float descH = (p.H - (p.LineH * 2)) / p.H;
                 GUI.Label(p.TallWideBox(descH), a.Desc());
             };
@@ -1037,22 +1044,22 @@ namespace HOA
             Ability a = new Ability(parent, "Shock", 3, Price.Cheap, 10, 5);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nTarget is stunned for " + a.Modifier + " turns.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Shock(new Source(a.Parent), (Unit)targets[0], a.Damage, a.Modifier));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Shock(new Source(a.Parent), (Unit)Targets[0], a.Damage, a.Modifier));
             return a;
 
         }
         public static Ability Shoot(Unit parent, int range, int damage)
         {
             Ability a = new Ability(parent, "Shoot", 3, Price.Cheap, damage, range);
-            a.Desc = () => { return "Do " + a.Damage + " damage to target unit."; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to Target unit."; };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, range));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -1068,16 +1075,16 @@ namespace HOA
             Ability a = new Ability(parent, "Shove", 4, new Price(1, 1), 12, 5);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit." +
-                "\nKnockback " + a.Modifier + " (Move target in a line away from " + a.Parent + ", up to " + a.Modifier + " cells.)" +
+                return "Do " + a.Damage + " damage to Target unit." +
+                "\nKnockback " + a.Modifier + " (Move Target in a line away from " + a.Parent + ", up to " + a.Modifier + " cells.)" +
                 "\nTarget takes 2 damage per cell knocked back.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.UnitDest));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectGroup e = new EffectGroup();
-                e.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
-                e.Add(Effect.Knockback(new Source(a.Parent), (Unit)targets[0], a.Modifier, 2));
+                e.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
+                e.Add(Effect.Knockback(new Source(a.Parent), (Unit)Targets[0], a.Modifier, 2));
                 EffectQueue.Add(e);
             };
             return a;
@@ -1087,17 +1094,17 @@ namespace HOA
             Ability a = new Ability(parent, "Slam", 4, new Price(2, 0), 8);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit and each of its neighbors and cellmates.  " +
+                return "Do " + a.Damage + " damage to Target unit and each of its neighbors and cellmates.  " +
                 "\nRange +1 per focus (up to +3).  " +
                 "\n" + a.Parent + " loses all focus.";
             };
             a.Aims.Add(Aim.AttackPath(TargetFilter.Unit, 1));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0, false);
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                TargetGroup neighbors = target.Body.Neighbors(true) - TargetFilter.Unit;
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                TargetGroup neighbors = Target.Body.Neighbors(true) - TargetFilter.Unit;
                 EffectGroup nextEffects = new EffectGroup();
                 foreach (Unit u2 in neighbors)
                     nextEffects.Add(Effect.Damage(new Source(a.Parent), u2, a.Damage));
@@ -1122,14 +1129,14 @@ namespace HOA
             a.Desc = () =>
             {
                 return "Target teammate gains " + a.Damage + " health." +
-                "\n(Cannot target self.)";
+                "\n(Cannot Target self.)";
             };
             TargetFilter f = TargetFilter.Unit
                 + FilterTests.Owner(a.Parent.Owner, true)
                 + FilterTests.SpecificTarget(a.Parent, false);
             a.Aims.Add(Aim.AttackNeighbor(f));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), (Unit)targets[0], Stats.Health, a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), (Unit)Targets[0], Stats.Health, a.Damage));
             return a;
         }
         public static Ability Sporatic(Unit parent)
@@ -1137,15 +1144,15 @@ namespace HOA
             Ability a = new Ability(parent, "Sporatic Emission", 3, Price.Cheap, 12);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nTarget recieves " + ((int)Mathf.Floor(a.Damage * 0.5f)) + " corrosion counters." +
                 "\n(If a unit has corrosion counters, at the beginning of its turn " +
                 "it takes damage equal to the number of counters, " +
                 "then removes half the counters (rounded up).)";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 0, 2));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (Panel p) =>
             {
                 Rect box = p.IconBox;
@@ -1161,7 +1168,7 @@ namespace HOA
             Ability a = new Ability(parent, "Sting", 3, Price.Cheap);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit. " +
+                return "Do " + a.Damage + " damage to Target unit. " +
                 "\nTarget recieves " + a.Modifier + " corrosion counters." +
                 "\n(If a unit has corrosion counters, at the beginning of its turn " +
                 "it takes damage equal to the number of counters, " +
@@ -1170,8 +1177,8 @@ namespace HOA
             a.Damage = d;
             a.Modifier = (int)Mathf.Floor(d * 0.5f);
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.CorrodeInitial(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -1185,11 +1192,11 @@ namespace HOA
         public static Ability Strike(Unit parent, int d)
         {
             Ability a = new Ability(parent, "Strike", 3, Price.Cheap);
-            a.Desc = () => { return "Do " + a.Damage + " damage to target unit."; };
+            a.Desc = () => { return "Do " + a.Damage + " damage to Target unit."; };
             a.Damage = d;
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -1206,8 +1213,8 @@ namespace HOA
             Ability a = new Ability(parent, "Tail Whip", 4, new Price(1, 1), 10);
             a.Desc = () =>
             {
-                return "Select target Unit and a direction (clockwise or counterclockwise)." +
-                "\nDo " + a.Damage + " damage to target unit and Units in its Cell," +
+                return "Select Target Unit and a direction (clockwise or counterclockwise)." +
+                "\nDo " + a.Damage + " damage to Target unit and Units in its Cell," +
                 "\nand destroy any Destructible tokens in its Cell." +
                 "\nDo the same for each Cell in the chosen direciton" +
                 "\nuntil a Cell contains a non-Sunken, non-Destructible Obstacle," +
@@ -1215,12 +1222,12 @@ namespace HOA
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.UnitDest));
             a.Aims.Add(Aim.Radial(TargetFilter.Cell));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 Cell center = a.Parent.Body.Cell;
-                Unit first = (Unit)targets[0];
+                Unit first = (Unit)Targets[0];
                 Cell start = first.Body.Cell;
-                Cell next = (Cell)targets[1];
+                Cell next = (Cell)Targets[1];
 
                 NeighborMatrix neighbors = new NeighborMatrix(center);
                 TargetGroup ring = neighbors.Ring(start, next);
@@ -1239,7 +1246,7 @@ namespace HOA
                     bool stop = false;
                     foreach (Token t in obstacles)
                         if (t.Plane.ContainsAny(Plane.Tall)
-                            && !t.TargetClass[TargetClasses.Dest])
+                            && !t.Body.Destructible)
                             stop = true;
                     if (stop) break;
                 }
@@ -1258,7 +1265,7 @@ namespace HOA
                 "\nLearn 'Create Rook'";
             };
             a.Aims.Add(Aim.Self());
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
                 EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, -2));
                 a.Parent.Plane = Plane.Air;
@@ -1266,7 +1273,7 @@ namespace HOA
                 a.Parent.Body.Exit();
                 a.Parent.Body.Enter(cell);
 
-                a.Parent.TargetClass -= TargetClasses.Tram;
+                a.Parent.Body.Trample = false;
 
                 a.Parent.Arsenal.Replace("Move", Ability.Move(a.Parent, 5));
                 a.Parent.Arsenal.Replace("Take Flight", Ability.Land(a.Parent));
@@ -1274,7 +1281,12 @@ namespace HOA
                 a.Parent.Arsenal.Sort();
             };
 
-            a.Restrict = () => { return a.Parent.Body.Cell.Contains(Plane.Air); };
+            a.Restrict = () => 
+            {
+                TargetGroup group = a.Parent.Body.Cell.Occupants;
+                group -= TargetFilter.Plane(Plane.Air, true);
+                return (group.Count > 0);
+            };
             return a;
         }
         public static Ability ThrowGrenade(Unit parent)
@@ -1282,14 +1294,14 @@ namespace HOA
             Ability a = new Ability(parent, "ThrowGrenade", 3, new Price(1, 1), 10, 3);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to all units in target cell. " +
+                return "Do " + a.Damage + " damage to all units in Target cell. " +
                 "\nAll units in neighboring cells take 50% damage (rounded down). " +
                 "\nDamage continues to spread outward with 50% reduction until 1. " +
                 "\nDestroy all destructible tokens that would take damage.";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Cell, 0, a.Modifier));
-            a.MainEffects = targets =>
-                EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), (Cell)targets[0], a.Damage, false));
+            a.MainEffects = Targets =>
+                EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), (Cell)Targets[0], a.Damage, false));
             a.DrawSpecial = (p) =>
             {
                 Rect box = p.IconBox;
@@ -1307,13 +1319,13 @@ namespace HOA
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 0, 3));
             a.Desc = () =>
             {
-                return "Destroy target non-Remains destructible." +
-                "\nDo " + a.Damage + " damage to target unit.";
+                return "Destroy Target non-Remains destructible." +
+                "\nDo " + a.Damage + " damage to Target unit.";
             };
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), (Token)targets[0]));
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[1], a.Damage));
+                EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), (Token)Targets[0]));
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[1], a.Damage));
             };
             return a;
         }
@@ -1322,15 +1334,15 @@ namespace HOA
             Ability a = new Ability(parent, "Time Bomb", 4, new Price(1, 1), 10);
             a.Desc = () =>
             {
-                return "All Units in target cell take " + a.Damage + " damage and lose 2 Initiative for 2 turns. " +
+                return "All Units in Target cell take " + a.Damage + " damage and lose 2 Initiative for 2 turns. " +
                 "\nAll units in neighboring cells take 50% damage (rounded down) and lose 1 Initiative for 2 turns. " +
                 "\nDamage continues to spread outward with 50% reduction until 1. " +
                 "\nDestroy all destructible tokens that would take damage.";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Cell, 0, 2));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Cell c = (Cell)targets[0];
+                Cell c = (Cell)Targets[0];
                 EffectQueue.Add(Effect.ExplosionSequence(new Source(a.Parent), c, a.Damage, false));
                 EffectGroup e = new EffectGroup();
 
@@ -1361,14 +1373,14 @@ namespace HOA
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.IN);
                 GUI.Box(box, Icons.Stats[Stats.Initiative]);
                 p.NudgeX();
-                GUI.Label(p.Box(0.9f), "-2: Units in target Cell");
+                GUI.Label(p.Box(0.9f), "-2: Units in Target Cell");
 
                 p.NextLine();
                 box = p.IconBox;
                 if (GUI.Button(box, "")) TipInspector.Inspect(ETip.IN);
                 GUI.Box(box, Icons.Stats[Stats.Initiative]);
                 p.NudgeX();
-                GUI.Label(p.Box(0.9f), "-1: Units in target Cell's neighbors");
+                GUI.Label(p.Box(0.9f), "-1: Units in Target Cell's neighbors");
             };
             return a;
         }
@@ -1381,9 +1393,9 @@ namespace HOA
                 "\nIf initative is less than 6, initiative +1.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Dest));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Token t = (Token)targets[0];
+                Token t = (Token)Targets[0];
                 Cell c = t.Body.Cell;
                 EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
                 EffectGroup nextEffects = new EffectGroup();
@@ -1402,18 +1414,18 @@ namespace HOA
             a.Desc = () =>
             {
                 return "Target Unit takes " + a.Damage + " damage and loses 2 Initiative for 2 turns." +
-                "\n" + a.Parent.ID.Name + " switches cells with target, if legal.";
+                "\n" + a.Parent.ID.Name + " switches cells with Target, if legal.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
+                Unit Target = (Unit)Targets[0];
                 EffectGroup e = new EffectGroup();
-                e.Add(Effect.Swap(new Source(a.Parent), a.Parent, target));
-                e.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                e.Add(Effect.AddStat(new Source(a.Parent), target, Stats.Initiative, -2));
+                e.Add(Effect.Swap(new Source(a.Parent), a.Parent, Target));
+                e.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                e.Add(Effect.AddStat(new Source(a.Parent), Target, Stats.Initiative, -2));
                 EffectQueue.Add(e);
-                target.timers.Add(Timer.TimeSlam(new Source(a.Parent), target));
+                Target.timers.Add(Timer.TimeSlam(new Source(a.Parent), Target));
             };
             return a;
         }
@@ -1422,27 +1434,27 @@ namespace HOA
             Ability a = new Ability(parent, "Touch of Death", 3, Price.Cheap, 16);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit." +
-                "\nIf target has less than 10 health after damage is dealt, destroy target." +
-                "\nBROKEN: If target is destroyed and is not an Attack King, " +
+                return "Do " + a.Damage + " damage to Target unit." +
+                "\nIf Target has less than 10 health after damage is dealt, destroy Target." +
+                "\nBROKEN: If Target is destroyed and is not an Attack King, " +
                 "\nit leaves no remains and you may place a Corpse in any cell.";
             };
             a.Aims.Add(Aim.AttackNeighbor(TargetFilter.Unit));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                int oldHP = target.HP;
-                int def = target.DEF;
+                Unit Target = (Unit)Targets[0];
+                int oldHP = Target.HP;
+                int def = Target.DEF;
                 int dmg = a.Damage - def;
                 if (oldHP - dmg < 10) { dmg = oldHP; }
                 if (dmg >= oldHP)
                 {
-                    EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), target));
+                    EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), Target));
                     Targeter.Start(Ability.Exhume(a.Parent));
                 }
                 else
                 {
-                    EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
+                    EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
                     Targeter.Reset();
                 }
             };
@@ -1455,17 +1467,19 @@ namespace HOA
             Ability a = new Ability(parent, "Vine Whip", 4, new Price(1, 1), 18);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage target Unit." +
+                return "Do " + a.Damage + " damage Target Unit." +
                 "\nRange +1 per focus." +
-                "\nIf target is killed and leaves Remains, switch cells with it's Remains.";
+                "\nIf Target is killed and leaves Remains, switch cells with it's Remains.";
             };
             a.Aims.Add(Aim.AttackLine(TargetFilter.Unit, 2));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Unit target = (Unit)targets[0];
-                EffectQueue.Add(Effect.Damage(new Source(a.Parent), target, a.Damage));
-                Token dest;
-                if (target.Body.Cell.Contains(TargetClasses.Dest, out dest)) { a.Parent.Body.Swap(dest); }
+                Unit Target = (Unit)Targets[0];
+                EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
+                TargetGroup group = Target.Body.Cell.Occupants;
+                group -= TargetFilter.Dest;
+                if (group.Count == 1)
+                    a.Parent.Body.Swap((Token)group[0]);
                 a.Unadjust();
             };
             a.Adjust = () => a.Aims[0].Range += a.Parent.FP;
@@ -1484,13 +1498,13 @@ namespace HOA
             Ability a = new Ability(parent, "Volley", 3, Price.Cheap, 12);
             a.Desc = () =>
             {
-                return "Do " + a.Damage + " damage to target unit." +
+                return "Do " + a.Damage + " damage to Target unit." +
                 "\nMay only be used if neighboring or sharing cell with non-Rook teammate." +
                 "\nRange +1 per focus (up to 3).";
             };
             a.Aims.Add(Aim.AttackArc(TargetFilter.Unit, 2, 2));
-            a.MainEffects = targets =>
-               EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)targets[0], a.Damage));
+            a.MainEffects = Targets =>
+               EffectQueue.Add(Effect.Damage(new Source(a.Parent), (Unit)Targets[0], a.Damage));
             a.Adjust = () => a.Aims[0].Range += Mathf.Min(a.Parent.FP, 3);
             a.Unadjust = () => a.Aims[0].Range -= Mathf.Min(a.Parent.FP, 3);
 
@@ -1498,7 +1512,7 @@ namespace HOA
             {
                 TargetGroup neighbors = a.Parent.Body.Neighbors(true)
                     - TargetFilter.Owner(a.Parent.Owner, true)
-                    - TargetFilter.EToken(EToken.ROOK, false);
+                    - TargetFilter.Species(Species.Rook, false);
                 return (neighbors.Count < 1);
             };
 
@@ -1517,24 +1531,24 @@ namespace HOA
 
         public static Ability WebShot(Unit parent)
         {
-            Ability a = new Ability(parent, "Web Shot", 4, new Price(1, 1), 12, 0, EToken.WEBB);
+            Ability a = new Ability(parent, "Web Shot", 4, new Price(1, 1), 12, 0, Species.Web);
             a.Desc = () =>
             {
-                return "Create Web in target cell." +
-                "\nAll Units in target cell take " + a.Damage + " damage.";
+                return "Create Web in Target cell." +
+                "\nAll Units in Target cell take " + a.Damage + " damage.";
             };
             a.Aims.Add(Aim.CreateArc(0, 3));
-            a.MainEffects = targets =>
+            a.MainEffects = Targets =>
             {
-                Cell c = (Cell)targets[0];
-                EffectQueue.Add(Effect.Create(new Source(a.Parent), c, EToken.WEBB));
+                Cell c = (Cell)Targets[0];
+                EffectQueue.Add(Effect.Create(new Source(a.Parent), c, Species.Web));
                 TargetGroup occupants = c.Occupants - TargetFilter.Unit;
                 foreach (Unit u in occupants)
                     EffectQueue.Add(Effect.Damage(new Source(a.Parent), u, a.Damage));
             };
             a.DrawSpecial = (p) =>
             {
-                a.Template.DisplayThumbNameTemplate(p.LinePanel);
+                InspectorInfo.InspectTemplateButton(a.Template, p.LinePanel);
                 float descH = (p.H - (p.LineH * 2)) / p.H;
                 GUI.Label(p.TallWideBox(descH), a.Desc());
             };
