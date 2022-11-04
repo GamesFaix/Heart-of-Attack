@@ -31,5 +31,11 @@ namespace HOA {
             return list;
         }
 
+        public static void Add<T>(this List<T> list, IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                list.Add(item);
+        }
+
     }
 }

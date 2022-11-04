@@ -1,7 +1,11 @@
-﻿namespace HOA { 
-
+﻿namespace HOA {
+    /// <summary>
+    /// An Alias is a Token that is just a reference to another Token.
+    /// Aliases occupy their own Cells and are displayed on the board, 
+    /// but all other properties reference parent Token.
+    /// </summary>
 	public partial class Alias : Token {
-	
+
 		public Token Parent {get; protected set;}
 
 		public override TokenID ID {get {return Parent.ID;} }

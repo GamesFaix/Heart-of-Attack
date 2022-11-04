@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HOA.TokenComponent" Collapsed="true">
+    <Position X="6.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAEAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\TokenComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Body" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAABAAAAAEAAgAEACDAAAAAIEANAAAAIAAAAFAEACA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Body.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Sensor" Collapsed="true">
+    <Position X="6.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAIAACAAABIgQmAEAAFEBQRCAAVmBAAQJAKAQIAAQEA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Sensor (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Timer" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAghACAAgMAAgBEAAAhAAQEAABAAAwEBMAASAEAQUQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Timer (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.TokenID" Collapsed="true">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAACAAEAAAoAEAAAAAAQAgAAAAAAAQAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\TokenID.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.Health" Collapsed="true">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAACAgAMAAIAAAAAQAAIAAAAAAAAAACAAIA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Health.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Wallet" Collapsed="true">
+    <Position X="12.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAgAEAAAAAAAwAAAIAAEBAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Wallet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.Watch" Collapsed="true">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAEAAAAAAAAAAgAEAAAAAAAQAAQIAAAAAAAAAAAAGAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Watch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.HealthCaraShield" Collapsed="true">
+    <Position X="9.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAgDAAAACAAAAAAAABAAAQAAAAAAAAAAAAACAAIQ=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthCaraShield.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.HealthDEFCap" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthDEFCap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HOA.HealthHalfDodge" Collapsed="true">
+    <Position X="9.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthHalfDodge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.WalletDEF" Collapsed="true">
+    <Position X="13.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletDEF.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.WalletIN" Collapsed="true">
+    <Position X="13.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletIN.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodyAper" Collapsed="true">
+    <Position X="2" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodyAper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodyAren" Collapsed="true">
+    <Position X="2" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABAAgAAACAAAAACAAAAABAEAIAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodyAren.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodySensor1" Collapsed="true">
+    <Position X="2" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodySensor1.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HOA.BodySensor9" Collapsed="true">
+    <Position X="2" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAAAAAAAAAAAAACAAAAAAIAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\BodySensor9.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

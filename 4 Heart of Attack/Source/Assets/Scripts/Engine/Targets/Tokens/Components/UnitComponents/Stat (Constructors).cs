@@ -90,13 +90,6 @@ namespace HOA {
         {
             return new Stat("Initiative", parent, Stats.Initiative, normal, 1, 100);
         }
-
-        public static Stat Stun(Unit parent, int normal)
-        {
-            Stat s = new Stat("Stun", parent, Stats.Stun, normal, 0, 100);
-            s.debuff = true;
-            return s;
-        }
-
+     
     }
 }

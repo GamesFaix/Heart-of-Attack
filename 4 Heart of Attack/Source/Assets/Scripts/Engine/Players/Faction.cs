@@ -3,47 +3,43 @@ using UnityEngine;
 
 namespace HOA {
 
-	public abstract class Faction {
-		protected string name;
-		public string Name {get {return name;} }
-		protected List<Species> tokens;
-		protected Species king;
-		protected Species heart;
-		protected Color color1;
-		protected Color color2;
-		protected bool playable;
-		protected AudioClip theme;
+    public enum Factions : byte 
+    { 
+        Gearp, 
+        Republic, 
+        Torridale, 
+        Grove, 
+        Chrono, 
+        Psycho, 
+        Psilent, 
+        Voidoid, 
+        Neutral 
+    }
 
-		public override string ToString () {return name;}
+	public partial class Faction
+    {
+        #region//Properties
 
-		public List<Species> Tokens () {return tokens;}
-		public Species this[int i] {get { return (Species)this.tokens[i];} }
-		public int Count {get {return tokens.Count;} }
+        public string Name { get; private set; }
+        public ListSet<Species> Species { get; private set; }
+        public Species King { get; private set; }
+        public Color[] Colors { get; private set; }
+        public bool Playable { get; private set; }
+        public Factions Factions { get; private set; }
 
-		public bool Contains (Species t) {
-			if (tokens.Contains(t)) {return true;}
-			return false;
-		}
+        #endregion 
 
-		public MyEnumerator GetEnumerator() {return new MyEnumerator(tokens);}
-		public class MyEnumerator {
-			int n;
-			List<Species> bufferGroup;
-			public MyEnumerator(List<Species> inputGroup) {bufferGroup = inputGroup; n = -1;}
-			public bool MoveNext() {n++; return (n < bufferGroup.Count);}
-			public Species Current {get {return bufferGroup[n];} }
-		}
+        private Faction(Factions factions, string name, Color color1, Color color2, bool playable = true) 
+        {
+            Factions = factions;
+            Name = name;
+            Colors = new Color[2] { color1, color2 };
+            Playable = playable;
+            Species = new ListSet<Species>();
+        }
 
-		public Species King {get {
-		//		Debug.Log("Getting king: "+king);
-				return king;
-			} }
-		public Species Heart {get {return heart;} }
-		
-		public Color[] Colors {get {return new Color[2] {color1, color2}; } }
+        public override string ToString () {return Name;}
 
-		public bool Playable {get {return playable;} }
-
-		public AudioClip Theme {get {return theme;} }
+        
 	}
 }

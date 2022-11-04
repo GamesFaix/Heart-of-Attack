@@ -1,117 +1,114 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace HOA {
 
-   
-	public static class TurnQueue {
+	public static class TurnQueue 
+    {
         static TokenSet units;
 
-		public static int Count {get {return units.Count;} }
-		public static bool Contains (Unit u) {return ((units.Contains(u)) ? true : false);}
-		public static void Add (Unit u) {units.Add(u); Skip(u);}
-		public static void Remove (Unit u) {units.Remove(u);}	
-		public static Unit Index (int i) {return units[i] as Unit;}
+		public static void Add (Unit u) 
+        {
+            units.Add(u); 
+            Skip(u);
+        }
+		public static void Remove (Unit u) 
+        {
+            bool flag = false;
+            if (u == Top) 
+                flag = true;
+            units.Remove(u);
+            if (flag) 
+                Initialize();
+        }
+        
+        public static int Count { get { return units.Count; } }
+        public static bool Contains(Unit u) { return units.Contains(u); }
+        public static Unit Index(int i) { return units[i] as Unit; }
 		public static int IndexOf (Unit u) {return units.IndexOf(u);}
+        
         public static Unit Top { get { return units[0] as Unit; } }
         public static Unit Bottom { get { return units[Count - 1] as Unit; } }
 
 		public static void Shuffle() {units.Shuffle();}
 
-		public static void MoveUp (Unit u, int spaces){
-			if (Contains(u)) {
-				for (int i=0; i<spaces; i++){
-					int index = IndexOf(u);
-					if (index > 0){
-						Unit temp = Index(index-1);
-						Remove(temp);
-						units.Insert(index, temp);             
-					}
-				}
-			}
-			else {Debug.Log("Queue cannot MoveUp item, item not in Queue.");}
-		}
-		public static void MoveDown (Unit u, int spaces){
-			if (Contains(u)) {
-				for (int i=0; i<spaces; i++){
-					int index = IndexOf(u);
-					if (index < Count-1){
-						Unit temp = Index(index+1);
-						Remove(temp);
-						units.Insert(index, temp);           	
-					}
-				}
-			}
-			else {Debug.Log("Queue cannot MoveDown item, item not in Queue.");}
-		}
-		
+        public static void Shift(Unit u, int distance)
+        {
+            if (Contains(u))
+            {
+                int magnitude = Math.Abs(distance);
+                for (int i = 0; i < magnitude; i++)
+                {
+                    int index = IndexOf(u);
 
-		public static void Initialize () {PrepareNewTop(Top);}
+                    if (index > 0 && distance < 0)
+                    {
+                        Unit temp = Index(index - 1);
+                        Remove(temp);
+                        units.Insert(index, temp);
+                    }
 
-		public static void Advance(){
+                    else if (index < Count - 1 && distance > 0)
+                    {
+                        Unit temp = Index(index + 1);
+                        Remove(temp);
+                        units.Insert(index, temp);
+                    }
+                }
+            }
+            else
+                throw new Exception("Queue does not contain " + u + ".");
+
+        }
+
+		public static void Advance()
+        {
 			Unit oldTop = Top;
-			EffectQueue.Add(Effect.SetStat(Source.Neutral, oldTop, Stats.Energy, 0));
-			oldTop.Arsenal.Reset();
+            oldTop.OnEndTurn();
+            units.Remove(oldTop);
+            Unit newTop = Top;
 
-			units.Remove(oldTop);
-			if (oldTop.HP > 0) {
+            if (oldTop.HP > 0) 
+            {
 				units.Add(oldTop);
 				Skip(oldTop);
 			}
 
-            TurnChangePublish(oldTop, Top);
+            TurnChangePublish(oldTop, newTop);
 
-			Stun();
-			PrepareNewTop(Top);
-			Referee.ActivePlayer = Top.Owner;
-			if (!Top.Owner.Alive) {Advance();}
+            Initialize();
+            Referee.ActivePlayer = Top.Owner;
+			if (!Top.Owner.Alive) 
+                Advance();
 		}
+        
+        static void Skip(Unit oldTop)
+        {
+            int i = oldTop.IN;
 
-		public static void PrepareNewTop (Unit newTop) {
-			newTop.ClearSkip(false);
-			newTop.FillAP(false);
-			GUIInspector.Inspected = newTop;
-
-			Player lastPlayer = Referee.ActivePlayer;
-			Referee.ActivePlayer = newTop.Owner;
-
-			if (lastPlayer != Referee.ActivePlayer) {
-				Core.Music.clip = Referee.ActivePlayer.Faction.Theme;
-				Core.Music.Play();
-			}
-		}
-
-		static void Skip (Unit oldTop) {
-			int i = oldTop.IN;
-
-			while (i > 1) {
-				int index = units.IndexOf(oldTop);
-				if (index > 1) {
+            while (i > 1)
+            {
+                int index = units.IndexOf(oldTop);
+                if (index > 1)
+                {
                     Unit other = units[index - 1] as Unit;
-					int oldTopRandom = UnityEngine.Random.Range(0,i);
-					int otherRandom = UnityEngine.Random.Range(0,other.IN);
-					if (oldTopRandom > otherRandom) {
-						MoveUp(oldTop,1);
-						i--;
-					}
-					else {i = 0;}
-				}
-				else {i = 0;}
-			}
-		}
+                    int oldTopRandom = UnityEngine.Random.Range(0, i);
+                    int otherRandom = UnityEngine.Random.Range(0, other.IN);
+                    if (oldTopRandom > otherRandom)
+                    {
+                        Shift(oldTop, -1);
+                        i--;
+                    }
+                    else i = 0;
+                }
+                else i = 0;
+            }
+        }
+        
+        public static void Initialize() { Top.OnStartTurn(); }
 
-		static void Stun () {
-			for (int i=Count-1; i>=0; i--) {
-                Unit u = units[i] as Unit;
-				if (u.STUN > 0) {
-					MoveDown(u, 1);
-					u.AddStat(Source.Neutral, Stats.Stun, -1);
-				}
-			}
-		}
-
-		public static void Reset () {
+		public static void Reset ()
+        {
             units = new TokenSet();
 			GUIInspector.Inspected = null;
 		}

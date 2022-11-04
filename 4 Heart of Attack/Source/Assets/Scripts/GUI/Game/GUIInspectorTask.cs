@@ -13,7 +13,7 @@ namespace HOA {
 				p.NudgeX();
 				if (GUI.Button(p.Box(btnW), "End Turn [0]") || Input.GetKey("0") || Input.GetKey("[0]")) {
 					Targeter.Start(HOA.Ability.End(u));
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 				}
 				p.NextLine();
 			}
@@ -27,7 +27,7 @@ namespace HOA {
 				string message;
 				if (a.Legal(out message)) {
 					if (GUI.Button(box, a.Name+" ["+i+"]") || Input.GetKey(i.ToString()) || Input.GetKey("["+i+"]")) {
-						GUIMaster.PlaySound(EGUISound.CLICK);
+						GUIMaster.PlaySound(GUISounds.Click);
 						Targeter.Start(a);
 					}
 				}
@@ -56,12 +56,12 @@ namespace HOA {
 				p.NudgeX();
 				if (GUI.Button(p.Box(btnW), "Execute [Space]") || Input.GetKeyUp("space")) {
 					Targeter.Execute();
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 				}
 				
 				if (GUI.Button(p.Box(btnW), "Cancel [Backspace]") || Input.GetKeyUp("backspace")) {
 					Targeter.Reset();
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 				}
 			}
 		}

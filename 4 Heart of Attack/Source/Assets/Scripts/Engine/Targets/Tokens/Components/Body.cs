@@ -45,12 +45,13 @@ namespace HOA {
 
 		public bool Enter (Cell newCell) {
 			if (CanEnter(newCell)) {
-				if (Cell != null) {Exit();}
+				if (Cell != null) 
+                    Exit();
 				Cell = newCell;
 				TrampleCell(Parent, newCell);
 				newCell.Enter(Parent);
 				EnterSpecial(newCell);
-				if (Parent.Display != null) {((TokenDisplay)Parent.Display).Enter(Cell);}
+             	if (Parent.Display != null) {((TokenDisplay)Parent.Display).Enter(Cell);}
 				return true;
 			}	
 			return false;
@@ -99,6 +100,9 @@ namespace HOA {
             return Parent + "'s Body";
         }
 
-		public virtual void Exit () {Cell.Exit(Parent);}
+		public virtual void Exit () 
+        {
+            Cell.Exit(Parent);
+        }
 	}
 }

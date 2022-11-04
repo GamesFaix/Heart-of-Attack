@@ -30,7 +30,6 @@ namespace HOA {
 					case Stats.Initiative: return Watch.IN.Set(n);
 					case Stats.Energy: return Wallet.AP.Set(n);
 					case Stats.Focus: return Wallet.FP.Set(n);
-					case Stats.Stun: return Watch.STUN.Set(n);
 					default: return -1;
 				}
 			}
@@ -45,7 +44,6 @@ namespace HOA {
 					case Stats.Initiative: return Watch.IN.Add(s, n, log);
 					case Stats.Energy: return Wallet.AP.Add(s, n, log);
 					case Stats.Focus: return Wallet.FP.Add(s, n, log);
-					case Stats.Stun: return Watch.STUN.Add(s, n, log);
 					default: return -1;
 				}
 			}
@@ -67,7 +65,17 @@ namespace HOA {
 		public bool IsSkipped() {return Watch.IsSkipped();}
 		public void Skip (bool log=true) {Watch.Skip(log);}
 		public void ClearSkip (bool log=true) {Watch.ClearSkip(log);}
-		public int STUN {get {return Watch.STUN;} }
-		public bool IsStunned() {return Watch.IsStunned();}
+
+        public void OnEndTurn()
+        {
+            EffectQueue.Add(Effect.SetStat(Source.Neutral, this, Stats.Energy, 0));
+            Arsenal.Reset();
+        }
+
+        public void OnStartTurn()
+        {
+            ClearSkip();
+            FillAP();
+        }
 	}
 }

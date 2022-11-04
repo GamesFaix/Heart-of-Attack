@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace HOA {
+namespace HOA.Textures {
 
 	public static class Icons {
 
@@ -13,12 +13,16 @@ namespace HOA {
 
 		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
 
-		public static void Load() {
-			Stats = new Dictionary<Stats, Texture2D>();
+        static Icons () {
+            Core.Load += Load;
+        }
+
+        public static void Load(object sender, LoadEventArgs args)
+        {
+            Stats = new Dictionary<Stats, Texture2D>();
 			AddStat (HOA.Stats.Health, "HP");  
 			AddStat (HOA.Stats.Defense, "DEF");
             AddStat(HOA.Stats.Initiative, "IN"); 
-			AddStat (HOA.Stats.Stun, "STUN"); 
 			AddStat (HOA.Stats.Energy, "AP"); 
 			AddStat (HOA.Stats.Focus, "FP");
 

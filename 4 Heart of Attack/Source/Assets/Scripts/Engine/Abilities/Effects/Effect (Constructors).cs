@@ -12,9 +12,8 @@ namespace HOA
             Effect e = new Effect("Create", source, Target, Species);
             e.Process = () =>
             {
-                Token newToken;
-                if (TokenFactory.Create(e.Source, e.Species, (Cell)e.Target, out newToken))
-                    AVEffect.Birth.Play(newToken);
+                Token newToken = TokenFactory.Create(e.Source, e.Species, (Cell)e.Target);
+                AVEffect.Birth.Play(newToken);
             };
             return e;
         }
@@ -122,17 +121,20 @@ namespace HOA
             {
                 Unit u = (Unit)e.Target;
                 int d = e.Modifier;
-                if (d > 0)
-                {
-                    TurnQueue.MoveUp(u, d);
-                    GameLog.Out(u + " moved up " + d + " slot(s) in the Queue.");
-                    AVEffect.StatUp.Play(u);
-                }
+                TurnQueue.Shift(u, d);
                 if (d < 0)
                 {
-                    TurnQueue.MoveDown(u, 0 - d);
-                    GameLog.Out(u + " moved down " + d + " slot(s) in the Queue.");
+                    GameLog.Out(u + " shifted up " + d + " slot(s) in the Queue.");
+                    AVEffect.StatUp.Play(u);
+                }
+                else if (d > 0)
+                {
+                    GameLog.Out(u + " shifted down " + d + " slot(s) in the Queue.");
                     AVEffect.StatDown.Play(u);
+                }
+                else
+                {
+                    GameLog.Out(u + " shifted down 0 slots in the Queue\n...or shifted up 0 slots.");
                 }
             };
             return e;
@@ -381,7 +383,7 @@ namespace HOA
             {
                 Unit u = (Unit)e.Target;
                 u.Damage(e.Source, e.Modifier);
-                u.AddStat(e.Source, Stats.Stun, stun);
+                u.timers.Add(Timer.Stunned(e.Source, u, stun));
                 AVEffect.Stun.Play(u);
             };
             return e;

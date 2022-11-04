@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{4C8CC78E-87EA-2E56-5441-61F26C43DF7A}</ProjectGuid>
+	<ProjectGuid>{4C71182B-9799-4644-7953-6D23F0D39F3A}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -103,9 +103,9 @@
      <Compile Include="Assets\Scripts\Engine\Misc\RandomSync.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\Source.cs" />
      <Compile Include="Assets\Scripts\Engine\Misc\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\Engine\Players\Faction (Constructors).cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Faction.cs" />
-     <Compile Include="Assets\Scripts\Engine\Players\FactionRef.cs" />
-     <Compile Include="Assets\Scripts\Engine\Players\Factions.cs" />
+     <Compile Include="Assets\Scripts\Engine\Players\FactionRegistry.cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Referee.cs" />
      <Compile Include="Assets\Scripts\Engine\Players\Roster.cs" />
@@ -131,8 +131,8 @@
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthCaraShield.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthDEFCap.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\HealthHalfDodge.cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stats\Stat (Constructors).cs" />
-     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stats\Stat.cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stat (Constructors).cs" />
+     <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Stat.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\Wallet.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletDEF.cs" />
      <Compile Include="Assets\Scripts\Engine\Targets\Tokens\Components\UnitComponents\WalletIN.cs" />
@@ -208,8 +208,8 @@
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipNeighbor.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipPath.cs" />
      <Compile Include="Assets\Scripts\GUI\Game\ToolTips\Trajectory\TipSelf.cs" />
+     <Compile Include="Assets\Scripts\GUI\Images\Backgrounds.cs" />
      <Compile Include="Assets\Scripts\GUI\Images\Icons.cs" />
-     <Compile Include="Assets\Scripts\GUI\Images\ImageLoader.cs" />
      <Compile Include="Assets\Scripts\GUI\Images\TokenThumbnails.cs" />
      <Compile Include="Assets\Scripts\GUI\Inspector Elements\IInspectable.cs" />
      <Compile Include="Assets\Scripts\GUI\Inspector Elements\InspectorInfo.cs" />
@@ -217,8 +217,9 @@
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyBoard.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyNetwork.cs" />
      <Compile Include="Assets\Scripts\GUI\Lobby\GUILobbyPlayers.cs" />
-     <Compile Include="Assets\Scripts\GUI\Sound\Mixer.cs" />
-     <Compile Include="Assets\Scripts\GUI\Sound\SoundLoader.cs" />
+     <Compile Include="Assets\Scripts\GUI\Sounds\GUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\Sounds\Mixer.cs" />
+     <Compile Include="Assets\Scripts\GUI\Sounds\Music.cs" />
      <Compile Include="Assets\Scripts\Model\BoardPhysical.cs" />
      <Compile Include="Assets\Scripts\Model\Camera\CameraPanner.cs" />
      <Compile Include="Assets\Scripts\Model\Camera\CameraPanner2.cs" />

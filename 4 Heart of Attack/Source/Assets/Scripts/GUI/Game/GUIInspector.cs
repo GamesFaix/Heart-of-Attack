@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using HOA;
+using HOA.Textures;
 
 public static class GUIInspector {
 
@@ -15,6 +16,12 @@ public static class GUIInspector {
 			GUIInspectorAbility.inspectedAction = default(Ability);
 		}
 	}
+
+    public static void Load()
+    {
+        TurnQueue.TurnChangeEvent += TurnChangeSubscribe;
+
+    }
 	
 	static Vector2 scrollPos = new Vector2(0,0);
 	static float internalW = 100;
@@ -22,7 +29,7 @@ public static class GUIInspector {
 	static float internalH = 0;
 			
 	public static void Display(Panel p){
-		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
+		GUI.DrawTexture(p.FullBox, Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 
 		panel = p;
 
@@ -150,4 +157,13 @@ public static class GUIInspector {
 			Input.mousePosition.x, 
 			(-Input.mousePosition.y) + Screen.height + panel.H - panel.LineH + scrollPos.y);
 	}
+
+
+    public static void TurnChangeSubscribe(object sender, TurnChangeEventArgs args)
+    {
+        Inspected = args.NewUnit;
+    }
+
+
+
 }

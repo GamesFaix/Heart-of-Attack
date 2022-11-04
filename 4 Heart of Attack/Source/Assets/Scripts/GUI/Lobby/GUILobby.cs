@@ -1,4 +1,5 @@
 using UnityEngine;
+using HOA.Textures;
 
 namespace HOA {
 
@@ -16,7 +17,7 @@ namespace HOA {
 			float sH = Screen.height;
 			float sW = Screen.width;
 
-			GUI.DrawTexture(new Rect(0,0,sW,sH), ImageLoader.wood[1], ScaleMode.StretchToFill);
+			GUI.DrawTexture(new Rect(0,0,sW,sH), Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 
 
 			float panelH = 600;

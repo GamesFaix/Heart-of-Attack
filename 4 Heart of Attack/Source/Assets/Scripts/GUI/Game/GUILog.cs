@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using HOA;
+using HOA.Textures;
 
 public static class GUILog {
 	
 	public static void Display (Panel p){
-		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
+		GUI.DrawTexture(p.FullBox, Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 		p.NudgeY();
 
 		float historySize = (p.H-2*p.LineH) / p.H;

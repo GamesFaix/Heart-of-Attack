@@ -13,12 +13,6 @@ namespace HOA
 
         public CellSet(Cell c) : this () { Add(c); }
 
-        public void Add(IEnumerable<Cell> collection)
-        {
-            foreach (Cell c in collection)
-                Add(c);
-        }
-
         public TokenSet Occupants
         {
             get

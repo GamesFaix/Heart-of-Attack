@@ -1,5 +1,6 @@
 using UnityEngine;
 using HOA;
+using HOA.Textures;
 
 public class GUIGame : MonoBehaviour {
 	static GUIStyle s = new GUIStyle();
@@ -18,17 +19,17 @@ public class GUIGame : MonoBehaviour {
 		float barW = 400;
 		float lineH = 30;
 
-		GUI.DrawTexture(new Rect(sW-barW, 0, barW, lineH), ImageLoader.wood[1], ScaleMode.StretchToFill);
+		GUI.DrawTexture(new Rect(sW-barW, 0, barW, lineH), Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 
 		string cheatLabel = (cheat ? "Resume" : "Cheat");
 
 		if (GUI.Button(new Rect(sW-barW, 0, barW/4, lineH), cheatLabel)) {
-			GUIMaster.PlaySound(EGUISound.CLICK);
+			GUIMaster.PlaySound(GUISounds.Click);
 			Targeter.Reset();
 			cheat = !cheat;
 		}
 		if (GUI.Button(new Rect(sW-(barW*1/4), 0, barW/4, lineH), "Quit")) {
-			GUIMaster.PlaySound(EGUISound.CLICK);
+			GUIMaster.PlaySound(GUISounds.Click);
 			Game.Quit();
 		}
 		

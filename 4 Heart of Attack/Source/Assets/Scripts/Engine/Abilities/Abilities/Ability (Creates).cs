@@ -32,8 +32,8 @@ namespace HOA {
             {
                 int hp = ((Unit)a.Parent).HP;
                 EffectQueue.Add(Effect.DestroyUnit(new Source(a.Parent), a.Parent));
-                Token newToken;
-                TokenFactory.Create(new Source(a.Parent), Species.Conflagragon, a.Parent.Body.Cell, out newToken, false);
+                Token newToken = 
+                    TokenFactory.Create(new Source(a.Parent), Species.Conflagragon, a.Parent.Body.Cell, false);
                 EffectQueue.Add(Effect.SetStat(new Source(newToken), (Unit)newToken, Stats.Health, hp));
             };
 

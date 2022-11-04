@@ -38,7 +38,7 @@ namespace HOA {
 			Target Target = ClosestLegalTargetToCamera();
 			if (Target != null) {
 				Targeter.Select(Target);
-				GUIMaster.PlaySound(EGUISound.BombingRangeET);
+				GUIMaster.PlaySound(GUISounds.Target);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace HOA {
 			
 			if (Target != null) {
 				GUIInspector.Inspected = Target;
-				GUIMaster.PlaySound(EGUISound.INSPECT);
+				GUIMaster.PlaySound(GUISounds.Inspect);
 			}
 		}
 

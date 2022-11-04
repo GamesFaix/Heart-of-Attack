@@ -84,7 +84,7 @@ namespace HOA {
         }
 
 
-        public static Texture2D Icon { get { return Icons.TIMER(); } }
+        //public static Texture2D Icon { get { return Icons.TIMER(); } }
 
         public override void Draw(Panel p) { InspectorInfo.Timer(this, p); }
 

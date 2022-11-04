@@ -8,7 +8,7 @@ namespace HOA
     {
         public static Dictionary<Species, Func<Source, bool, Token>> Constructors { get; private set; }
 
-        public static void Load()
+        public static void OnGameStart()
         {
             Constructors = new Dictionary<Species, Func<Source, bool, Token>>();
             Constructors.Add(Species.Antenna, Obstacle.Antenna);

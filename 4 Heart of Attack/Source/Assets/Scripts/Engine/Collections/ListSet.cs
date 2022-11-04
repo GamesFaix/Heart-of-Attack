@@ -45,17 +45,37 @@ namespace HOA {
         }
         public void Add(T item)
         {
-            if (!(list.Contains(item))) list.Add(item);
+            if (!Contains(item)) 
+                list.Add(item);
         }
-        public void Insert(int index, T item) { if (!Contains(item)) list.Insert(index, item); }
+
+        public void Add(IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                Add(item);
+        }
+
+        public void Insert(int index, T item) 
+        { 
+            if (!Contains(item)) 
+                list.Insert(index, item); 
+        }
 
         
         public bool Remove(T item)
         {
-            if (!list.Contains(item)) return false;
+            if (!Contains(item)) 
+                return false;
             list.Remove(item);
             return true;
         }
+
+        public void Remove(IEnumerable<T> collection)
+        {
+            foreach (T item in collection)
+                Remove(item);
+        }
+
         public void RemoveAt(int index) { list.RemoveAt(index); }
         public void Clear() { list.Clear(); }
 

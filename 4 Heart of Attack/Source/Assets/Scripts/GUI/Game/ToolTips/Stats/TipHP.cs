@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using HOA.Textures;
+
 namespace HOA {
 	
 	public class TipHP : Tip{

@@ -158,6 +158,18 @@ namespace HOA {
             return t;
         }
 
+        public static Timer Stunned(Source source, Unit parent, int turns)
+        {
+            Timer t = new Timer(source, parent, turns);
+            t.Name = "Stunned";
+            t.Desc = () => { return t.Parent.ID.FullName + " cannot advance in the Queue for " + t.Turns + " global turns."; };
+            t.Turns = turns;
+            t.Test = t.EveryTurnTest;
+            t.Activate = () => { EffectQueue.Add(Effect.Shift(t.Source, t.Parent as Unit, 1)); };
+            return t;
+        }
+
+
         public static Timer TimeBomb(Source source, Unit parent, int modifier)
         {
             Timer t = new Timer(source, parent, modifier);

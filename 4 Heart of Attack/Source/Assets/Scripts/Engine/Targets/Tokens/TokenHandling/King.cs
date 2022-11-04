@@ -1,7 +1,9 @@
 ﻿using UnityEngine; 
 
 namespace HOA { 
-
+    /// <summary>
+    /// King constructor defaults Unique to true, and creates 3AP Wallet.
+    /// </summary>
     public class King : Unit {
 
         public King(Source source, Species species, string name, bool unique = false, bool template = false)
@@ -26,11 +28,13 @@ namespace HOA {
 			});
             u.Arsenal.Sort();
             return u;
+
+            
         }
        
         public static King Decimatrix(Source s, bool template = false)
         {
-            King u = new King(s, Species.Decimatrix, "Decimatrix", true);
+            King u = new King(s, Species.Decimatrix, "Decimatrix", true, template);
             u.Plane = Plane.Ground;
             u.Body.Trample = true;
             u.OnDeath = Species.SteelHeart;

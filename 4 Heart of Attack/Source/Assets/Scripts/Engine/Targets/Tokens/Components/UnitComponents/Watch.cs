@@ -6,19 +6,16 @@ namespace HOA {
 	public class Watch : TokenComponent, IDeepCopyUnit<Watch>, IInspectable {
 
 		public Stat IN {get; protected set;}
-		public Stat STUN {get; protected set;}
-
+	
 		protected bool skipped;
 
 		public Watch(Unit parent, int i=0) : base (parent) {
 			IN = Stat.Initiative(parent, i);
-			STUN = Stat.Stun(parent, 0);
 			skipped = false;
 		}
 
 		public Watch DeepCopy (Unit parent) {return new Watch (parent, IN);}
 
-		public bool IsStunned() {return STUN > 0;}
 		public bool IsSkipped() {return skipped;}
 
 		public void Skip(bool log=true) {

@@ -126,7 +126,9 @@ namespace HOA {
 			}
 		}
 
-		protected void InvalidArgumentCount () {throw new Exception("Matrix"+Size+" requires 0 or "+Count+" entries for construction.");}
+		protected void InvalidArgumentCount () {
+            throw new Exception("Matrix"+Size+" requires 0 or "+Count+" entries for construction.");
+        }
 
 		public index2 IndexOf (T item) {
 			foreach (index2 index in Size) {

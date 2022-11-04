@@ -16,13 +16,6 @@ namespace HOA {
             }
         }
 
-        public void Add(IEnumerable<Token> collection)
-        {
-            foreach (Token t in collection)
-                Add(t);
-        }
-    
-    
         public static implicit operator TargetSet(TokenSet tokens)
         {
             TargetSet targets = new TargetSet();

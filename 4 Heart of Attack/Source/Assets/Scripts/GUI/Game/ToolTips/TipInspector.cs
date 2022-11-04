@@ -1,4 +1,6 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
+
+using HOA.Textures;
 
 namespace HOA { 
 
@@ -15,7 +17,7 @@ namespace HOA {
 			Color normalColor = p.s.normal.textColor;
 			p.s.normal.textColor = Color.black;
 
-			GUI.DrawTexture(p.FullBox, ImageLoader.parchment, ScaleMode.StretchToFill);
+			GUI.DrawTexture(p.FullBox, Backgrounds.Parchment, ScaleMode.StretchToFill);
 		
 			if (GUI.Button(p.LineBox, "Resume")) {
 				GUIGame.tip = false;

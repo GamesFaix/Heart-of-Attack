@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
+using HOA.Textures;
 namespace HOA { 
 
     public static class InspectorInfo {
@@ -86,29 +87,9 @@ namespace HOA {
         {
             watch.IN.Draw(new Panel(p.Box(p.IconSize * 2 + 5), p.LineH, p.s, p.IconSize));
 
-            float x3 = p.x2;
-
             Rect box;
 
-            if (watch.IsStunned())
-            {
-                x3 = p.x2;
-                Rect stunBox = p.Box(p.IconSize * 2 + 5);
-                if (GUI.Button(stunBox, ""))
-                {
-                    if (GUIInspector.RightClick) { TipInspector.Inspect(ETip.STUN); }
-                }
-                p.x2 = x3;
-                p.NudgeX();
-                box = p.Box(p.IconSize);
-                GUI.Box(p.Box(p.IconSize), Icons.Stats[Stats.Stun], p.s);
-                p.NudgeX();
-                p.NudgeY();
-                box = p.Box(p.IconSize);
-                GUI.Label(p.Box(p.IconSize), watch.STUN + "", p.s);
-                p.NudgeY(false);
-            }
-            else if (watch.IsSkipped())
+            if (watch.IsSkipped())
             {
                 p.NudgeX();
                 box = p.Box(p.IconSize);
@@ -288,7 +269,7 @@ namespace HOA {
             GUI.Box(p.Box(p.LineH), TokenThumbnails.BySpecies(t.ID.Species), p.s);
             p.NudgeX();
             p.NudgeY();
-            FancyText.Highlight(p.Box(150), t.ID.FullName, p.s, t.Owner.Colors);
+            FancyText.Highlight(p.Box(150), t.ID.FullName, p.s, t.Owner.Faction.Colors);
         }
         public static void InspectOnDeathButton(Token t, Panel p)
         {

@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using HOA;
-
+using HOA.Textures;
 public static class GUIQueue {
 	
 	public static void Display (Panel p){
-		GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
+		GUI.DrawTexture(p.FullBox, Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 		p.NudgeY();
 		if (TurnQueue.Count > 0) {
 			float listHeight = (p.H-p.LineH) / p.H;
@@ -39,19 +39,14 @@ public static class GUIQueue {
 					CameraPanner.MoveTo(u);
 				}
 				p.ResetX(); p.NudgeX();
-				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Colors);
+				FancyText.Highlight(p.Box(nameW), u.ToString(), p.s, u.Owner.Faction.Colors);
 
 			////watch
 				GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Initiative], p.s);
 				p.x2 += 5;
 				GUI.Label(p.Box(iconSize), u.IN+"", p.s);
 				
-				if (u.IsStunned()) {
-					GUI.Box(p.Box(iconSize), Icons.Stats[Stats.Stun], p.s);
-					p.x2 += 5;
-					GUI.Label(p.Box(iconSize), u.STUN+"", p.s);
-				}
-				else if (u.IsSkipped()) {
+				if (u.IsSkipped()) {
 					GUI.Box(p.Box(iconSize), Icons.SKIP(), p.s);
 				}
 				else {p.x2 += iconSize;}

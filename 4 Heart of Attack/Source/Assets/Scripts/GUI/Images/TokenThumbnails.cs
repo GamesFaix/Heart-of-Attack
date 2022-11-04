@@ -2,13 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-namespace HOA {
+namespace HOA.Textures 
+{
 
-	public static class TokenThumbnails {
+	public static class TokenThumbnails 
+    {
+        static TokenThumbnails()
+        {
+            Core.Load += Load;
+        }
 		
 		static Dictionary<Species, Texture2D> thumbnails;
 		
-		public static void Load() {
+		public static void Load(object sender, LoadEventArgs args) 
+        {
 			thumbnails = new Dictionary<Species, Texture2D>();
 
 			Add(Species.Katandroid, "KATA"); Add(Species.Carapace, "CARA"); Add(Species.Mawth, "MAWT"); Add(Species.Kabutomachine, "KABU");

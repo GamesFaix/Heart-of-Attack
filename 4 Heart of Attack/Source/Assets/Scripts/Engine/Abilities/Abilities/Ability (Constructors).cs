@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using HOA.Textures;
 
 namespace HOA
 {

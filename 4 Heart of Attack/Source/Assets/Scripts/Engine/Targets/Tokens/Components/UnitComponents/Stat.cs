@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HOA { 
 
-	public enum Stats : byte {DEFAULT, Health, MaxHealth, Defense, Initiative, Energy, Focus, Stun}
+	public enum Stats : byte {DEFAULT, Health, MaxHealth, Defense, Initiative, Energy, Focus}
 
 	public partial class Stat : IInspectable{
 	

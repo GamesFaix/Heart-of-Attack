@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using HOA;
+using HOA.Sounds;
 
-public enum EGUISound {CLICK, INSPECT, BombingRangeET}
+public enum GUISounds {Click, Inspect, Target}
 
 public class GUIMaster : MonoBehaviour {
 
@@ -22,10 +23,13 @@ public class GUIMaster : MonoBehaviour {
 	}
 
 
-	public static void PlaySound (EGUISound s) {
-		if (s == EGUISound.CLICK) {sound.clip = SoundLoader.click;}
-		if (s == EGUISound.INSPECT) {sound.clip = SoundLoader.inspect;}
-		if (s == EGUISound.BombingRangeET) {sound.clip = SoundLoader.Target;}
+	public static void PlaySound (GUISounds s) {
+		if (s == GUISounds.Click) 
+            sound.clip = HOA.Sounds.GUI.Click;
+		if (s == GUISounds.Inspect) 
+            sound.clip = HOA.Sounds.GUI.Inspect;
+		if (s == GUISounds.Target) 
+            sound.clip = HOA.Sounds.GUI.Target;
 		sound.Play();
 	}
 

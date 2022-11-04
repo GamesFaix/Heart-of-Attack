@@ -10,12 +10,6 @@ namespace HOA {
 			Parent = parent;
 		}
 
-        public void Add(IEnumerable<Ability> collection)
-        {
-            foreach (Ability a in collection)
-                Add(a);
-        }
-
 		public void Reset () {foreach (Ability a in list) {a.Reset();} }
 
 		public Ability Move {

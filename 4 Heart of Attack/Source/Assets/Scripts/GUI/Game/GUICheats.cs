@@ -13,21 +13,21 @@ namespace HOA {
 		static bool showOwner = false;
 		
 		public static void Display (Panel p) {
-			GUI.DrawTexture(p.FullBox, ImageLoader.wood[1], ScaleMode.StretchToFill);
+			GUI.DrawTexture(p.FullBox, Textures.Backgrounds.WoodLarge, ScaleMode.StretchToFill);
 
 			p.NextLine();
 
 			Panel subPanel = new Panel(new Rect(p.x2+btnW, p.y2, p.W-btnW, p.H-p.LineH), p.LineH, p.s);
 
 			if (GUI.Button(p.Box(btnW), "Kill")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				Targeter.Start(Ability.ManualDestroy());
 			}
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "Create")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				showCreate = true;
 			}
@@ -35,14 +35,14 @@ namespace HOA {
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "Move")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				Targeter.Start(Ability.ManualMove());
 			}
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "Stats")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				showStats = true;
 			}
@@ -50,14 +50,14 @@ namespace HOA {
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "End Turn")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				Targeter.Start(Ability.ManualEnd());
 			}
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "Queue Shift")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				showQueue = true;
 			}
@@ -65,7 +65,7 @@ namespace HOA {
 
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "Set Owner")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Reset();
 				showOwner = true;
 			}
@@ -82,12 +82,12 @@ namespace HOA {
 				//p.NudgeX();
 				if (GUI.Button(p.Box(btnW), "Execute") || Input.GetKeyUp("space")) {
 					Targeter.Execute();
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 				}
 				p.NextLine();
 				if (GUI.Button(p.Box(btnW), "Cancel") || Input.GetKeyUp("escape")) {
 					Targeter.Reset();
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 				}
 			}
 		}
@@ -98,21 +98,20 @@ namespace HOA {
 			GUI.Box (p.FullBox, "");
 			
 			float internalW = btnW;
-			float internalH = btnH * (FactionRef.Count + Enum.GetValues(typeof(Species)).Length);
+			float internalH = btnH * (FactionRegistry.Factions.Count + Enum.GetValues(typeof(Species)).Length);
 
 			tokenScroll = GUI.BeginScrollView (p.FullBox, tokenScroll, new Rect(p.X, p.Y, internalW, internalH));
-			
-			for (int i=0; i<FactionRef.Count; i++){
-				Faction faction = FactionRef.Index(i);
 
-				GUI.Label (p.LineBox, faction.Name, p.s);
-				for (int j=0; j<faction.Count; j++){
+            foreach (Faction faction in FactionRegistry.Factions.Values)
+            {
+             	GUI.Label (p.LineBox, faction.Name, p.s);
+				for (int j=0; j<faction.Species.Count; j++){
 					if (GUI.Button (new Rect(p.x2, p.y2, p.W, btnH), "")) {
-						GUIMaster.PlaySound(EGUISound.CLICK);
-						Targeter.Start(Ability.ManualCreate (TurnQueue.Top, faction[j]));
+						GUIMaster.PlaySound(GUISounds.Click);
+						Targeter.Start(Ability.ManualCreate (TurnQueue.Top, faction.Species[j]));
 					}
-					GUI.Box (p.Box(btnH), TokenThumbnails.BySpecies(faction[j]));
-					GUI.Label (p.Box(p.W-btnH), TokenRegistry.Templates[faction[j]].ID.Name);
+					GUI.Box (p.Box(btnH), Textures.TokenThumbnails.BySpecies(faction.Species[j]));
+					GUI.Label (p.Box(p.W-btnH), TokenRegistry.Templates[faction.Species[j]].ID.Name);
 					p.NextLine();
 				}
 			}
@@ -131,7 +130,7 @@ namespace HOA {
 
 			for (int i=0; i<statLabels.Length; i++) {
 				if (GUI.Button(p.Box(btnW), statLabels[i])) {
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 					statBtn = i;
 				}
 				p.NextLine();
@@ -143,7 +142,7 @@ namespace HOA {
 			for (int i=0; i<signLabels.Length; i++) {
 				p.x2 = x3;
 				if (GUI.Button(p.Box(btnW), signLabels[i])) {
-					GUIMaster.PlaySound(EGUISound.CLICK);
+					GUIMaster.PlaySound(GUISounds.Click);
 					signBtn = i;
 				}
 				p.NextLine();
@@ -159,7 +158,7 @@ namespace HOA {
 			x3 += btnW;
 			p.x2 = x3;
 			if (GUI.Button(p.Box(btnW*2), "Select Tokens")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				if (signBtn == 0) {Targeter.Start(Ability.ManualSet(stat, statValue));}
 				else if (signBtn == 1) {Targeter.Start(Ability.ManualAdd(stat, statValue));}
 				else {Targeter.Start(Ability.ManualAdd(stat, 0-statValue));}
@@ -173,12 +172,12 @@ namespace HOA {
 			float btnW = 50;
 
 			if (GUI.Button(p.Box(btnW), "+")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				signBtn = 1;
 			}
 			p.NextLine();
 			if (GUI.Button(p.Box(btnW), "-")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				signBtn = 2;
 			}
 
@@ -191,7 +190,7 @@ namespace HOA {
 			x3 += btnW;
 			p.x2 = x3;
 			if (GUI.Button(p.Box(btnW*2), "Select Tokens")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				if (signBtn == 1) {Targeter.Start(Ability.ManualShift(queueValue));}
 				else if (signBtn == 2) {Targeter.Start(Ability.ManualShift(0-queueValue));}
 			}
@@ -202,14 +201,14 @@ namespace HOA {
 		static void OwnerMenu (Panel p) {
 			float btnW = 100;
 
-			foreach (Player player in Roster.Players(true)) {
+			foreach (Player player in Roster.PlayersWithNeutral) {
 				if (GUI.Button(p.Box(btnW), player.ToString())) {newOwner = player;}
 				p.NextLine();
 			}
 			p.ResetY();
 			p.x2 += btnW;
 			if (GUI.Button(p.Box(btnW), "Select Tokens")) {
-				GUIMaster.PlaySound(EGUISound.CLICK);
+				GUIMaster.PlaySound(GUISounds.Click);
 				Targeter.Start(Ability.ManualOwner(newOwner));
 			}
 		}

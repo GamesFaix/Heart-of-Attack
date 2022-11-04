@@ -11,11 +11,10 @@ namespace HOA {
 
 		public static void Start () {
 			Active = false;
-			if (Roster.Count() > 1) {
+			if (Roster.Players.Count > 1) {
 				Mixer.Mute(true);
 				TokenRegistry.Reset();
 				GameLog.Reset();
-				TurnQueue.Reset();
 				GUILobbyMap.Assign();
 				EffectQueue.Add(Effect.Shuffle(new Source()));
 				EffectQueue.Add(Effect.Initialize(new Source()));

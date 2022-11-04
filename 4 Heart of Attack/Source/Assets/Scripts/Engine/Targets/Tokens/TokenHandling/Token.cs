@@ -48,12 +48,6 @@ namespace HOA {
             if (this == GUIInspector.Inspected) 
                 GUIInspector.Inspected = null;
             GameObject.Destroy(Display.GO);
-
-            bool top = false;
-            if (this == TurnQueue.Top) top = true;
-            if (this is Unit) TurnQueue.Remove((Unit)this);
-            if (top) TurnQueue.PrepareNewTop(TurnQueue.Top);
-
             TokenRegistry.Remove(this);
             Cell oldCell = Body.Cell;
             Body.DestroySensors();
@@ -71,10 +65,8 @@ namespace HOA {
         {
             if (OnDeath != Species.None)
             {
-                Token remains = default(Token);
-                if (TokenFactory.Create(new Source(this), OnDeath, oldCell, out remains, false))
-                    GameLog.Out(this + " left " + remains);
-                if (remains is Heart) remains.Owner = Owner;
+                Token remains = TokenFactory.Create(new Source(this), OnDeath, oldCell, false);
+                GameLog.Out(this + " left " + remains);
             }
         }
 

@@ -7,18 +7,18 @@ public static class GUILobbyPlayers {
 
 	public static void Display (Panel p) {
 		/*fix next line!!!!!!!!!!*/
-		if (Roster.Count() < /*Board.MaxPlayers()*/8) {
+		if (Roster.Players.Count < /*Board.MaxPlayers()*/8) {
 			if (GUI.Button (p.LineBox, "Add player")) {
-				Roster.Add(new Player(Roster.Count()));
+				Roster.Add(new Player(Roster.Players.Count));
 			}
 		}
 		else {GUI.Label(p.LineBox, "Roster full.");}
 		p.y2+=5;
 		
-		for (int i=0; i<Roster.Count(); i++) {
-			Player player = Roster.Players()[i];
+		for (int i=0; i<Roster.Players.Count; i++) {
+			Player player = Roster.Players[i];
 			string name = GUI.TextField(p.Box(0.4f), player.ToString());	
-			player.Rename(name);
+			player.Name = name;
 			if (GUI.Button(p.Box(0.2f), "Delete")) {
 				Roster.Remove(player);
 			}
@@ -36,13 +36,13 @@ public static class GUILobbyPlayers {
 		}
 		
 		bool ready = true;
-		for (int i=1; i<Roster.Count(); i++) {
+		for (int i=1; i<Roster.Players.Count; i++) {
 			Player player = Roster.Index(i);
 			if (player.Faction == default(Faction)) {ready = false;}
 		}
 		
 		p.y2 += 5;
-		if (Roster.Count() > 1) {
+		if (Roster.Players.Count > 1) {
 		
 			if (ready) {
 				if (GUI.Button(p.LineBox, "Start game")
@@ -76,18 +76,18 @@ public static class GUILobbyPlayers {
 		
 		if (selectee != default(Player)) {
 			for (int i=0; i<4; i++){
-				if (i < FactionRef.Free.Count){
-					if (GUI.Button(p.Box(0.25f), FactionRef.FreeNames[i])) {
-						Roster.AssignFaction(selectee, FactionRef.Free[i]);
+				if (i < FactionRegistry.Free.Count){
+					if (GUI.Button(p.Box(0.25f), FactionRegistry.FreeNames[i])) {
+						Roster.AssignFaction(selectee, FactionRegistry.Free[i]);
 						selectee = default(Player);
 					}
 				}
 			}
 			p.NextLine();
 			for (int i=4; i<8; i++){
-				if (i < FactionRef.Free.Count){
-					if (GUI.Button(p.Box(0.25f), FactionRef.FreeNames[i])) {
-						Roster.AssignFaction(selectee, FactionRef.Free[i]);
+				if (i < FactionRegistry.Free.Count){
+					if (GUI.Button(p.Box(0.25f), FactionRegistry.FreeNames[i])) {
+						Roster.AssignFaction(selectee, FactionRegistry.Free[i]);
 						selectee = default(Player);
 					}
 				}
