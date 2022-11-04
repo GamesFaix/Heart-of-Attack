@@ -9,7 +9,7 @@ namespace HOA.Sounds
         public static AudioClip Inspect { get; private set; }
         public static AudioClip Target { get; private set; }
 
-        public static void Load()
+        public static void Load(object sender, LoadEventArgs args)
         {
             Click = LoadSound("Click");
             Inspect = LoadSound("Inspect");

@@ -47,7 +47,7 @@ namespace HOA.Effects {
                         {
                             group.Add(Effect.ExplosionDummy(new Source(Source.Token, this), next));
                         }
-                        foreach (Cell cell in next.Neighbors()) nextRad.Add(cell);
+                        foreach (Cell cell in next.Neighbors) nextRad.Add(cell);
                         affected.Add(next);
                     }
                 }

@@ -22,8 +22,7 @@ namespace HOA
          public static void OnGameStart()
         {
             Neutral = new Player ("Neutral");
-			Neutral.Faction = FactionRegistry.Factions[Factions.Neutral];
-            Reset();
+			Reset();
 		}
 		
 		public static void Reset () {
@@ -76,7 +75,9 @@ namespace HOA
 		}
 		
 		public static void ForceRandomFactions () {
-			foreach (Player p in Players) {
+            Neutral.Faction = FactionRegistry.Factions[Factions.Neutral];
+            foreach (Player p in Players)
+            {
 				if (p.Faction == default(Faction)) {
 					AssignFaction(p, FactionRegistry.RandomFree);
 				}

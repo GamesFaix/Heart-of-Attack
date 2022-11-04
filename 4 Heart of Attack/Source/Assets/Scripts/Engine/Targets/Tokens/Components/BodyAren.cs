@@ -3,36 +3,34 @@ using System.Collections.Generic;
 
 namespace HOA { 
 	
-	public class BodyAren : Body, IDeepCopyToken<BodyAren> {
-
-		Alias[] aliases;
-
-		index2 right {get {return Cell.Index + Direction.Right;} }
-		index2 down {get {return Cell.Index + Direction.Down;} }
-		index2 downRight {get {return Cell.Index + Direction.DownRight;} }
+	public class BodyAren : Body {
 
 		public BodyAren (Token parent, bool template=false) : base(parent){
 			if (!template) {
-				aliases = new Alias[3];
-				aliases[0] = Alias.Arena(new Source(parent));
-                aliases[1] = Alias.Arena(new Source(parent));
-                aliases[2] = Alias.Arena(new Source(parent));
-				foreach (Alias alias in aliases) {
-					TokenDisplay.Attach(alias);
-				}
+                Aliases.Add(Alias.Arena(new Source(parent)));
+                Aliases.Add(Alias.Arena(new Source(parent)));
+                Aliases.Add(Alias.Arena(new Source(parent)));
+              
+				foreach (Alias a in Aliases) 
+					TokenDisplay.Attach(a);
+				
+                EnterSpecial = (c) =>
+                {
+                    Aliases[0].Body.Enter(Game.Board.Cell(Cell.Index + Direction.Right), false);
+                    Aliases[1].Body.Enter(Game.Board.Cell(Cell.Index + Direction.Down), false);
+                    Aliases[2].Body.Enter(Game.Board.Cell(Cell.Index + Direction.DownRight), false);
+                };
 			}
 		}
 
-		public new BodyAren DeepCopy (Token parent) {return new BodyAren(parent);}
-
-		public override TokenSet CellMates {
+		public override TokenSet Cellmates {
 			get {
 				CellSet square;
                 TokenSet cellMates = new TokenSet();
 				if (SquareExists(Cell, out square)) {
 					cellMates.Add(square.Occupants);
 					cellMates.Remove(Parent);
-					foreach (Alias a in aliases) {cellMates.Remove(a);}
+					foreach (Alias a in Aliases) {cellMates.Remove(a);}
 				}
 				return cellMates;
 			}
@@ -72,12 +70,6 @@ namespace HOA {
 				}
 			}
 			return (square.Count == 4 ? true : false);
-		}
-
-		protected override void EnterSpecial (Cell newCell) {
-			aliases[0].Body.Enter(Game.Board.Cell(right));
-			aliases[1].Body.Enter(Game.Board.Cell(down));
-			aliases[2].Body.Enter(Game.Board.Cell(downRight));
 		}
 	}
 }

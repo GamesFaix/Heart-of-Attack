@@ -15,8 +15,6 @@ namespace HOA {
 			Resources.Load("Images/Textures/Cell/fade_bottom-right") as Texture2D
 		};
 
-		public override void EnterSunken (Token t) {Debug.Log("ExoCell cannot be entered.");}
-		public override void ExitSunken () {Debug.Log("ExoCell cannot be exited.");}
 
 		public override Texture2D TerrainTex {
 			get { 

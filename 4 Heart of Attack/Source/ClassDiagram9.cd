@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HOA.Body">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <NestedTypes>
+      <Delegate Name="HOA.Body.SensorConstructor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Engine\Targets\Tokens\Components\Body.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAQAEAAggEACHAgQCAAEAFAAgEIAAEAVAEQCA=</HashCode>
+      <FileName>Assets\Scripts\Engine\Targets\Tokens\Components\Body (Constructors).cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

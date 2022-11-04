@@ -7,11 +7,7 @@ namespace HOA.Textures
 
 	public static class TokenThumbnails 
     {
-        static TokenThumbnails()
-        {
-            Core.Load += Load;
-        }
-		
+      
 		static Dictionary<Species, Texture2D> thumbnails;
 		
 		public static void Load(object sender, LoadEventArgs args) 

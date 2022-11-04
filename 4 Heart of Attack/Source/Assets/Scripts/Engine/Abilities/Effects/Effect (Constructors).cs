@@ -175,7 +175,7 @@ namespace HOA
             Effect e = new Effect("Burrow Finish", source, new Target[2] { mover, destination });
             e.Process = () =>
             {
-                ((Token)e.Targets[0]).Body.Enter(((Cell)e.Targets[1]));
+                ((Token)e.Targets[0]).Body.Enter(((Cell)e.Targets[1]), false);
                 AVEffect.Burrow.Play(e.Targets[0]);
             };
             return e;
@@ -188,7 +188,7 @@ namespace HOA
                 Token t = (Token)e.Targets[0];
                 Cell oldCell = t.Body.Cell;
                 //	Target.SpriteMove(cell);
-                t.Body.MoveTo(((Cell)e.Targets[1]));
+                t.Body.Enter(((Cell)e.Targets[1]), true);
                 Cell newCell = t.Body.Cell;
                 if (t.Plane.ContainsAny(Plane.Ground)) 
                     AVEffect.Walk.Play(t);
@@ -232,7 +232,7 @@ namespace HOA
             Effect e = new Effect("Teleport Finish", source, new Target[2] { mover, destination });
             e.Process = () =>
             {
-                ((Token)e.Targets[0]).Body.Enter((Cell)e.Targets[1]);
+                ((Token)e.Targets[0]).Body.Enter((Cell)e.Targets[1], false);
                 AVEffect.Teleport.Play(e.Targets[0]);
             };
             return e;
@@ -418,7 +418,7 @@ namespace HOA
                     AVEffect.Fire.Play(t);
                 }
 
-                TokenSet neighbors = t.Body.Neighbors(true) - TargetFilter.UnitDest;
+                TokenSet neighbors = t.Body.NeighborsAndCellmates - TargetFilter.UnitDest;
 
                 int newDmg = (int)Mathf.Floor(e.Modifier * 0.5f);
                 foreach (Token t2 in neighbors)
@@ -589,15 +589,15 @@ namespace HOA
 
         #region //Token Properties
 
-        public static Effect AddStat(Source source, Unit Target, Stats stat, int change)
+        public static Effect AddStat(Source source, Unit target, Stats stat, int change)
         {
-            Effect e = new Effect("Add Stat", source, Target, stat, change);
+            Effect e = new Effect("Add Stat", source, target, stat, change);
             e.Process = () => { ((Unit)e.Target).SetStat(e.Source, e.Stat, e.Modifier); };
             return e;
         }
-        public static Effect SetStat(Source source, Unit Target, Stats stat, int change)
+        public static Effect SetStat(Source source, Unit target, Stats stat, int change)
         {
-            Effect e = new Effect("Set Stat", source, Target, stat, change);
+            Effect e = new Effect("Set Stat", source, target, stat, change);
             e.Process = () =>
             {
                 Unit u = (Unit)e.Target;
@@ -608,15 +608,48 @@ namespace HOA
             return e;
         }
 
-        public static Effect SetOwner(Source source, Token Target, Player owner)
+        public static Effect SetOwner(Source source, Token target, Player owner)
         {
-            Effect e = new Effect("Set Owner", source, Target, owner);
+            Effect e = new Effect("Set Owner", source, target, owner);
             e.Process = () =>
             {
                 Token t = (Token)e.Target;
                 t.Owner = e.Player;
                 AVEffect.Owner.Play(t);
                 GameLog.Out(e.Player + " acquired " + t);
+            };
+            return e;
+        }
+
+        public static Effect SetPlane(Source source, Token target, Plane plane)
+        {
+            Effect e = new Effect("Set Plane", source, target, plane);
+            e.Process = () =>
+            {
+                target.Plane = plane;
+                Cell c = target.Body.Cell;
+                target.Body.Exit();
+                target.Body.TryEnter(c, false);
+            };
+            return e;
+        }
+
+        public static Effect SetDest(Source source, Token target, bool destructible)
+        {
+            Effect e = new Effect("Set Destructible", source, target, destructible);
+            e.Process = () =>
+            {
+                target.Body.Destructible = e.Flag;
+            };
+            return e;
+        }
+
+        public static Effect SetTrample(Source source, Token target, bool trample)
+        {
+            Effect e = new Effect("Set Trample", source, target, trample);
+            e.Process = () =>
+            {
+                target.Body.Trample = e.Flag;
             };
             return e;
         }

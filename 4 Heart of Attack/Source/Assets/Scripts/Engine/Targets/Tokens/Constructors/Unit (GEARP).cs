@@ -8,7 +8,7 @@ namespace HOA {
         {
             Unit u = new Unit(s, Species.Carapace, "Carapace Invader", false, template);
             u.Plane = Plane.Ground;
-            u.Body = new BodySensor9(u, Sensor.Carapace);
+            u.Body = new Body(u, Sensor.Carapace);
             u.ScaleMedium();
             u.Health = new HealthDEFCap(u, 35, 2, 5);
             u.Watch = new Watch(u, 4);

@@ -11,7 +11,7 @@ namespace HOA {
 
             TargetSet Targets = new TargetSet();
 			
-			CellSet neighborCells = center.Neighbors(true);
+			CellSet neighborCells = center.NeighborsAndSelf;
 			if (Purpose == EPurp.MOVE) {neighborCells.Remove(center);}
 			
 			if (Filter.Contains(FilterTests.Cell)) 
@@ -45,7 +45,7 @@ namespace HOA {
             {
                 TargetSet Targets = new TargetSet();
 
-                CellSet thisRad = center.Neighbors();
+                CellSet thisRad = center.Neighbors;
                 CellSet nextRad = new CellSet();
                 CellSet marked = new CellSet();
 				
@@ -59,7 +59,7 @@ namespace HOA {
                             || (c.Occupants.Count==1 
                                 && (c.Occupants - TargetFilter.Plane(Plane.Sunken, true)).Count > 0)) {
 							
-							foreach (Cell d in c.Neighbors()) {
+							foreach (Cell d in c.Neighbors) {
 								if (!marked.Contains(d)) {nextRad.Add(d);}		
 							}
 						}
@@ -176,7 +176,7 @@ namespace HOA {
 			return Targets;
 		}
 
-		static CellSet CellSquare (Cell start, int range, int min) {
+ {
 			CellSet square = new CellSet();
 			Cell c;
 			for (int x=(start.X-range); x<=(start.X+range); x++) {
@@ -214,7 +214,7 @@ namespace HOA {
 		}
 
 		CellSet NeighborsExtra (Cell center) {
-            CellSet cells = center.Neighbors(true);
+            CellSet cells = center.NeighborsAndSelf;
             CellSet extras = new CellSet();
 			Cell extra;
 			List<int2> directions = new List<int2> {Direction.Up, Direction.Left, Direction.UpLeft};

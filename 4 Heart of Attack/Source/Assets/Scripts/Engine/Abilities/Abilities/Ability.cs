@@ -15,24 +15,27 @@ namespace HOA {
         public Price Price { get; private set; }
 		
         public Func<string> Desc;
+        public delegate bool LegalTest(out string message);
+        public LegalTest Legal;
+        public List<Aim> Aims { get; private set; }
+        public bool Used { get; private set; }
+        protected Action PreEffects;
+        protected Action<TargetSet> MainEffects;
+        protected Action PostEffects;
+        protected Func<bool> Restrict;
+        public Action Adjust;
+        public Action Unadjust;
+
+        
+        
         public Species Species { get; private set; }
         public virtual Token Template { get; private set; }
         public int Damage { get; private set; }
         public int Modifier { get; private set; }
         public Stats Stat { get; private set; }
 
-        public delegate bool LegalTest(out string message);
-        public LegalTest Legal;
-        public List<Aim> Aims { get; private set; }
-        public bool Used { get; private set; }
-
-        protected Action PreEffects;
-        protected Action<TargetSet> MainEffects;
-        protected Action PostEffects;
         
-        protected Func<bool> Restrict;
-        public Action Adjust;
-        public Action Unadjust;
+        
 
         public Action<Panel> DrawAims { get; private set; }
         public Action<Panel> DrawSpecial { get; private set; }

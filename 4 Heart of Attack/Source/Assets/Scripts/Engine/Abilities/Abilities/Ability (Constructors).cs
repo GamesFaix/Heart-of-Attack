@@ -31,7 +31,7 @@ namespace HOA
                     aim.Range -= 2;
                     Target.timers.Add(Timer.ArcticGust(new Source(a.Parent), Target, 2, move));
                 }
-                TokenSet neighborUnits = Target.Body.Neighbors() - TargetFilter.Unit;
+                TokenSet neighborUnits = Target.Body.Neighbors - TargetFilter.Unit;
                 foreach (Unit u in neighborUnits)
                 {
                     if (u != a.Parent
@@ -156,7 +156,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TokenSet victims = a.Parent.Body.Neighbors(true) - TargetFilter.Unit;
+                TokenSet victims = a.Parent.Body.NeighborsAndCellmates - TargetFilter.Unit;
                 EffectSet nextEffects = new EffectSet();
                 nextEffects.Add(Effect.DestroyUnit(new Source(a.Parent), a.Parent));
                 foreach (Unit u in victims)
@@ -300,7 +300,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                CellSet cells = a.Parent.Body.Cell.Neighbors(true);
+                CellSet cells = a.Parent.Body.Cell.NeighborsAndSelf;
                 TokenSet units = cells.Occupants - TargetFilter.Unit;
                 EffectSet nextEffects = new EffectSet();
                 foreach (Unit u in units)
@@ -599,24 +599,18 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TokenSet tokens = a.Parent.Body.Cell.Occupants;
-                tokens -= TargetFilter.Plane(Plane.Ground, true);
-                foreach (Token t in tokens)
-                    if (t.Body.Destructible)
-                        EffectQueue.Add(Effect.DestroyObstacle(new Source(a.Parent), t));
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 2));
-                a.Parent.Plane = Plane.Ground;
+                EffectSet e = new EffectSet();
+                e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, 2));
+                e.Add(Effect.SetTrample(new Source(a.Parent), a.Parent, true));
+                e.Add(Effect.SetPlane(new Source(a.Parent), a.Parent, Plane.Ground));
 
-                Cell cell = a.Parent.Body.Cell;
-                a.Parent.Body.Exit();
-                a.Parent.Body.Enter(cell);
-
-                a.Parent.Body.Trample = true;
+                EffectQueue.Add(e);
 
                 a.Parent.Arsenal.Replace("Move", Ability.Move(a.Parent, 3));
                 a.Parent.Arsenal.Replace("Land", Ability.TakeFlight(a.Parent));
                 a.Parent.Arsenal.Replace("Build Rook", Ability.TailWhip(a.Parent));
                 a.Parent.Arsenal.Sort();
+               
             };
 
             a.Restrict = () =>
@@ -725,7 +719,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TokenSet units = a.Parent.Body.CellMates
+                TokenSet units = a.Parent.Body.Cellmates
                     - TargetFilter.Unit
                     - TargetFilter.Owner(a.Parent.Owner, false);
                 EffectSet effects = new EffectSet();
@@ -809,7 +803,7 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TokenSet units = a.Parent.Body.CellMates
+                TokenSet units = a.Parent.Body.Cellmates
                     - TargetFilter.Unit
                     - TargetFilter.Owner(a.Parent.Owner, true);
                 EffectSet effects = new EffectSet();
@@ -1105,7 +1099,7 @@ namespace HOA
                 a.Parent.SetStat(new Source(a.Parent), Stats.Focus, 0, false);
                 Unit Target = (Unit)Targets[0];
                 EffectQueue.Add(Effect.Damage(new Source(a.Parent), Target, a.Damage));
-                TokenSet neighbors = Target.Body.Neighbors(true) - TargetFilter.Unit;
+                TokenSet neighbors = Target.Body.NeighborsAndCellmates - TargetFilter.Unit;
                 EffectSet nextEffects = new EffectSet();
                 foreach (Unit u2 in neighbors)
                     nextEffects.Add(Effect.Damage(new Source(a.Parent), u2, a.Damage));
@@ -1268,13 +1262,12 @@ namespace HOA
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                EffectQueue.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, -2));
-                a.Parent.Plane = Plane.Air;
-                Cell cell = a.Parent.Body.Cell;
-                a.Parent.Body.Exit();
-                a.Parent.Body.Enter(cell);
+                EffectSet e = new EffectSet();
+                e.Add(Effect.AddStat(new Source(a.Parent), a.Parent, Stats.Defense, -2));
+                e.Add(Effect.SetTrample(new Source(a.Parent), a.Parent, false));
+                e.Add(Effect.SetPlane(new Source(a.Parent), a.Parent, Plane.Air));
 
-                a.Parent.Body.Trample = false;
+                EffectQueue.Add(e);
 
                 a.Parent.Arsenal.Replace("Move", Ability.Move(a.Parent, 5));
                 a.Parent.Arsenal.Replace("Take Flight", Ability.Land(a.Parent));
@@ -1353,7 +1346,7 @@ namespace HOA
                     e.Add(Effect.AddStat(new Source(a.Parent), u, Stats.Initiative, -2));
                     u.timers.Add(Timer.TimeBomb(new Source(a.Parent), u, 2));
                 }
-                affected = c.Neighbors().Occupants - TargetFilter.Unit;
+                affected = c.Neighbors.Occupants - TargetFilter.Unit;
                 foreach (Unit u in affected)
                 {
                     e.Add(Effect.AddStat(new Source(a.Parent), u, Stats.Initiative, -1));
@@ -1511,7 +1504,7 @@ namespace HOA
 
             a.Restrict = () =>
             {
-                TokenSet neighbors = a.Parent.Body.Neighbors(true)
+                TokenSet neighbors = a.Parent.Body.NeighborsAndCellmates
                     - TargetFilter.Owner(a.Parent.Owner, true)
                     - TargetFilter.Species(Species.Rook, false);
                 return (neighbors.Count < 1);

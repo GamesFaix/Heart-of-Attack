@@ -4,29 +4,31 @@ using System.Collections.Generic;
 
 namespace HOA {
 	public partial class Effect : IEffect {
-        public string Name { get; protected set; }
+        public string Name { get; private set; }
         public new Func<string> ToString;
-        public Source Source { get; protected set; }
+        public Source Source { get; private set; }
         
         public Action Process = () => { };
         public void Process2() { Process(); }
 
-        public Target[] Targets { get; protected set; }
+        public Target[] Targets { get; private set; }
         public Target Target { get { return Targets[0]; } }
-        public int[] Modifiers { get; protected set; }
+        public int[] Modifiers { get; private set; }
         public int Modifier { get { return Modifiers[0]; } }
-        public Species Species { get; protected set; }
-        public bool[] Flags { get; protected set; }
+        public Species Species { get; private set; }
+        public bool[] Flags { get; private set; }
         public bool Flag 
         { 
             get 
             { 
-                if (Flags.Length < 1) return false;
+                if (Flags.Length < 1) 
+                    return false;
                 return Flags[0]; 
             } 
         }
-        public Stats Stat { get; protected set; }
-        public Player Player { get; protected set; }
+        public Stats Stat { get; private set; }
+        public Player Player { get; private set; }
+        public Plane Plane { get; private set; }
 
         private Effect(
           string name,
@@ -37,7 +39,8 @@ namespace HOA {
           bool[] flags,
           Species Species,
           Stats stat,
-          Player player)
+          Player player,
+          Plane plane)
         {
             Name = name;
             ToString = () => { return Name + " Effect"; };
@@ -49,7 +52,26 @@ namespace HOA {
             this.Species = Species;
             Stat = stat;
             Player = player;
+            Plane = plane;
         }
+
+        private Effect(
+          string name,
+          Source source,
+          Action process,
+          Target[] targets,
+          int[] modifiers,
+          bool[] flags,
+          Species species,
+          Stats stat,
+          Player player) : this (name, source, process, targets, modifiers, flags, species, stat, player, Plane.None)
+        { }
+
+        private Effect(string name, Source source, Target target, Plane plane)
+            : this(name, source, () => { }, new Target[1] { target }, new int[0], 
+            new bool[0], Species.None, Stats.Health, null, plane)
+        { }
+
         private Effect(
             string name,
             Source source,
@@ -114,6 +136,9 @@ namespace HOA {
             new int[1] { modifier }, 
             new bool[1] { flag },
             Species.None) { }
+
+        private Effect(string name, Source source, Token target, bool flag)
+            : this(name, source, target, 0, flag) { }
 
         private Effect(string name, Source source, Target Target, Player player) :
             this(name, source, () => { },

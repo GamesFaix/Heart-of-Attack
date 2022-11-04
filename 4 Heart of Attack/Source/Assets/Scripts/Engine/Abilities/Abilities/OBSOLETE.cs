@@ -66,7 +66,7 @@
 						next.Display.Effect(AVEffects.FIRE);
 						AEffects.DamageDest(new Source(Parent), next, dmg);
 						
-						foreach (Token t in next.Neighbors(true)) {
+						foreach (Token t in next.NeighborsAndCellmates) {
 							nextRad.Add(t);
 						}
 						affected.Add(next);

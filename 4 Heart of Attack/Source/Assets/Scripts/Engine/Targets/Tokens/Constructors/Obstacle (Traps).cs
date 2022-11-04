@@ -8,7 +8,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.BombingRange, "Bombing Range", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.BombingRange);
+            o.Body = new Body(o, Sensor.BombingRange);
             o.Neutralize();
             o.Notes = () =>
             {
@@ -22,7 +22,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Curse, "Curse", false, template);
 			o.Plane = Plane.Sunken;
-            o.Body = new BodySensor9(o, Sensor.Curse);
+            o.Body = new Body(o, Sensor.Curse);
             o.Neutralize();
             o.Notes = () =>
             {
@@ -38,7 +38,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Exhaust, "Exhaust Vent", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.Exhaust);
+            o.Body = new Body(o, Sensor.Exhaust);
             o.Neutralize();
             o.Notes = () =>
             {
@@ -53,7 +53,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Ice, "Ice", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.Ice);
+            o.Body = new Body(o, Sensor.Ice);
             o.Neutralize();
             o.Notes = () =>
             {
@@ -67,7 +67,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Lava, "Lava", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.Lava);
+            o.Body = new Body(o, Sensor.Lava);
             o.Neutralize();
             o.Notes = () =>
             {
@@ -82,7 +82,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.TimeSink, "Time Sink", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.TimeSink);
+            o.Body = new Body(o, Sensor.TimeSink);
             o.Neutralize();
             o.WatchList = new WatchList();
             o.Notes = () => { return "Units sharing " + o.ID.Name + "'s Cell have -2 Initiative."; };
@@ -93,7 +93,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.TimeWell, "Time Well", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.TimeWell);
+            o.Body = new Body(o, Sensor.TimeWell);
             o.Neutralize();
             o.WatchList = new WatchList();
             o.Notes = () => { return "Units sharing " + o.ID.Name + "'s Cell have +2 Initiative."; };
@@ -104,7 +104,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Water, "Water", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.Water);
+            o.Body = new Body(o, Sensor.Water);
             o.Neutralize();
             o.Notes = () =>
             {

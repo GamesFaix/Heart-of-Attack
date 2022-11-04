@@ -27,7 +27,13 @@ namespace HOA {
         public static Unit Index(int i) { return units[i] as Unit; }
 		public static int IndexOf (Unit u) {return units.IndexOf(u);}
         
-        public static Unit Top { get { return units[0] as Unit; } }
+        public static Unit Top { 
+            get { 
+                if (units.Count > 0)
+                    return units[0] as Unit;
+                return null;    
+            } 
+        }
         public static Unit Bottom { get { return units[Count - 1] as Unit; } }
 
 		public static void Shuffle() {units.Shuffle();}
@@ -105,7 +111,11 @@ namespace HOA {
             }
         }
         
-        public static void Initialize() { Top.OnStartTurn(); }
+        public static void Initialize() 
+        { 
+            if (Top != null) 
+                Top.OnStartTurn(); 
+        }
 
 		public static void Reset ()
         {

@@ -8,8 +8,6 @@ namespace HOA {
         public static Dictionary<Factions, Faction> Factions { get; private set; }
         public static List<Factions> Taken { get; private set; }
 
-        static FactionRegistry() { Core.Load += Load; }
-
         public static void Load(object sender, LoadEventArgs args) 
         {
             Factions = new Dictionary<Factions, Faction>();

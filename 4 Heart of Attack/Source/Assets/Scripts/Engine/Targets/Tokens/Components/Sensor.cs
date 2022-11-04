@@ -9,33 +9,79 @@ namespace HOA {
         
         public string Name { get; private set; }
         public Func<string> Desc { get; private set; }
-        public Cell Cell { get; private set; }
+        
+        public CellSet Subscriptions { get; private set; }
+        
         public Plane PlanesToStop { get; private set; }
         public Func<Token, bool> TriggerTest { get; private set; }
 
-        public Action<Token> SNCE { get; private set; } // SNCE = Self eNter Cellmate Effects
-        public Action<Token> ONE { get; private set; }  // ONE = Other eNter Effects
-        public Action<Token> SXCE { get; private set; } // SXCE = Self eXit Cellmate Effects
-        public Action<Token> OXE { get; private set; }  // OXE = Other eXit Effects
+        public Action<Cell> OnParentEnter { get; private set; }
+        public Action<Cell> OnParentExit { get; private set; }
+        public Action<Token> OnOtherEnter { get; private set; } 
+        public Action<Token> OnOtherExit { get; private set; }
 
         #endregion
 
-        #region //Constructors
-
-        private Sensor(Token parent, Cell cell) : base (parent)
+        private Sensor(Token parent) : base (parent)
         {
             Name = "Default Sensor name";
             Desc = () => { return "Default Sensor description"; };
-            Cell = cell;
+            Subscriptions = new CellSet();
             TriggerTest = NothingTrigger;
             PlanesToStop = Plane.None;
-            SNCE = NoEffects;
-            ONE = NoEffects;
-            SXCE = NoEffects;
-            OXE = NoEffects;
+            OnParentEnter = (c) => 
+            {
+                Subscribe(c);
+                foreach (Token t in c.Occupants)
+                    OnOtherEnter(t);
+            };
+            OnParentExit = (c) =>
+            {
+                foreach (Token t in c.Occupants)
+                    OnOtherExit(t);
+                Unsubscribe(c);
+            };
+            OnOtherEnter = (t) => { };
+            OnOtherExit = (t) => { };
         }
 
-        #endregion
+        public void Subscribe(Cell c)
+        {
+            Subscriptions.Add(c);
+            c.OccupationEvent += this.OccupationSubscribe;
+            c.Subscribers.Add(this);
+        }
+
+        public void Unsubscribe(Cell c)
+        {
+            Subscriptions.Remove(c);
+            c.OccupationEvent -= this.OccupationSubscribe;
+            c.Subscribers.Remove(this);
+        }
+
+        void UnsubscribeAll()
+        {
+            for (int i = Subscriptions.Count; i >= 0; i--)
+            {
+                Cell c = Subscriptions[i];
+                c.OccupationEvent -= this.OccupationSubscribe;
+                c.Subscribers.Remove(this);
+            }
+            Subscriptions = new CellSet();
+        }
+
+        public void OccupationSubscribe(object sender, OccupationEventArgs args)
+        {
+            if (Subscriptions.Contains(args.Cell)
+                && TriggerTest(args.Token))
+            {
+                if (args.Enter)
+                    OnOtherEnter(args.Token);
+                else
+                    OnOtherExit(args.Token);
+            }
+        }
+
 
         #region //TriggerTests
         
@@ -48,24 +94,6 @@ namespace HOA {
         public static bool UnitTrigger(Token t) { return (t is Unit); }
         public static bool EverythingTrigger(Token t) { return true; }
         public static bool NothingTrigger(Token t) { return false; }
-
-        #endregion
-
-        #region //Trigger Methods
-
-        public void Enter(Cell c)
-        {
-            Cell = c;
-            Stop(c);
-            foreach (Token t in c.Occupants) { if (TriggerTest(t)) SNCE(t); }
-        }
-        public void Exit()
-        {
-            ReleaseStop(Cell);
-            foreach (Token t in Cell.Occupants) { if (TriggerTest(t)) SXCE(t); }
-        }
-        public void OtherEnter(Token t) { if (TriggerTest(t)) ONE(t); }
-        public void OtherExit(Token t) { if (TriggerTest(t)) OXE(t); }
 
         #endregion
 
@@ -86,13 +114,10 @@ namespace HOA {
         protected void Stop (Cell cell) {
             cell.Stop = cell.Stop | PlanesToStop;
 		}
-		protected void ReleaseStop (Cell cell) {
-            cell.Stop = ~(cell.Stop & PlanesToStop);
-		}
-
-        public void Delete () {
-			Exit();
-			Cell.Sensors.Remove(this);
+		protected void ReleaseStop () 
+        {
+            foreach (Cell c in Subscriptions)
+               c.Stop = ~(c.Stop & PlanesToStop);
 		}
 
         public override string ToString() {return Name + ", " + Desc();}

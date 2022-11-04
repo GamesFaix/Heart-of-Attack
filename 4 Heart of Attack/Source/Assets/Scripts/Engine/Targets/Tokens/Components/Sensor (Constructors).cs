@@ -7,28 +7,64 @@ namespace HOA {
     {
         //This file is just for specialized constructors and methods.
 
-        /*INCOMPLETE*/
-        public static Sensor Aperture(Token parent, Cell cell) 
+        public static Sensor Blank(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
+            s.Name = "Blank Sensor";
+            s.Desc = () => { return "Does nothing."; };
+            s.PlanesToStop = Plane.None;
+            s.TriggerTest = NothingTrigger;
+            return s;
+        }
+
+        /// <summary>
+        /// INCOMPLETE
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public static Sensor Aperture(Token parent) 
+        {
+            Sensor s = new Sensor(parent);
             s.Name = "Aperture Sensor";
             s.Desc = () => { return "Stops all Tokens."; };
             s.PlanesToStop = (Plane.Ground|Plane.Air|Plane.Ethereal);
             s.TriggerTest = EverythingTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnParentEnter = (c) =>
             {
-                
-            };
-            s.ONE = s.SNCE;
+                s.Subscribe(c);
+                TokenSet apertures = TokenRegistry.Tokens - TargetFilter.Species(Species.Aperture, true);
+                apertures.Remove(s.Parent);
 
-            s.Enter(s.Cell);
+                foreach (Token t in apertures)
+                {
+                    Cell otherCell = t.Body.Cell;
+                    c.Links.Add(otherCell);
+                    otherCell.Links.Add(c);
+                }
+            };
+
+            s.OnParentExit = (c) =>
+                {
+                    TokenSet apertures = TokenRegistry.Tokens - TargetFilter.Species(Species.Aperture, true);
+                    apertures.Remove(s.Parent);
+
+                    foreach (Token t in apertures)
+                    {
+                        Cell otherCell = t.Body.Cell;
+                        s.Parent.Body.Cell.Links.Remove(otherCell);
+                        otherCell.Links.Remove(s.Parent.Body.Cell);
+                    }
+                    s.Unsubscribe(c);
+                };
+
             return s;
         }
 
-        public static Sensor BombingRange(Token parent, Cell cell)
+        public static Sensor BombingRange(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Bombing Range Sensor";
             s.Desc = () => 
             {
@@ -37,27 +73,26 @@ namespace HOA {
             };
             s.TriggerTest = UnitTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnOtherEnter = (t) =>
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
+                    Unit u = t as Unit;
                     u.timers.Add(Timer.Bombing(new Source(s.Parent), u));
                 }
             };
-            s.ONE = s.SNCE;
-            
-            s.SXCE = (Token token) => { s.RemoveTimer(token, "Bombing"); };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
+            s.OnOtherExit = (Token token) => { s.RemoveTimer(token, "Bombing"); };
             return s;
         }
 
-        /*INCOMPLETE*/
-        public static Sensor Carapace(Token parent, Cell cell)
+        /// <summary>
+        /// INCOMPLETE!
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static Sensor Carapace(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Carapace Invader Sensor";
             s.Desc = () =>
             {
@@ -72,22 +107,12 @@ namespace HOA {
                     && (token.Owner == s.Parent.Owner));
             };
 
-            s.SNCE = (Token token) =>
-            {
-                
-            };
-            s.ONE = s.SNCE;
-
-            s.SXCE = (Token token) => {  };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
             return s;
         }
 
-        public static Sensor Curse(Token parent, Cell cell)
+        public static Sensor Curse(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Curse Sensor";
             s.Desc = () => 
             {
@@ -96,34 +121,41 @@ namespace HOA {
             };
             s.TriggerTest = UnitTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnParentEnter = (c) =>
             {
-                if (token is Unit)
-                {
-                    Unit u = token as Unit;
+                foreach (Cell cell in c.NeighborsAndSelf)
+                    s.Subscribe(cell);
+                foreach (Unit u in c.Occupants)
                     u.timers.Add(Timer.Cursed(new Source(s.Parent), u));
-                }
             };
-            s.ONE = (Token token) =>
+
+            s.OnOtherEnter = (t) =>
             {
-                s.SNCE(token);
-                if (Game.Active && token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
-                    EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 2));
+                    Unit u = t as Unit;
+                    u.timers.Add(Timer.Cursed(new Source(s.Parent), u));
+                    if (Game.Active)
+                        EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 2));
                 }
             };
             
-            s.SXCE = (Token token) => { s.RemoveTimer(token, "Cursed"); };
-            s.OXE = s.SXCE;
+            s.OnOtherExit = (t) => { s.RemoveTimer(t, "Cursed"); };
 
-            s.Enter(s.Cell);
+            s.OnParentExit = (c) =>
+            {
+                foreach (Token t in c.Occupants)
+                {
+                    s.RemoveTimer(t, "Cursed"); 
+                    s.UnsubscribeAll();
+                }
+            }; 
             return s;
         }
 
-        public static Sensor Exhaust(Token parent, Cell cell)
+        public static Sensor Exhaust(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Exhaust Sensor";
             s.Desc = () =>
             {
@@ -134,34 +166,31 @@ namespace HOA {
             s.PlanesToStop = Plane.Tall;
             s.TriggerTest = TallUnitTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnParentEnter = (c) =>
             {
-                if (token is Unit)
-                {
-                    Unit u = token as Unit;
+                s.Subscribe(c);
+                foreach (Unit u in c.Occupants)
                     u.timers.Add(Timer.Exhaust(new Source(s.Parent), u));
-                }
             };
-            s.ONE = (Token token) =>
+
+            s.OnOtherEnter = (t) =>
             {
-                s.SNCE(token);
-                if (Game.Active && token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
-                    EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 5));
+                    Unit u = t as Unit;
+                     u.timers.Add(Timer.Exhaust(new Source(s.Parent), u));
+                    if (Game.Active)
+                        EffectQueue.Interrupt(Effect.Damage(new Source(s.Parent), u, 5));
                 }
             };
 
-            s.SXCE = (Token token) => { s.RemoveTimer(token, "Exhaust"); };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
+            s.OnOtherExit = (t) => { s.RemoveTimer(t, "Exhaust"); };
             return s;
         }
 
-        public static Sensor Ice(Token parent, Cell cell)
+        public static Sensor Ice(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Ice Sensor";
             s.Desc = () =>
             {
@@ -171,7 +200,7 @@ namespace HOA {
                 "\nonly Tokens stopping on Ice that breaks are affected by Water.";
             };
             s.TriggerTest = GroundTokenTrigger;
-            s.ONE = (Token token) =>
+            s.OnOtherEnter = (t) =>
             {
                 if (Game.Active)
                 {
@@ -179,13 +208,13 @@ namespace HOA {
                     if (random == 1) EffectQueue.Add(Effect.Replace(new Source(s.Parent), s.Parent, Species.Water));
                 }
             };
-            s.Enter(s.Cell);
+            s.OnParentEnter = (c) => { s.Subscribe(c); };
             return s;
         }
        
-        public static Sensor Lava(Token parent, Cell cell)
+        public static Sensor Lava(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Lava Sensor";
             s.Desc = () =>
             {
@@ -196,32 +225,32 @@ namespace HOA {
             s.PlanesToStop = Plane.Ground;
             s.TriggerTest = GroundTokenTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnParentEnter = (c) =>
             {
-                if (token is Unit)
-                {
-                    Unit u = token as Unit;
+                s.Subscribe(c);
+                foreach (Unit u in (c.Occupants - TargetFilter.Unit))
                     u.timers.Add(Timer.Incineration(new Source(s.Parent), u));
+            };
+
+            s.OnOtherEnter = (t) =>
+            {
+                if (t is Unit)
+                {
+                    Unit u = t as Unit;
+                    u.timers.Add(Timer.Incineration(new Source(s.Parent), u));
+                    TargetFilter f = TargetFilter.UnitDest;
+                    if (Game.Active && f.Test(t))
+                        EffectQueue.Interrupt(Effect.FireInitial(new Source(s.Parent), t, 7));
                 }
             };
-            s.ONE = (Token token) =>
-            {
-                s.SNCE(token);
-                TargetFilter f = TargetFilter.UnitDest;
-                if (Game.Active && f.Test(token))
-                    EffectQueue.Interrupt(Effect.FireInitial(new Source(s.Parent), token, 7));
-            };
 
-            s.SXCE = (Token token) => { s.RemoveTimer(token, "Incineration"); };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
+            s.OnOtherExit = (t) => { s.RemoveTimer(t, "Incineration"); };
             return s;
         }
             
-        public static Sensor Mine(Token parent, Cell cell)
+        public static Sensor Mine(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Mine Sensor";
             s.Desc = () =>
             {
@@ -229,83 +258,81 @@ namespace HOA {
                 "\n10 Explosive damage is dealt at " + s.Parent + "'s Cell.";
             };
             s.TriggerTest = EverythingTrigger;
-            s.ONE = (Token token) =>
+            s.OnOtherEnter = (t) =>
             {
-                if (Game.Active) EffectQueue.Interrupt(Effect.Detonate(new Source(token), s.Parent));
+                if (Game.Active) EffectQueue.Interrupt(Effect.Detonate(new Source(t), s.Parent));
             };
-            s.Enter(s.Cell);
+            s.OnParentEnter = (c) =>
+            {
+                foreach (Cell cell in c.NeighborsAndSelf)
+                    s.Subscribe(cell);
+            };
+
+            s.OnParentExit = (c) => { s.UnsubscribeAll(); };
             return s;
         }
    
-        public static Sensor TimeSink(Token parent, Cell cell)
+        public static Sensor TimeSink(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Time Sink Sensor";
             s.Desc = () => { return "Units in Cell have -2 Initiative"; };
             s.TriggerTest = UnitTrigger;
 
-            s.SNCE = (Token token) => 
+            s.OnOtherEnter = (t) =>
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
-                   s.Parent.WatchList.Add(new TokenRecord(token));
-                   EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
-               }
-            };
-            s.ONE = s.SNCE;
-
-            s.SXCE = (Token token) => 
-            {
-                if (token is Unit)
-                {
-                   Unit u = token as Unit;
-                   s.Parent.WatchList.Remove(token);
-                   EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
+                    Unit u = t as Unit;
+                    s.Parent.WatchList.Add(new TokenRecord(t));
+                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
                 }
             };
-            s.OXE = s.SXCE;
 
-            s.Enter(s.Cell);
+            s.OnOtherExit = (t) =>
+            {
+                if (t is Unit)
+                {
+                    Unit u = t as Unit;
+                    s.Parent.WatchList.Remove(t);
+                    EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
+                }
+            };
             return s;
         }
 
-        public static Sensor TimeWell(Token parent, Cell cell)
+        public static Sensor TimeWell(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Time Well Sensor";
             s.Desc = () => { return "Units in Cell have +2 Initiative"; };
             s.TriggerTest = UnitTrigger;
 
-            s.SNCE = (Token token) => 
+            s.OnOtherEnter = (t) =>
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
-                    s.Parent.WatchList.Add(new TokenRecord(token));
+                    Unit u = t as Unit;
+                    s.Parent.WatchList.Add(new TokenRecord(t));
                     EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, 2));
                 }
             };
-            s.ONE = s.SNCE;
 
-            s.SXCE = (Token token) =>
+            s.OnOtherExit = (t) =>
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
-                    s.Parent.WatchList.Remove(token);
+                    Unit u = t as Unit;
+                    s.Parent.WatchList.Remove(t);
                     EffectQueue.Add(Effect.AddStat(new Source(s.Parent), u, Stats.Initiative, -2));
                 }
             };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
             return s;
         }
    
-        public static Sensor Water(Token parent, Cell cell)
+        public static Sensor Water(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Water Sensor";
             s.Desc = () =>
             {
@@ -315,32 +342,33 @@ namespace HOA {
             s.PlanesToStop = Plane.Ground;
             s.TriggerTest = GroundTokenTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnParentEnter = (c) =>
             {
-                if (token is Unit)
-                {
-                    Unit u = token as Unit;
+                s.Subscribe(c);
+                foreach (Unit u in (c.Occupants - TargetFilter.Unit))
+
                     u.timers.Add(Timer.WaterLogged(new Source(s.Parent), u));
+            };
+           
+            s.OnOtherEnter = (t) =>
+            {
+                if (t is Unit)
+                {
+                    Unit u = t as Unit;
+                    u.timers.Add(Timer.WaterLogged(new Source(s.Parent), u));
+                    TargetFilter f = TargetFilter.UnitDest;
+                    if (Game.Active && f.Test(t))
+                        EffectQueue.Interrupt(Effect.FireInitial(new Source(s.Parent), t, 7));
                 }
             };
-            s.ONE = (Token token) =>
-            {
-                s.SNCE(token);
-                TargetFilter f = TargetFilter.UnitDest;
-                if (Game.Active && f.Test(token))
-                    EffectQueue.Interrupt(Effect.FireInitial(new Source(s.Parent), token, 7));
-            };
 
-            s.SXCE = (Token token) => { s.RemoveTimer(token, "WaterLogged"); };
-            s.OXE = s.SXCE;
-
-            s.Enter(s.Cell);
+            s.OnOtherExit = (t) => { s.RemoveTimer(t, "WaterLogged"); };
             return s;
         }
 
-        public static Sensor Web(Token parent, Cell cell)
+        public static Sensor Web(Token parent)
         {
-            Sensor s = new Sensor(parent, cell);
+            Sensor s = new Sensor(parent);
             s.Name = "Web Sensor";
             s.Desc = () =>
             {
@@ -350,47 +378,42 @@ namespace HOA {
             s.PlanesToStop = Plane.Tall;
             s.TriggerTest = TallUnitTrigger;
 
-            s.SNCE = (Token token) =>
+            s.OnOtherEnter = (t) =>
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
+                    Unit u = t as Unit;
                     EffectQueue.Add(Effect.Stick(new Source(s.Parent), u));
                 }
             };
-            s.ONE = s.SNCE;
 
-            s.SXCE = (Token token) => 
+            s.OnParentExit = (c) => 
             {
+                s.Subscribe(c);
                 foreach (WebRecord record in s.Parent.WatchList) {
-                    if (token is Unit)
-                    {
-                        Unit u = token as Unit;
-                        Ability move = u.Arsenal.Move;
-                        if (move != null) {
-                            move.Aims[0].Range = record.RangeLost;
-                            s.Parent.WatchList.Remove(token);
-                        }
+                    Unit u = record.Unit;
+                    Ability move = u.Arsenal.Move;
+                    if (move != null) {
+                        move.Aims[0].Range = record.RangeLost;
+                        s.Parent.WatchList.Remove(u);
                     }
                 }
             };
             
-            s.OXE = (Token token) => 
+            s.OnOtherExit = (t) => 
             {
-                if (token is Unit)
+                if (t is Unit)
                 {
-                    Unit u = token as Unit;
+                    Unit u = t as Unit;
                     Ability move = u.Arsenal.Move;
                     if (move != default(Ability))
                     {
-                        WebRecord record = (WebRecord)(s.Parent.WatchList.Record(token));
+                        WebRecord record = (WebRecord)(s.Parent.WatchList.Record(t));
                         move.Aims[0].Range = record.RangeLost;
-                        s.Parent.WatchList.Remove(token);
+                        s.Parent.WatchList.Remove(t);
                     }
                 }
             };
-            
-            s.Enter(s.Cell);
             return s;
         }
     }

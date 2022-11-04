@@ -2,9 +2,28 @@
 using System.Collections.Generic;
 
 namespace HOA { 
-
+    /// <summary>
+    /// ListSet^Token^ with filtering and copying options.
+    /// </summary>
     public class TokenSet : ListSet<Token>, IEnumerable<Token>
     {
+        #region //Constructors
+        
+        /// <summary>
+        /// Extends ListSet constructor. No additional functionality.
+        /// </summary>
+        public TokenSet() : base() { }
+        /// <summary>
+        /// Extends ListSet constructor. No additional functionality.
+        /// </summary>
+        public TokenSet(Token t) : base(t) { }
+        /// <summary>
+        /// Extends ListSet constructor. No additional functionality.
+        /// </summary>
+        public TokenSet(IEnumerable<Token> t) : base(t) { }
+        
+        #endregion
+
         public CellSet Occupied
         {
             get

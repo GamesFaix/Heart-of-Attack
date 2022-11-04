@@ -7,9 +7,6 @@ namespace HOA.Sounds {
 
         public static Dictionary<Factions, AudioClip> Themes { get; private set; }
 
-        static Music() { Core.Load += Load; }
-
-
         public static void Load (object sender, LoadEventArgs args) 
         {
 			Themes = new Dictionary<Factions, AudioClip>();

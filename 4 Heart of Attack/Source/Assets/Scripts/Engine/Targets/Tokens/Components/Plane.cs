@@ -27,6 +27,25 @@ namespace HOA {
             InspectorInfo.Plane(plane, p);
         }
 
+        public static bool SubsetOf(this Plane p, Plane other)
+        {
+            return (p & other) == p;
+        }
+
+        public static bool SupersetOf(this Plane p, Plane other)
+        {
+            return (p & other) == other;
+        }
+
+        public static bool ProperSubsetOf(this Plane p, Plane other)
+        {
+            return (p.SubsetOf(other) && !p.SupersetOf(other));
+        }
+
+        public static bool ProperSupersetOf(this Plane p, Plane other)
+        {
+            return (p.SupersetOf(other) && !p.SubsetOf(other));
+        }
 
     }
 }

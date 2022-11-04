@@ -5,25 +5,29 @@ using System;
 
 using HOA.Textures;
 public class Core : MonoBehaviour {
-	//public static NetworkConsole nc;
-
-	public GameObject guiPrefab;
+	
+    public GameObject guiPrefab;
 	public GameObject mixerPrefab;
 
     public static AudioSource Music { get; private set; }
 	
 	void Start () {
-        //nc = gameObject.AddComponent("NetworkConsole") as NetworkConsole;
+        /*
+        Load += Backgrounds.Load;
+        Load += Icons.Load;
+        Load += TokenThumbnails.Load;
+        Load += HOA.Sounds.Music.Load;
+        Load += HOA.Sounds.GUI.Load;
+        Load += FactionRegistry.Load;
+        */
 
+
+  //      LoadPublish();
+        
         Instantiate(guiPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Instantiate(mixerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-        LoadPublish();
-
-        HOA.Sounds.GUI.Load();
-        
         Map.LoadMaps();
-
         Roster.OnGameStart();
         Token.OnGameStart();
         TokenRegistry.OnGameStart();
@@ -35,33 +39,33 @@ public class Core : MonoBehaviour {
         
         GUILog.ScrollToBottom();
 
-        DebugShortcut();
+        AutoStart();
 	}
 	
-	void DebugShortcut () {
+	void AutoStart () {
 		for (int i=0; i<8; i++) {
 			Roster.Add(new Player(i));
 		}
 		Roster.ForceRandomFactions();
 		Game.Map = Map.Maps[1];
-		Game.Start();
+		//Game.Start();
 		
 		
 	}
 
-    public static event EventHandler<LoadEventArgs> Load;
-
+    //public static event EventHandler<LoadEventArgs> Load;
+    /*
     public static void LoadPublish()
     {
         if (Load != null) 
         { 
             Load(null, new LoadEventArgs());
-            Debug.Log("Unfinished code: Core.Load sender null.");
+           // Debug.Log("Unfinished code: Core.Load sender null.");
         }
 
 	}
 
-    
+    */
 }
 
 

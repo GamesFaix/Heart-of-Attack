@@ -14,9 +14,7 @@ namespace HOA {
 				if (log) 
                     Log(source, newToken, cell);
 				TokenDisplay.Attach(newToken);
-				newToken.Body.Enter(cell);
-				if (newToken.Plane.ContainsAny(Plane.Sunken)) 
-                    cell.EnterSunken(newToken);
+				newToken.Body.Enter(cell, false);
                 return newToken;
 			}
 			else 

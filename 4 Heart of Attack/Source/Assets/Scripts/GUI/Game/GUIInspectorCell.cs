@@ -32,9 +32,10 @@ namespace HOA {
 				p.NextLine();
 			}
 
-			if (c.Sensors.Count > 0) {
+			if (c.Subscribers.Count > 0) {
 				p.NextLine();
-				foreach (Sensor s in c.Sensors) {
+                foreach (Sensor s in c.Subscribers)
+                {
 					p.NudgeX();
 					s.Draw(p.LinePanel);
 					p.NextLine();

@@ -30,6 +30,7 @@ namespace HOA {
 			foreach (Cell c in board.Cells) {
 				//CellDisplay.Attach(c);
 				c.Display.gameObject.transform.parent = cellParent.transform;
+                c.OccupationEvent += ((CellDisplay)c.Display).OccupationSubscribe;
 			}
 		}
 

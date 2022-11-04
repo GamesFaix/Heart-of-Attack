@@ -13,10 +13,6 @@ namespace HOA.Textures {
 
 		static Texture2D skip, onDeath, timer, sensor, cor, fir, exp, dmg;
 
-        static Icons () {
-            Core.Load += Load;
-        }
-
         public static void Load(object sender, LoadEventArgs args)
         {
             Stats = new Dictionary<Stats, Texture2D>();

@@ -50,7 +50,6 @@ namespace HOA {
             GameObject.Destroy(Display.GO);
             TokenRegistry.Remove(this);
             Cell oldCell = Body.Cell;
-            Body.DestroySensors();
             Body.Exit();
             if (Corpse) CreateRemains(oldCell); 
             if (this is King) Owner.Kill();

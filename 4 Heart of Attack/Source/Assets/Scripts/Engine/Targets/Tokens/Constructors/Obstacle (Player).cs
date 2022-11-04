@@ -8,7 +8,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Aperture, "Aperture", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodyAper(o);
+            o.Body = new Body(o, Sensor.Aperture);
             o.Notes = () => { return "0% Functional"; };
             o.WatchList = new WatchList();
             return o;
@@ -18,7 +18,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Mine, "Mine", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor9(o, Sensor.Mine);
+            o.Body = new Body(o, Sensor.Mine);
             o.Body.Destructible = true;
             o.Notes = () => 
             { 
@@ -40,7 +40,7 @@ namespace HOA {
         {
             Obstacle o = new Obstacle(s, Species.Web, "Web", false, template);
             o.Plane = Plane.Sunken;
-            o.Body = new BodySensor1(o, Sensor.Web);
+            o.Body = new Body(o, Sensor.Web);
             o.Body.Destructible = true;
             o.Neutralize();
             o.WatchList = new WatchList();
