@@ -10,7 +10,14 @@ namespace HOA.Abilities
         public string Name { get; private set; }
         public override string ToString() { return Name; }
 
-        public Action Process { get { return Invoke; } }
+        public Action Process 
+        { 
+            get 
+            {
+                Debug.Log("Processing {0}.", Name);
+                return Invoke; 
+            } 
+        }
         
         
         public EffectSequence Sequence { get; set; }

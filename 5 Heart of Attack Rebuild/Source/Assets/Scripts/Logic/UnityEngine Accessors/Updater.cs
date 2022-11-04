@@ -9,7 +9,7 @@ namespace HOA
     public class Updater : MonoBehaviour
     {
         static float lastStep = 0;
-        static float stepLength = 0.25f;
+        static float stepLength = 1f;
         static bool StepConditions { get { return Time.Since(lastStep) > stepLength; } }
 
         static Updater()
@@ -40,7 +40,7 @@ namespace HOA
             {
                 StepEvent(null, new BlankEventArgs());
 #if DEBUG
-                Debug.Log("Step ["+Time.approx+"s]");
+                Debug.Log("Step [{0:f3}s]", Time.time);
 #endif
             }
         }

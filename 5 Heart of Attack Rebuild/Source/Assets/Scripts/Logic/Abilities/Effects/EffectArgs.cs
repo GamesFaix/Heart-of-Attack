@@ -53,14 +53,10 @@ namespace HOA.Abilities
 
         public EffectArgs(IEntity target, int value)
             : this(target)
-        {
-            values = new int[1] { value };
-        }
+        { values = new int[1] { value }; }
 
         public EffectArgs(params IEntity[] targets)
-        {
-            this.targets = new Set<IEntity>(targets);
-        }
+        {this.targets = new Set<IEntity>(targets);}
 
         public EffectArgs(Set<IEntity> targets, int[] values)
         {
@@ -69,40 +65,32 @@ namespace HOA.Abilities
         }
 
         public EffectArgs(IEntity target, int value, bool option)
-        : this(target, value)
-        {
-            options = new bool[1] { option };
-        }
+            : this(target, value)
+        { options = new bool[1] { option }; }
 
         public EffectArgs(IEntity target, int value, Stats stat)
             : this(target, value)
-        {
-            this.stat = stat;
-        }
+        { this.stat = stat; }
 
         public EffectArgs(IEntity target, Ability ability)
             : this(target)
-        {
-            this.ability = ability;
-        }
+        { this.ability = ability; }
 
         public EffectArgs(IEntity target, TokenComponent component)
             : this(target)
-        {
-            this.component = component;
-        }
+        { this.component = component; }
 
         public EffectArgs(IEntity target, Species species)
             : this(target)
-        {
-            this.species = species;
-        }
+        { this.species = species; }
+
+        public EffectArgs(IEntity target, Player player)
+            : this(target)
+        { this.player = player; }
 
         public EffectArgs(IEntity target, Species species, EffectConstructor e)
             : this(target, species)
-        {
-            this.effectConstructor = e;
-        }
+        { this.effectConstructor = e; }
 
         #endregion
 

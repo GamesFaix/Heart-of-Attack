@@ -1,48 +1,52 @@
 ﻿using System;
+using HOA.Abilities;
 
 namespace HOA.GUI
 {
     public static class TargetSelector
     {
-
-        public static void OnEntitySelectionRequest(object sender, Abilities.EntitySelectionRequestEventArgs args)
+        public static void Load()
         {
-            Debug.Log("Not implemented.");
+            AbilityProcessor.TargetSelectionRequestEvent += OnTargetSelectionRequest;
+            Debug.Log("TargetSelector subscribed to AbilityProcessor.TargetSelectionRequestEvent.");
+            TargetSelectionEvent += AbilityProcessor.OnTargetSelection;
+            Debug.Log("AbilityProcessor subscribed to TargetSelector.TargetSelectionEvent.");
         }
 
-        public static event EventHandler<EntitySelectionEventArgs> EntitySelectionEvent;
 
-        public static void EntitySelectionPublish(Set<IEntity> selection)
+        public static void OnTargetSelectionRequest(object sender, TargetSelectionRequestEventArgs args)
+        {
+            Debug.Log("TargetSelector.OnTargetSelectionRequest temporarily short-circuited.");
+            Set<IEntity> selection = new Set<IEntity>();
+            for (int i = 0; i < args.selectionCount.max; i++)
+                selection.Add(args.options[i]);
+            TargetSelectionPublish(Source.Force, selection);
+        }
+
+        public static event EventHandler<TargetSelectionEventArgs> TargetSelectionEvent;
+
+        public static void TargetSelectionPublish(object sender, Set<IEntity> selection)
         {
             if (selection == null || selection.Count < 1)
                 throw new ArgumentNullException();
-            if (EntitySelectionEvent != null)
+            if (TargetSelectionEvent != null)
             {
-                EntitySelectionEvent(null, new EntitySelectionEventArgs(selection));
-                Debug.Log("Unfinished code: EntitySelectionEvent sender null.");
+                Debug.Log("{0} selects {1}.", sender, selection.ToStringLong());
+                TargetSelectionEvent(sender, new TargetSelectionEventArgs(selection));
+                
             }
         }
 
-        public static void EntitySelectionCancel()
+        public static void TargetSelectionCancel()
         {
-            if (EntitySelectionEvent != null)
+            if (TargetSelectionEvent != null)
             {
-                EntitySelectionEvent(null, new EntitySelectionEventArgs(null, true));
+                TargetSelectionEvent(null, new TargetSelectionEventArgs(null, true));
                 Debug.Log("Entity selection cancelled.");
             }
         }
 
     }
 
-    public class EntitySelectionEventArgs : EventArgs
-    {
-        public Set<IEntity> Selection { get; private set; }
-        public bool Cancel { get; private set; }
-
-        public EntitySelectionEventArgs(Set<IEntity> selection, bool cancel = false)
-        {
-            Selection = selection;
-            Cancel = cancel;
-        }
-    }
+    
 }

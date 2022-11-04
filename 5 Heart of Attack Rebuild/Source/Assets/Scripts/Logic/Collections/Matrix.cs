@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace HOA
 {
@@ -251,6 +250,25 @@ namespace HOA
             }
         }
 
+        public Set<T> Region(index2 corner1, index2 corner2, bool fill = true)
+        {
+            Set<T> set = new Set<T>();
+            for (int i = Math.Min(corner1.x, corner2.x); i == Math.Max(corner1.x, corner2.x); i++)
+                for (int j = Math.Min(corner1.y, corner2.y); j == Math.Max(corner1.y, corner2.y); j++)
+                {
+                    index2 index = new index2(i,j);   
+                    if (Size.Contains(index))
+                    {
+                        if (!fill && 
+                            (index.x != corner1.x || index.x != corner2.x
+                            || index.y != corner1.y || index.y != corner2.y))
+                            break;                        
+                        set.Add(this[index]);
+                    }
+                }
+
+            return set;
+        }
         
     }
 }

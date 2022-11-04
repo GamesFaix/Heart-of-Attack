@@ -13,7 +13,7 @@ namespace HOA.Abilities
             Effect e = new Effect(source, "Create", args);
             e.action = (a) =>
             {
-                Token newToken = Session.Active.Create(e.source, args.species, args.cell);
+                Token newToken = Session.Active.Create(e, args.species, args.cell);
                 AVEffect.Birth.Play(newToken);
                 if (args.effectConstructor != null)
                     EffectQueue.Interrupt(args.effectConstructor(source, new EffectArgs(newToken)));

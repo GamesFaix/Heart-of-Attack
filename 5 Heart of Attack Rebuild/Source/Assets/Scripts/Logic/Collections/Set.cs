@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace HOA
 {
@@ -190,6 +191,18 @@ namespace HOA
         }
 
         #endregion
+
+
+        public string ToStringLong()
+        {
+            StringBuilder s = new StringBuilder("");
+            foreach (T item in this)
+                s.Append("{0}, ", item);
+            s.Remove(Math.Max(s.Length - 2, 0), Math.Min(s.Length, 2));
+            s.Insert(0, "(");
+            s.Append(")");
+            return s.ToString();
+        }
     }
 
     public static class SetExtensionMethods
@@ -229,5 +242,7 @@ namespace HOA
                     setOut.Add(t);
             return setOut;
         }
+
+        
     }
 }

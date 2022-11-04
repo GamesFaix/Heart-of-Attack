@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace HOA
+﻿namespace HOA
 {
 
     public abstract class TokenComponent

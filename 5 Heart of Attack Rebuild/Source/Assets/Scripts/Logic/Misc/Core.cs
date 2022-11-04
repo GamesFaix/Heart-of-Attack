@@ -2,7 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
+using HOA.Abilities;
+using HOA.Tokens;
+using HOA.GUI;
 
 namespace HOA { 
     /// <summary>
@@ -28,6 +31,11 @@ namespace HOA {
 #if DEBUG
             session.AutoPopulate();
             session.CreateBoard(new size2(10, 10));
+            AbilityRequester.AbilityRequestPublish(Source.Force,
+                Ability.ManualCreate(Species.Demolitia);
+            AbilityRequester.AbilityRequestPublish(Source.Force,
+                Ability.ManualCreate(Species.Tree);
+            //Debug.Log(Session.Active.tokens.ToStringLong());
 #endif
         }
 

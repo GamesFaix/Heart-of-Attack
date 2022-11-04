@@ -102,6 +102,7 @@ namespace HOA
             if (!t.CanEnter(this))
                 throw new Exception("Illegal cell entrance.");
             occupants.Add(t);
+            Debug.Log("{0} has entered {1}.", t, this);
             OccupationPublish(this, t, true);
         }
 
@@ -110,6 +111,7 @@ namespace HOA
             if (!occupants.Contains(t))
                 throw new Exception("Illegal cell exit.");
             occupants.Remove(t);
+            Debug.Log("{0} has exited {1}.", t, this); 
             OccupationPublish(this, t, false);
         }
 
@@ -120,50 +122,13 @@ namespace HOA
         public void OccupationPublish(Cell cell, Token token, bool enter)
         {
             if (OccupationEvent != null)
-            {
-                OccupationEvent(null, new OccupationEventArgs(cell, token, enter));
-                //Debug.Log("Unfinished code: Cell Occupation Event sender null.");
-            }
+                OccupationEvent(this, new OccupationEventArgs(cell, token, enter));
         }
 
         public Set<Sensor> Subscribers { get; private set; }
 
     }
 
-    /// <summary>
-    /// Arguments for Cell enter or exit events.
-    /// </summary>
-    public class OccupationEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Cell being entered or exited.
-        /// </summary>
-        public Cell Cell { get; private set; }
-        /// <summary>
-        /// Token entering or exiting.
-        /// </summary>
-        public Token Token { get; private set; }
-        /// <summary>
-        /// True if event is Enter event.
-        /// </summary>
-        public bool Enter { get; private set; }
-        /// <summary>
-        /// True if event is Exit event.
-        /// </summary>
-        public bool Exit { get { return !Enter; } }
-
-        /// <summary>
-        /// Assigns parameters to fields.
-        /// </summary>
-        /// <param name="cell">Cell being entered or exited.</param>
-        /// <param name="token">Token entering or exiting.</param>
-        /// <param name="enter">Is token entering?</param>
-        public OccupationEventArgs(Cell cell, Token token, bool enter)
-        {
-            Cell = cell;
-            Token = token;
-            Enter = enter;
-        }
-    }
+    
 }
 #endregion

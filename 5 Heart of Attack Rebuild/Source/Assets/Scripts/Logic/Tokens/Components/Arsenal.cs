@@ -44,24 +44,33 @@ namespace HOA.Tokens
         #endregion
 
         #region Constructors
-        
-        public Arsenal(Token thisToken) 
-            : base(thisToken)
+
+        public static void Load()
         {
-            if (rankLimits == null)
-                InitializeRankLimits();
-            list = new Set<Ability>(9);
+            InitializeRankLimits();
+            Debug.Log("Arsenal rank limits set.");
         }
 
         static void InitializeRankLimits()
         {
-            rankLimits = new Dictionary<Abilities.Rank, byte>(5);
+            rankLimits = new Dictionary<Abilities.Rank, byte>(6);
             rankLimits.Add(Abilities.Rank.Move, 1);
             rankLimits.Add(Abilities.Rank.Focus, 1);
             rankLimits.Add(Abilities.Rank.Attack, 1);
             rankLimits.Add(Abilities.Rank.Special, 3);
             rankLimits.Add(Abilities.Rank.Create, 3);
+            rankLimits.Add(Abilities.Rank.None, 5);
         }
+
+        public Arsenal(Token thisToken) 
+            : base(thisToken)
+        {
+           // if (rankLimits == null)
+             //   InitializeRankLimits();
+            list = new Set<Ability>(9);
+        }
+
+        
 
         #endregion
 
@@ -96,7 +105,7 @@ namespace HOA.Tokens
             Abilities.Rank r = a.Rank;
             if (this[r].Count < rankLimits[r])
                 return true;
-            Debug.Log("Arsenal cannot hold any more " + a.Rank + " abilities.");
+            Debug.Log("Arsenal cannot hold any more {0} abilities.", r);
             return false;
         }
 
@@ -164,7 +173,8 @@ namespace HOA.Tokens
                 foreach (Ability a in this)
                     if (a.Rank == rank)
                         result.Add(a);
-                return ((result.Count > 0) ? result : null);
+                result.TrimExcess();
+                return result;
             }
         }
 

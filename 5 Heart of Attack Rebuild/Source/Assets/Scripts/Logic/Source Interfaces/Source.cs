@@ -8,13 +8,20 @@ namespace HOA
     {
         /// <summary> Inner object of source. </summary>
         public object obj { get; private set; }
-        public static ForcedSource force { get; private set; }
+        static ForcedSource force;
+        public static ForcedSource Force
+        {
+            get
+            {
+                if (force == null)
+                    force = new ForcedSource();
+                return force;
+            }
+        }
         
         public Source(object obj)
         {
             this.obj = obj;
-            if (force == null)
-                force = new ForcedSource();
         }
 
         /// <summary>Recusive list of object, then object's object, then o's o's o...</summary>
@@ -76,12 +83,8 @@ namespace HOA
 
         public class ForcedSource
         {
-            public ForcedSource() 
-            {
-                if (Source.force != null)
-                    throw new Exception("ForcedSource must remain unique!");            
-            }
-            public override string ToString() { return "Forced source!"; }
+            public ForcedSource() { }
+            public override string ToString() { return "[FORCED]"; }
         }
 
     }

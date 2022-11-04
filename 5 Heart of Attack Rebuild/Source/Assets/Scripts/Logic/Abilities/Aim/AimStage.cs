@@ -59,18 +59,8 @@ namespace HOA.Abilities
             this.range = range;
         }
 
-        
-        public AimPatternArgs Args() 
-        { 
-            return new AimPatternArgs(user, body(), center(), filter, range, inclusive); 
-        }
-
-
-        public Set<IEntity> FindTargets()
-        {
-            Debug.Log("Not implemented.");
-            return new Set<IEntity>();
-        }
+        public Set<IEntity> FindOptions() 
+        { return pattern(new AimPatternArgs(user, body(), center(), filter, range, inclusive)); }
 
     }
 }

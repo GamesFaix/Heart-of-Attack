@@ -1,4 +1,4 @@
-﻿//#define DEBUG
+﻿#define DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -193,7 +193,7 @@ namespace HOA.Reference
 
             for (short i = 0; i < speciesCount; i++)
             {
-                Token template = constructors[(Species)i](Source.force);
+                Token template = constructors[(Species)i](Source.Force);
                 templates.Add((Species)i, template);
             }
 #if DEBUG

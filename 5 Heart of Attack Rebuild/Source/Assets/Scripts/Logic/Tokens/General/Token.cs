@@ -10,7 +10,7 @@ namespace HOA
     {
         #region ISourced
         public Source source { get; private set; }
-        public Type[] validSources { get { return new Type[2] { typeof(Player), typeof(Effect) }; } }
+        public Type[] validSources { get { return new Type[3] { typeof(Player), typeof(Effect), typeof(Source.ForcedSource) }; } }
         public bool IsValidSource(object obj) { return Source.IsValid(validSources, obj); }
         
         #endregion
@@ -84,7 +84,7 @@ namespace HOA
         public Token(object source, Species species)
         {
             if (!IsValidSource(source))
-                throw new InvalidSourceException();
+                throw new InvalidSourceException(source + "" +source.GetType());
             this.source = new Source(source);
             identity = new Identity(this.source, this, species);
             trackList = new TrackList(this);

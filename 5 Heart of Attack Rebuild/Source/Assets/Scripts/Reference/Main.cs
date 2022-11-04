@@ -6,7 +6,11 @@
         {
             Factions.Load();
             Players.Load();
+            HOA.Tokens.Arsenal.Load();
             Tokens.Load();
+            //GUI.AbilityRequester.Load();
+            Abilities.AbilityProcessor.Load();
+            GUI.TargetSelector.Load();
         }
     }
 

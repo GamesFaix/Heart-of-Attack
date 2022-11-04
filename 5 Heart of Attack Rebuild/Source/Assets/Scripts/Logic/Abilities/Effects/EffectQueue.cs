@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 
 namespace HOA.Abilities
@@ -13,9 +12,30 @@ namespace HOA.Abilities
         static IEffect Top { get { return effects[0]; } }
         static int Count { get { return effects.Count; } }
         static bool Empty { get { return Count < 1; } }
-        
-        public static bool Active { get; private set; }
-        public static bool Pause { get; private set; }
+
+        static bool active;
+        public static bool Active
+        {
+            get { return active; }
+            private set
+            {
+                active = value;
+                string status = (value ? "activated" : "deactivated");
+                Debug.Log("EffectQueue {0}.", status);
+            }
+        }
+
+        static bool pause;
+        public static bool Pause 
+        {
+            get { return pause; }
+            private set
+            {
+                pause = value;
+                string status = (value ? "paused" : "unpaused");
+                Debug.Log("EffectQueue {0}.", status);
+            }
+        }
         
         static bool SequenceInProgress { get { 
             return (Top is EffectSequence && (Top as EffectSequence).Count > 0); } }
@@ -32,20 +52,30 @@ namespace HOA.Abilities
         {
             if (!Pause)
                 if (Active)
+                {
                     if (!Empty)
                     {
+                        Top.Process();
                         if (!SequenceInProgress)
                             effects.Remove(Top);
-                        Top.Process();
                     }
                     else
                         Active = false;
+                }
                 else if (!Empty)
                     Active = true;
         }
 
-        public static void Add(IEffect e) { effects.Add(e); }
+        public static void Add(IEffect e) 
+        {
+            Debug.Log("{0} added to EffectQueue.", e);
+            effects.Add(e); 
+        }
 
-        public static void Interrupt(IEffect e) { effects.Insert(1, e); }
+        public static void Interrupt(IEffect e) 
+        {
+            Debug.Log("{0} interrupting EffectQueue.", e);
+            effects.Insert(1, e); 
+        }
     }
 }

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 namespace HOA.Abilities
 {
 
-    public class AimPlan : IEnumerable<AimStage>, ISourced
+    public partial class AimPlan : IEnumerable<AimStage>, ISourced
     {
         public Source source { get; private set; }
         public Ability ability { get { return source.Last<Ability>(); } }
         List<AimStage> stages;
         public int Count { get { return stages.Count; } }
+
+        public AimStage last { get { return stages[Count - 1]; } }
 
         public AimPlan(Ability ability, params AimStage[] stages)
         {
@@ -27,14 +29,6 @@ namespace HOA.Abilities
         public void Add(AimStage stage) { stages.Add(stage); }
         public bool Remove(AimStage stage) { return stages.Remove(stage); }
         public void Insert(int i, AimStage stage) { stages.Insert(i, stage); }
-
-        public NestedList<IEntity> FindTargets()
-        {
-            NestedList<IEntity> targets = new NestedList<IEntity>();
-            foreach (AimStage stage in stages)
-                targets.AddToEnd(stage.FindTargets());
-            return targets;
-        }
 
         public static AimPlan operator +(AimPlan plan, AimStage stage)
         {

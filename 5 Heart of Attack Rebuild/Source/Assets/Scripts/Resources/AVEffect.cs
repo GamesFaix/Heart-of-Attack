@@ -25,7 +25,7 @@ namespace HOA.Resources
 
         public void Play(IEntity target)
         {
-            Debug.Log("Not implemented.");
+            Debug.Log("Effect graphics not implemented.");
             if (tex != null)
             { }// target.Display.Effect(tex);
             if (sound != null)

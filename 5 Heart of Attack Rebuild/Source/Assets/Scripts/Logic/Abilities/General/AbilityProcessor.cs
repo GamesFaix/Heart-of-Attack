@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 
 namespace HOA.Abilities
 {
@@ -8,137 +6,112 @@ namespace HOA.Abilities
     public static class AbilityProcessor
     {
         static Ability pending;
-        static Set<IEntity> selection;
+        static Set<IEntity> options, selection;
+        public static NestedList<IEntity> targets { get; private set; }
         static bool cancel;
-        
-        static AbilityProcessor()
-        {
-            EntitySelectionRequestEvent += GUI.TargetSelector.OnEntitySelectionRequest;
-            GUI.TargetSelector.EntitySelectionEvent += OnEntitySelection;
-            Reset();
-        }
+        //static float waitTime;
 
-        public static void Process(Ability a)
+        public static void Load()
         {
-            if (!Legal(a))
-                return;
-            Reset();
-            pending = a;
-            pending.Adjust();
-            NestedList<IEntity> targets = FindTargets(a);
-            if (targets == null)
-                Reset();
-            else
-                a.Execute(targets);
-        }
-
-        static bool Legal(Ability a)
-        {
-            string message;
-            bool b = a.Usable(out message);
-            if (!b)
-                Debug.Log(message);
-            return b;
+            GUI.AbilityRequester.AbilityRequestEvent += OnAbilityRequest;
+            //waitTime = 2000;
+            Debug.Log("AbilityProcessor subscribed to AbilityRequester.AbilityReqeustEvent.");
         }
 
         static void Reset()
         {
-            if (pending != null)
-            {
-                pending.Unadjust();
-                pending = null;
-            }
-            Session.Active.ClearLegal();
+            pending = null;
+            options = null;
             selection = null;
+            targets = null;
             cancel = false;
+            Session.Active.ClearLegal();
         }
 
-        static NestedList<IEntity> FindTargets(Ability a)
+        static void OnAbilityRequest(object sender, AbilityRequestEventArgs args)
         {
-            NestedList<IEntity> targets = new NestedList<IEntity>();
+            pending = args.ability;
+            string msg;
+            if (!pending.Usable(out msg))
+            { 
+                Debug.Log(msg);
+                Reset();
+            }
 
-            foreach (AimStage stage in a.Aims)
+            pending.Adjust();
+            targets = new NestedList<IEntity>();
+            foreach (AimStage stage in pending.Aims)
             {
-                targets.AddToEnd(new Set<IEntity>());
-                Set<IEntity> options = stage.pattern(stage.Args());
-                if (stage.autoSelect)
-                    for (int i = 0;
-                        i < options.Count && i <= stage.selectionCount.max;
-                        i++)
-                        targets.AddToLast(options[i]);
+                options = stage.FindOptions();
+                TargetSelectionRequestPublish(sender, options, stage.selectionCount);
+                selection = WaitForSelection(options, stage.selectionCount);
+                //...wait...
+                if (selection != null && selection.Count > 0)
+                    targets.AddToEnd(selection);
                 else
                 {
-                    selection = null;
-                    EntitySelectionRequestPublish(options, stage.selectionCount);
-                    selection = WaitForSelection(stage);
-                    if (selection == null)
-                    {
-                        targets = null;
-                        break;
-                    }
-                    else
-                        targets.AddToLast(selection);
+                    Debug.Log("No legal targets.");
+                    Reset();
+                    return;
                 }
             }
-            return targets;
+            pending.Execute(targets);
+        }
+        
+        public static event EventHandler<TargetSelectionRequestEventArgs> TargetSelectionRequestEvent;
+
+        public static void TargetSelectionRequestPublish(object sender, Set<IEntity> options, Range selectionCount)
+        {
+            if (TargetSelectionRequestEvent != null)
+            {
+                Debug.Log("{0} requests {1} target(s) be selected, out of {2} possible.", sender, selectionCount, options.Count); 
+                TargetSelectionRequestEvent(sender,
+                    new TargetSelectionRequestEventArgs(options, selectionCount));
+            }
         }
 
-       
-        static Set<IEntity> WaitForSelection(AimStage aim)
+        static Set<IEntity> WaitForSelection(Set<IEntity> options, Range selectionCount)
         {
-            Debug.Log("Waiting for " + aim.selectionCount + " targets to be chosen."); 
+            Debug.Log("Waiting for {0} targets to be chosen.", selectionCount);
             float start = (float)Time.time;
-            while (Time.Since(start) < 10000 )
+            //while (Time.Since(start) < waitTime)
+            for (short i=0; i<short.MaxValue; i++)
             {
+                Debug.Log("{0}ms since wait start.", Time.Since(start));
                 if (cancel)
-                    return null;
-                if (selection != null)
                 {
-                    if (!aim.selectionCount.Contains(selection.Count))
+                    Reset();
+                    break;
+                }
+                
+                if (selection != null)
+                    if (selectionCount.Contains(selection.Count))
                     {
-                        Debug.Log("Invalid number of entities selected.");
-                        selection = null;
+                        Debug.Log("Selection accepted.");
+                        return selection;
                     }
                     else
-                        return selection;
-                }
+                    {
+                        Debug.Log("Invalid number of targets selected.");
+                        cancel = true;
+                    }
             }
+            Debug.Log("Wait over.");
             return null;
         }
-            
 
-        public static event EventHandler<EntitySelectionRequestEventArgs> EntitySelectionRequestEvent;
-
-        public static void EntitySelectionRequestPublish(Set<IEntity> options, Range selectionCount)
+        public static void OnTargetSelection(object sender, TargetSelectionEventArgs args)
         {
-            if (EntitySelectionRequestEvent != null)
-            {
-                EntitySelectionRequestEvent(null,
-                    new EntitySelectionRequestEventArgs(options, selectionCount));
-                Debug.Log("Unfinished code: EntitySelectionRequest sender null.");
-            }
-        }
-
-        public static void OnEntitySelection(object sender, GUI.EntitySelectionEventArgs args)
-        {
-            selection = args.Selection;
             cancel = args.Cancel;
+            foreach (IEntity e in args.Selection)
+                if (!options.Contains(e))
+                {
+                    Debug.Log("Illegal selection!");
+                    return;
+                }
+            selection = args.Selection;
         }
     }
 
-    public class EntitySelectionRequestEventArgs : EventArgs
-    {
-        public Set<IEntity> Options {get; private set;}
-        public Range SelectionCount {get; private set;}
-
-        public EntitySelectionRequestEventArgs(Set<IEntity> options, Range selectionCount)
-        {
-            if (options == null || options.Count < 1 
-                || selectionCount.max < 1)
-                throw new ArgumentNullException();
-            Options = options;
-            SelectionCount = selectionCount;
-        }
-    }
-
+    
 }

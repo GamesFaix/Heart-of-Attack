@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{365537A0-0D16-D8C5-5C33-DF27ACD697B0}</ProjectGuid>
+	<ProjectGuid>{6DA65D06-F538-08F7-C1A5-F91A24FD035C}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,12 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\GUI\AbilityRequester.cs" />
      <Compile Include="Assets\Scripts\GUI\Master.cs" />
      <Compile Include="Assets\Scripts\GUI\TargetSelector.cs" />
      <Compile Include="Assets\Scripts\GUI\Tools\Panel.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPattern.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPatternArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPlan.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPlans.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimStage.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimStages.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Aim\NeighborMatrix.cs" />
@@ -61,6 +63,10 @@
      <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSequence.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSet.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\Effects\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Events\AbilityRequestEventArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Events\OccupationEventArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Events\TargetSelectionEventArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Events\TargetSelectionRequestEventArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\Ability.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityArgs.cs" />
      <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityProcessor.cs" />
@@ -88,11 +94,12 @@
      <Compile Include="Assets\Scripts\Logic\Factions\FactionEnum.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Closure.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Closure2.cs" />
-     <Compile Include="Assets\Scripts\Logic\Misc\Comb.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Exceptions.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Functionizer.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Range.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Scribe.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\StringBuilderExtensionMethods.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\TurnQueue.cs" />
      <Compile Include="Assets\Scripts\Logic\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Logic\Session\FactionRegistry.cs" />
@@ -130,8 +137,13 @@
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Time.cs" />
      <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Updater.cs" />
      <Compile Include="Assets\Scripts\Model\GameObjectExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Abilities.Create.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Attack.cs" />
      <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Create.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Generic.Move.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Manual.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Attack.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Create.cs" />
+     <Compile Include="Assets\Scripts\Reference\AbilityConstructors\Ability.Special.Move.cs" />
      <Compile Include="Assets\Scripts\Reference\EffectConstructors\Effect.Damage.cs" />
      <Compile Include="Assets\Scripts\Reference\EffectConstructors\Effect.Move.cs" />
      <Compile Include="Assets\Scripts\Reference\EffectConstructors\Effect.Queue.cs" />

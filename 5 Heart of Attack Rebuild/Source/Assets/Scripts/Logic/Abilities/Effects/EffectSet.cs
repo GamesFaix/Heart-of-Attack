@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 
 
@@ -13,5 +14,7 @@ namespace HOA.Abilities
         public EffectSet(IEnumerable<Effect> e) : base(e) { }
 
         public Action Process { get { return () => { foreach (Effect e in this) e.Process(); }; } }
+
+        public override string ToString() { return base.ToStringLong(); }
     }
 }

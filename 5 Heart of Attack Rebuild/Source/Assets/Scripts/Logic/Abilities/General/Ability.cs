@@ -17,46 +17,43 @@ namespace HOA.Abilities
         Unit sourceUnit { get { return source.Last<Unit>(); } }
         Player sourcePlayer { get { return source.Last<Player>(); } }
 
-        Type[] validSources { get { return new Type[1] { typeof(Token) }; } }
+        Type[] validSources { get { return new Type[2] { typeof(Unit), typeof(Source.ForcedSource) }; } }
         bool IsValidSource(object obj) { return Source.IsValid(validSources, obj); }
 
         #endregion
 
 
         #region Properties
+        public AbilityArgs args { get; private set; }
+        public string name { get { return args.name; } }
+        public Description desc {
+            get { return args.desc; }
+            set { args.desc = value; }
+        }
+        public Rank rank { get { return args.rank; } }
+        public Price price { get { return args.price; } }
+        public int value { get { return args.value; } }
+        public int[] values { get { return args.values; } }
 
-        public string Name { get; private set; }
-        public Description Desc;
-        public Rank Rank { get; private set; }
-        public Price Price { get; private set; }
-       
-        public AbilityArgs Args { get; private set; }
         public AimPlan Aims { get; private set; }
         
         public bool UsedThisTurn { get; private set; }
         public UsableTest Usable { get; private set; }
 
-        private Action PreEffects;
+        private Action PreEffects, PostEffects;
         private Action<NestedList<IEntity>> MainEffects;
-        private Action PostEffects;
 
-        public Action Adjust;
-        public Action Unadjust;
+        public Action Adjust, Unadjust;
         
         #endregion 
 
-        private Ability(object source, string name, Rank rank, Price price, AbilityArgs args)
+        private Ability(object source, AbilityArgs args=null)
             : base (args)
         {
             if (!IsValidSource(source))
-                throw new InvalidSourceException();
+                throw new InvalidSourceException(source.GetType() + " " + source);
             this.source = new Source(source);
-            Name = name;
-            Rank = rank;
-            Price = price;
-            Args = args;
-
-            Desc = Scribe.Write("[Ability description]");
+            this.args = args;
 
             UsedThisTurn = false;
             Usable += UserInQueue;
@@ -77,12 +74,17 @@ namespace HOA.Abilities
 
         public void Execute (NestedList<IEntity> targets)
         {
+            Debug.Log("Executing {0} ({1}).", args.name, args);
             PreEffects();
             MainEffects(targets);
             PostEffects();
         }
 
-        public void Reset() { UsedThisTurn = false; }
+        public void Reset() 
+        { 
+            UsedThisTurn = false;
+            Unadjust();
+        }
 
         public void Charge()
         {
@@ -90,7 +92,8 @@ namespace HOA.Abilities
             if (source.Last<Unit>(out u))
             {
                 UsedThisTurn = true;
-                u.Charge(Price);
+                u.Charge(args.price);
+                Debug.Log("{0} charged to {1}.", args.price, u);
             }
         }
 
@@ -99,25 +102,27 @@ namespace HOA.Abilities
         /// <summary> Compare by Rank, then Price, then Name </summary>
         public int CompareTo(Ability other)
         {
-            if (Rank < other.Rank) 
+            if (rank < other.rank) 
                 return -1;
-            else if (Rank > other.Rank) 
+            else if (rank > other.rank) 
                 return 1;
             else
             {
-                int i = Price.CompareTo(other.Price);
+                int i = price.CompareTo(other.price);
                 if (i != 0) 
                     return i;
                 else 
-                    return (Name.CompareTo(other.Name));
+                    return (name.CompareTo(other.name));
             }
         }
 
         public bool Equals(Ability other)
         {
-            if (Name != other.Name)
+            if (other as object == null)
                 return false;
-            return Args == other.Args;
+            if (name != other.name)
+                return false;
+            return args == other.args;
         }
 
         public override bool Equals(object other)
@@ -154,15 +159,15 @@ namespace HOA.Abilities
 
         private bool Unused(out string message)
         {
-            message = (!UsedThisTurn ? "" : Name + " has already been used this turn.");
+            message = (!UsedThisTurn ? "" : name + " has already been used this turn.");
             return !UsedThisTurn;
         }
 
         private bool Affordable(out string message)
         {
             Unit u;
-            bool b = (source.Last<Unit>(out u) && u.CanAfford(Price));
-            message = (b ? "" : source + " cannot afford " + Name + ".");
+            bool b = (source.Last<Unit>(out u) && u.CanAfford(price));
+            message = (b ? "" : source + " cannot afford " + name + ".");
             return b;
         }
         private bool AlreadyProcessing(out string message)
@@ -191,5 +196,6 @@ namespace HOA.Abilities
 
         #endregion
 
+        public override string ToString() { return name; }
     }
 }
