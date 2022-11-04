@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA.Collections
+namespace HOA
 {
     /// <summary>
     /// Pairing of a possible outcome and a weight factor.

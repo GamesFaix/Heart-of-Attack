@@ -5,12 +5,12 @@ namespace HOA.Tokens
 { 
     public class TokenRegistry : SessionComponent
     {
-        public TokenSet Tokens { get; private set; }
+        public Set<IEntity> Tokens { get; private set; }
         private Dictionary<Species, ushort> instanceCounts;
 
         public TokenRegistry(Session session) : base(session)
         {
-            Tokens = new TokenSet();
+            Tokens = new Set<IEntity>();
             instanceCounts = new Dictionary<Species, ushort>();
         }
 
@@ -49,7 +49,7 @@ namespace HOA.Tokens
             Tokens.Remove(t);
         }
 
-        public void ClearLegal() { Tokens.Legalize(false); }
+        public void ClearLegal() { Tokens.ForEach((t) => { t.Legal = false; }); }
 	}
 
 }

@@ -11,7 +11,7 @@ namespace HOA
     {
         #region Properties
 
-        private TokenSet units;
+        private Set<IEntity> units;
 
         /// <summary>Number of units</summary>
         public int Count { get { return units.Count; } }
@@ -28,7 +28,7 @@ namespace HOA
 
         public TurnQueue(Session session) : base(session)
         {
-            units = new TokenSet();
+            units = new Set<IEntity>();
         }
 
         public TurnQueue(Session session, IEnumerable<Token> tokens) : this (session)

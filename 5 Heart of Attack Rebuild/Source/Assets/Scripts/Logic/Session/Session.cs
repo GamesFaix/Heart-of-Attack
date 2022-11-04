@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Collections;
+
 
 namespace HOA 
 {
@@ -38,7 +38,7 @@ namespace HOA
         #region Board
 
         public void CreateBoard(size2 size) { board = new Board(this, size); }
-        public CellSet cells { get { return board.Cells; } }
+        public Set<Cell> cells { get { return board.Cells; } }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace HOA
 
         #region Tokens
 
-        public TokenSet tokens { get { return tokenReg.Tokens; } }
+        public Set<IEntity> tokens { get { return tokenReg.Tokens; } }
         public int NextAvailableInstance(Tokens.Species s) { return tokenReg.NextAvailableInstance(s); }
 
         public Token Create(Tokens.ITokenCreator creator, Tokens.Species species, Cell cell)
@@ -72,8 +72,8 @@ namespace HOA
         
         public void ClearLegal()
         {
-            tokens.Legalize(false);
-            cells.Legalize(false);
+            tokens.ForEach((e) => { e.Legal = false; });
+            cells.ForEach((e) => { e.Legal = false; });
         }
 	}
 }

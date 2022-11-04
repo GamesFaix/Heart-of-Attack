@@ -49,10 +49,26 @@ namespace HOA.Tokens
             Exit = DefaultExit;
         }
 
-        public TokenSet Cellmates { get { return Cell.Occupants - ThisToken; } }
-        public TokenSet Neighbors { get { return Cell.Neighbors.Occupants; } }
-        public TokenSet NeighborsAndCellmates { get { return Cell.NeighborsAndSelf.Occupants; } }
-
+        public Set<IEntity> Cellmates { get { return Cell.occupants - ThisToken; } }
+        public Set<IEntity> Neighbors
+        {
+            get
+            {
+                return Cell.Neighbors
+                    .Map<IEntity, Set<IEntity>>(Cell.Occupants)
+                    .Merge<Set<IEntity>, IEntity>();
+            }
+        }
+        public Set<IEntity> NeighborsAndCellmates
+        {
+            get
+            {
+                return Cell.NeighborsAndSelf
+                    .Map<IEntity, Set<IEntity>>(Cell.Occupants)
+                    .Merge<Set<IEntity>, IEntity>();
+            }
+        }
+    
         public void Enter(Cell cell)
         {
             if (!CanEnter(cell))
@@ -90,7 +106,7 @@ namespace HOA.Tokens
         /// in the cell at any of this token's planes, true otherwise.</returns>
         public virtual bool CanEnter(Cell c)
         {
-            TokenSet set = c.Occupants;
+            Set<IEntity> set = c.occupants;
             foreach (Token t in set)
                 if (CoplanarWith(t) && !CanTrample(t))
                     return false;
@@ -99,7 +115,7 @@ namespace HOA.Tokens
 
         public virtual bool CanAimThru(Cell c)
         {
-            TokenSet set = c.Occupants;
+            Set<IEntity> set = c.occupants;
             foreach (Token t in set)
                 if (CoplanarWith(t))
                     return false;
@@ -134,7 +150,7 @@ namespace HOA.Tokens
         /// coplanar with This and untramplable.</returns>
         public bool CanTakePlaceOf(Token t)
         {
-            TokenSet set = t.Cell.Occupants - t;
+            Set<IEntity> set = t.Cell.occupants - t;
             foreach (Token s in set)
                 if (CoplanarWith(s) && !CanTrample(s))
                     return false;

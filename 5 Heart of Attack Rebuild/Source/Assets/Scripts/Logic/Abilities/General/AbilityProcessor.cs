@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HOA.Collections;
+
 
 namespace HOA.Abilities
 {
@@ -8,7 +8,7 @@ namespace HOA.Abilities
     public static class AbilityProcessor
     {
         static Ability pending;
-        static EntitySet selection;
+        static Set<IEntity> selection;
         static bool cancel;
         
         static AbilityProcessor()
@@ -59,8 +59,8 @@ namespace HOA.Abilities
 
             foreach (Aim aim in a.Aims)
             {
-                targets.AddToEnd(new EntitySet());
-                EntitySet options = aim.Pattern(aim.Args());
+                targets.AddToEnd(new Set<IEntity>());
+                Set<IEntity> options = aim.Pattern(aim.Args());
                 if (aim.autoSelect)
                     for (int i = 0;
                         i < options.Count && i <= aim.selectionCount.max;
@@ -84,7 +84,7 @@ namespace HOA.Abilities
         }
 
        
-        static EntitySet WaitForSelection(Aim aim)
+        static Set<IEntity> WaitForSelection(Aim aim)
         {
             Debug.Log("Waiting for " + aim.selectionCount + " targets to be chosen."); 
             float start = (float)Time.time;
@@ -109,7 +109,7 @@ namespace HOA.Abilities
 
         public static event EventHandler<EntitySelectionRequestEventArgs> EntitySelectionRequestEvent;
 
-        public static void EntitySelectionRequestPublish(EntitySet options, Range selectionCount)
+        public static void EntitySelectionRequestPublish(Set<IEntity> options, Range selectionCount)
         {
             if (EntitySelectionRequestEvent != null)
             {
@@ -128,10 +128,10 @@ namespace HOA.Abilities
 
     public class EntitySelectionRequestEventArgs : EventArgs
     {
-        public EntitySet Options {get; private set;}
+        public Set<IEntity> Options {get; private set;}
         public Range SelectionCount {get; private set;}
 
-        public EntitySelectionRequestEventArgs(EntitySet options, Range selectionCount)
+        public EntitySelectionRequestEventArgs(Set<IEntity> options, Range selectionCount)
         {
             if (options == null || options.Count < 1 
                 || selectionCount.max < 1)

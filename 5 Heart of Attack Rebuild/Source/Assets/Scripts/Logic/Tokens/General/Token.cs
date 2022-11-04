@@ -27,7 +27,7 @@ namespace HOA
         public bool trample { get { return Flags.ContainsAny(TokenFlags.Trample); } }
         public bool corpse { get { return Flags.ContainsAny(TokenFlags.Corpse); } }
         public bool heart { get { return Flags.ContainsAny(TokenFlags.Heart); } }
-        public bool king { get { return (this is Unit && (this as Unit).rank == Rank.King); } }
+        public bool king { get { return (this is Unit && (this as Unit).rank == Tokens.Rank.King); } }
 
         public void SetFlags(IEffect source, TokenFlags flags, bool b)
         {
@@ -44,9 +44,9 @@ namespace HOA
         public bool CanTakePlaceOf(Token token) { return body.CanTakePlaceOf(token); }
         public void RefreshCell() { Enter(Cell); }
         public void Swap(Token other) { body.Swap(other); }
-        public TokenSet Neighbors { get { return body.Neighbors; } }
-        public TokenSet Cellmates { get { return body.Cellmates; } }
-        public TokenSet NeighborsAndCellmates { get { return body.NeighborsAndCellmates; } }
+        public Set<IEntity> Neighbors { get { return body.Neighbors; } }
+        public Set<IEntity> Cellmates { get { return body.Cellmates; } }
+        public Set<IEntity> NeighborsAndCellmates { get { return body.NeighborsAndCellmates; } }
 
 
         public List<Sensor> sensors { get { return body.Sensors; } }

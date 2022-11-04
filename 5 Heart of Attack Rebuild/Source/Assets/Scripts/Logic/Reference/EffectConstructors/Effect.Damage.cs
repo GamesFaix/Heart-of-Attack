@@ -1,5 +1,6 @@
 ﻿using HOA.Resources;
 using HOA.Tokens;
+using System;
 
 namespace HOA.Abilities
 {
@@ -120,7 +121,7 @@ namespace HOA.Abilities
             {
                 Cell c = args.cell;
 
-                TokenSet Targets = c.Occupants - EntityFilter.UnitDest;
+                Set<IEntity> Targets = c.occupants / Filter.UnitDest;
                 if (args.option) 
                     Targets.Remove(e.userToken);
 
@@ -189,7 +190,7 @@ namespace HOA.Abilities
                     AVEffect.Fire.Play(t);
                 }
 
-                TokenSet neighbors = t.NeighborsAndCellmates - EntityFilter.UnitDest;
+                Set<IEntity> neighbors = t.NeighborsAndCellmates / Filter.UnitDest;
 
                 int newDmg = Math.Floor(args.value * 0.5f);
                 foreach (Token t2 in neighbors)
@@ -229,7 +230,7 @@ namespace HOA.Abilities
                 Cell cell = t.Cell;
                 int2 direction = Direction.FromCells(cell, e.userToken.Cell);
 
-                CellSet cells = new CellSet(cell);
+                Set<IEntity> cells = new Set<IEntity>(cell);
                 bool stop = false;
 
                 while (!stop)
@@ -239,7 +240,7 @@ namespace HOA.Abilities
                         cells.Add(cell);
                     else stop = true;
                 }
-                EffectQueue.Add(Effect.LaserInitial(user, new EffectArgs((EntitySet)cells, args.values)));
+                EffectQueue.Add(Effect.LaserInitial(user, new EffectArgs((Set<IEntity>)cells, args.values)));
             };
             return e;
         }
@@ -252,7 +253,7 @@ namespace HOA.Abilities
                 int decayPercent = args.values[1];
                 foreach (Cell cell in args.cells)
                 {
-                    TokenSet units = cell.Occupants - EntityFilter.Unit;
+                    Set<IEntity> units = cell.occupants / Filter.Unit;
                     foreach (Unit u in units)
                     {
                         if (u.Damage(e, currentDmg)) 
@@ -260,9 +261,9 @@ namespace HOA.Abilities
                         else 
                             AVEffect.Miss.Play(u);
                     }
-                    EntityFilter f = EntityFilter.Ob + EntityPredicates.Plane(Plane.Sunken, false);
+                    Predicate<IEntity> f = Filter.Ob + Filter.Plane(Plane.Sunken, false);
 
-                    if ((cell.Occupants - f).Count > 0) 
+                    if ((cell.occupants / f).Count > 0) 
                         return;
                     if (units.Count > 0)
                         currentDmg = Math.Floor(currentDmg * (decayPercent / 100));

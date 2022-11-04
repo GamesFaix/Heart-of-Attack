@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HOA 
+namespace HOA.Tokens
 { 
     public enum Rank : byte
 	{

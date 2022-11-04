@@ -1,23 +1,20 @@
 ﻿using System;
-using HOA.Collections;
+using System.Linq;
 
 namespace HOA.Abilities
 {
-    public delegate EntitySet AimPattern(AimPatternArgs args);
+    public delegate Set<IEntity> AimPattern(AimPatternArgs args);
 
     public static class AimPatterns
     {
-        public static EntitySet Arc (AimPatternArgs args)
+        public static Set<IEntity> Arc(AimPatternArgs args)
         {
-            CellSet square = Square(args.center, args.range);
-            return
-                (EntitySet)square
-                + (EntitySet)(square.Occupants)
-                - args.filter;
+            Set<IEntity> square = Square(args.center, args.range);
+            return (square + Cell.Occupants) / args.filter;
         }
-        static CellSet Square(Cell start, Tokens.Stat range)
+        static Set<IEntity> Square(Cell start, Tokens.Stat range)
         {
-            CellSet square = new CellSet();
+            Set<IEntity> square = new Set<IEntity>();
             Cell c;
             for (int x = (start.x - range); x <= (start.x + range); x++)
                 for (int y = (start.y - range); y <= (start.y + range); y++)
@@ -28,9 +25,9 @@ namespace HOA.Abilities
                 square = RemoveMin(square, start, range.Min);
             return square;
         }
-        static CellSet RemoveMin(CellSet square, Cell start, int min)
+        static Set<IEntity> RemoveMin(Set<IEntity> square, Cell start, int min)
         {
-            CellSet ring = new CellSet();
+            Set<IEntity> ring = new Set<IEntity>();
             foreach (Cell c in square)
                 if ((Math.Abs(c.x - start.x) >= min)
                     || (Math.Abs(c.y - start.y) >= min))
@@ -38,35 +35,29 @@ namespace HOA.Abilities
             return ring;
         }
 
-        public static EntitySet Free (AimPatternArgs args)
+        public static Set<IEntity> Free (AimPatternArgs args)
         {
-            return
-            (EntitySet)(args.center.Board.Cells)
-            + (EntitySet)(Session.Active.tokens)
-            - args.filter;
+            return (Session.Active.cells.Base<Cell, IEntity>() + Session.Active.tokens) / args.filter;
         }
 
-        public static EntitySet Line (AimPatternArgs args)
+        public static Set<IEntity> Line (AimPatternArgs args)
         {
-            CellSet cells = new CellSet(args.center);
-            ListSet<CellSet> star = Star(args.center, args.range);
-            foreach (CellSet line in star)
+            Set<IEntity> cells = new Set<IEntity>(args.center);
+            Set<Set<IEntity>> star = Star(args.center, args.range);
+            foreach (Set<IEntity> line in star)
             {
-                CellSet lineTrimmed = Trim(line, args.body, args.inclusive);
+                Set<IEntity> lineTrimmed = Trim(line, args.body, args.inclusive);
                 cells.Add(lineTrimmed);
             }
-            return
-                (EntitySet)cells
-                + (EntitySet)(cells.Occupants)
-                - args.filter;
+            return (cells + Cell.Occupants) / args.filter;
         }
-        static ListSet<CellSet> Star(Cell center, int range)
+        static Set<Set<IEntity>> Star(Cell center, int range)
         {
-            ListSet<CellSet> star = new ListSet<CellSet>();
+            Set<Set<IEntity>> star = new Set<Set<IEntity>>();
 
             foreach (int2 dir in Direction.Directions)
             {
-                CellSet line = new CellSet();
+                Set<IEntity> line = new Set<IEntity>();
                 Cell last = center;
                 for (byte i = 1; i <= range; i++)
                 {
@@ -86,9 +77,9 @@ namespace HOA.Abilities
             }
             return star;
         }
-        static CellSet Trim(CellSet line, Token body, bool inclusive = false)
+        static Set<IEntity> Trim(Set<IEntity> line, Token body, bool inclusive = false)
         {
-            CellSet legal = new CellSet();
+            Set<IEntity> legal = new Set<IEntity>();
             foreach (Cell c in line)
             {
                 if (body.CanAimThru(c))
@@ -105,20 +96,17 @@ namespace HOA.Abilities
             return legal;
         }
         
-        public static EntitySet Neighbor (AimPatternArgs args)
+        public static Set<IEntity> Neighbor (AimPatternArgs args)
         {
-            return
-            (EntitySet)(args.center.NeighborsAndSelf)
-            + (EntitySet)(args.center.NeighborsAndSelf.Occupants)
-            - args.filter;
+            return (args.center.NeighborsAndSelf + Cell.Occupants) / args.filter;
         }
 
-        public static EntitySet Path (AimPatternArgs args)
+        public static Set<IEntity> Path (AimPatternArgs args)
         {
             Debug.Log("Aim.Path does not allow custom paths.");
-            CellSet cells = new CellSet(args.center);
-            CellSet thisRad = args.center.Neighbors;
-            CellSet nextRad = new CellSet();
+            Set<IEntity> cells = new Set<IEntity>(args.center);
+            Set<IEntity> thisRad = args.center.Neighbors;
+            Set<IEntity> nextRad = new Set<IEntity>();
 
             for (int i = 1; i <= args.range; i++)
             {
@@ -136,17 +124,14 @@ namespace HOA.Abilities
                         break;
                 }
                 thisRad = nextRad;
-                nextRad = new CellSet();
+                nextRad = new Set<IEntity>();
             }
-            return
-                (EntitySet)cells
-                + (EntitySet)(cells.Occupants)
-                - args.filter;
+            return (cells + Cell.Occupants) / args.filter;
         }
 
-        public static EntitySet Radial (AimPatternArgs args)
+        public static Set<IEntity> Radial (AimPatternArgs args)
         {
-            EntitySet set = new EntitySet();
+            Set<IEntity> set = new Set<IEntity>();
             NeighborMatrix neighbors = new NeighborMatrix(args.center);
             Cell c;
             if (neighbors.CellClockwise(args.center, out c))
@@ -156,9 +141,9 @@ namespace HOA.Abilities
             return set;
         }
 
-        public static EntitySet Self (AimPatternArgs args)
+        public static Set<IEntity> Self (AimPatternArgs args)
         {
-            return new EntitySet(args.user);
+            return new Set<IEntity>(args.user);
         }
     }
 }

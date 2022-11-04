@@ -18,7 +18,7 @@ namespace HOA.Abilities
 
                 int2 dir = Direction.FromCells(userCell, start);
 
-                CellSet line = new CellSet();
+                Set<IEntity> line = new Set<IEntity>();
 
                 for (int i = 0; i < maxCells; i++)
                 {

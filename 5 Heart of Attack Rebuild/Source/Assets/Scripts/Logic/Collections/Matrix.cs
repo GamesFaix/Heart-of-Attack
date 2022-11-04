@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HOA.Collections
+namespace HOA
 {
     /// <summary>
     /// Two-dimensional array using index2 and size2
@@ -214,11 +214,11 @@ namespace HOA.Collections
         /// <summary>
         /// List of items in outer indecies of array
         /// </summary>
-        public ListSet<T> Periphery
+        public Set<T> Periphery
         {
             get
             {
-                ListSet<T> periphery = new ListSet<T>();
+                Set<T> periphery = new Set<T>();
                 for (int i = 0; i < Size.x; i++) 
                     periphery.Add(array[i, 0]);
                 for (int i = 0; i < Size.y; i++) 
@@ -234,11 +234,11 @@ namespace HOA.Collections
         /// <summary>
         /// List of outer indecies of array
         /// </summary>
-        public ListSet<index2> PeripheralIndexes
+        public Set<index2> PeripheralIndexes
         {
             get
             {
-                ListSet<index2> periphery = new ListSet<index2>();
+                Set<index2> periphery = new Set<index2>();
                 for (int i = 0; i < Size.x; i++) 
                     periphery.Add(new index2(i, 0)); 
                 for (int i = 0; i < Size.y; i++) 

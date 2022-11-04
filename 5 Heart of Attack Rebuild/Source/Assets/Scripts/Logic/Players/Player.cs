@@ -61,13 +61,12 @@ namespace HOA
         /// <returns></returns>
         public override string ToString() { return Name; }
 
-        
-        public TokenSet Tokens
+
+        public Set<IEntity> Tokens
         {
             get
             {
-                return Session.Active.tokens 
-                    - EntityFilter.Owner(this, true);
+                return Session.Active.tokens / Filter.Owner(this, true);
             }
         }
 

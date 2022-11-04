@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace HOA.Collections
+namespace HOA
 {
 
     public class NestedList<T> : IEnumerable<IList<T>>

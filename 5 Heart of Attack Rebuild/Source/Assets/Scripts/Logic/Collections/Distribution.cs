@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HOA.Collections
+namespace HOA
 {
     /// <summary>
     /// List of items with weights, for weighted lottery systems.

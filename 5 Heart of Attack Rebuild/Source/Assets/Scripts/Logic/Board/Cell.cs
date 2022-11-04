@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HOA.Tokens;
-using HOA.Collections;
+
 
 namespace HOA
 {
@@ -38,32 +38,33 @@ namespace HOA
         /// <summary>
         /// Non-adjacent cells to be treated as neighbors.
         /// </summary>
-        public CellSet Links { get; set; }
+        public Set<IEntity> Links { get; set; }
 
 
         /// <summary>
         /// Tokens currently in this cell
         /// </summary>
-        public TokenSet Occupants { get; private set; }
-
+        public Set<IEntity> occupants { get; private set; }
+        public static Set<IEntity> Occupants(IEntity e) { return (e as Cell).occupants; }
+        
         public Cell(Board board, index2 i)
         {
             Board = board;
             Index = i;
-            Links = new CellSet(0);
+            Links = new Set<IEntity>(0);
             Stop = Plane.None;
-            Occupants = new TokenSet(4);
-            Subscribers = new ListSet<Sensor>(0);
+            occupants = new Set<IEntity>(4);
+            Subscribers = new Set<Sensor>(0);
         }
 
         /// <summary>
         /// Set of all adjacent and linked Cells.  Does not include self.
         /// </summary>
-        public CellSet Neighbors
+        public Set<IEntity> Neighbors
         {
             get
             {
-                CellSet neighbors = new CellSet();
+                Set<IEntity> neighbors = new Set<IEntity>();
 
                 foreach (int2 dir in Direction.Directions)
                 {
@@ -80,11 +81,11 @@ namespace HOA
         /// <summary>
         /// Neighbors with self added.
         /// </summary>
-        public CellSet NeighborsAndSelf
+        public Set<IEntity> NeighborsAndSelf
         {
             get
             {
-                CellSet set = Neighbors;
+                Set<IEntity> set = Neighbors;
                 set.Add(this);
                 return set;
             }
@@ -100,15 +101,15 @@ namespace HOA
         {
             if (!t.CanEnter(this))
                 throw new Exception("Illegal cell entrance.");
-            Occupants.Add(t);
+            occupants.Add(t);
             OccupationPublish(this, t, true);
         }
 
         public void Exit(Token t)
         {
-            if (!Occupants.Contains(t))
+            if (!occupants.Contains(t))
                 throw new Exception("Illegal cell exit.");
-            Occupants.Remove(t);
+            occupants.Remove(t);
             OccupationPublish(this, t, false);
         }
 
@@ -125,7 +126,7 @@ namespace HOA
             }
         }
 
-        public ListSet<Sensor> Subscribers { get; private set; }
+        public Set<Sensor> Subscribers { get; private set; }
 
     }
 

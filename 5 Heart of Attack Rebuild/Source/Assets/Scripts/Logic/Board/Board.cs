@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using HOA.Collections;
+
 
 namespace HOA 
 { 
@@ -24,7 +24,7 @@ namespace HOA
         /// <summary>
         /// Accessor for internal Matrix of cells.
         /// </summary>
-        public CellSet Cells { get { return new CellSet(cells); } }
+        public Set<Cell> Cells { get { return new Set<Cell>(cells); } }
 
         /// <summary>
         /// Two-dimensional size of board
@@ -95,7 +95,7 @@ namespace HOA
         /// <returns></returns>
         public bool RandomLegalCell(Token t, out Cell outCell)
         {
-            CellSet remainingCells = Cells;
+            Set<Cell> remainingCells = Cells;
             while (remainingCells.Count > 0)
             {
                 Cell cell = (Cell)(remainingCells.Random());

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace HOA.Collections
+namespace HOA
 {
     /// <summary>
     /// Extension methods for generic List.

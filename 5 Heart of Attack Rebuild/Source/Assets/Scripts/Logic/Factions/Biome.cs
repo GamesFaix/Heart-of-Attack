@@ -21,7 +21,7 @@ namespace HOA
         public Species[] Species { get; private set; }
         
         /// <summary>
-        /// Species of Faction's King.  (Must also be added to ListSet.)
+        /// Species of Faction's King.  (Must also be added to Set.)
         /// </summary>
         
         public BiomeEnum BiomeEnum { get; private set; }

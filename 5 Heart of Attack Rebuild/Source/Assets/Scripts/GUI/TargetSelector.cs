@@ -12,7 +12,7 @@ namespace HOA.GUI
 
         public static event EventHandler<EntitySelectionEventArgs> EntitySelectionEvent;
 
-        public static void EntitySelectionPublish(EntitySet selection)
+        public static void EntitySelectionPublish(Set<IEntity> selection)
         {
             if (selection == null || selection.Count < 1)
                 throw new ArgumentNullException();
@@ -36,10 +36,10 @@ namespace HOA.GUI
 
     public class EntitySelectionEventArgs : EventArgs
     {
-        public EntitySet Selection { get; private set; }
+        public Set<IEntity> Selection { get; private set; }
         public bool Cancel { get; private set; }
 
-        public EntitySelectionEventArgs(EntitySet selection, bool cancel = false)
+        public EntitySelectionEventArgs(Set<IEntity> selection, bool cancel = false)
         {
             Selection = selection;
             Cancel = cancel;

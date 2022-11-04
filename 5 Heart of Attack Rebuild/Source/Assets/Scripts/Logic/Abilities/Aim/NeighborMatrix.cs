@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using HOA.Collections;
+
 
 namespace HOA.Abilities
 {
@@ -136,9 +136,9 @@ namespace HOA.Abilities
             }
         }
 
-        public CellSet Ring(Cell first, Cell second)
+        public Set<IEntity> Ring(Cell first, Cell second)
         {
-            CellSet ring = new CellSet(first);
+            Set<IEntity> ring = new Set<IEntity>(first);
             bool clockwise;
 
             Cell nextClockwise;

@@ -14,12 +14,12 @@ namespace HOA.Tokens
         /// <summary> Generates description </summary>
         public Description Desc { get; private set; }
         /// <summary> Cells that Sensor is sensitive to </summary>
-        public CellSet Subscriptions { get; private set; }
+        public Set<Cell> Subscriptions { get; private set; }
         /// <summary> Tokens that pass thru the filter must 
         /// stop on subscribed cells (no thru movement)</summary>
-        public EntityFilter Trap { get; private set; }
+        public Predicate<IEntity> Trap { get; private set; }
         /// <summary> Tokens that pass thru the filter will trigger sensor effects </summary>
-        public EntityFilter Trigger { get; private set; }
+        public Predicate<IEntity> Trigger { get; private set; }
 
         /// <summary> Effects done to a cell when ThisToken enters it. </summary>
         public Action<Cell> OnThisEnter { get; private set; }
@@ -40,18 +40,18 @@ namespace HOA.Tokens
             Source = source;
             Name = "[Sensor]";
             Desc = Scribe.Write("[Sensor description]");
-            Subscriptions = new CellSet(1);
-            Trigger = EntityFilter.None;
-            Trap = EntityFilter.None;
+            Subscriptions = new Set<Cell>(1);
+            Trigger = Filter.False;
+            Trap = Filter.False;
             OnThisEnter = (c) =>
             {
                 Subscribe(c);
-                foreach (Token t in c.Occupants)
+                foreach (Token t in c.occupants)
                     OnOtherEnter(t);
             };
             OnThisExit = (c) =>
             {
-                foreach (Token t in c.Occupants)
+                foreach (Token t in c.occupants)
                     OnOtherExit(t);
                 Unsubscribe(c);
             };
@@ -63,11 +63,11 @@ namespace HOA.Tokens
             : this(source, thisToken)
         { Name = name; }
 
-        private Sensor(IEffect source, Token thisToken, string name, EntityFilter trigger)
+        private Sensor(IEffect source, Token thisToken, string name, Predicate<IEntity> trigger)
             : this(source, thisToken, name)
         { Trigger = trigger; }
 
-        private Sensor(IEffect source, Token thisToken, string name, EntityFilter trigger, EntityFilter trap)
+        private Sensor(IEffect source, Token thisToken, string name, Predicate<IEntity> trigger, Predicate<IEntity> trap)
             : this(source, thisToken, name, trigger)
         { Trap = trap; }
 
@@ -93,17 +93,17 @@ namespace HOA.Tokens
         {
             for (int i = Subscriptions.Count; i >= 0; i--)
             {
-                Cell c = Subscriptions[i];
+                Cell c = Subscriptions[i] as Cell;
                 c.OccupationEvent -= this.OccupationSubscribe;
                 c.Subscribers.Remove(this);
             }
-            Subscriptions = new CellSet();
+            Subscriptions = new Set<Cell>();
         }
 
         public void OccupationSubscribe(object sender, OccupationEventArgs args)
         {
             if (Subscriptions.Contains(args.Cell)
-                && Trigger.Test(args.Token))
+                && !Trigger.AnyTrue(args.Token))
             {
                 if (args.Enter)
                     OnOtherEnter(args.Token);

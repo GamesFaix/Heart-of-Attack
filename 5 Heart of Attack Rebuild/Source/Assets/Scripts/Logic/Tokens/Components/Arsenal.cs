@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using HOA.Abilities;
-using HOA.Collections;
+
 
 namespace HOA.Tokens
 {
@@ -10,15 +11,15 @@ namespace HOA.Tokens
     {
         #region Properties
         
-        ListSet<Ability> list;
+        Set<Ability> list;
         static Dictionary<Abilities.Rank, byte> rankLimits;
 
         public Ability Move
         {
             get
             {
-                ListSet<Ability> moves = this[Abilities.Rank.Move];
-                return ((moves == null) ? moves[0] : null);
+                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Move; };
+                return list.SingleOrDefault(p.ToFunc());
             }
         }
 
@@ -26,8 +27,8 @@ namespace HOA.Tokens
         {
             get
             {
-                ListSet<Ability> foci = this[Abilities.Rank.Focus];
-                return ((foci == null) ? foci[0] : null);
+                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Focus; };
+                return list.SingleOrDefault(p.ToFunc());
             }
         }
 
@@ -35,8 +36,8 @@ namespace HOA.Tokens
         {
             get
             {
-                ListSet<Ability> attacks = this[Abilities.Rank.Attack];
-                return ((attacks == null) ? attacks[0] : null);
+                Predicate<Ability> p = (a) => { return a.Rank == Abilities.Rank.Attack; };
+                return list.SingleOrDefault(p.ToFunc());
             }
         }
 
@@ -49,7 +50,7 @@ namespace HOA.Tokens
         {
             if (rankLimits == null)
                 InitializeRankLimits();
-            list = new ListSet<Ability>(9);
+            list = new Set<Ability>(9);
         }
 
         static void InitializeRankLimits()
@@ -155,11 +156,11 @@ namespace HOA.Tokens
 
         public Ability this[int i] { get { return list[i]; } }
 
-        public ListSet<Ability> this[Abilities.Rank rank]
+        public Set<Ability> this[Abilities.Rank rank]
         {
             get
             {
-                ListSet<Ability> result = new ListSet<Ability>(rankLimits[rank]);
+                Set<Ability> result = new Set<Ability>(rankLimits[rank]);
                 foreach (Ability a in this)
                     if (a.Rank == rank)
                         result.Add(a);

@@ -2,7 +2,7 @@
 
 namespace HOA.Abilities
 {
-
+    /*
     public partial class Ability
     {
         public static Ability Animate(IAbilityUser user)
@@ -36,7 +36,7 @@ namespace HOA.Abilities
 
             a.Restrict = () =>
             {
-                TokenSet group = a.Parent.Body.Cell.Occupants;
+                Set<IEntity> group = a.Parent.Body.Cell.Occupants;
                 group -= TargetFilter.Plane(Plane.Air, true);
                 return (group.Count > 0);
 
@@ -103,7 +103,7 @@ namespace HOA.Abilities
             a.Aims.Add(Aim.Self());
             a.MainEffects = Targets =>
             {
-                TokenSet group = a.Parent.Body.Cell.Occupants;
+                Set<IEntity> group = a.Parent.Body.Cell.Occupants;
                 group -= TargetFilter.Plane(Plane.Ground, true);
                 if (group.Count > 0)
                 {
@@ -151,4 +151,5 @@ namespace HOA.Abilities
             return a;
         }
     }
+     * */
 }

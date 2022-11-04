@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{47E5A09E-247C-0EFE-ACD2-9C66E5F60519}</ProjectGuid>
+	<ProjectGuid>{56D9602D-35E6-5CEB-75C6-2A090F909979}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -66,28 +66,25 @@
      <Compile Include="Assets\Scripts\Logic\Abilities\General\Rank.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Board.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Cell.cs" />
-     <Compile Include="Assets\Scripts\Logic\Board\CellSet.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Direction.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Structs\index2.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Structs\int2.cs" />
      <Compile Include="Assets\Scripts\Logic\Board\Structs\size2.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Distribution.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\IMarkableCollection.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\ListExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\Logic\Collections\ListSet.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Matrix.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\NestedList.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Possibility.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\PredicateExtensionMethods.cs" />
      <Compile Include="Assets\Scripts\Logic\Collections\Sequence.cs" />
-     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilter (Constructors).cs" />
-     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilter.cs" />
-     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilterTests.cs" />
-     <Compile Include="Assets\Scripts\Logic\Entities\EntitySet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\Set.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\Filter.cs" />
      <Compile Include="Assets\Scripts\Logic\Entities\IEntity.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\Biome.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\BiomeEnum.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\Faction.cs" />
      <Compile Include="Assets\Scripts\Logic\Factions\FactionEnum.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Closure.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Core.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Exceptions.cs" />
      <Compile Include="Assets\Scripts\Logic\Misc\Force.cs" />
@@ -140,7 +137,6 @@
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Obstacle.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Terrain.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Token.cs" />
-     <Compile Include="Assets\Scripts\Logic\Tokens\General\TokenSet.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\General\Unit.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Plane.cs" />
      <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Rank.cs" />

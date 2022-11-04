@@ -8,7 +8,7 @@ namespace HOA
 
 	public partial class Unit : Token
 	{
-        public Rank rank { get; set; }
+        public Tokens.Rank rank { get; set; }
         
         private Wallet wallet;
         public void Charge(Price p) { wallet.Charge(p); }
@@ -26,7 +26,7 @@ namespace HOA
 
         public Arsenal arsenal { get; private set; }
 
-        public Unit (ITokenCreator creator, Species species, Rank rank, Species remains = Species.Corpse) 
+        public Unit (ITokenCreator creator, Species species, Tokens.Rank rank, Species remains = Species.Corpse) 
             : base (creator, species)
         {
             this.rank = rank;

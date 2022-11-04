@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace HOA.Abilities
 {
     public class AimPatternArgs
@@ -7,7 +8,7 @@ namespace HOA.Abilities
         public Token user, body;
         public Cell center;
         public Tokens.Stat range;
-        public EntityFilter filter;
+        public Predicate<IEntity> filter;
         public bool inclusive;
 
         public AimPatternArgs(
@@ -15,7 +16,7 @@ namespace HOA.Abilities
             Token body,
             Cell center,
             Tokens.Stat range,
-            EntityFilter filter,
+            Predicate<IEntity> filter,
             bool inclusive
             )
         {
