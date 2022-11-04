@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{A515A2E7-795C-173C-BC1E-40DFA0D03510}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_5_4;UNITY_4_5;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Scripts\GUI\Master.cs" />
+     <Compile Include="Assets\Scripts\GUI\TargetSelector.cs" />
+     <Compile Include="Assets\Scripts\GUI\Tools\Panel.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\Aim.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPattern.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\AimPatternArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Aim\NeighborMatrix.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\Effect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectArgs.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectQueue.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSequence.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\EffectSet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\IEffect.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\Effects\IEffectUser.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\Ability.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\AbilityProcessor.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\IAbilityUser.cs" />
+     <Compile Include="Assets\Scripts\Logic\Abilities\General\Price.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Board.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Cell.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\CellSet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Direction.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Structs\index2.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Structs\int2.cs" />
+     <Compile Include="Assets\Scripts\Logic\Board\Structs\size2.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\Distribution.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\IMarkableCollection.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\ListExtensionMethods.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\ListSet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\Matrix.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\NestedList.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\Possibility.cs" />
+     <Compile Include="Assets\Scripts\Logic\Collections\Sequence.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilter (Constructors).cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilter.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\EntityFilterTests.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\EntitySet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Entities\IEntity.cs" />
+     <Compile Include="Assets\Scripts\Logic\Factions\Biome.cs" />
+     <Compile Include="Assets\Scripts\Logic\Factions\BiomeEnum.cs" />
+     <Compile Include="Assets\Scripts\Logic\Factions\Faction.cs" />
+     <Compile Include="Assets\Scripts\Logic\Factions\Factions.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Core.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Force.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\Range.cs" />
+     <Compile Include="Assets\Scripts\Logic\Misc\TurnQueue.cs" />
+     <Compile Include="Assets\Scripts\Logic\Players\IPlayer.cs" />
+     <Compile Include="Assets\Scripts\Logic\Players\Player.cs" />
+     <Compile Include="Assets\Scripts\Logic\Reference\Factions.cs" />
+     <Compile Include="Assets\Scripts\Logic\Reference\Main.cs" />
+     <Compile Include="Assets\Scripts\Logic\Reference\Players.cs" />
+     <Compile Include="Assets\Scripts\Logic\Reference\TokenTemplates.cs" />
+     <Compile Include="Assets\Scripts\Logic\Session\FactionRegistry.cs" />
+     <Compile Include="Assets\Scripts\Logic\Session\PlayerRegistry.cs" />
+     <Compile Include="Assets\Scripts\Logic\Session\Session.cs" />
+     <Compile Include="Assets\Scripts\Logic\Session\SessionComponent.cs" />
+     <Compile Include="Assets\Scripts\Logic\Session\TokenRegistry.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Arsenal.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Body.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Identity.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Sensor.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Timer.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\TokenComponent.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Vitality.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Wallet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\Watch.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Components\WatchList.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\ITokenCreator.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\Terrain (Constructors).cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\Terrain.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\Token.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\TokenSet.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\General\Unit.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Plane.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Rank.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Species.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stat (Constructors).cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stat.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\Stats.cs" />
+     <Compile Include="Assets\Scripts\Logic\Tokens\Structs\TokenFlags.cs" />
+     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Debug.cs" />
+     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Random.cs" />
+     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Time.cs" />
+     <Compile Include="Assets\Scripts\Logic\UnityEngine Accessors\Updater.cs" />
+     <Compile Include="Assets\Scripts\Model\GameObjectExtensionMethods.cs" />
+     <Compile Include="Assets\Scripts\Resources\Audio\Audio.cs" />
+     <Compile Include="Assets\Scripts\Resources\Audio\AudioEffectMixer.cs" />
+     <Compile Include="Assets\Scripts\Resources\Audio\GUIEffects.cs" />
+     <Compile Include="Assets\Scripts\Resources\Audio\GameEffects.cs" />
+     <Compile Include="Assets\Scripts\Resources\Audio\Music.cs" />
+     <Compile Include="Assets\Scripts\Resources\Textures\Backgrounds.cs" />
+     <Compile Include="Assets\Scripts\Resources\Textures\GameEffects.cs" />
+     <Compile Include="Assets\Scripts\Resources\Textures\Icons.cs" />
+     <Compile Include="Assets\Scripts\Resources\Textures\Textures.cs" />
+     <Compile Include="Assets\Scripts\Resources\Textures\Thumbnails.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

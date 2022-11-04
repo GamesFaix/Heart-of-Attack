@@ -1,0 +1,12 @@
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\Assembly-CSharp.XML
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\Assembly-CSharp.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\UnityEditor.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\UnityEngine.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\Mono.Cecil.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\nunit.framework.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\Unity.DataContract.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\obj\Debug\Assembly-CSharp.dll
+D:\_Game Design\_HOA\HOA Late-2013\Unity Projects\04 Fall 2014\HOA 05.0 Rebuild\obj\Debug\Assembly-CSharp.pdb
