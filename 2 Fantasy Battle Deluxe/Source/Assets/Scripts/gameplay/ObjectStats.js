@@ -10,9 +10,7 @@ var thumb: Texture2D;
 var sprite: Texture2D;
 
 var mycell: GameObject;	//current cell being occupied, set by cells ontrigger
-var gameX: byte;
-var gameY: byte; 
-var gameZ: byte;
+var gameCoord: Vector3;
 
 //unit
 var ap: byte;

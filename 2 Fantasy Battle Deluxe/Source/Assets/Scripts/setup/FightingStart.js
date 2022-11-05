@@ -355,16 +355,11 @@ function DebugHeroes(): IEnumerator{
 	}
 	yield;
 }
-function CellNumToWorldPoint(cellNum: Vector3): Vector3 {
-	var gameX: byte = cellNum.x;
-	var gameY: byte = cellNum.y;
-	var gameZ: byte = cellNum.z;
-	
-	//Debug.Log(gameX+","+gameY+","+gameZ);
-	
-	var positionX: int = (gameX*grid)-count;
-	var positionY: int = (gameY*grid)-count;
-	var positionZ: int = (gameZ*grid)-count;
+function CellNumToWorldPoint(gameCoord: Vector3): Vector3 {
+
+	var positionX: int = (gameCoord.x*grid)-count;
+	var positionY: int = (gameCoord.y*grid)-count;
+	var positionZ: int = (gameCoord.z*grid)-count;
 	
 	var position: Vector3 =  Vector3(positionX,positionY,positionZ);
 	return position;

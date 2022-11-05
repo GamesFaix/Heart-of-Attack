@@ -13,7 +13,7 @@ function OnEnable(){
 }
 
 //damge effects
-function E100(unit: GameObject, mag: float, targetunit:GameObject){//damage normal
+function DmgNRM(unit: GameObject, mag: float, targetunit:GameObject){//damage normal
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if(targetunitstats.def<mag){
@@ -23,7 +23,7 @@ function E100(unit: GameObject, mag: float, targetunit:GameObject){//damage norm
 		if (targetunitstats.hp<1){targetunitstats.Die();}
 	}
 }		
-function E103(unit: GameObject, mag: float, dec: float, rad: float, targetunit: GameObject){//damage poison - initial
+function DmgPSN(unit: GameObject, mag: float, dec: float, rad: float, targetunit: GameObject){//damage poison - initial
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if(targetunitstats.def<mag){
@@ -39,7 +39,7 @@ function E103(unit: GameObject, mag: float, dec: float, rad: float, targetunit: 
 		}
 	}
 }
-function E104(unit: GameObject, mag: float, rad: float, targetunit: GameObject){//damage elec
+function DmgELC(unit: GameObject, mag: float, rad: float, targetunit: GameObject){//damage elec
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if (targetunitstats.mech==true){mag+=Mathf.Ceil(mag*0.5);}
@@ -57,7 +57,7 @@ function E104(unit: GameObject, mag: float, rad: float, targetunit: GameObject){
 	targetunitstats.elcRAD=rad;
 }
 //object manipulation
-function E200(unit: GameObject, objno: short,targetcell: GameObject){//create object
+function ObjCreate(unit: GameObject, objno: short,targetcell: GameObject){//create object
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	newobject = Instantiate(obprefab,targetcell.transform.position,Quaternion.identity);
 	var newstats: ObjectStats = newobject.GetComponent(ObjectStats);
@@ -68,12 +68,12 @@ function E200(unit: GameObject, objno: short,targetcell: GameObject){//create ob
 	}
 	yield;
 }
-function E202(targetunit:GameObject,targetcell:GameObject){//move unit
+function ObjMove(targetunit:GameObject,targetcell:GameObject){//move unit
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	targetunit.transform.position = targetcell.transform.position;
 	actionCoord.Mlog("Player"+targetunitstats.owner+"'s "+targetunitstats.objname+" moved.");
 }
-function E205(unit: GameObject, targetcell: GameObject){//trample obstacle
+function ObjTRM(unit: GameObject, targetcell: GameObject){//trample obstacle
 	var obs: GameObject[] = GameObject.FindGameObjectsWithTag("obstacle");
 	var i: short;
 	for (i=0; i<obs.length; i++){
@@ -96,7 +96,7 @@ function E205(unit: GameObject, targetcell: GameObject){//trample obstacle
 		}
 	}
 }
-function E206(unit: GameObject, objno: short){//evolve (larva & phoenix ashes)
+function ObjEvo(unit: GameObject, objno: short){//evolve (larva & phoenix ashes)
 	if (((objno==1061 || objno==1032) && targeting.CheckAbove(unit)) || objno!=1061){
 		var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 		newobject = Instantiate(obprefab,unitstats.mycell.transform.position,Quaternion.identity);
@@ -112,7 +112,7 @@ function E206(unit: GameObject, objno: short){//evolve (larva & phoenix ashes)
 	yield;
 }
 //stat modification
-function E300(targetunit:GameObject,mag:float){//add/remove hp
+function StatHP(targetunit:GameObject,mag:float){//add/remove hp
 	var unitStats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	var oldHP: byte = unitStats.hp;
 	unitStats.hp+=mag;
@@ -124,7 +124,7 @@ function E300(targetunit:GameObject,mag:float){//add/remove hp
 	actionCoord.Mlog(msg);
 	if (unitStats.hp<1){unitStats.Die();}
 }
-function E305(unit: GameObject, mag:float){//focus / change fp
+function StatFP(unit: GameObject, mag:float){//focus / change fp
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	unitstats.fp+=mag;
 	if (mag>0){actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+ " +"+mag+"fp");}

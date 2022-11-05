@@ -2,10 +2,8 @@
 var gameindexprefab: GameObject;
 
 var cell_tex: Texture[] = new Texture[6]; //all values set in inspector
-	
-var gameX: byte; 
-var gameY: byte; 
-var gameZ: byte;
+
+var gameCoord: Vector3;
 	
 var count: short;
 var grid: byte;
@@ -23,176 +21,176 @@ function Awake() {//give cell game coordinates & rotation
 	cellPosition = transform.position;
 	GameCoord(cellPosition);
 	
-	name="Cell - ("+gameX+","+gameY+","+gameZ+")";
-	CellRotate(gameX,gameY,gameZ);
+	name="Cell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
+	CellRotate(gameCoord);
 	fightingstart.cells_labeled+=1;	
 }
 
-function GameCoord(position:Vector3){//gameXYZ based on transform.position
-	gameX=(position.x+count)/grid;
-	gameY=(position.y+count)/grid;
-	gameZ=(position.z+count)/grid;
+function GameCoord(position:Vector3){//gameCoord.xYZ based on transform.position
+	gameCoord.x=(position.x+count)/grid;
+	gameCoord.y=(position.y+count)/grid;
+	gameCoord.z=(position.z+count)/grid;
 }
 
-function CellRotate(gameX:int,gameY:int,gameZ:int){//shell instantiation + cell rotation
+function CellRotate(gameCoord: Vector3){//shell instantiation + cell rotation
 	//assign cell orientations (eulerAngles rotates Z, then X, then Y)
 	//back face
-	if (gameZ==count && (gameY!=count && gameY!=0) && (gameX!=count && gameX!=0)){
+	if (gameCoord.z==count && (gameCoord.y!=count && gameCoord.y!=0) && (gameCoord.x!=count && gameCoord.x!=0)){
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,0);}
 	//front face
-	if (gameZ==0 && (gameY!=count && gameY!=0) && (gameX!=count && gameX!=0))	{
+	if (gameCoord.z==0 && (gameCoord.y!=count && gameCoord.y!=0) && (gameCoord.x!=count && gameCoord.x!=0))	{
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(180,0,0);}
 	//bottom face
-	if (gameY==0 && (gameX!=count && gameX!=0) && (gameZ!=count && gameZ!=0))	{
+	if (gameCoord.y==0 && (gameCoord.x!=count && gameCoord.x!=0) && (gameCoord.z!=count && gameCoord.z!=0))	{
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(90,0,0);}
 	//top face
-	if (gameY==count && (gameX!=count && gameX!=0) && (gameZ!=count && gameZ!=0)){
+	if (gameCoord.y==count && (gameCoord.x!=count && gameCoord.x!=0) && (gameCoord.z!=count && gameCoord.z!=0)){
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(270,0,0);}
 	//left face
-	if (gameX==0 && (gameY!=count && gameY!=0) && (gameZ!=count && gameZ!=0))	{
+	if (gameCoord.x==0 && (gameCoord.y!=count && gameCoord.y!=0) && (gameCoord.z!=count && gameCoord.z!=0))	{
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,270,0);}
 	//right face
-	if (gameX==count && (gameY!=count && gameY!=0) && (gameZ!=count && gameZ!=0)){
+	if (gameCoord.x==count && (gameCoord.y!=count && gameCoord.y!=0) && (gameCoord.z!=count && gameCoord.z!=0)){
 		shell=Instantiate(shellprefabs[0],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,90,0);}
 
 	//top-back edge
-	if ((gameY==count)&&(gameZ==count)&&((gameX!=0)||(gameX!=count))){
+	if ((gameCoord.y==count)&&(gameCoord.z==count)&&((gameCoord.x!=0)||(gameCoord.x!=count))){
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,0);}
 	//bottom-back edge
-	if ((gameY==0)&&(gameZ==count)&&((gameX!=0)||(gameX!=count)))	{
+	if ((gameCoord.y==0)&&(gameCoord.z==count)&&((gameCoord.x!=0)||(gameCoord.x!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(90,0,0);}
 	//bottom-front edge
-	if ((gameY==0)&&(gameZ==0)&&((gameX!=0)||(gameX!=count)))		{
+	if ((gameCoord.y==0)&&(gameCoord.z==0)&&((gameCoord.x!=0)||(gameCoord.x!=count)))		{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(180,0,0);}
 	//top-front edge
-	if ((gameY==count)&&(gameZ==0)&&((gameX!=0)||(gameX!=count)))	{
+	if ((gameCoord.y==count)&&(gameCoord.z==0)&&((gameCoord.x!=0)||(gameCoord.x!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(270,0,0);}
 	//top-right edge
-	if ((gameX==count)&&(gameY==count)&&((gameZ!=0)||(gameZ!=count))){
+	if ((gameCoord.x==count)&&(gameCoord.y==count)&&((gameCoord.z!=0)||(gameCoord.z!=count))){
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,90,0);}
 	//top-left edge
-	if ((gameX==0)&&(gameY==count)&&((gameZ!=0)||(gameZ!=count)))	{
+	if ((gameCoord.x==0)&&(gameCoord.y==count)&&((gameCoord.z!=0)||(gameCoord.z!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,270,0);}
 	//bottom-right edge
-	if ((gameY==0)&&(gameX==count)&&((gameZ!=0)||(gameZ!=count)))	{
+	if ((gameCoord.y==0)&&(gameCoord.x==count)&&((gameCoord.z!=0)||(gameCoord.z!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(90,0,270);}
 	//bottom-left edge	
-	if ((gameY==0)&&(gameX==0)&&((gameZ!=0)||(gameZ!=count)))		{
+	if ((gameCoord.y==0)&&(gameCoord.x==0)&&((gameCoord.z!=0)||(gameCoord.z!=count)))		{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(90,180,270);}
 	//front-left edge
-	if ((gameX==0)&&(gameZ==0)&&((gameY!=0)||(gameY!=count)))		{
+	if ((gameCoord.x==0)&&(gameCoord.z==0)&&((gameCoord.y!=0)||(gameCoord.y!=count)))		{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,270,90);}
 	//front-right edge
-	if ((gameX==count)&&(gameZ==0)&&((gameY!=0)||(gameY!=count)))	{
+	if ((gameCoord.x==count)&&(gameCoord.z==0)&&((gameCoord.y!=0)||(gameCoord.y!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,90,270);}
 	//back-right edge
-	if ((gameX==count)&&(gameZ==count)&&((gameY!=0)||(gameY!=count))){
+	if ((gameCoord.x==count)&&(gameCoord.z==count)&&((gameCoord.y!=0)||(gameCoord.y!=count))){
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,270);}
 	//back-left edge
-	if ((gameX==0)&&(gameZ==count)&&((gameY!=0)||(gameY!=count)))	{
+	if ((gameCoord.x==0)&&(gameCoord.z==count)&&((gameCoord.y!=0)||(gameCoord.y!=count)))	{
 		shell=Instantiate(shellprefabs[1],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,90);}
 	
 	//back-top-left corner
-	if((gameX==0)&&(gameY==count)&&(gameZ==count)){
+	if((gameCoord.x==0)&&(gameCoord.y==count)&&(gameCoord.z==count)){
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,0);}
 	//front-bottom-left corner
-	if((gameX==0)&&(gameY==0)&&(gameZ==0))		{
+	if((gameCoord.x==0)&&(gameCoord.y==0)&&(gameCoord.z==0))		{
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(180,0,0);}
 	//front-bottom-right corner
-	if((gameX==count)&&(gameY==0)&&(gameZ==0))	{
+	if((gameCoord.x==count)&&(gameCoord.y==0)&&(gameCoord.z==0))	{
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,90,180);}
 	//front-top-left corner
-	if((gameX==0)&&(gameY==count)&&(gameZ==0))	{
+	if((gameCoord.x==0)&&(gameCoord.y==count)&&(gameCoord.z==0))	{
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,270,0);}
 	//front-top-right corner
-	if((gameX==count)&&(gameY==count)&&(gameZ==0)){
+	if((gameCoord.x==count)&&(gameCoord.y==count)&&(gameCoord.z==0)){
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,180,0);}
 	//back-bottom-left corner
-	if((gameX==0)&&(gameY==0)&&(gameZ==count))	{
+	if((gameCoord.x==0)&&(gameCoord.y==0)&&(gameCoord.z==count))	{
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(90,0,0);}
 	//back-bottom-right corner
-	if((gameX==count)&&(gameY==0)&&(gameZ==count)){
+	if((gameCoord.x==count)&&(gameCoord.y==0)&&(gameCoord.z==count)){
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,0,180);}
 	//back-top-right corner
-	if((gameX==count)&&(gameY==count)&&(gameZ==count)){
+	if((gameCoord.x==count)&&(gameCoord.y==count)&&(gameCoord.z==count)){
 		shell=Instantiate(shellprefabs[2],cellPosition,Quaternion.identity);
 		shell.transform.parent=transform;
-		shell.name="Shell - ("+gameX+","+gameY+","+gameZ+")";
+		shell.name="Shell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 		transform.eulerAngles = Vector3(0,90,0);}
 }
 
@@ -204,23 +202,23 @@ var celllist: GameObject[];
 
 function Update () {//update texture if legal / check if cell selected
 	//face
-	if (((gameX==0||gameX==count) && (gameY!=0&&gameY!=count) && (gameZ!=0&&gameZ!=count))||
-		((gameY==0||gameY==count) && (gameX!=0&&gameX!=count) && (gameZ!=0&&gameZ!=count))||
-		((gameZ==0||gameZ==count) && (gameY!=0&&gameY!=count) && (gameX!=0&&gameX!=count))){
+	if (((gameCoord.x==0||gameCoord.x==count) && (gameCoord.y!=0&&gameCoord.y!=count) && (gameCoord.z!=0&&gameCoord.z!=count))||
+		((gameCoord.y==0||gameCoord.y==count) && (gameCoord.x!=0&&gameCoord.x!=count) && (gameCoord.z!=0&&gameCoord.z!=count))||
+		((gameCoord.z==0||gameCoord.z==count) && (gameCoord.y!=0&&gameCoord.y!=count) && (gameCoord.x!=0&&gameCoord.x!=count))){
 			if (legal==false){renderer.material.SetTexture("_MainTex",cell_tex[0]);}
 			if (legal==true){renderer.material.SetTexture("_MainTex",cell_tex[1]);}
 	}
 	
 	//edge
-	if (((gameX==0||gameX==count) && (gameY==0||gameY==count) && (gameZ!=0&&gameZ!=count))||
-		((gameX==0||gameX==count) && (gameZ==0||gameZ==count) && (gameY!=0&&gameY!=count))||
-		((gameZ==0||gameZ==count) && (gameY==0||gameY==count) && (gameX!=0&&gameX!=count))){
+	if (((gameCoord.x==0||gameCoord.x==count) && (gameCoord.y==0||gameCoord.y==count) && (gameCoord.z!=0&&gameCoord.z!=count))||
+		((gameCoord.x==0||gameCoord.x==count) && (gameCoord.z==0||gameCoord.z==count) && (gameCoord.y!=0&&gameCoord.y!=count))||
+		((gameCoord.z==0||gameCoord.z==count) && (gameCoord.y==0||gameCoord.y==count) && (gameCoord.x!=0&&gameCoord.x!=count))){
 			if (legal==false){renderer.material.SetTexture("_MainTex",cell_tex[2]);}
 			if (legal==true){renderer.material.SetTexture("_MainTex",cell_tex[3]);}
 	}
 
 	//corner
-	if ((gameX==0||gameX==count)&&(gameY==0||gameY==count)&&(gameZ==0||gameZ==count)){
+	if ((gameCoord.x==0||gameCoord.x==count)&&(gameCoord.y==0||gameCoord.y==count)&&(gameCoord.z==0||gameCoord.z==count)){
 		if (legal==false){renderer.material.SetTexture("_MainTex",cell_tex[4]);}
 		if (legal==true){renderer.material.SetTexture("_MainTex",cell_tex[5]);}
 	}
@@ -243,9 +241,9 @@ function OnTriggerStay(object:Collider){//if unit, obstacle or spawnnode is in c
 		
 		//set unit cell data
 		objectstats.mycell=gameObject;
-		objectstats.gameX=gameX;
-		objectstats.gameY=gameY;
-		objectstats.gameZ=gameZ;
+		objectstats.gameCoord.x=gameCoord.x;
+		objectstats.gameCoord.y=gameCoord.y;
+		objectstats.gameCoord.z=gameCoord.z;
 
 		//unit
 		if (objectstats.mob){
@@ -275,12 +273,12 @@ function OnTriggerStay(object:Collider){//if unit, obstacle or spawnnode is in c
 
 function OnTriggerEnter(object:Collider){//embed units & obstacles in map
 	if (object.GetComponent(ObjectStats)){
-		if (gameX==0){object.transform.position.x-=1;}
-		if (gameX==count){object.transform.position.x+=1;}
-		if (gameY==0){object.transform.position.y-=1;}
-		if (gameY==count){object.transform.position.y+=1;}
-		if (gameZ==0){object.transform.position.z-=1;}
-		if (gameZ==count){object.transform.position.z+=1;}
+		if (gameCoord.x==0){object.transform.position.x-=1;}
+		if (gameCoord.x==count){object.transform.position.x+=1;}
+		if (gameCoord.y==0){object.transform.position.y-=1;}
+		if (gameCoord.y==count){object.transform.position.y+=1;}
+		if (gameCoord.z==0){object.transform.position.z-=1;}
+		if (gameCoord.z==count){object.transform.position.z+=1;}
 	}
 }
 

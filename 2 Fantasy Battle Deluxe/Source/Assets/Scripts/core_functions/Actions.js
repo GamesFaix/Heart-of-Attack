@@ -26,149 +26,154 @@ function OnEnable(){
 
 //movement
 function A100010(unit: GameObject, rng: float){//serp GND
-	if(targeting.T111(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.MovSerpGND(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
 	yield;
 }
 function A100011(unit: GameObject, rng: float){//serp TRM
-	if(targeting.T122(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.MovSerpTRM(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
-	effects.E205(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
+	effects.ObjTRM(unit,targeting.targetcell);
 	yield;
 }
 function A100012(unit: GameObject, rng: float){//serp FLY
-	if(targeting.T144(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.MovSerpFLY(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
 	yield;
 }
 function A100014(unit: GameObject, rng: float){//lin GND
-	if(targeting.T211(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.MovLinGND(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
 	yield;
 }				
 function A100015(unit: GameObject, rng: float){//lin TRM
-	if(targeting.T222(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;	
+	if(targeting.MovLinTRM(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
-	effects.E205(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
+	effects.ObjTRM(unit,targeting.targetcell);
 	yield;
 }				
 function A100016(unit: GameObject, rng: float){//lin FLY
-	if(targeting.T244(rng, unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.MovLinFLY(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E202(unit,targeting.targetcell);
+	effects.ObjMove(unit,targeting.targetcell);
 	yield;
 }
 //focus
 function A100020(unit: GameObject, mag: float){//focus
-	Debug.Log(unit.GetComponent(ObjectStats).fp);
-	effects.E305(unit,mag);
-	Debug.Log(unit.GetComponent(ObjectStats).fp);
+	effects.StatFP(unit,mag);
 	yield;
 }				
 //attack
 function A100030(unit: GameObject, rng: float, mag: float){//serp - normal damage
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	var cell: GameObject = unit.GetComponent(ObjectStats).mycell;
+	if(targeting.AtkSerp(rng, cell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	yield;
 }					
 function A100031(unit: GameObject, rng: float, mag: float){//lin - normal damage
-	if(targeting.T235(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkLin(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	yield;
 }				
 function A100032(unit: GameObject, rng: float, mag: float, dec: float){//rage - attack and damage self
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkSerp(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
-		effects.E300(unit,dec);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
+		effects.StatHP(unit,dec);
 	}
 	yield;
 }				
 function A100033(unit: GameObject, rng: float, mag: float){//leech life
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkSerp(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
 		var targetstats=targeting.targetobject.GetComponent(ObjectStats);
 		var preLeech=targetstats.hp;
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 		var hpChange=preLeech-targetstats.hp;
-		if (hpChange>0){effects.E300(unit,hpChange);}
+		if (hpChange>0){effects.StatHP(unit,hpChange);}
 	}
 	yield;
 }				
 function A100034(unit: GameObject, rng: float, mag: float, dec: float, rad: float){//serp - psn damaga
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkSerp(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E103(unit,mag,dec,rad,targeting.targetobject);
+		effects.DmgPSN(unit,mag,dec,rad,targeting.targetobject);
 	}
 	yield;
 }
 function A100035(unit: GameObject, rng: float, mag: float, rad: float){//serp - elc damage
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkSerp(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E104(unit,mag,rad,targeting.targetobject);
+		effects.DmgELC(unit,mag,rad,targeting.targetobject);
 	}
 	yield;
 }//unit creation
 function A100036(unit: GameObject, rng: float, mag: float){//arc normal
-	if(targeting.T333(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkArc(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	yield;
 
@@ -176,28 +181,28 @@ function A100036(unit: GameObject, rng: float, mag: float){//arc normal
 
 //create
 function A100071(unit: GameObject, mag: float){//create unit GND
-	if(targeting.T111(1, unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.MovSerpGND(1, unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E200(unit,mag,targeting.targetcell);
+	effects.ObjCreate(unit,mag,targeting.targetcell);
 	yield;
 }		
 function A100072(unit: GameObject, mag: float){//create unit TRM
-	if(targeting.T122(1, unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.MovSerpTRM(1, unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
-	effects.E200(unit,mag,targeting.targetcell);
-	effects.E205(targeting.targetobject,targeting.targetcell);
+	effects.ObjCreate(unit,mag,targeting.targetcell);
+	effects.ObjTRM(targeting.targetobject,targeting.targetcell);
 	yield;
 }
 function A100073(unit: GameObject, mag: float){//create unit FLY
-	if(targeting.T144(1, unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.MovSerpFLY(1, unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
-	effects.E200(unit,mag,targeting.targetcell);
+	effects.ObjCreate(unit,mag,targeting.targetcell);
 	yield;
 }
 
@@ -224,7 +229,7 @@ function A101251(unit: GameObject){//fortify shield - all unit not just friendli
 		var i: short;
 		for (i=0; i<unitlist.length; i++){
 			var otherstats=unitlist[i].GetComponent(ObjectStats);
-			if (targeting.IsAdjacent(unitstats.mycell,otherstats.mycell)==true
+			if (targeting.Adjacent(unitstats.mycell,otherstats.mycell)==true
 			&& unit!=unitlist[i]){
 				otherstats.def++;
 			}
@@ -243,11 +248,11 @@ function A101351(unit: GameObject){//stockpile
 }		
 //satellite
 function A101481(unit: GameObject){//create sentinel + shield
-	if(targeting.T111(1, unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.MovSerpGND(1, unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
-	effects.E200(unit,1012,targeting.targetcell);
+	effects.ObjCreate(unit,1012,targeting.targetcell);
 	effects.newobject.GetComponent(ObjectStats).mycell=targeting.targetcell;
 	yield;
 }
@@ -255,14 +260,14 @@ function A101481(unit: GameObject){//create sentinel + shield
 /*
 function A102131(unit: GameObject, rng, mag, dec, crz, rad){//grenade
 	var unitstats=unit.GetComponent(ObjectStats);
-	if(targeting.T333(unit,rng,unitstats.mycell)==true){
+	if(targeting.AtkArc(unit,rng,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	yield;
 }	*/	
@@ -289,7 +294,7 @@ function A102241(){//lay mine
 						phase++;}
 					if (targetcell) {phase+=1;}
 					if (phase==3){
-						effect.E200(2021,targetcell);
+						effect.ObjCreate(2021,targetcell);
 						newob.GetComponent(ObjectStats).mycell=targetcell;
 						phase++;}
 					if (phase==4){
@@ -343,20 +348,20 @@ function A102461(unit: GameObject){//mode flip
 //phoenix ashes
 function A203110(unit: GameObject){//arise
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	yield effects.E206(unit,1032);
+	yield effects.ObjEvo(unit,1032);
 	actionCoord.Mlog("Player"+unitstats.owner+"'s Phoenix arose from it's ashes.");
 }
 //mournking
 function A103131(unit: GameObject, rng: float, mag: float){//morningstar
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T135(rng,unit.GetComponent(ObjectStats).mycell)==true){
+	if(targeting.AtkSerp(rng,unit.GetComponent(ObjectStats).mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	unitstats.actNums[3,eRng]=1;
 	yield;
@@ -409,7 +414,7 @@ function A103461(unit: GameObject){//mode flip
 //grizzly elder				
 function A104141(unit: GameObject){//conjure terrain
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T111(1, unitstats.mycell)==true){
+	if(targeting.MovSerpGND(1, unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
@@ -417,37 +422,37 @@ function A104141(unit: GameObject){//conjure terrain
 	var mag: float;
 	if (terrain==0){mag=3301;}//tree
 	if (terrain==1){mag=3302;}//boulder
-	yield effects.E200(unit,mag,targeting.targetcell);
+	yield effects.ObjCreate(unit,mag,targeting.targetcell);
 	actionCoord.Mlog("Player"+unitstats.owner+"'s Grizzly Elder conjured a "+effects.newobject.GetComponent(ObjectStats).objname);
 	yield;
 }				
 function A104151(unit: GameObject, mag: float){//burial
 	var unitstats=unit.GetComponent(ObjectStats);
-	if(targeting.T155(1,unitstats.mycell)==true){
+	if(targeting.CorpseSerp(1,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {
 		actionCoord.Refund(4,"No corpses.");
 		actionCoord.ResetAction();
 	}
-	targeting.T001(targeting.targetcell);
+	targeting.AutoChooseCorpse(targeting.targetcell);
 	yield targeting.WaitForTargetobject();
 	actionCoord.Mlog("Corpse buried.");
 	targeting.targetobject.GetComponent(ObjectStats).Die();
-	effects.E300(unit,mag);
+	effects.StatHP(unit,mag);
 	yield;
 }
 //meta-terrainean
 function A104341(unit: GameObject, mag: float){//consume terrain
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T165(1,unitstats.mycell)==true){
+	if(targeting.DestSerp(1,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {
 		actionCoord.Refund(4,"No obstacles.");
 		actionCoord.ResetAction();
 	}
-	targeting.T002(targeting.targetcell);
+	targeting.AutoChooseDest(targeting.targetcell);
 	yield targeting.WaitForTargetobject();
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
 	actionCoord.Mlog(targetstats.objname+" consumed.");
@@ -464,7 +469,7 @@ function A104341(unit: GameObject, mag: float){//consume terrain
 		unitstats.sprite=Resources.Load("thumbs/thumb1043C") as Texture2D;
 	}
 	targetstats.Die();
-	effects.E300(unit,mag);
+	effects.StatHP(unit,mag);
 	yield;
 }
 //yeti
@@ -481,12 +486,12 @@ function A104451(unit: GameObject){//aural discharge
 		var j: short;
 		for (j=0; j<unitlist.length; j++){
 			var otherstats: ObjectStats = unitlist[j].GetComponent(ObjectStats);
-			if (targeting.IsAdjacent(otherstats.mycell,unitstats.mycell)==true
+			if (targeting.Adjacent(otherstats.mycell,unitstats.mycell)==true
 			&& unitstats.owner!=otherstats.owner){
-				effects.E300(unitlist[j],(0-dmg));
+				effects.StatHP(unitlist[j],(0-dmg));
 			}
 		}
-		effects.E300(teammates[i],(0-3));
+		effects.StatHP(teammates[i],(0-3));
 	}
 	yield;
 }
@@ -509,16 +514,16 @@ function A104461(unit: GameObject){//torch of thaw
 }
 function A104491(unit: GameObject){//create golem
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T165(1,unitstats.mycell)==true){
+	if(targeting.DestSerp(1,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {
 		actionCoord.Refund(4,"No obstacles.");
 		actionCoord.ResetAction();
 	}
-	targeting.T002(targeting.targetcell);
+	targeting.AutoChooseDest(targeting.targetcell);
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
-	yield effects.E200(unit,1043,targeting.targetcell);
+	yield effects.ObjCreate(unit,1043,targeting.targetcell);
 	var newstats: ObjectStats = effects.newobject.GetComponent(ObjectStats);
 	if (targetstats.objno==3301){
 		newstats.thumb=Resources.Load("thumbs/thumb1043B") as Texture2D;
@@ -557,10 +562,10 @@ function A105241(unit: GameObject){//patience
 	var i: short;
 	for (i=0; i<unitlist.length; i++){
 		var otherstats: ObjectStats = unitlist[i].GetComponent(ObjectStats);
-		if (targeting.IsAdjacent(unitstats.mycell,otherstats.mycell)==true
+		if (targeting.Adjacent(unitstats.mycell,otherstats.mycell)==true
 		&& unit!=unitlist[i]
 		&& unitstats.owner==otherstats.owner){
-			effects.E300(unitlist[i],6);
+			effects.StatHP(unitlist[i],6);
 		}
 	}
 	yield;
@@ -568,7 +573,7 @@ function A105241(unit: GameObject){//patience
 function A105251(unit: GameObject, mag: float){//open portal gate
 	var unitstats: ObjectStats =  unit.GetComponent(ObjectStats);
 	//find cell
-	if(targeting.T111(1, unitstats.mycell)==true){
+	if(targeting.MovSerpGND(1, unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoMoves();}
@@ -583,7 +588,7 @@ function A105251(unit: GameObject, mag: float){//open portal gate
 		}
 	}
 	//create new gate
-	effects.E200(unit,2051,targeting.targetcell);
+	effects.ObjCreate(unit,2051,targeting.targetcell);
 	var gate: GameObject = effects.newobject;
 	gatestats = gate.GetComponent(ObjectStats);
 	if (mag==0){
@@ -607,14 +612,14 @@ function A105251(unit: GameObject, mag: float){//open portal gate
 //chieftomaton
 function A105331(unit: GameObject, rng: float, mag: float, rad: float){//time-a-hawk
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T235(rng,unitstats.mycell)==true){
+	if(targeting.AtkLin(rng,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E100(unit,mag,targeting.targetobject);
+		effects.DmgNRM(unit,mag,targeting.targetobject);
 	}
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
 	if (targetstats.fp>0){
@@ -627,7 +632,7 @@ function A105331(unit: GameObject, rng: float, mag: float, rad: float){//time-a-
 function A106041(unit: GameObject, mag: float){//evolve
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var owner: byte = unitstats.owner;
-	yield effects.E206(unit,mag);
+	yield effects.ObjEvo(unit,mag);
 	var newstats: ObjectStats = effects.newobject.GetComponent(ObjectStats);
 	actionCoord.Mlog("Player"+owner+"'s larva evolved into a(n) "+newstats.objname+".");
 	yield;
@@ -635,14 +640,14 @@ function A106041(unit: GameObject, mag: float){//evolve
 //beessassin
 function A106141(unit: GameObject, rng: float, mag: float, dec: float, rad: float){//death sting
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if(targeting.T135(rng,unitstats.mycell)==true){
+	if(targeting.AtkSerp(rng,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {targeting.NoTargets();}
 	
-	if(targeting.T000(targeting.targetcell)==true){
+	if(targeting.ChooseUnit(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
-		effects.E103(unit,mag,dec,rad,targeting.targetobject);
+		effects.DmgPSN(unit,mag,dec,rad,targeting.targetobject);
 	}
 	unitstats.Die();
 	yield;
@@ -650,19 +655,19 @@ function A106141(unit: GameObject, rng: float, mag: float, dec: float, rad: floa
 //corpse fiend
 function A108141(unit: GameObject, mag: float){//cannibalize
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	if (targeting.T155(1,unitstats.mycell)==true){
+	if (targeting.CorpseSerp(1,unitstats.mycell)==true){
 		yield targeting.WaitForTargetcell();
 	}
 	else {
 		actionCoord.Refund(4,"No corpses.");
 		actionCoord.ResetAction();
 	}
-	if (targeting.T001(targeting.targetcell)==true){
+	if (targeting.AutoChooseCorpse(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
 		actionCoord.Mlog("Corpse consumed.");
 		targeting.targetobject.GetComponent(ObjectStats).Die();
 		unitstats.mhp+=mag;
-		effects.E300(unit,mag);
+		effects.StatHP(unit,mag);
 		unitstats.actNums[3,eMag]=unitstats.actNums[3,eMag]+2;
 	}
 	yield;
@@ -778,7 +783,7 @@ function A108341(unit: GameObject){//mode flip
 							if (targetobstacle.GetComponent(ObjectStats).objno==3401){Destroy(targetobstacle);}
 							Mlog(targetobstacle.GetComponent(ObjectStats).objame+" destroyed.");
 						}
-						effect.E200(1081,targetcell);
+						effect.ObjCreate(1081,targetcell);
 						actionCoord.ResetAction();
 					}
 				}*/
