@@ -21,6 +21,10 @@ This was our initial deep dive into Unity. The maps were around the surface of a
 
 At the time, versions of this project were labelled by the date they were archived, like `07-01-2012`.
 
+#### v2.03
+
+<img src="Screenshots/v2-03_1.jpg" alt="v2.03"/>
+
 ---
 
 ### v3.0 Fantasy Battle Cardboard (Aug 2013 - Dec 2013)
@@ -38,12 +42,12 @@ Since this app started as just the "Queue" in the game, each version was labelle
 <img src="3-0%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/01-1%20Katandroid.png" width="300"/>
 <img src="3-0%20Fantasy%20Battle%20Cardboard/Cards/Card%20Image%20Renders/05-H%20Brass%20Heart%20of%20Attack.png" width="300"/>
 
-<img src="Screenshots/v1-1.jpg" width="300" alt="v3.01"/>
-<img src="Screenshots/v1-2.jpg" width="300" alt="v3.01"/>
+<img src="Screenshots/v3-01_1.jpg" width="300" alt="v3.01"/>
+<img src="Screenshots/v3-01_2.jpg" width="300" alt="v3.01"/>
 
 #### v3.09
 
-<img src="Screenshots/v9-1.jpg" alt="v3.09"/>
+<img src="Screenshots/v3-09_1.jpg" alt="v3.09"/>
 
 ---
 
@@ -57,13 +61,13 @@ This stage also added a separate menu screen before the game itself. (This was a
 
 #### v3.17
 
-<img src="Screenshots/v17-2.jpg" width="400" alt="v3.17"/>
+<img src="Screenshots/v3-17_2.jpg" width="400" alt="v3.17"/>
 
-<img src="Screenshots/v17-4.gif" alt="v3.17"/>
+<img src="Screenshots/v3-17_4.gif" alt="v3.17"/>
 
 #### v3.23
 
-<img src="Screenshots/v23-1.gif" alt="v3.23"/>
+<img src="Screenshots/v3-23_1.gif" alt="v3.23"/>
 
 ---
 
@@ -77,11 +81,11 @@ Some time during this phase we picked the name Heart of Attack, and beta testing
 
 #### v3.31
 
-<img src="Screenshots/v31-1.gif" alt="v3.31"/>
+<img src="Screenshots/v3-31_1.gif" alt="v3.31"/>
 
 #### v3.37
 
-<img src="Screenshots/v37-1.gif" alt="v3.37"/>
+<img src="Screenshots/v3-37_1.gif" alt="v3.37"/>
 
 ---
 
@@ -114,9 +118,9 @@ I believe at some point much later I started to try a new implementation in F#, 
 |Version|Tools|
 |-------|-----|
 | v1 | YoYo GameMaker 8, GML |
-| v2 (2012) | Unity3D 3.4.2, UnityScript |
-| v2 (2013) - v3.06 | Unity3D 3.4.2, C# |
+| v2.00 - v2.14 | Unity3D 3.4.2, UnityScript |
+| v2.20 - v3.06 | Unity3D 3.4.2, C# |
 | v3.07 | Unity3D 4.0.1, C# |
 | v3.08 | Unity3D 4.2.2, C# |
-| v3.09 - v5 | Unity3D 4.3.1, C# |
+| v3.09 - v5.12 | Unity3D 4.3.1, C# |
 | V6 | F# |

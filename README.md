@@ -2,7 +2,7 @@
 
 Heart of Attack is a multi-player, turn-based, strategy computer game. It was developed from 2011 to 2014, but never completed or released.
 
-<img src="Screenshots/v37-1.gif" alt="v3.37"/>
+<img src="Screenshots/v3-37_1.gif" alt="v3.37"/>
 
 ---
 
