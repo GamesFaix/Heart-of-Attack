@@ -2,7 +2,7 @@
 
 var actions: Actions;
 var actionCoord: ActionCoordinator;
-var fightingstart: FightingStart;
+var createWorld: CreateWorld;
 
 var count: short;
 var grid: byte;
@@ -15,9 +15,9 @@ var targetobject: GameObject;
 function Awake(){
 	actions=gameObject.GetComponent(Actions);
 	actionCoord=gameObject.GetComponent(ActionCoordinator);
-	fightingstart=GameObject.Find("GameIndexPrefab").GetComponent(FightingStart);
-	count=fightingstart.count;
-	grid=fightingstart.grid;
+	createWorld=GameObject.Find("GameIndexPrefab").GetComponent(CreateWorld);
+	count=createWorld.count;
+	grid=createWorld.grid;
 	celllist=GameObject.FindGameObjectsWithTag("cell");
 	GameObject.Find("GUIPrefab").GetComponent(GUI_Game).targeting=this;
 }

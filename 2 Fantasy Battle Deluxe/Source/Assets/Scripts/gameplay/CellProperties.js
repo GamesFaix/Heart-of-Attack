@@ -14,24 +14,22 @@ var shell: GameObject;
 function Awake() {//give cell game coordinates & rotation
 	//retrieve count & grid from map_properties
 	gameindexprefab=GameObject.Find("GameIndexPrefab");
-	var fightingstart: FightingStart = gameindexprefab.GetComponent(FightingStart);
-	count=fightingstart.count;
-	grid=fightingstart.grid;
+	var createWorld: CreateWorld = gameindexprefab.GetComponent(CreateWorld);
+	count=createWorld.count;
+	grid=createWorld.grid;
 	//find physical space position of cell
 	cellPosition = transform.position;
 	GameCoord(cellPosition);
 	
 	name="Cell - ("+gameCoord.x+","+gameCoord.y+","+gameCoord.z+")";
 	CellRotate(gameCoord);
-	fightingstart.cells_labeled+=1;	
+	createWorld.cells_labeled+=1;	
 }
-
 function GameCoord(position:Vector3){//gameCoord.xYZ based on transform.position
 	gameCoord.x=(position.x+count)/grid;
 	gameCoord.y=(position.y+count)/grid;
 	gameCoord.z=(position.z+count)/grid;
 }
-
 function CellRotate(gameCoord: Vector3){//shell instantiation + cell rotation
 	//assign cell orientations (eulerAngles rotates Z, then X, then Y)
 	//back face

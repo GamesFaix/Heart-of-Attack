@@ -165,11 +165,11 @@ function OnGUI () {
 	
 	//battle button
 	if(GUI.Button(Rect(column2,startY+labelheight*7+btnheight*2,btnwidth,btnheight*2),"FIGHTING\nSTART")){
-		gameindexprefab.GetComponent(FightingStart).FightingStart();
+		gameindexprefab.GetComponent(CreateWorld).InitializePlay();
 	}
 	//debug button
 	if(GUI.Button(Rect(column2,startY+labelheight*7+btnheight*2+btnheight*2,btnwidth,btnheight*2),"DEBUG\nSTART")){
-		gameindexprefab.GetComponent(FightingStart).DebugStart();
+		gameindexprefab.GetComponent(CreateWorld).InitializeDebug();
 	}
 	
 	

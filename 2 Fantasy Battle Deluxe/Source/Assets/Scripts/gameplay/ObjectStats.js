@@ -60,13 +60,13 @@ var gameindexprefab: GameObject;
 var gui_game: GUI_Game;
 var playmanager: GameObject;
 var actionCoord: ActionCoordinator;
-var identifier: Identifier1;
+var identifier: Identifier;
 
 function Awake(){
 	gameindexprefab=GameObject.Find("GameIndexPrefab");
 	playmanager=GameObject.Find("PlayManager");
 	actionCoord=playmanager.GetComponent(ActionCoordinator);
-	identifier=playmanager.GetComponent(Identifier1);
+	identifier=playmanager.GetComponent(Identifier);
 	gui_game=GameObject.Find("GUIPrefab").GetComponent(GUI_Game);
 }
 function Start(){

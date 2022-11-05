@@ -34,7 +34,7 @@ function Awake(){
 	queue=gameObject.GetComponent(QueueScript);
 }
 ///
-function FightingStart () {
+function InitializePlay() {
 	gui_master.loading=true;
 	gui_menu.loadbox+="\n\tCreating map...";
 	map=Instantiate(mapPrefab,transform.position,Quaternion.identity);
@@ -64,6 +64,24 @@ function FightingStart () {
 	gui_master.loading=false;
 	gui_menu.loadbox="Loading...";
 	gui_master.view="game";	
+}
+function InitializeDebug(){
+	gui_master.loading=true;
+	gui_menu.loadbox+="\n\tLoading debug mode...";
+	map=Instantiate(mapPrefab,transform.position,Quaternion.identity);
+
+	yield DebugMap();
+	yield CellGenerator();
+	yield CellChecker();
+	yield CreatePlayManager();
+	yield DebugHeroes();
+	yield PrepareFirstUnit();
+	yield CreateObstacleMaster();
+	yield obstacleMaster.GetComponent(ObstacleGenerator).ObstacleGenerator(); //yields to DebugObstacles() if map_id==255
+
+	gui_master.loading=false;
+	gui_menu.loadbox="Loading...";
+	gui_master.view="game";
 }
 ///
 function MapSetup(): IEnumerator{
@@ -125,6 +143,19 @@ function MapSetup(): IEnumerator{
 		Camera.main.orthographicSize=5.5;
 	}
 */
+	yield;
+}
+function DebugMap(): IEnumerator{
+	map_id=255;
+	grid=2;
+	count=6;
+	Camera.main.orthographicSize=5.55;
+	var scaleFactor: float = 0.71;
+	map.transform.localScale=Vector3(scaleFactor,scaleFactor,scaleFactor);
+
+	var terrain: Texture2D = Resources.Load("terrain/turf_grass") as Texture2D;
+	map.renderer.material.SetTexture("_MainTex",terrain);
+
 	yield;
 }
 var cells_labeled: short;
@@ -232,8 +263,6 @@ function CreatePlayManager(): IEnumerator{
 	playManager.name="PlayManager";
 	yield;
 }
-
-
 function HeroSpawner(player: byte): IEnumerator{
 	
 	var hero_numbers: int[]=[0,1014,1024,1034,1044,1054,1064,1074,1084];
@@ -269,63 +298,6 @@ function HeroSpawner(player: byte): IEnumerator{
 		queue.queuelist.Add(hero);						
 	}
 }
-function DestroySpawnZones(): IEnumerator{
-	var	zonelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnzone");
-	for (var i: byte=0; i<zonelist.length; i++){
-		Destroy(zonelist[i]);
-	}
-}
-
-
-function PrepareFirstUnit(): IEnumerator{
-	queue.currentunit=queue.queuelist[0] as GameObject;
-	yield queue.ListShuffle(queue.queuelist as List.<GameObject>);
-	yield queue.Advance();
-	gui_game.View(queue.queuelist[0]);
-	yield;
-}
-
-
-///
-function CreateObstacleMaster(): IEnumerator{
-	obstacleMaster=Instantiate(obstacleMasterPrefab,transform.position,Quaternion.identity);
-	obstacleMaster.name="ObstacleMaster";
-	var identifier = playManager.GetComponent(Identifier1);
-	identifier.obstacleMaster=obstacleMaster;
-	
-}
-///
-function DebugStart(){
-	gui_master.loading=true;
-	gui_menu.loadbox+="\n\tLoading debug mode...";
-	map=Instantiate(mapPrefab,transform.position,Quaternion.identity);
-
-	yield DebugMap();
-	yield CellGenerator();
-	yield CellChecker();
-	yield CreatePlayManager();
-	yield DebugHeroes();
-	yield PrepareFirstUnit();
-	yield CreateObstacleMaster();
-	yield obstacleMaster.GetComponent(ObstacleGenerator).ObstacleGenerator(); //yields to DebugObstacles() if map_id==255
-
-	gui_master.loading=false;
-	gui_menu.loadbox="Loading...";
-	gui_master.view="game";
-}
-function DebugMap(): IEnumerator{
-	map_id=255;
-	grid=2;
-	count=6;
-	Camera.main.orthographicSize=5.55;
-	var scaleFactor: float = 0.71;
-	map.transform.localScale=Vector3(scaleFactor,scaleFactor,scaleFactor);
-
-	var terrain: Texture2D = Resources.Load("terrain/turf_grass") as Texture2D;
-	map.renderer.material.SetTexture("_MainTex",terrain);
-
-	yield;
-}
 function DebugHeroes(): IEnumerator{
 
 	var hero_numbers: int[]=[0,1013,1021,1034,1041,1054,1062,1074,1084];
@@ -357,14 +329,26 @@ function DebugHeroes(): IEnumerator{
 	}
 	yield;
 }
-function CellNumToWorldPoint(gameCoord: Vector3): Vector3 {
-
-	var positionX: int = (gameCoord.x*grid)-count;
-	var positionY: int = (gameCoord.y*grid)-count;
-	var positionZ: int = (gameCoord.z*grid)-count;
+function DestroySpawnZones(): IEnumerator{
+	var	zonelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnzone");
+	for (var i: byte=0; i<zonelist.length; i++){
+		Destroy(zonelist[i]);
+	}
+}
+function PrepareFirstUnit(): IEnumerator{
+	queue.currentunit=queue.queuelist[0] as GameObject;
+	yield queue.ListShuffle(queue.queuelist as List.<GameObject>);
+	yield queue.Advance();
+	gui_game.View(queue.queuelist[0]);
+	yield;
+}
+///
+function CreateObstacleMaster(): IEnumerator{
+	obstacleMaster=Instantiate(obstacleMasterPrefab,transform.position,Quaternion.identity);
+	obstacleMaster.name="ObstacleMaster";
+	var identifier = playManager.GetComponent(Identifier);
+	identifier.obstacleMaster=obstacleMaster;
 	
-	var position: Vector3 =  Vector3(positionX,positionY,positionZ);
-	return position;
 }
 function DebugObstacles(): IEnumerator{
 
@@ -385,4 +369,13 @@ function DebugObstacles(): IEnumerator{
 		obstacle.GetComponent(ObjectStats).objno=obstacles[i];
 	}
 	yield;
+}
+function CellNumToWorldPoint(gameCoord: Vector3): Vector3 {
+
+	var positionX: int = (gameCoord.x*grid)-count;
+	var positionY: int = (gameCoord.y*grid)-count;
+	var positionZ: int = (gameCoord.z*grid)-count;
+	
+	var position: Vector3 =  Vector3(positionX,positionY,positionZ);
+	return position;
 }

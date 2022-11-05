@@ -13,12 +13,12 @@ var node_z: short;
 var x_repeat: byte;
 var y_repeat: byte; 
 var z_repeat: byte;
-var fightingstart: FightingStart;
+var createWorld: CreateWorld;
 
 function Awake(){
-	fightingstart=GameObject.Find("GameIndexPrefab").GetComponent(FightingStart);
-	grid=fightingstart.grid;
-	count=fightingstart.count;
+	createWorld=GameObject.Find("GameIndexPrefab").GetComponent(CreateWorld);
+	grid=createWorld.grid;
+	count=createWorld.count;
 }
 function Start(){
 

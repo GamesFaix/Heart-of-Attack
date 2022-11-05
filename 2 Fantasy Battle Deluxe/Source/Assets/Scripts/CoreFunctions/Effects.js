@@ -255,7 +255,7 @@ function StatFP(unit: GameObject, mag:float){//change fp
 //
 function SendPopUpText(object: GameObject, text: String){
 	var objectStats: ObjectStats = object.GetComponent(ObjectStats);
-	var spriteDisplay: SpriteDisplay1 = objectStats.mySprite.GetComponent(SpriteDisplay1);
+	var spriteDisplay: SpriteDisplay = objectStats.mySprite.GetComponent(SpriteDisplay);
 	spriteDisplay.popUpText=text;
 	spriteDisplay.popUpTime=Time.time;
 }

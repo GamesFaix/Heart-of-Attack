@@ -4,7 +4,7 @@ import System.Collections.Generic;
 
 var celllist: GameObject[];
 var objectPrefab: GameObject;
-var fightingStart: FightingStart;
+var createWorld: CreateWorld;
 var map_id: byte;
 var density: byte;
 var count: byte;
@@ -12,14 +12,14 @@ var count: byte;
 function Awake(){
 	var gameindexprefab: GameObject = GameObject.Find("GameIndexPrefab");
 	celllist= GameObject.FindGameObjectsWithTag("cell");
-	fightingStart=gameindexprefab.GetComponent(FightingStart);
-	map_id=fightingStart.map_id;
+	createWorld=gameindexprefab.GetComponent(CreateWorld);
+	map_id=createWorld.map_id;
 	density=gameindexprefab.GetComponent(GameIndex).density;
-	count=fightingStart.count;
+	count=createWorld.count;
 }
 
 function ObstacleGenerator(): IEnumerator{
-	if (map_id==255){yield fightingStart.DebugObstacles();}//debug mode
+	if (map_id==255){yield createWorld.DebugObstacles();}//debug mode
 
 	if (map_id==1){yield Level1B();}//grass
 	if (map_id==2){yield Level2();}//sand
