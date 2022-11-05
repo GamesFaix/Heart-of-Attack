@@ -5,19 +5,39 @@ var effects: Effects;
 var actionCoord: ActionCoordinator;
 
 //enums
-var eActionName: byte=0;
-var eDesc: byte=1;
-
-var eAction: byte=0;
-var eAp: byte=1;
-var eFp: byte=2;
-var eRng: float=3;
-var eMag: float=4;
-var eDec: byte=5;
-var eRad: byte=6;
-var eCrz: byte=7;
-//
-
+	//core
+static var eHP: byte = 0;	
+static var eMHP: byte = 1;	
+static var eDEF: byte = 2;	
+static var eINIT: byte = 3;	
+static var eCoreAP: byte = 4;	
+static var eCoreFP: byte = 5;	
+static var eMOB: byte = 6;	
+static var eObjno: byte = 7;	
+static var eObclass: byte = 8;	
+static var eOwner: byte = 9;	
+static var eCorpsetype: byte = 10;	
+	//act text
+static var eName: byte = 0;	
+static var eDesc: byte = 1;	
+	//act nums
+static var eAction: byte = 0;	
+static var eActAP: byte = 1;	
+static var eActFP: byte = 2;	
+static var eRNG: byte = 3;	
+static var eMAG: byte = 4;	
+static var eDEC: byte = 5;	
+static var eRAD: byte = 6;	
+static var eCRZ: byte = 7;	
+static var eTAR: byte = 8;	
+static var eDMGType: byte = 9;	
+	//mob
+static var eGND: byte = 1;	
+static var eTRM: byte = 2;	
+static var eFLY: byte = 3;	
+static var eGAS: byte = 4;	
+	
+	
 function OnEnable(){
 	targeting=gameObject.GetComponent(Targeting);
 	effects=gameObject.GetComponent(Effects);
@@ -77,9 +97,7 @@ function A100016(unit: GameObject, rng: float){//lin FLY
 }
 //focus
 function A100020(unit: GameObject, mag: float){//focus
-	Debug.Log(unit.GetComponent(ObjectStats).fp);
 	effects.E305(unit,mag);
-	Debug.Log(unit.GetComponent(ObjectStats).fp);
 	yield;
 }				
 //attack
@@ -129,9 +147,9 @@ function A100033(unit: GameObject, rng: float, mag: float){//leech life
 	if(targeting.T000(targeting.targetcell)==true){
 		yield targeting.WaitForTargetobject();
 		var targetstats=targeting.targetobject.GetComponent(ObjectStats);
-		var preLeech=targetstats.hp;
+		var preLeech=targetstats.coreStats[eHP];
 		effects.E100(unit,mag,targeting.targetobject);
-		var hpChange=preLeech-targetstats.hp;
+		var hpChange=preLeech-targetstats.coreStats[eHP];
 		if (hpChange>0){effects.E300(unit,hpChange);}
 	}
 	yield;
@@ -190,9 +208,9 @@ function A100073(unit: GameObject, mag: float){//create unit FLY
 //ninjoid
 function A101141(unit: GameObject){//sprint - reset incomplete
 	var unitstats=unit.GetComponent(ObjectStats);
-	unitstats.actNums[1,eRng]=unitstats.actNums[1,eRng]+4;
+	unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]+4;
 	unitstats.endTimer+=2;
-	actionCoord.Mlog("Player"+unitstats.owner+"'s Ninjoid +4SP ("+unitstats.actNums[1,eRng]+") until end of next turn.");
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Ninjoid +4SP ("+unitstats.actNums[1,eRNG]+") until end of next turn.");
 	yield;
 }
 //sentinel
@@ -212,10 +230,10 @@ function A101251(unit: GameObject){//fortify shield - all unit not just friendli
 			var otherstats=unitlist[i].GetComponent(ObjectStats);
 			if (targeting.IsAdjacent(unitstats.mycell,otherstats.mycell)==true
 			&& unit!=unitlist[i]){
-				otherstats.def++;
+				otherstats.coreStats[eDEF]++;
 			}
 		}
-		actionCoord.Mlog("Player"+unitstats.owner+"'s Sentinel's shield +1DEF ("+shield.GetComponent(SentinelShield).def+").");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Sentinel's shield +1DEF ("+shield.GetComponent(SentinelShield).def+").");
 	}
 	else {actionCoord.Refund(5,"Shield maxed.");}
 	yield;
@@ -224,7 +242,7 @@ function A101251(unit: GameObject){//fortify shield - all unit not just friendli
 function A101351(unit: GameObject){//stockpile
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	unitstats.bombs+=1;
-	actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" +1Bomb ("+unitstats.bombs+").");
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s "+unitstats.objname+" +1Bomb ("+unitstats.bombs+").");
 	yield;
 }		
 //satellite
@@ -257,8 +275,8 @@ function A102141(unit: GameObject){//enhance armor
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	if (unitstats.armor<4){
 		unitstats.armor+=1;
-		unitstats.def+=1;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s Demolitia +1DEF ("+unitstats.def+")");
+		unitstats.coreStats[eDEF]+=1;
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Demolitia +1DEF ("+unitstats.coreStats[eDEF]+")");
 	}
 	else {
 		actionCoord.Refund(4,"Max armor.");
@@ -292,10 +310,10 @@ function A102341(unit: GameObject){//fortify
 		unitstats.armor++;
 		if (unitstats.armor==1){unitstats.sprite=Resources.Load("sprites/sprite1023B") as Texture2D;}
 		if (unitstats.armor==2){unitstats.sprite=Resources.Load("sprites/sprite1023C") as Texture2D;}
-		unitstats.def++;
-		unitstats.actNums[3,eRng]=unitstats.actNums[3,eRng]+1;
-		unitstats.actNums[5,eRng]=unitstats.actNums[5,eRng]+1;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s Panopticlops +1DEF ("+unitstats.def+") / +1RNG (Lob "+unitstats.actNums[3,eRng]+" / Tactical Missile "+unitstats.actNums[5,eRng]+").");
+		unitstats.coreStats[eDEF]++;
+		unitstats.actNums[3,eRNG]=unitstats.actNums[3,eRNG]+1;
+		unitstats.actNums[5,eRNG]=unitstats.actNums[5,eRNG]+1;
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Panopticlops +1DEF ("+unitstats.coreStats[eDEF]+") / +1RNG (Lob "+unitstats.actNums[3,eRNG]+" / Tactical Missile "+unitstats.actNums[5,eRNG]+").");
 	}
 	else {
 		actionCoord.Refund(4,"Max armor.");
@@ -306,20 +324,20 @@ function A102341(unit: GameObject){//fortify
 function A102461(unit: GameObject){//mode flip
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	if(unitstats.morph==0){
-		unitstats.def+=3;
+		unitstats.coreStats[eDEF]+=3;
 		unitstats.actNums[1,eAction]=0;
-		unitstats.actText[6,eActionName]="Tank Mode";
+		unitstats.actText[6,eName]="Tank Mode";
 		unitstats.thumb=Resources.Load("thumbs/thumb1024B") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1024B") as Texture2D;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s RoboTank Fortress +3DEF ("+unitstats.def+") / Immobilized.");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s RoboTank Fortress +3DEF ("+unitstats.coreStats[eDEF]+") / Immobilized.");
 	}
 	if(unitstats.morph==1){
-		unitstats.def-=3;
+		unitstats.coreStats[eDEF]-=3;
 		unitstats.actNums[1,eAction]=100015;
-		unitstats.actText[6,eActionName]="Siege Mode";
+		unitstats.actText[6,eName]="Siege Mode";
 		unitstats.thumb=Resources.Load("thumbs/thumb1024A") as Texture2D;
 		unitstats.sprite=Resources.Load("sprites/sprite1024A") as Texture2D;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s RoboTank Fortress -3DEF ("+unitstats.def+") / Mobilized.");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s RoboTank Fortress -3DEF ("+unitstats.coreStats[eDEF]+") / Mobilized.");
 	}
 	if(unitstats.morph==0){unitstats.morph=1;}
 	else {unitstats.morph=0;}
@@ -330,7 +348,7 @@ function A102461(unit: GameObject){//mode flip
 function A203110(unit: GameObject){//arise
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	yield effects.E206(unit,1032);
-	actionCoord.Mlog("Player"+unitstats.owner+"'s Phoenix arose from it's ashes.");
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Phoenix arose from it's ashes.");
 }
 //mournking
 function A103131(unit: GameObject, rng: float, mag: float){//morningstar
@@ -344,13 +362,13 @@ function A103131(unit: GameObject, rng: float, mag: float){//morningstar
 		yield targeting.WaitForTargetobject();
 		effects.E100(unit,mag,targeting.targetobject);
 	}
-	unitstats.actNums[3,eRng]=1;
+	unitstats.actNums[3,eRNG]=1;
 	yield;
 }
 function A103141(unit: GameObject){//wind up
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	unitstats.actNums[3,eRng]=unitstats.actNums[3,eRng]+1;
-	actionCoord.Mlog("Player"+unitstats.owner+"'s Mournking +1RNG ("+unitstats.actNums[3,eRng]+").");
+	unitstats.actNums[3,eRNG]=unitstats.actNums[3,eRNG]+1;
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Mournking +1RNG ("+unitstats.actNums[3,eRNG]+").");
 	yield;
 }			
 //castle dragon
@@ -361,15 +379,15 @@ function A103461(unit: GameObject){//mode flip
 			actionCoord.Refund(6,"Ground occupied.");
 		}
 		if(targeting.CheckBelow(unit)==true){
-			unitstats.mob=1;
+			unitstats.coreStats[eMOB]=eGND;
 			unitstats.mycell.GetComponent(CellProperties).occB=0;
-			unitstats.def+=3;
+			unitstats.coreStats[eDEF]+=3;
 			unitstats.actNums[1,eAction]=0;
 			unitstats.actNums[5,eAction]=0;
-			unitstats.actText[6,eActionName]="Take Wing";
+			unitstats.actText[6,eName]="Take Wing";
 			unitstats.thumb=Resources.Load("thumbs/thumb1034B") as Texture2D;
 			unitstats.sprite=Resources.Load("thumbs/thumb1034B") as Texture2D;
-			actionCoord.Mlog("Player"+unitstats.owner+"'s Castle Dragon +3DEF ("+unitstats.def+") / Immobilized.");
+			actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Castle Dragon +3DEF ("+unitstats.coreStats[eDEF]+") / Immobilized.");
 			unitstats.morph=1;
 		}
 	}
@@ -378,15 +396,15 @@ function A103461(unit: GameObject){//mode flip
 			actionCoord.Refund(6,"Air occupied.");
 		}
 		if (targeting.CheckAbove(unit)==true){
-			unitstats.mob=3;
+			unitstats.coreStats[eMOB]=eFLY;
 			unitstats.mycell.GetComponent(CellProperties).occA=0;
-			unitstats.def-=3;
+			unitstats.coreStats[eDEF]-=3;
 			unitstats.actNums[1,eAction]=100012;
 			unitstats.actNums[5,eAction]=103451;
-			unitstats.actText[6,eActionName]="Castlize";
+			unitstats.actText[6,eName]="Castlize";
 			unitstats.thumb=Resources.Load("thumbs/thumb1034A") as Texture2D;
 			unitstats.sprite=Resources.Load("thumbs/thumb1034A") as Texture2D;
-			actionCoord.Mlog("Player"+unitstats.owner+"'s Castle Dragon +3DEF ("+unitstats.def+") / Mobilized.");
+			actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Castle Dragon +3DEF ("+unitstats.coreStats[eDEF]+") / Mobilized.");
 			unitstats.morph=0;
 		}
 	}
@@ -404,7 +422,7 @@ function A104141(unit: GameObject){//conjure terrain
 	if (terrain==0){mag=3301;}//tree
 	if (terrain==1){mag=3302;}//boulder
 	yield effects.E200(unit,mag,targeting.targetcell);
-	actionCoord.Mlog("Player"+unitstats.owner+"'s Grizzly Elder conjured a "+effects.newobject.GetComponent(ObjectStats).objname);
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Grizzly Elder conjured a "+effects.newobject.GetComponent(ObjectStats).objname);
 	yield;
 }				
 function A104151(unit: GameObject, mag: float){//burial
@@ -437,15 +455,15 @@ function A104341(unit: GameObject, mag: float){//consume terrain
 	yield targeting.WaitForTargetobject();
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
 	actionCoord.Mlog(targetstats.objname+" consumed.");
-	if (targetstats.objno==3301){
+	if (targetstats.coreStats[eObjno]==3301){
 		unitstats.thumb=Resources.Load("thumbs/thumb1043B") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1043B") as Texture2D;
 	}
-	if (targetstats.objno==3302){
+	if (targetstats.coreStats[eObjno]==3302){
 		unitstats.thumb=Resources.Load("thumbs/thumb1043A") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1043A") as Texture2D;
 	}
-	if (targetstats.objno==3303){
+	if (targetstats.coreStats[eObjno]==3303){
 		unitstats.thumb=Resources.Load("thumbs/thumb1043C") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1043C") as Texture2D;
 	}
@@ -461,14 +479,14 @@ function A104451(unit: GameObject){//aural discharge
 	var i: short;
 	for (i=0; i<teammates.Count; i++){
 		var unitstats: ObjectStats = teammates[i].GetComponent(ObjectStats);
-		var dmg: byte = Mathf.Ceil(unitstats.actNums[3,eMag]*0.5);
+		var dmg: byte = Mathf.Ceil(unitstats.actNums[3,eMAG]*0.5);
 		
 		var unitlist: GameObject[] = GameObject.FindGameObjectsWithTag("unit");
 		var j: short;
 		for (j=0; j<unitlist.length; j++){
 			var otherstats: ObjectStats = unitlist[j].GetComponent(ObjectStats);
 			if (targeting.IsAdjacent(otherstats.mycell,unitstats.mycell)==true
-			&& unitstats.owner!=otherstats.owner){
+			&& unitstats.coreStats[eOwner]!=otherstats.coreStats[eOwner]){
 				effects.E300(unitlist[j],(0-dmg));
 			}
 		}
@@ -486,11 +504,11 @@ function A104461(unit: GameObject){//torch of thaw
 	for (i=0; i<teammates.Count; i++){
 		var otherstats: ObjectStats;
 		otherstats=teammates[i].GetComponent(ObjectStats);
-		otherstats.init+=1;
-		otherstats.actNums[1,1]=unitstats.actNums[1,eRng]+1;
+		otherstats.coreStats[eINIT]+=1;
+		otherstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]+1;
 		otherstats.thaw=1;
 	}
-	actionCoord.Mlog("Player"+unitstats.owner+"'s units thawed. (+1IN, +1SP)");
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s units thawed. (+1IN, Move +1 RNG)");
 	yield;
 }
 function A104491(unit: GameObject){//create golem
@@ -506,15 +524,15 @@ function A104491(unit: GameObject){//create golem
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
 	yield effects.E200(unit,1043,targeting.targetcell);
 	var newstats: ObjectStats = effects.newobject.GetComponent(ObjectStats);
-	if (targetstats.objno==3301){
+	if (targetstats.coreStats[eObjno]==3301){
 		newstats.thumb=Resources.Load("thumbs/thumb1043B") as Texture2D;
 		newstats.sprite=Resources.Load("thumbs/thumb1043B") as Texture2D;
 	}
-	if (targetstats.objno==3302){
+	if (targetstats.coreStats[eObjno]==3302){
 		newstats.thumb=Resources.Load("thumbs/thumb1043A") as Texture2D;
 		newstats.sprite=Resources.Load("thumbs/thumb1043A") as Texture2D;
 	}
-	if (targetstats.objno==3303){
+	if (targetstats.coreStats[eObjno]==3303){
 		newstats.thumb=Resources.Load("thumbs/thumb1043C") as Texture2D;
 		newstats.sprite=Resources.Load("thumbs/thumb1043C") as Texture2D;
 	}
@@ -525,7 +543,7 @@ function A104491(unit: GameObject){//create golem
 function A105141(unit: GameObject){//load
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	unitstats.bombs+=1;
-	actionCoord.Mlog("Player"+unitstats.owner+"'s Gunslinger +1Bullet ("+unitstats.bombs+").");
+	actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Gunslinger +1Bullet ("+unitstats.bombs+").");
 	yield;
 }
 function A105151(unit: GameObject, rng: float, mag: float, bombs: byte){//quick draw
@@ -545,7 +563,7 @@ function A105241(unit: GameObject){//patience
 		var otherstats: ObjectStats = unitlist[i].GetComponent(ObjectStats);
 		if (targeting.IsAdjacent(unitstats.mycell,otherstats.mycell)==true
 		&& unit!=unitlist[i]
-		&& unitstats.owner==otherstats.owner){
+		&& unitstats.coreStats[eOwner]==otherstats.coreStats[eOwner]){
 			effects.E300(unitlist[i],6);
 		}
 	}
@@ -603,16 +621,16 @@ function A105331(unit: GameObject, rng: float, mag: float, rad: float){//time-a-
 		effects.E100(unit,mag,targeting.targetobject);
 	}
 	var targetstats: ObjectStats = targeting.targetobject.GetComponent(ObjectStats);
-	if (targetstats.fp>0){
-		targetstats.fp-=rad;
-		actionCoord.Mlog("Player"+targetstats.owner+"'s "+targetstats.objname+" -1FP.");
+	if (targetstats.coreStats[eCoreFP]>0){
+		targetstats.coreStats[eCoreFP]-=rad;
+		actionCoord.Mlog("Player"+targetstats.coreStats[eOwner]+"'s "+targetstats.objname+" -1FP.");
 	}
 	yield;
 }
 //larva
 function A106041(unit: GameObject, mag: float){//evolve
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	var owner: byte = unitstats.owner;
+	var owner: byte = unitstats.coreStats[eOwner];
 	yield effects.E206(unit,mag);
 	var newstats: ObjectStats = effects.newobject.GetComponent(ObjectStats);
 	actionCoord.Mlog("Player"+owner+"'s larva evolved into a(n) "+newstats.objname+".");
@@ -647,9 +665,9 @@ function A108141(unit: GameObject, mag: float){//cannibalize
 		yield targeting.WaitForTargetobject();
 		actionCoord.Mlog("Corpse consumed.");
 		targeting.targetobject.GetComponent(ObjectStats).Die();
-		unitstats.mhp+=mag;
+		unitstats.coreStats[eMHP]+=mag;
 		effects.E300(unit,mag);
-		unitstats.actNums[3,eMag]=unitstats.actNums[3,eMag]+2;
+		unitstats.actNums[3,eMAG]=unitstats.actNums[3,eMAG]+2;
 	}
 	yield;
 }
@@ -657,34 +675,34 @@ function A108141(unit: GameObject, mag: float){//cannibalize
 function A108341(unit: GameObject){//mode flip
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	if(unitstats.morph==0){
-		unitstats.actNums[1,eRng]=unitstats.actNums[1,eRng]-1;
-		unitstats.hp+=15;
-		unitstats.mhp+=15;
+		unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]-1;
+		unitstats.coreStats[eHP]+=15;
+		unitstats.coreStats[eMHP]+=15;
 		unitstats.actNums[3,eAction]=100030;
-		unitstats.actText[3,eActionName]="Rock Fist";
-		unitstats.actNums[3,eAp]=1;
-		unitstats.actNums[3,eMag]=13;
-		unitstats.actNums[3,eRng]=1;
-		unitstats.actText[4,eActionName]="Melt";
-		unitstats.actNums[4,eAp]=2;
+		unitstats.actText[3,eName]="Rock Fist";
+		unitstats.actNums[3,eActAP]=1;
+		unitstats.actNums[3,eMAG]=13;
+		unitstats.actNums[3,eRNG]=1;
+		unitstats.actText[4,eName]="Melt";
+		unitstats.actNums[4,eActAP]=2;
 		unitstats.thumb=Resources.Load("thumbs/thumb1083B") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1083B") as Texture2D;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s Magman +15HP ("+unitstats.hp+") / -1SP ("+unitstats.actNums[1,1]+" / Learned Rock Fist.");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Magman +15HP ("+unitstats.coreStats[eHP]+") / Move -1 RNG ("+unitstats.actNums[1,eRNG]+" / Learned Rock Fist.");
 	}
 	if (unitstats.morph==1){
-		unitstats.actNums[1,eRng]=unitstats.actNums[1,eRng]+1;
-		unitstats.hp-=15;
-		unitstats.mhp-=15;
+		unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]+1;
+		unitstats.coreStats[eHP]-=15;
+		unitstats.coreStats[eMHP]-=15;
 		unitstats.actNums[3,eAction]=108431;
-		unitstats.actText[3,eActionName]="Magma Fist";
-		unitstats.actNums[3,eAp]=2;
-		unitstats.actNums[3,eMag]=20;
-		unitstats.actNums[3,eRng]=2;
-		unitstats.actText[4,eActionName]="Solidify";
-		unitstats.ap=1;
+		unitstats.actText[3,eName]="Magma Fist";
+		unitstats.actNums[3,eActAP]=2;
+		unitstats.actNums[3,eMAG]=20;
+		unitstats.actNums[3,eRNG]=2;
+		unitstats.actText[4,eName]="Solidify";
+		unitstats.coreStats[eCoreAP]=1;
 		unitstats.thumb=Resources.Load("thumbs/thumb1083A") as Texture2D;
 		unitstats.sprite=Resources.Load("thumbs/thumb1083A") as Texture2D;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s Magman -15HP ("+unitstats.hp+") / +1SP ("+unitstats.actText[1,1]+" / Learned Magma Fist.");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s Magman -15HP ("+unitstats.coreStats[eHP]+") / Move +1 RNG ("+unitstats.actText[1,eRNG]+" / Learned Magma Fist.");
 	}
 	if (unitstats.morph==0){unitstats.morph=1;}
 	else {unitstats.morph=0;}

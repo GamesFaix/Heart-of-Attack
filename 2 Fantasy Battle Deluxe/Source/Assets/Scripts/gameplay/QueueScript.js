@@ -7,6 +7,17 @@ var upkeep: boolean=false;
 var actionCoord: ActionCoordinator;
 var gui_game: GUI_Game;
 
+//enums
+	//core
+static var eHP: byte = 0;
+static var eINIT: byte = 3;
+static var eAP: byte = 4;
+static var eOwner: byte = 9;
+static var eObjno: byte = 7;	
+
+	//actNums
+static var eRNG: byte = 1;
+
 function Awake(){
 	gui_game=GameObject.Find("GUIPrefab").GetComponent(GUI_Game);
 }
@@ -23,7 +34,7 @@ function Advance(): IEnumerator{
 	var lastStats: ObjectStats = lastunit.GetComponent(ObjectStats);
 	var currentStats: ObjectStats = lastunit.GetComponent(ObjectStats);
 	queuelist.RemoveAt(0);
-	if(lastStats.init<currentStats.init && lastStats.skipped==false){
+	if(lastStats.coreStats[eINIT]<currentStats.coreStats[eINIT] && lastStats.skipped==false){
 		queuelist.Add(lastunit);
 		queuelist[queuelist.Count-2]=currentunit;
 		lastunit.GetComponent(ObjectStats).skipped=true;
@@ -59,34 +70,34 @@ function ListShuffle(list: List.<GameObject>): IEnumerator{
 }
 function EndPhase(): IEnumerator{
 	var unitstats: ObjectStats = currentunit.GetComponent(ObjectStats);
-	unitstats.ap=0;
+	unitstats.coreStats[eAP]=0;
 	//electrical stun recover
 	if (unitstats.elcRAD>0){
 		unitstats.elcRAD-=1;
 		if (unitstats.elcRAD==0){
-			unitstats.init++;
-			unitstats.actNums[1,1]=unitstats.actNums[1,1]+unitstats.elcSPreduction;
+			unitstats.coreStats[eINIT]++;
+			unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]+unitstats.elcSPreduction;
 		}
 	}	
 	//ninjoid reset
-	if (unitstats.objno==1011 && unitstats.endTimer>0){
+	if (unitstats.coreStats[eObjno]==1011 && unitstats.endTimer>0){
 		if (unitstats.endTimer%2==1){//if timer odd
-			unitstats.actNums[1,1]=unitstats.actNums[1,1]-4;
+			unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]-4;
 		}
 		unitstats.endTimer-=1;
 	}
 	//torch of thaw reset
 	if (unitstats.thaw>0){
 		unitstats.thaw-=1;
-		unitstats.init-=1;
-		unitstats.actNums[1,1]=unitstats.actNums[1,1]-1;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" froze. (-1IN, -1SP)");
+		unitstats.coreStats[eINIT]-=1;
+		unitstats.actNums[1,eRNG]=unitstats.actNums[1,eRNG]-1;
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s "+unitstats.objname+" froze. (-1IN, -1SP)");
 	}
 	yield;
 }
 function UpkeepPhase(): IEnumerator{
 	var unitstats: ObjectStats = currentunit.GetComponent(ObjectStats);
-	unitstats.ap+=2;
+	unitstats.coreStats[eAP]+=2;
 	unitstats.skipped=false;
 	if (unitstats.upkeepTimer>0){
 		unitstats.upkeepTimer-=1;
@@ -94,10 +105,10 @@ function UpkeepPhase(): IEnumerator{
 	//poison damage
 	if (unitstats.psnDMG>0 && unitstats.psnRAD>0){
 		var dmg: byte = Mathf.Floor(unitstats.psnDMG*unitstats.psnDEC);
-		unitstats.hp-=dmg;
+		unitstats.coreStats[eHP]-=dmg;
 		unitstats.psnRAD-=1;
 		unitstats.psnDMG=dmg;
-		actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" took "+dmg+" poison damage.");
+		actionCoord.Mlog("Player"+unitstats.coreStats[eOwner]+"'s "+unitstats.objname+" took "+dmg+" poison damage.");
 	}
 	yield;
 }

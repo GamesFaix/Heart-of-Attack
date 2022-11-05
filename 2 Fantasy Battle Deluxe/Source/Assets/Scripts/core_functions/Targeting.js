@@ -8,6 +8,12 @@ var count: short;
 var grid: byte;
 var celllist: GameObject[];
 
+//enums
+
+static var eMOB: byte = 6;	
+static var eObclass: byte = 8;	
+static var eOwner: byte = 9;
+
 function Awake(){
 	actions=gameObject.GetComponent(Actions);
 	actionCoord=gameObject.GetComponent(ActionCoordinator);
@@ -56,14 +62,14 @@ function T001(cell: GameObject){//auto-choose corpse at targetcell
 	
 	var i: short;
 	for (i=0; i<unitArray.length; i++){
-		if (unitArray[i].GetComponent(ObjectStats).obclass){
+		if (unitArray[i].GetComponent(ObjectStats).coreStats[eObclass]){
 			obList.Add(unitArray[i]);
 		}
 	}
 	
 	for (i=0; i<obArray.length; i++){
 		if(obArray[i].GetComponent(ObjectStats).mycell==cell
-		&& obArray[i].GetComponent(ObjectStats).obclass==4){
+		&& obArray[i].GetComponent(ObjectStats).coreStats[eObclass]==4){
 			targetobject=obList[i];
 		}
 	}	
@@ -80,7 +86,7 @@ function T002(cell: GameObject){//auto-choose non-corpse destructible at targetc
 	var i: short;
 	for (i=0; i<obArray.length; i++){
 		if(obArray[i].GetComponent(ObjectStats).mycell==cell
-		&& obArray[i].GetComponent(ObjectStats).obclass==3){
+		&& obArray[i].GetComponent(ObjectStats).coreStats[eObclass]==3){
 			targetobject=obArray[i];
 		}
 	}
@@ -812,7 +818,7 @@ function HasImpassible(cell: GameObject): boolean{
 }
 function FindTeammates(unit: GameObject, self: boolean): List.<GameObject>{
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
-	var owner: byte = unitstats.owner;
+	var owner: byte = unitstats.coreStats[eOwner];
 	
 	var teammates = new List.<GameObject>();
 	var unitlist: GameObject[] = GameObject.FindGameObjectsWithTag("unit");
@@ -820,7 +826,7 @@ function FindTeammates(unit: GameObject, self: boolean): List.<GameObject>{
 	var i: short;
 	for (i=0; i<unitlist.length; i++){
 		var otherstats: ObjectStats = unitlist[i].GetComponent(ObjectStats);
-		if (otherstats.owner==owner && unitlist[i]!=unit){
+		if (otherstats.coreStats[eOwner]==owner && unitlist[i]!=unit){
 			teammates.Add(unitlist[i]);
 		}
 	}

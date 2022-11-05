@@ -26,6 +26,9 @@ var count: short;
 var grid: byte;
 var map_id: byte;
 
+static var eObjno: byte = 7;	
+static var eOwner: byte = 9;	
+
 function Awake(){
 	gui_master=GameObject.Find("GUIPrefab").GetComponent(GUI_Master);
 	gui_game=GameObject.Find("GUIPrefab").GetComponent(GUI_Game);
@@ -51,7 +54,7 @@ function FightingStart () {
 	yield CreateObstacleMaster();
 
 	yield obstacleMaster.GetComponent(ObstacleGenerator).ObstacleGenerator();
-	
+
 	gui_menu.loadbox+="\n\tSpawning heroes...";
 	yield SpawnZoneGenerator();
 	
@@ -95,25 +98,25 @@ function MapSetup(): IEnumerator{
 	if (map_id==1){
 		map_title=gameindex.levels[1];
 		map.renderer.material.SetTexture("_MainTex",terrain[0]);
-		scaleFactor=1.11;
+		scaleFactor=1.09;
 		count=10;
 		Camera.main.orthographicSize=5.55;}
 	if (map_id==2){
 		map_title=gameindex.levels[2];
 		map.renderer.material.SetTexture("_MainTex",terrain[1]);
-		scaleFactor=1.31;
+		scaleFactor=1.29;
 		count=12;
 		Camera.main.orthographicSize=5.55;}
 	if (map_id==3){
 		map_title=gameindex.levels[3];
 		map.renderer.material.SetTexture("_MainTex",terrain[3]);
-		scaleFactor=0.71;
+		scaleFactor=0.69;
 		count=6;
 		Camera.main.orthographicSize=5.55;}
 	if (map_id==4){
 		map_title=gameindex.levels[4];
 		map.renderer.material.SetTexture("_MainTex",terrain[2]);
-		scaleFactor=0.91;
+		scaleFactor=0.89;
 		count=8;
 		Camera.main.orthographicSize=5.55;}
 	
@@ -264,9 +267,9 @@ function HeroSpawner(player: byte): IEnumerator{
 			//create hero @ spawn_point	
 			var hero: GameObject = Instantiate(objectPrefab,randomcell.transform.position,Quaternion.identity);
 			//set hero objno
-			hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[player]];
+			hero.GetComponent(ObjectStats).coreStats[eObjno]=hero_numbers[gameindex.player_team_numbers[player]];
 			//set hero owner
-			hero.GetComponent(ObjectStats).owner=player;
+			hero.GetComponent(ObjectStats).coreStats[eOwner]=player;
 			//add to queue
 			queue.queuelist.Add(hero);						
 		}

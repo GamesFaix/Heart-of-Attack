@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>9.0.21022</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{EEAFD044-9336-69F7-7153-91D8ED2D5D52}</ProjectGuid>
+	<ProjectGuid>{A7B8D906-9896-2D9F-1C19-7CF2AF6A9CAD}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -49,8 +49,9 @@
      <Compile Include="Assets\Scripts\GUI\GUI_Master.js" />
      <Compile Include="Assets\Scripts\GUI\GUI_Menu.js" />
      <Compile Include="Assets\Scripts\GUI\SpriteDisplay1.js" />
-     <Compile Include="Assets\Scripts\camera\CamCenter.js" />
-     <Compile Include="Assets\Scripts\camera\CamOrbit.js" />
+     <Compile Include="Assets\Scripts\camera\CamMain.js" />
+     <Compile Include="Assets\Scripts\camera\CamOrbiter.js" />
+     <Compile Include="Assets\Scripts\camera\CamRig.js" />
      <Compile Include="Assets\Scripts\core_functions\ActionCoordinator.js" />
      <Compile Include="Assets\Scripts\core_functions\Actions.js" />
      <Compile Include="Assets\Scripts\core_functions\Effects.js" />

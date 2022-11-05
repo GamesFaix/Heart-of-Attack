@@ -81,6 +81,9 @@ function OnGUI(){
         	
         	transform.rotation = rotation; //align camera to new rotation
     }
+	
+	
+	Camera.main.transform.LookAt(Vector3.zero);
 }
 
 //resets angle if beyond 360

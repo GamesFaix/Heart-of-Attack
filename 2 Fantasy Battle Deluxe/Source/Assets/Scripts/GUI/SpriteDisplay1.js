@@ -8,6 +8,9 @@ var guiprefab: GameObject;
 var gui_game: GUI_Game;
 var targeting: Targeting;
 
+//enums
+static var eObclass: byte =8;
+
 function Start(){
 	parentUnit=transform.parent.gameObject;
 	myStats=parentUnit.GetComponent(ObjectStats);
@@ -27,7 +30,7 @@ function OnGUI(){
 		var orthSize: float = Camera.main.orthographicSize;
 		var size: float; //sprite size
 		
-		if (myStats.obclass && myStats.obclass<4){
+		if (myStats.coreStats[eObclass] && myStats.coreStats[eObclass]<4){
 			size=120*(1/(orthSize/5));
 		}
 		else{size=80*(1/(orthSize/5));}
