@@ -328,11 +328,13 @@ function DebugMap(): IEnumerator{
 }
 function DebugHeroes(): IEnumerator{
 
-	var hero_numbers: int[]=[0,1014,1024,1034,1044,1054,1064,1074,1084];
+	var hero_numbers: int[]=[0,1013,1021,1034,1041,1054,1062,1074,1084];
 
-	var spawnCells: Vector3[] = new Vector3[3];
+	var spawnCells: Vector3[] = new Vector3[5];
 	spawnCells[1]=Vector3(3,3,0);
-	spawnCells[2]=Vector3(5,5,0);
+	spawnCells[2]=Vector3(4,5,0);
+	spawnCells[3]=Vector3(5,4,0);
+	spawnCells[4]=Vector3(5,5,0);
 	
 	var spawnPoint: Vector3; //world point of spawning
 	
@@ -348,8 +350,8 @@ function DebugHeroes(): IEnumerator{
 		gameindex.player_team_numbers[i]-=1;
 		
 		var hero: GameObject = Instantiate(objectPrefab,spawnPoint,Quaternion.identity);
-		//hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[i]];
-		hero.GetComponent(ObjectStats).objno=hero_numbers[2];
+		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[i]];
+		//hero.GetComponent(ObjectStats).objno=hero_numbers[i];
 		hero.GetComponent(ObjectStats).owner=i;
 		queue.queuelist.Add(hero);						
 	}
@@ -368,11 +370,11 @@ function DebugObstacles(): IEnumerator{
 
 	var obstacles: int[] = new int[5];
 	var spawnCells: Vector3[] = new Vector3[5];
-	spawnCells[0]=Vector3(3,4,0);  obstacles[0]=3101;
-	spawnCells[1]=Vector3(1,1,0);  obstacles[1]=3101;
-	spawnCells[2]=Vector3(5,3,0);  obstacles[2]=3101;
-	spawnCells[3]=Vector3(2,2,0);  obstacles[3]=3101;
-	spawnCells[4]=Vector3(0,4,0);  obstacles[4]=3101;
+	spawnCells[0]=Vector3(3,4,0);  obstacles[0]=3401;
+	spawnCells[1]=Vector3(1,1,0);  obstacles[1]=3401;
+	spawnCells[2]=Vector3(5,3,0);  obstacles[2]=3401;
+	spawnCells[3]=Vector3(2,2,0);  obstacles[3]=3401;
+	spawnCells[4]=Vector3(0,4,0);  obstacles[4]=3401;
 	
 	var spawnPoint: Vector3; //world point of spawning
 	

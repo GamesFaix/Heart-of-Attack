@@ -13,7 +13,7 @@ var mycell: GameObject;	//current cell being occupied, set by cells ontrigger
 var gameCoord: Vector3;
 
 //unit
-var ap: byte;
+var ap: short;
 var fp: byte;
 var init: byte; 
 var mob: byte;

@@ -344,7 +344,7 @@ function AtkLin(rng: float, startcell: GameObject): boolean{//linear attack
 	else {return true;}
 }
 
-function AtkArc(rng: int, startcell: GameObject): boolean{//arc attack
+function AtkArc(rng: float, startcell: GameObject): boolean{//arc attack
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -378,6 +378,69 @@ function AtkArc(rng: int, startcell: GameObject): boolean{//arc attack
 	
 	if (AnyCells()==false){return false;}
 	else {return true;}
+}
+
+function EXPFindCRZ(startcell: GameObject, crz: int): List.<GameObject>{
+	//Debug.Log("FindCRZ-size: "+crz);
+	var crzCells = new List.<GameObject>(); //list of cells in CRZ
+	crzCells.Add(startcell);
+
+	//temp lists
+	var arrayflip: boolean = true;
+	var cells1=new List.<GameObject>();
+	var cells2=new List.<GameObject>();
+	var list1=new List.<GameObject>();
+	var list2=new List.<GameObject>();
+
+	cells1.Add(startcell);
+
+	var distance: byte;
+	for (distance=1; distance<=crz; distance++){
+		if (arrayflip==true) {list1=cells1; list2=cells2;}
+		else {list1=cells2; list2=cells1;}
+		
+		while(list1.Count>0){
+			var cell: GameObject = list1[0];
+			var i: short;
+			for (i=0; i<celllist.length; i++){
+				if (Adjacent(cell,celllist[i])==true
+				&& CheckList(crzCells, celllist[i])==false
+				&& ArcExclusion(startcell,celllist[i])==true){
+					list2.Add(celllist[i]);
+					crzCells.Add(celllist[i]);
+				}		
+			}
+			list1.RemoveAt(0);
+		}
+		arrayflip=!arrayflip;
+	}
+	return crzCells;
+}
+function EXPExpandRAD(startcell: GameObject, hitCells: List.<GameObject>, lastRAD: List.<GameObject>): List.<GameObject>{
+	var newRAD = new List.<GameObject>();
+	
+	var i: short;
+	for (i=0; i<lastRAD.Count; i++){
+	
+		var j: short;
+		for (j=0; j<celllist.length; j++){
+			if (Adjacent(lastRAD[i],celllist[j])
+			 && (CheckList(hitCells,celllist[j])==false)
+			 && (CheckList(newRAD,celllist[j])==false)
+			 && (ArcExclusion(startcell,celllist[j])==true)
+			 ){
+				newRAD.Add(celllist[j]);
+			}
+		}		
+	}
+	return newRAD;
+}
+function FIRExpandRAD(startunit: GameObject, hitUnits: List.<GameObject>): List.<GameObject>{
+	var newRAD = new List.<GameObject>();
+	
+	
+
+
 }
 
 //target space with object
@@ -414,6 +477,43 @@ function CorpseSerp(rng: int, startcell: GameObject): boolean{//serpentine targe
 	if (AnyCells()==false){return false;}
 	else {return true;}
 }
+function CorpseArc(rng: int, startcell: GameObject): boolean{
+targetcell=null;
+	var distance: byte;
+	var arrayflip: boolean = true;
+	var cells1=new List.<GameObject>();
+	var cells2=new List.<GameObject>();
+	var list1= new List.<GameObject>();
+	var list2= new List.<GameObject>();
+	
+	cells1.Add(startcell);
+	for(distance=1; distance<=rng; distance++){
+		if (arrayflip==true) {list1=cells1; list2=cells2;}
+		else {list1=cells2; list2=cells1;}
+		while(list1.Count>0){
+			var cell: GameObject = list1[0];
+			var i: short;
+			for (i=0; i<celllist.length; i++){
+				if (Adjacent(cell,celllist[i])==true
+				&& IsLegal(celllist[i])==false){
+					if(ArcExclusion(startcell,celllist[i])==true
+					&& HasCorpse(celllist[i])==true){
+						MakeLegal(celllist[i]);
+						list2.Add(celllist[i]);
+					}
+				}			
+			}
+			list1.RemoveAt(0);
+		}
+		if (arrayflip==true) {cells1=list1; cells2=list2;}
+		else {cells1=list2; cells2=list1;}
+		arrayflip=!arrayflip;
+	}
+	
+	if (AnyCells()==false){return false;}
+	else {return true;}
+
+}
 function DestSerp(rng: int, startcell: GameObject): boolean{//serpentine target space with destructible obstacle (non-corpse)
 	targetcell=null;
 	var distance: byte;
@@ -447,6 +547,45 @@ function DestSerp(rng: int, startcell: GameObject): boolean{//serpentine target 
 	if (AnyCells()==false){return false;}
 	else {return true;}
 }
+/*function UnitArc(rng: int, startcell: GameObject): boolean{//arc target unit
+	targetcell=null;
+	var distance: byte;
+	var arrayflip: boolean = true;
+	var cells1=new List.<GameObject>();
+	var cells2=new List.<GameObject>();
+	var list1= new List.<GameObject>();
+	var list2= new List.<GameObject>();
+	
+	cells1.Add(startcell);
+	for(distance=1; distance<=rng; distance++){
+		if (arrayflip==true) {list1=cells1; list2=cells2;}
+		else {list1=cells2; list2=cells1;}
+		while(list1.Count>0){
+			var cell: GameObject = list1[0];
+			var i: short;
+			for (i=0; i<celllist.length; i++){
+				if (Adjacent(cell,celllist[i])==true
+				&& IsLegal(celllist[i])==false){
+					if(ArcExclusion(startcell,celllist[i])==true
+					 //&& HasUnit(celllist[i])==true
+					 ){
+						MakeLegal(celllist[i]);
+						list2.Add(celllist[i]);
+					}
+				}			
+			}
+			list1.RemoveAt(0);
+		}
+		if (arrayflip==true) {cells1=list1; cells2=list2;}
+		else {cells1=list2; cells2=list1;}
+		arrayflip=!arrayflip;
+	}
+	
+	if (AnyCells()==false){return false;}
+	else {return true;}
+
+}
+*/
 //target selection
 function ChooseUnit(cell: GameObject): boolean{//choose unit at targetcell
 	targetobject=null;
@@ -490,9 +629,13 @@ function AutoChooseCorpse(cell: GameObject){//auto-choose corpse at targetcell
 	for (i=0; i<obArray.length; i++){
 		if(obArray[i].GetComponent(ObjectStats).mycell==cell
 		&& obArray[i].GetComponent(ObjectStats).obclass==4){
-			targetobject=obList[i];
+			obList.Add(obArray[i]);
 		}
 	}	
+	
+	if (obList.Count>0){
+		targetobject=obList[0];
+	}
 	
 	if (targetobject==null){return false;}
 	else {return true;}
@@ -513,6 +656,31 @@ function AutoChooseDest(cell: GameObject){//auto-choose non-corpse destructible 
 	if (targetobject==null){return false;}
 	else {return true;}
 }
+function UnitsInZone(cells: List.<GameObject>): List.<GameObject>{//returns all units occupying a given list of cells
+	var zoneUnits = new List.<GameObject>();
+	
+	var occupiedCells = new List.<GameObject>();
+	var i: byte;
+	for (i=0; i<cells.Count; i++){
+		if (Vacant(cells[i])==false){
+			occupiedCells.Add(cells[i]);
+		}
+	}
+	
+	var unitList = GameObject.FindGameObjectsWithTag("unit");
+	for (i=0; i<occupiedCells.Count; i++){
+		var j: byte;
+		for (j=0; j<unitList.length; j++){
+			var unitStats: ObjectStats = unitList[j].GetComponent(ObjectStats);
+			if (unitStats.mycell==occupiedCells[i]){
+				zoneUnits.Add(unitList[j]);
+			}
+		}
+	}
+	
+	return zoneUnits;
+}
+
 function WaitForTargetcell(): IEnumerator{
 	while (true){
 		if(targetcell!=null){break;}
@@ -630,7 +798,7 @@ function Collinear(startcell:GameObject,othercell:GameObject): boolean{//(unused
 	else {return false;}
 }
 ///trajectory
-function ArcExclusion(startcell: GameObject, othercell: GameObject): boolean{
+function ArcExclusion(startcell: GameObject, othercell: GameObject): boolean{//false if excluded
 	if (HasImpassible(othercell)==true){return false;}
 	
 	var rayDirection: Vector3 = startcell.transform.position - othercell.transform.position;
@@ -802,6 +970,17 @@ function CheckBelow(unit: GameObject): boolean{//checks ground occupation for la
 	if (cell.GetComponent(CellProperties).occA==0){return true;}
 	else {return false;}
 }
+function HasUnit(cell: GameObject): boolean{
+	var unitList = GameObject.FindGameObjectsWithTag("unit");
+	var i: byte;
+	for (i=0; i<unitList.length; i++){
+		var unitStats: ObjectStats = unitList[i].GetComponent(ObjectStats);
+		if (unitStats.mycell==cell){	
+			return true;
+		}
+	}
+	return false;
+}
 function HasDestructible(cell: GameObject): boolean{
 	var cellproperties: CellProperties = cell.GetComponent(CellProperties);
 	if (cellproperties.occA==2 || cellproperties.occA==3){
@@ -879,4 +1058,13 @@ function ResetCells(){//reset all cells legality
 	for (i=0; i<celllist.length; i++){
 		celllist[i].GetComponent(CellProperties).legal=false;
 	}	
+}
+function CheckList(list: List.<GameObject>, object: GameObject): boolean{//check if object is in list (RTN true if object is in list)
+	var i: byte;
+	for (i=0; i<list.Count; i++){
+		if (list[i]==object){
+			return true;
+		}	
+	}
+	return false;
 }

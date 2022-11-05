@@ -69,33 +69,34 @@ function PerformAction(unit: GameObject, act1to9: byte){
 		DeductCost(unitstats,act1to9);
 		//perform	
 		//move
-		if (action==100010){yield actions.A100010(unit, rng);}//serp GND
-		if (action==100011){yield actions.A100011(unit, rng);}//serp TRM
-		if (action==100012){yield actions.A100012(unit, rng);}//serp FLY
-		if (action==100014){yield actions.A100014(unit, rng);}//lin GND
-		if (action==100015){yield actions.A100015(unit, rng);}//lin TRM
-		if (action==100016){yield actions.A100016(unit, rng);}//lin FLY
+		if (action==100010){yield actions.MovSerpGND(unit, rng);}//serp GND
+		if (action==100011){yield actions.MovSerpTRM(unit, rng);}//serp TRM
+		if (action==100012){yield actions.MovSerpFLY(unit, rng);}//serp FLY
+		if (action==100014){yield actions.MovLinGND(unit, rng);}//lin GND
+		if (action==100015){yield actions.MovLinTRM(unit, rng);}//lin TRM
+		if (action==100016){yield actions.MovLinFLY(unit, rng);}//lin FLY
 		//focus
-		if (action==100020){yield actions.A100020(unit, mag);}//focus
+		if (action==100020){yield actions.Focus(unit, mag);}//focus
 		//attack
-		if (action==100030){yield actions.A100030(unit, rng, mag);}//serp normal
-		if (action==100031){yield actions.A100031(unit, rng, mag);}//lin normal
-		if (action==100032){yield actions.A100032(unit, rng, mag, dec);}//rage
-		if (action==100033){yield actions.A100033(unit, rng, mag);}//leech life
-		if (action==100034){yield actions.A100034(unit, rng, mag, dec, rad);}//serp psn
-		if (action==100035){yield actions.A100035(unit, rng, mag, rad);}//serp elc
-		if (action==100036){yield actions.A100036(unit, rng, mag);}//arc normal
+		if (action==100030){yield actions.AtkSerpNRM(unit, rng, mag);}//serp normal
+		if (action==100031){yield actions.AtkLinNRM(unit, rng, mag);}//lin normal
+		if (action==100032){yield actions.AtkRage(unit, rng, mag, dec);}//rage
+		if (action==100033){yield actions.AtkLeech(unit, rng, mag);}//leech life
+		if (action==100034){yield actions.AtkSerpPSN(unit, rng, mag, dec, rad);}//serp psn
+		if (action==100035){yield actions.AtkSerpELC(unit, rng, mag, rad);}//serp elc
+		if (action==100036){yield actions.AtkArcNRM(unit, rng, mag);}//arc normal
 		//creation
-		if (action==100071){yield actions.A100071(unit, mag);}//create GND
-		if (action==100072){yield actions.A100072(unit, mag);}//create TRM
-		if (action==100073){yield actions.A100073(unit, mag);}//create FLY
+		if (action==100071){yield actions.CreateGND(unit, mag);}//create GND
+		if (action==100072){yield actions.CreateTRM(unit, mag);}//create TRM
+		if (action==100073){yield actions.CreateFLY(unit, mag);}//create FLY
 		//specials
 		if (action==101141){yield actions.A101141(unit);}//ninjoid - sprint
 		if (action==101251){yield actions.A101251(unit);}//sentinel - fortify shield
+		if (action==101341){yield actions.A101341(unit, mag, dec, rad, crz);}//pterror - barrage
 		if (action==101351){yield actions.A101351(unit);}//pterror - stockpile
 		if (action==101481){yield actions.A101481(unit);}//satellite - create sentinel
 		//
-		//if (action==102131){yield actions.A102131(unit,rng,mag,dec,crz,rad);}//demolitia - grenade
+		if (action==102131){yield actions.A102131(unit,rng,mag,dec,crz,rad);}//demolitia - grenade
 		if (action==102141){yield actions.A102141(unit);}//demolitia - enhance armor	
 		if (action==102341){yield actions.A102341(unit);}//panopticlops - fortify
 		if (action==102461){yield actions.A102461(unit);}//robotank - mode flip
@@ -117,9 +118,13 @@ function PerformAction(unit: GameObject, act1to9: byte){
 		if (action==105241){yield actions.A105241(unit);}//piecemaker - patience
 		if (action==105251){yield actions.A105251(unit,mag);}//piecemaker - open portal gate
 		if (action==105331){yield actions.A105331(unit,rng,mag,rad);}//chieftomaton - time-a-hawk
+		if (action==105451){yield actions.AtkArcNRM(unit,rng,mag);}//grand dad - marksman
+		if (action==105461){yield actions.A105461(unit,rng);}//grand dad - second in command
 		//
 		if (action==106041){yield actions.A106041(unit, mag);}//larva - evolve
 		if (action==106141){yield actions.A106141(unit, rng, mag, dec, rad);}//bee - death sting
+		if (action==106231){yield actions.A106231(unit, rng, mag, dec, rad);}//shrooman - spore
+		if (action==106241){yield actions.A106241(unit);}//infest corpse
 		//
 		if (action==108141){yield actions.A108141(unit, mag);}//corpse fiend - cannibalize
 		if (action==108341){yield actions.A108341(unit);}//magman - mode flip

@@ -101,3 +101,11 @@ function UpkeepPhase(): IEnumerator{
 	}
 	yield;
 }
+function ToTop(unit: GameObject){
+	queuelist.Remove(unit);
+	queuelist.Insert(1,unit);
+}
+function ToBtm(unit: GameObject){
+	queuelist.Remove(unit);
+	queuelist.Add(unit);
+}

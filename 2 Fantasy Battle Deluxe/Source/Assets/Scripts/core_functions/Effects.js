@@ -13,7 +13,7 @@ function OnEnable(){
 }
 
 //damge effects
-function DmgNRM(unit: GameObject, mag: float, targetunit:GameObject){//damage normal
+function DmgNRM(unit: GameObject, mag: float, targetunit:GameObject){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if(targetunitstats.def<mag){
@@ -23,7 +23,7 @@ function DmgNRM(unit: GameObject, mag: float, targetunit:GameObject){//damage no
 		if (targetunitstats.hp<1){targetunitstats.Die();}
 	}
 }		
-function DmgPSN(unit: GameObject, mag: float, dec: float, rad: float, targetunit: GameObject){//damage poison - initial
+function DmgPSN(unit: GameObject, mag: float, dec: float, rad: float, targetunit: GameObject){//initial dmg only
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if(targetunitstats.def<mag){
@@ -39,7 +39,7 @@ function DmgPSN(unit: GameObject, mag: float, dec: float, rad: float, targetunit
 		}
 	}
 }
-function DmgELC(unit: GameObject, mag: float, rad: float, targetunit: GameObject){//damage elec
+function DmgELC(unit: GameObject, mag: float, rad: float, targetunit: GameObject){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if (targetunitstats.mech==true){mag+=Mathf.Ceil(mag*0.5);}
@@ -56,8 +56,102 @@ function DmgELC(unit: GameObject, mag: float, rad: float, targetunit: GameObject
 	targetunitstats.elcSPreduction=spReduction;
 	targetunitstats.elcRAD=rad;
 }
+function DmgEXP(unit: GameObject, mag: float, dec: float, rad: float, crz: float, targetcell: GameObject){
+	//initial conditions
+	var hitCells = new List.<GameObject>();
+	var dmg: int = mag;
+	
+	//find CRZ
+	var currentCells = new List.<GameObject>();
+	currentCells=targeting.EXPFindCRZ(targetcell,crz);	
+
+	var distance: byte;
+	for (distance=0; distance<=rad; distance++){
+		if (dmg>0){
+			Debug.Log("current dmg: "+dmg);
+			//find units in current zone
+			var units = new List.<GameObject>();
+			units = targeting.UnitsInZone(currentCells);
+			//dmg all units in zone
+			var i: byte;
+			for (i=0; i<units.Count; i++){
+				Debug.Log(units[i]+" hit");
+				DmgNRM(unit,dmg,units[i]);
+			}
+			//mark all hit cells
+			for (i=0; i<currentCells.Count; i++){
+				hitCells.Add(currentCells[i]);
+			}
+			//reduce dmg
+			dmg=Mathf.Floor(dmg*dec);
+			//move to next RAD
+			currentCells=targeting.EXPExpandRAD(targetcell, hitCells, currentCells);
+		}
+		else {break;}
+	}
+}
+function DmgBarrage(unit: GameObject, mag: float, dec: float, rad: float, crz: float, targetcell: GameObject){
+	//initial conditions
+	var hitCells = new List.<GameObject>();
+	var dmg: int = mag;
+	
+	//find CRZ
+	var currentCells = new List.<GameObject>();
+	currentCells=targeting.EXPFindCRZ(targetcell,crz);	
+	Debug.Log("CRZ size: "+currentCells.Count);
+
+	var distance: byte;
+	for (distance=0; distance<=rad; distance++){
+		if (dmg>0){
+			Debug.Log("current dmg: "+dmg);
+			//find units in current zone
+			var units = new List.<GameObject>();
+			units = targeting.UnitsInZone(currentCells);
+			
+			
+			//remove flying and gas units
+			var i: byte;
+			for (i=0; i<units.Count; i++){
+				var unitstats: ObjectStats = units[i].GetComponent(ObjectStats);
+				if (unitstats.mob>2){
+					units.Remove(units[i]);
+				}
+			}
+						
+			//dmg all units in zone
+			for (i=0; i<units.Count; i++){
+				Debug.Log(units[i]+" hit");
+				DmgNRM(unit,dmg,units[i]);
+			}
+			//mark all hit cells
+			for (i=0; i<currentCells.Count; i++){
+				hitCells.Add(currentCells[i]);
+			}
+			//reduce dmg
+			dmg=Mathf.Floor(dmg*dec);
+			//move to next RAD
+			currentCells=targeting.EXPExpandRAD(targetcell, hitCells, currentCells);
+		}
+		else {break;}
+	}
+
+}
+
+/*function DmgFIR(unit: GameObject, mag: float, dec: float, rad: float, targetunit: GameObject){
+	var hitUnits = new List.<GameObject>();
+	var dmg: byte = mag;
+	
+	DmgNRM(unit, mag, targetunit);
+	hitUnits.Add(targetunit);
+	dmg = Mathf.Floor(dmg*dec);
+	
+	
+
+}
+
+*/
 //object manipulation
-function ObjCreate(unit: GameObject, objno: short,targetcell: GameObject){//create object
+function ObjCreate(unit: GameObject, objno: short,targetcell: GameObject){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	newobject = Instantiate(obprefab,targetcell.transform.position,Quaternion.identity);
 	var newstats: ObjectStats = newobject.GetComponent(ObjectStats);
@@ -68,7 +162,7 @@ function ObjCreate(unit: GameObject, objno: short,targetcell: GameObject){//crea
 	}
 	yield;
 }
-function ObjMove(targetunit:GameObject,targetcell:GameObject){//move unit
+function ObjMove(targetunit:GameObject,targetcell:GameObject){
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	targetunit.transform.position = targetcell.transform.position;
 	actionCoord.Mlog("Player"+targetunitstats.owner+"'s "+targetunitstats.objname+" moved.");
@@ -124,7 +218,7 @@ function StatHP(targetunit:GameObject,mag:float){//add/remove hp
 	actionCoord.Mlog(msg);
 	if (unitStats.hp<1){unitStats.Die();}
 }
-function StatFP(unit: GameObject, mag:float){//focus / change fp
+function StatFP(unit: GameObject, mag:float){//change fp
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	unitstats.fp+=mag;
 	if (mag>0){actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+ " +"+mag+"fp");}

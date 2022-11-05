@@ -276,7 +276,7 @@ function I1013(object: GameObject){
 		stats.actNums[4,rng]=0; stats.actNums[4,mag]=9;
 		stats.actNums[4,dmgtype]=exp;
 		stats.actNums[4,dec]=0.5;
-		stats.actNums[4,crz]=1; stats.actNums[4,rad]=1;
+		stats.actNums[4,crz]=0; stats.actNums[4,rad]=1;
 	stats.actNums[5,action]=101351; //stockpile
 		stats.actText[5,actionName]="Stockpile";
 		stats.actText[5,desc]="Add 1 bomb.\nBarrage DMG, RAD, & CRZ +1.";
@@ -810,6 +810,7 @@ function I1054(object: GameObject){
 		stats.actText[6,actionName]="Second in Command";
 		stats.actText[6,desc]="Target unit takes a turn next. It only gets 1AP that turn.";
 		stats.actNums[6,ap]=1; stats.actNums[6,fp]=2;
+		stats.actNums[6,rng]=8;
 	stats.actNums[7,action]=100071;
 		stats.actText[7,actionName]="Create Gunslinger";
 		stats.actText[7,desc]="Ground unit\nDamaging infantry.";
@@ -902,6 +903,7 @@ function I1062(object: GameObject){
 		stats.actText[4,actionName]="Infest Corpse";
 		stats.actText[4,desc]="Turn neighboring Corpse into a Larva.";
 		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
+//		stats.actNums[4,tar]=;
 }		
 function I1063(object: GameObject){
 	stats.objname="Itza Trap";
