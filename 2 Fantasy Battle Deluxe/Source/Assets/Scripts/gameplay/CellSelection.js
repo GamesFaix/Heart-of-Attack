@@ -18,6 +18,8 @@ function Start(){
 
 function OnGUI () {
 	if (cellproperties.legal==true && gui_game.MouseOnGUI()==false) {
+		var ray: Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Debug.DrawRay(ray.origin,ray.direction,Color.red);
 		if(Input.GetMouseButtonDown(0) && collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), hit, Mathf.Infinity)){ 
 			if (hit.collider==collider){
 				playmanager=GameObject.FindGameObjectWithTag("playmanager");

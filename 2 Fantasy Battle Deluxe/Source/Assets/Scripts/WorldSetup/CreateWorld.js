@@ -267,13 +267,13 @@ function HeroSpawner(player: byte): IEnumerator{
 	
 	var hero_numbers: int[]=[0,1014,1024,1034,1044,1054,1064,1074,1084];
 		
-	if (gameindex.player_team_numbers[player]>0){
+	if (gameindex.playerTeams[player]>0){
 		//randomize random players
-		if(gameindex.player_team_numbers[player]==1){
-			gameindex.player_team_numbers[player]=Mathf.RoundToInt(Random.value*7)+2;
+		if(gameindex.playerTeams[player]==9){
+			gameindex.playerTeams[player]=Mathf.RoundToInt(Random.value*7)+1;
 		}
 		//subtract 1 from players' teams (teams now 1-8)
-		gameindex.player_team_numbers[player]-=1;
+		//gameindex.playerTeams[player]-=1;
 		
 		var nodelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnnode");
 		
@@ -291,7 +291,7 @@ function HeroSpawner(player: byte): IEnumerator{
 		//create hero @ spawn_point	
 		var hero: GameObject = Instantiate(objectPrefab,randomcell.transform.position,Quaternion.identity);
 		//set hero objno
-		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[player]];
+		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.playerTeams[player]];
 		//set hero owner
 		hero.GetComponent(ObjectStats).owner=player;
 		//add to queue
@@ -315,14 +315,14 @@ function DebugHeroes(): IEnumerator{
 		spawnPoint=CellNumToWorldPoint(spawnCells[i]);
 		
 		//randomize random teams
-		if(gameindex.player_team_numbers[i]==1){
-			gameindex.player_team_numbers[i]=Mathf.RoundToInt(Random.value*7)+2;
+		if(gameindex.playerTeams[i]==9){
+			gameindex.playerTeams[i]=Mathf.RoundToInt(Random.value*7)+1;
 		}
 		//subtract 1 from players' teams (teams now 1-8)
-		gameindex.player_team_numbers[i]-=1;
+		//gameindex.playerTeams[i]-=1;
 		
 		var hero: GameObject = Instantiate(objectPrefab,spawnPoint,Quaternion.identity);
-		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[i]];
+		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.playerTeams[i]];
 		//hero.GetComponent(ObjectStats).objno=hero_numbers[i];
 		hero.GetComponent(ObjectStats).owner=i;
 		queue.queuelist.Add(hero);						
@@ -340,6 +340,7 @@ function PrepareFirstUnit(): IEnumerator{
 	yield queue.ListShuffle(queue.queuelist as List.<GameObject>);
 	yield queue.Advance();
 	gui_game.View(queue.queuelist[0]);
+	Camera.main.GetComponent(CamMain).CamFocus(queue.queuelist[0]);
 	yield;
 }
 ///

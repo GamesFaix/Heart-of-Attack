@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+
+Project("{64B3D8E2-DA7A-EFF4-E24E-169E6D51DB49}") = "FantasyBattleDeluxe7-16-12 - Game GUI Update", "Assembly-CSharp.csproj", "{0716F63D-307C-E96E-80DE-74DF1272607B}"
+EndProject
+Project("{64B3D8E2-DA7A-EFF4-E24E-169E6D51DB49}") = "FantasyBattleDeluxe7-16-12 - Game GUI Update", "Assembly-UnityScript.unityproj", "{00DD1EBC-4CEC-B417-63F0-E047D31B5000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0716F63D-307C-E96E-80DE-74DF1272607B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0716F63D-307C-E96E-80DE-74DF1272607B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0716F63D-307C-E96E-80DE-74DF1272607B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0716F63D-307C-E96E-80DE-74DF1272607B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00DD1EBC-4CEC-B417-63F0-E047D31B5000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00DD1EBC-4CEC-B417-63F0-E047D31B5000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00DD1EBC-4CEC-B417-63F0-E047D31B5000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00DD1EBC-4CEC-B417-63F0-E047D31B5000}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	
+EndGlobal

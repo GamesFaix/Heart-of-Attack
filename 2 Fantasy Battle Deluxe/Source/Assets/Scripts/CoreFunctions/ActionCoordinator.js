@@ -23,6 +23,9 @@ var eDec: byte=5;
 var eRad: byte=6;
 var eCrz: byte=7;
 //	
+//vars to make sure action isnt used twice
+var actUsed: boolean[]=new boolean[10];
+for (var i: byte=0; i<=9; i+=1){actUsed[i]=false;}
 
 //setup
 function Start(){
@@ -64,10 +67,9 @@ function PerformAction(unit: GameObject, act1to9: byte){
 	var dec: float = unitstats.actNums[act1to9,eDec]; 
 	var rad: float = unitstats.actNums[act1to9,eRad]; 
 	var crz: float = unitstats.actNums[act1to9,eCrz];
-	var used: boolean = gui_game.actUsed[act1to9];
 
 	//check if action valid
-	if(used==false && unitstats.ap>=ap && unitstats.fp>=fp && unit==currentunit){
+	if(actUsed[act1to9]==false && unitstats.ap>=ap && unitstats.fp>=fp && unit==currentunit){
 		//pay	
 		DeductCost(unitstats,act1to9);
 		//perform	
@@ -181,11 +183,11 @@ function PerformAction(unit: GameObject, act1to9: byte){
 		//if (func=="SpcDevour"){yield actions.SpcDevour(unit, rng, dmg, dec);}		
 		
 		//mark action as used
-		gui_game.actUsed[act1to9]=true;
+		actUsed[act1to9]=true;
 	}
 	else{
 		if (unit!=currentunit){Error("It's not your turn.");}
-		else if (used==true){Error("Action already used.");}
+		else if (actUsed[act1to9]==true){Error("Action already used.");}
 		else if (unitstats.ap<ap || unitstats.fp<fp){Error("Not enough ap/fp.");}
 	}	
 	ResetAction();
@@ -211,7 +213,7 @@ function Mlog(message: String){//adds message to message log
 function Refund(act1to9:byte, error:String){//refunds cost of action if cancelled, displays errors
 	currentunitstats.ap+=currentunitstats.actNums[act1to9,eAp];
 	currentunitstats.fp+=currentunitstats.actNums[act1to9,eFp];
-	gui_game.actUsed[act1to9]=false;
+	actUsed[act1to9]=false;
 	Error(error);
 }
 

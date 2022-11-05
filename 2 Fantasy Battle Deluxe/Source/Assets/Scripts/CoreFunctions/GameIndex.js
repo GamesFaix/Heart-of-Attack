@@ -4,9 +4,17 @@
 var gui_menu: GameObject;
 var colors: Texture[]=new Texture[16];
 
-var team_names: String[] = ["[disabled]", "[random]",
-	"G.E.A.R.P.", "New Republic", "Torridale", "Forgotten Grove", 
-	"Chrononistas", "Psycho Tropics", "Psilent Aureators", "Voidoids"];
+var teamNames: String[] = [
+	"[disabled]",
+	"G.E.A.R.P.", 
+	"New Republic", 
+	"Torridale", 
+	"Forgotten Grove", 
+	"Chrononistas", 
+	"Psycho Tropics", 
+	"Psilent Aureators", 
+	"Voidoids", 
+	"[random]"];
 	
 var levels: String[]= ["[random]","Grassafras","Just Deserts","Magmountain","Ice Mountain"];
 var levelSelection: byte = 0;//default [random]
@@ -15,31 +23,59 @@ var spawntypes: String[]=["Face (2-6 players)","Corner (2-8 players)"];
 var spawnselection: byte = 0; //default Face
 
 //players default to [random]
-var player_team_numbers: byte[]= new byte[9];
-var i: byte;
-for(i=1; i<=8; i++){player_team_numbers[i]=1;}
-
-//players given default colors
-var player_colors: byte[] = new byte[9]; //player color selections override defaults when selected
-	player_colors[1]=1; player_colors[2]=10; player_colors[3]=8; player_colors[4]=0;
-	player_colors[5]=5; player_colors[6]=13; player_colors[7]=2; player_colors[8]=11;
-
+var playerTeams: byte[]= new byte[9];
+var playerColors: byte[] = new byte[9];
+	
 /*player counting
 	-player_slots will be used to check if each player is left disabled, all default to disabled
 	-player_count will sum the number of enabled slots */
 var player_slots: int[] = new int[9];
-for (i=1; i<=8; i++){player_slots[i]=0;}
 var player_count: byte;
 	
 var mobilities: String[] = ["","Ground","Trample","Flying","Gaseous"];
 	
 var density: byte = 10;
 
+function Awake(){
+	colors[0]=Resources.Load("Colors/black_thumb") as Texture2D;
+	colors[1]=Resources.Load("Colors/grey_thumb") as Texture2D;
+	colors[2]=Resources.Load("Colors/white_thumb") as Texture2D;
+	colors[3]=Resources.Load("Colors/pink_thumb") as Texture2D;
+	
+	colors[4]=Resources.Load("Colors/blue_thumb") as Texture2D;
+	colors[5]=Resources.Load("Colors/l_blue_thumb") as Texture2D;
+	colors[6]=Resources.Load("Colors/purple_thumb") as Texture2D;
+	colors[7]=Resources.Load("Colors/magenta_thumb") as Texture2D;
+	
+	colors[8]=Resources.Load("Colors/dark_green_thumb") as Texture2D;
+	colors[9]=Resources.Load("Colors/green_thumb") as Texture2D;
+	colors[10]=Resources.Load("Colors/teal_thumb") as Texture2D;
+	colors[11]=Resources.Load("Colors/red_thumb") as Texture2D;
+	
+	colors[12]=Resources.Load("Colors/brown_thumb") as Texture2D;
+	colors[13]=Resources.Load("Colors/gold_thumb") as Texture2D;
+	colors[14]=Resources.Load("Colors/yellow_thumb") as Texture2D;
+	colors[15]=Resources.Load("Colors/orange_thumb") as Texture2D;
+
+	playerColors[1]=4; 
+	playerColors[2]=11; 
+	playerColors[3]=14; 
+	playerColors[4]=8;
+	playerColors[5]=2; 
+	playerColors[6]=15; 
+	playerColors[7]=6; 
+	playerColors[8]=12;
+
+	var i: byte;
+	for(i=1; i<=8; i++){playerTeams[i]=9;}
+	for (i=1; i<=8; i++){player_slots[i]=0;}
+}
+
 function Update(){
 	//each active player slot is counted, and player_count summed
 	var i: byte;
 	for (i=1; i<=8; i++){
-		if(player_team_numbers[i]>0){
+		if(playerTeams[i]>0){
 			player_slots[i]=1;
 		}
 	}

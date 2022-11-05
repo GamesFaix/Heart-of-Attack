@@ -32,6 +32,9 @@ function Advance(): IEnumerator{
 		queuelist.Add(currentunit);
 	}
 	currentunit=queuelist[0];
+	for(var i: byte=0; i<10; i+=1){
+			actionCoord.actUsed[i]=false;
+		}
 	gui_game.currentunit=currentunit;
 	yield UpkeepPhase();
 }

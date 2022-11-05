@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Gameplay\CellSelection.js">
+    <Files>
+      <File FileName="Assets\Scripts\Camera\Cursor.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CoreFunctions\ActionCoordinator.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\GUI_Menu.js" Line="107" Column="59" />
+      <File FileName="Assets\Scripts\GUI\GUI_Game.js" Line="34" Column="15" />
+      <File FileName="Assets\Scripts\Gameplay\CellSelection.js" Line="22" Column="51" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
