@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+
+Project("{DC80D36E-7E28-E1DF-381F-A810563346F0}") = "FantasyBattleDeluxe3-21-12", "Assembly-UnityScript.unityproj", "{C7111A2F-527E-9B15-FA9C-16BA9E0C17EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7111A2F-527E-9B15-FA9C-16BA9E0C17EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7111A2F-527E-9B15-FA9C-16BA9E0C17EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7111A2F-527E-9B15-FA9C-16BA9E0C17EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7111A2F-527E-9B15-FA9C-16BA9E0C17EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	
+EndGlobal
