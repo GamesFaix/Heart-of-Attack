@@ -8,6 +8,10 @@ var guiprefab: GameObject;
 var gui_game: GUI_Game;
 var targeting: Targeting;
 
+var screenPos: Vector3;
+var popUpText: String;
+var popUpTime: float;
+
 function Start(){
 	parentUnit=transform.parent.gameObject;
 	myStats=parentUnit.GetComponent(ObjectStats);
@@ -21,7 +25,6 @@ function OnGUI(){
 
 	transform.position=parentUnit.transform.position;
 	
-	
 	if (renderer.isVisible){
 		var sprite: Texture2D = myStats.sprite;
 		var orthSize: float = Camera.main.orthographicSize;
@@ -33,7 +36,7 @@ function OnGUI(){
 		else{size=80*(1/(orthSize/5));}
 		//get object position on camera & get camera position on screen
 		var camPos: Vector3 = Camera.main.WorldToViewportPoint(transform.position);
-		var screenPos: Vector3 = Camera.main.ViewportToScreenPoint(camPos);
+		screenPos = Camera.main.ViewportToScreenPoint(camPos);
 		
 		//get cell info
 		if(myStats.mycell){
@@ -79,12 +82,19 @@ function OnGUI(){
 			&& gui_game.showMenu==false){
 				gui_game.viewedobject=parentUnit;
 			}
-		}
-		
+			if (popUpText!=null
+			 && Time.time-popUpTime<1){
+				var textBoxSize: int = 40;
+				var textBox: Rect = new Rect(screenPos.x-(textBoxSize/2),Screen.height-screenPos.y-(textBoxSize/2),textBoxSize,textBoxSize);
+				
+				GUI.Label(textBox,popUpText);	
+			}
+		}	
 	}
-	
-	
 }
+
+
+
 
 var other: GameObject;
 /*

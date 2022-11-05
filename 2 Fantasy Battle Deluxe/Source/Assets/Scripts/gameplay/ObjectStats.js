@@ -8,6 +8,7 @@ var objname: String;
 var owner: byte;
 var thumb: Texture2D;
 var sprite: Texture2D;
+var mySprite: GameObject;
 
 var mycell: GameObject;	//current cell being occupied, set by cells ontrigger
 var gameCoord: Vector3;
@@ -26,8 +27,8 @@ var bio: boolean;
 var mech: boolean; 
 var composition: String;
 
-var actText : String[,] = new String[10,2];
-var actNums : float[,] = new float[10,10];
+var actText : String[,] = new String[10,3]; //(name/func/desc)
+var actNums : float[,] = new float[10,10]; //(ap/fp/rng/mag/dec/rad/crz/tar/dmgtype)
 
 var corpsetype: byte; //object on die?
 var morph: byte; //for morphing units (tank/fortress) (castle/dragon)
@@ -79,11 +80,9 @@ function Update(){
 }
 var plane: GameObject; //plane prefab
 function CreateSprite(): IEnumerator{
-	var mysprite: GameObject;
-	mysprite = Instantiate(plane,Vector3(transform.position.x,transform.position.y+1,transform.position.z),Quaternion.identity);
-	mysprite.transform.parent=transform;
-	mysprite.name="Sprite - "+name;
-	//Debug.Log("me: "+transform.position+"/sprite: "+mysprite.transform.position);
+	mySprite = Instantiate(plane,Vector3(transform.position.x,transform.position.y+1,transform.position.z),Quaternion.identity);
+	mySprite.transform.parent=transform;
+	mySprite.name="Sprite - "+name;
 }
 function PivotSprite(){
 	var camRot: Vector3 = Camera.main.transform.eulerAngles;
@@ -145,7 +144,7 @@ function OnTriggerEnter(object: Collider){
 function ClearActData(): IEnumerator{
 	var i: byte; var j: byte;
 	for (i=0; i<=9; i++){
-		for (j=0; j<=1; j++){
+		for (j=0; j<=2; j++){
 			actText[i,j]="";
 		}	
 	}

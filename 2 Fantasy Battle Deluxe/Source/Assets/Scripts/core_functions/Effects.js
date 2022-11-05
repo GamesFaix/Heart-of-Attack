@@ -17,9 +17,11 @@ function DmgNRM(unit: GameObject, mag: float, targetunit:GameObject){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if(targetunitstats.def<mag){
-		targetunitstats.hp-=(mag-targetunitstats.def);
+		var dmg: int = mag-targetunitstats.def;
+		targetunitstats.hp-=dmg;
 		actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" dealt Player"
-		+targetunitstats.owner+"'s "+targetunitstats.objname+" "+(mag-targetunitstats.def)+" damage.");
+		+targetunitstats.owner+"'s "+targetunitstats.objname+" "+dmg+" damage.");
+		SendPopUpText(targetunit, ("-"+dmg+"HP"));
 		if (targetunitstats.hp<1){targetunitstats.Die();}
 	}
 }		
@@ -31,6 +33,7 @@ function DmgPSN(unit: GameObject, mag: float, dec: float, rad: float, targetunit
 		targetunitstats.hp-=dmg;
 		actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" dealt Player"
 		+targetunitstats.owner+"'s "+targetunitstats.objname+" "+dmg+" damage.");
+		SendPopUpText(targetunit, ("-"+dmg+"HP"));
 		if (targetunitstats.hp<1){targetunitstats.Die();}
 		if (targetunitstats.bio==true){
 			targetunitstats.psnDMG=dmg;
@@ -43,18 +46,22 @@ function DmgELC(unit: GameObject, mag: float, rad: float, targetunit: GameObject
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
 	if (targetunitstats.mech==true){mag+=Mathf.Ceil(mag*0.5);}
+	var text: String;
 	if(targetunitstats.def<mag){
 		var dmg: byte = (mag-targetunitstats.def);
 		targetunitstats.hp-=dmg;
 		actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+" dealt Player"
 		+targetunitstats.owner+"'s "+targetunitstats.objname+" "+dmg+" damage.");
+		text+=("-"+dmg+"HP");
 		if (targetunitstats.hp<1){targetunitstats.Die();}
 	}
 	targetunitstats.init--;
-	var spReduction: byte = Mathf.Ceil(targetunitstats.actNums[1,1]*0.5);
-	targetunitstats.actNums[1,1]=targetunitstats.actNums[1,1]-spReduction;
+	var spReduction: byte = Mathf.Ceil(targetunitstats.actNums[1,3]*0.5);
+	targetunitstats.actNums[1,3]=targetunitstats.actNums[1,3]-spReduction;
 	targetunitstats.elcSPreduction=spReduction;
 	targetunitstats.elcRAD=rad;
+	text+=("\n-1IN\n-"+spReduction+"Move RNG");
+	SendPopUpText(targetunit,text);
 }
 function DmgEXP(unit: GameObject, mag: float, dec: float, rad: float, crz: float, targetcell: GameObject){
 	//initial conditions
@@ -162,11 +169,32 @@ function ObjCreate(unit: GameObject, objno: short,targetcell: GameObject){
 	}
 	yield;
 }
-function ObjMove(targetunit:GameObject,targetcell:GameObject){
-	var targetunitstats: ObjectStats = targetunit.GetComponent(ObjectStats);
-	targetunit.transform.position = targetcell.transform.position;
-	actionCoord.Mlog("Player"+targetunitstats.owner+"'s "+targetunitstats.objname+" moved.");
+function ObjMove(object:GameObject,targetcell:GameObject){
+	var obStats: ObjectStats = object.GetComponent(ObjectStats);
+
+	var end: Vector3 = targetcell.transform.position;
+	
+	StartCoroutine(MoveLerp(object, end, 0.5));
+	
+	if (obStats.owner){
+		actionCoord.Mlog("Player"+obStats.owner+"'s "+obStats.objname+" moved.");
+	}
+	else{
+		actionCoord.Mlog(obStats.objname+" was moved.");
+	}
 }
+function MoveLerp(object: GameObject, finish: Vector3, time: float){
+	var elapsedTime: float =0;
+	var start: Vector3 = object.transform.position;
+	var dist: float = Vector3.Distance(start,finish);
+	var speed: float = 15;
+	var i: float;
+	for (i=0.0; i<1.0; i+= (speed*Time.deltaTime)/dist){
+		object.transform.position = Vector3.Lerp(start, finish, i);
+		yield;
+	}
+}
+
 function ObjTRM(unit: GameObject, targetcell: GameObject){//trample obstacle
 	var obs: GameObject[] = GameObject.FindGameObjectsWithTag("obstacle");
 	var i: short;
@@ -223,4 +251,11 @@ function StatFP(unit: GameObject, mag:float){//change fp
 	unitstats.fp+=mag;
 	if (mag>0){actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+ " +"+mag+"fp");}
 	if (mag<0){actionCoord.Mlog("Player"+unitstats.owner+"'s "+unitstats.objname+ " "+mag+"fp");}
+}
+//
+function SendPopUpText(object: GameObject, text: String){
+	var objectStats: ObjectStats = object.GetComponent(ObjectStats);
+	var spriteDisplay: SpriteDisplay1 = objectStats.mySprite.GetComponent(SpriteDisplay1);
+	spriteDisplay.popUpText=text;
+	spriteDisplay.popUpTime=Time.time;
 }

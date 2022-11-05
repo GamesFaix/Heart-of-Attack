@@ -11,11 +11,12 @@ var currentact1to9: byte;
 
 //enums
 var eActionName: byte=0;
-var eDesc: byte=1;
+var eFunc: byte=1;
+var eDesc: byte=2;
 
-var eAction: byte=0;
-var eAp: byte=1;
-var eFp: byte=2;
+var eAp: byte=0;
+var eFp: byte=1;
+var emRng: byte=2;
 var eRng: byte=3;
 var eMag: byte=4;
 var eDec: byte=5;
@@ -53,9 +54,11 @@ function OnEnable(){
 function PerformAction(unit: GameObject, act1to9: byte){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	
-	var action: float = unitstats.actNums[act1to9,eAction];
+	var func: String = unitstats.actText[act1to9,eFunc];
+	Debug.Log(func);
 	var ap: float = unitstats.actNums[act1to9,eAp]; 
 	var fp: float = unitstats.actNums[act1to9,eFp];
+	var mrng: float = unitstats.actNums[act1to9,emRng];
 	var rng: float = unitstats.actNums[act1to9,eRng]; 
 	var mag: float = unitstats.actNums[act1to9,eMag]; 
 	var dec: float = unitstats.actNums[act1to9,eDec]; 
@@ -69,65 +72,113 @@ function PerformAction(unit: GameObject, act1to9: byte){
 		DeductCost(unitstats,act1to9);
 		//perform	
 		//move
-		if (action==100010){yield actions.MovSerpGND(unit, rng);}//serp GND
-		if (action==100011){yield actions.MovSerpTRM(unit, rng);}//serp TRM
-		if (action==100012){yield actions.MovSerpFLY(unit, rng);}//serp FLY
-		if (action==100014){yield actions.MovLinGND(unit, rng);}//lin GND
-		if (action==100015){yield actions.MovLinTRM(unit, rng);}//lin TRM
-		if (action==100016){yield actions.MovLinFLY(unit, rng);}//lin FLY
+		if (func=="MovSerpGND"){yield actions.MovSerpGND(unit, rng);}
+		if (func=="MovSerpTRM"){yield actions.MovSerpTRM(unit, rng);}
+		if (func=="MovSerpFLY"){yield actions.MovSerpFLY(unit, rng);}
+		//if (func=="MovSerpGAS"){yield actions.MovSerpGAS(unit, rng);}
+		if (func=="MovLinGND"){yield actions.MovLinGND(unit, rng);}
+		if (func=="MovLinTRM"){yield actions.MovLinTRM(unit, rng);}
+		if (func=="MovLinFLY"){yield actions.MovLinFLY(unit, rng);}
+		
 		//focus
-		if (action==100020){yield actions.Focus(unit, mag);}//focus
+		if (func=="Focus"){
+			Debug.Log("focusing");
+			yield actions.Focus(unit, mag);}
+		
 		//attack
-		if (action==100030){yield actions.AtkSerpNRM(unit, rng, mag);}//serp normal
-		if (action==100031){yield actions.AtkLinNRM(unit, rng, mag);}//lin normal
-		if (action==100032){yield actions.AtkRage(unit, rng, mag, dec);}//rage
-		if (action==100033){yield actions.AtkLeech(unit, rng, mag);}//leech life
-		if (action==100034){yield actions.AtkSerpPSN(unit, rng, mag, dec, rad);}//serp psn
-		if (action==100035){yield actions.AtkSerpELC(unit, rng, mag, rad);}//serp elc
-		if (action==100036){yield actions.AtkArcNRM(unit, rng, mag);}//arc normal
+		if (func=="AtkSerpNRM"){yield actions.AtkSerpNRM(unit, rng, mag);}
+		if (func=="AtkSerpPSN"){yield actions.AtkSerpPSN(unit, rng, mag, dec, rad);}
+		if (func=="AtkSerpELC"){yield actions.AtkSerpELC(unit, rng, mag, rad);}
+		//if (func=="AtkSerpFIR"){yield actions.AtkSerpFIR(unit, rng, mag, dec, rad);}
+		if (func=="AtkLinNRM"){yield actions.AtkLinNRM(unit, rng, mag);}
+		//if (func=="AtkLinFIR"){yield actions.AtkLinFIR(unit, rng, mag, dec, rad);}
+		//if (func=="AtkLinLSR"){yield actions.AtkLinLSR(unit, rng, mag, dec, rad);}
+		if (func=="AtkArcNRM"){yield actions.AtkArcNRM(unit, rng, mag);}
+		if (func=="AtkArcEXP"){yield actions.AtkArcEXP(unit,rng,mag,dec,crz,rad);}
+		if (func=="AtkArcPSN"){yield actions.AtkArcPSN(unit, rng, mag, dec, rad);}
+		if (func=="AtkRage"){yield actions.AtkRage(unit, rng, mag, dec);}
+		if (func=="AtkLeech"){yield actions.AtkLeech(unit, rng, mag);}
+		
 		//creation
-		if (action==100071){yield actions.CreateGND(unit, mag);}//create GND
-		if (action==100072){yield actions.CreateTRM(unit, mag);}//create TRM
-		if (action==100073){yield actions.CreateFLY(unit, mag);}//create FLY
+		if (func=="CreateGND"){yield actions.CreateGND(unit, mag);}
+		if (func=="CreateTRM"){yield actions.CreateTRM(unit, mag);}
+		if (func=="CreateFLY"){yield actions.CreateFLY(unit, mag);}
+		//if (func=="CreateGAS"){yield actions.CreateGAS(unit, mag);}
+		if (func=="CreateSentinel"){yield actions.CreateSentinel(unit);}
+		if (func=="CreateMetaterrainean"){yield actions.CreateMetaterrainean(unit);}
+		if (func=="CreatePortalGate"){yield actions.CreatePortalGate(unit,mag);}
+		//if (func=="CreateVoidGate"){yield actions.CreateVoidGate(unit);}
+		//if (func=="CreateCorpseFiend"){yield actions.CreateCorpseFiend(unit);}
+		
+		//mode flip
+		if (func=="ModeTank"){yield actions.ModeTank(unit);}
+		if (func=="ModeDragon"){yield actions.ModeDragon(unit);}
+		if (func=="ModeMagman"){yield actions.ModeMagman(unit);}		
+		
 		//specials
-		if (action==101141){yield actions.A101141(unit);}//ninjoid - sprint
-		if (action==101251){yield actions.A101251(unit);}//sentinel - fortify shield
-		if (action==101341){yield actions.A101341(unit, mag, dec, rad, crz);}//pterror - barrage
-		if (action==101351){yield actions.A101351(unit);}//pterror - stockpile
-		if (action==101481){yield actions.A101481(unit);}//satellite - create sentinel
+		if (func=="SpcSprint"){yield actions.SpcSprint(unit);}
+		//if (func=="SpcLaserSpin"){yield actions.SpcLaserSpin(unit,rng,mag,dec);}
+		if (func=="SpcFortifyShield"){yield actions.SpcFortifyShield(unit);}
+		if (func=="SpcBarrage"){yield actions.SpcBarrage(unit, mag, dec, rad, crz);}
+		if (func=="SpcStockpile"){yield actions.SpcStockpile(unit);}
+		//if (func=="SpcTeleportFriendly"){yield actions.SpcStockpile(unit, rng);}
+		//if (func=="SpcAdvancedPlating"){yield actions.SpcStockpile(unit, rng);}		
 		//
-		if (action==102131){yield actions.A102131(unit,rng,mag,dec,crz,rad);}//demolitia - grenade
-		if (action==102141){yield actions.A102141(unit);}//demolitia - enhance armor	
-		if (action==102341){yield actions.A102341(unit);}//panopticlops - fortify
-		if (action==102461){yield actions.A102461(unit);}//robotank - mode flip
+		if (func=="SpcEnhanceArmor"){yield actions.SpcEnhanceArmor(unit);}
+		//if (func=="SpcDetonate"){yield actions.SpcDetonate(unit);}
+		if (func=="SpcFortify"){yield actions.SpcFortify(unit);}
+		//if (func=="SpcTacticleMissile"){yield actions.SpcTacticleMissile(unit, rng, mag);}		
 		//
-		if (action==203110){yield actions.A203110(unit);}//ashes - arise
-		if (action==103131){yield actions.A103131(unit,rng,mag);}//mournking - morningstar
-		if (action==103141){yield actions.A103141(unit);}//mournking - wind up
-		if (action==103461){yield actions.A103461(unit);}//castledragon - mode flip
+		if (func=="SpcArise"){yield actions.SpcArise(unit);}
+		if (func=="SpcGoodMourning"){yield actions.SpcGoodMourning(unit,rng,mag);}
+		if (func=="SpcWindUp"){yield actions.SpcWindUp(unit);}
+		//if (func=="SpcPhoenixPickup"){yield actions.SpcPickup(unit, rng);}
+		//if (func=="SpcPhoenixDrop"){yield actions.SpcDrop(unit, rng);}
+		//if (func=="SpcRambuchetize"){yield actions.SpcRambuchetize(unit, rng, mag);}
+		//if (func=="SpcMomentum"){yield actions.SpcDetonate(unit, rng, mag, dec);}
+		//if (func=="SpcRamPickup"){yield actions.SpcDetonate(unit, rng);}
+		//if (func=="SpcCorpseFling"){yield actions.SpcDetonate(unit, rng, mag)
+		//if (func=="SpcTailSpin"){yield actions.SpcTailSpin(unit, rng, mag, dec);}
+		//if (func=="SpcSlashBurn"){yield actions.SpcDetonate(unit, rng, mag, dec, rad);};}
 		//
-		if (action==104141){yield actions.A104141(unit);}//grizzly elder - conjure terrain
-		if (action==104151){yield actions.A104151(unit, mag);}//grizzly - burial
-		if (action==104341){yield actions.A104341(unit,mag);}//golem - consume terrain
-		if (action==104451){yield actions.A104451(unit);}//yeti - aural discharge
-		if (action==104461){yield actions.A104461(unit);}//yeti - torch of thaw
-		if (action==104491){yield actions.A104491(unit);}//yeti - create meta-terrainean
+		if (func=="SpcConjureTerrain"){yield actions.SpcConjureTerrain(unit);}
+		if (func=="SpcBurial"){yield actions.SpcBurial(unit, mag);}
+		//if (func=="SpcTransportEnemy"){yield actions.SpcDetonate(unit, rng, mag);}
+		if (func=="SpcConsumeTerrain"){yield actions.SpcConsumeTerrain(unit,mag);}
+		//if (func=="SpcStampede"){yield actions.SpcStampede(unit, rng, rad);}
+		if (func=="SpcAuralDischarge"){yield actions.SpcAuralDischarge(unit);}
+		if (func=="SpcTorchOfThaw"){yield actions.SpcTorchOfThaw(unit);}
 		//
-		if (action==105141){yield actions.A105141(unit);}//gunslinger - load
-		if (action==105151){yield actions.A105151(unit,rng,mag,unitstats.bombs);}//gunslinger - quick draw
-		if (action==105241){yield actions.A105241(unit);}//piecemaker - patience
-		if (action==105251){yield actions.A105251(unit,mag);}//piecemaker - open portal gate
-		if (action==105331){yield actions.A105331(unit,rng,mag,rad);}//chieftomaton - time-a-hawk
-		if (action==105451){yield actions.AtkArcNRM(unit,rng,mag);}//grand dad - marksman
-		if (action==105461){yield actions.A105461(unit,rng);}//grand dad - second in command
+		if (func=="SpcLoad"){yield actions.SpcLoad(unit);}
+		if (func=="SpcQuickdraw"){yield actions.SpcQuickdraw(unit,rng,mag,unitstats.bombs);}
+		if (func=="SpcPatience"){yield actions.SpcPatience(unit);}
+		if (func=="SpcTimeahawk"){yield actions.SpcTimeahawk(unit,rng,mag,rad);}
+		//if (func=="SpcSpiritTimeBomb"){yield actions.SpcSpiritTimeBomb(unit, rng, mag, rad);}
+		if (func=="SpcSecondInCommand"){yield actions.SpcSecondInCommand(unit,rng);}
+		//if (func=="SpcHourSavioiur"){yield actions.SpcHourSaviour(unit);}
 		//
-		if (action==106041){yield actions.A106041(unit, mag);}//larva - evolve
-		if (action==106141){yield actions.A106141(unit, rng, mag, dec, rad);}//bee - death sting
-		if (action==106231){yield actions.A106231(unit, rng, mag, dec, rad);}//shrooman - spore
-		if (action==106241){yield actions.A106241(unit);}//infest corpse
+		if (func=="SpcEvolve"){yield actions.SpcEvolve(unit, mag);}
+		if (func=="SpcDeathSting"){yield actions.SpcDeathSting(unit, rng, mag, dec, rad);}
+		if (func=="SpcInfestCorpse"){yield actions.SpcInfestCorpse(unit);}
+		//if (func=="SpcWebshot"){yield actions.SpcWebshot(unit, rng, mag, rad);}
+		//if (func=="SpcSwarm"){yield actions.SpcSwarm(unit);}
+		//if (func=="SpcMegadearth"){yield actions.SpcMegadearth(unit, dec, rad);}
 		//
-		if (action==108141){yield actions.A108141(unit, mag);}//corpse fiend - cannibalize
-		if (action==108341){yield actions.A108341(unit);}//magman - mode flip
+		//if (func=="SpcMnemonicPlague"){yield actions.SpcMnemonicPlague(unit, mag);}
+		//if (func=="SpcAccumulate"){yield actions.SpcAccumulate(unit, rng);}
+		//if (func=="SpcTractorGust"){yield actions.SpcTractorGust(unit, rng);}
+		//if (func=="SpcForceShove"){yield actions.SpcForceShove(unit, rng, mag, dec);}
+		//if (func=="SpcSuperShove"){yield actions.SpcSuperShove(unit, rng, mag, dec);}
+		//if (func=="SpcRestoration"){yield actions.SpcRestoration(unit, rng, dec);}		
+		//if (func=="SpcTeleportEnemy"){yield actions.SpcTeleportEnemy(unit, rng, rad);}		
+		//if (func=="SpcLightningStorm"){yield actions.SpcLightningStorm(unit, rng, mag, dec, rad);}		
+		//
+		if (func=="SpcCannibalize"){yield actions.SpcCannibalize(unit, mag);}
+		//if (func=="SpcExplode"){yield actions.SpcExplode(unit, mag, dec, rad, crz);}
+		//if (func=="SpcMoveCorpse"){yield actions.SpcMoveCorpse(unit, rng);}
+		//if (func=="SpcContagion"){yield actions.SpcContagion(unit);}		
+		//if (func=="SpcSacrifize"){yield actions.SpcSacrifize(unit, rng);}
+		//if (func=="SpcDevour"){yield actions.SpcDevour(unit, rng, dmg, dec);}		
 		
 		//mark action as used
 		gui_game.actUsed[act1to9]=true;

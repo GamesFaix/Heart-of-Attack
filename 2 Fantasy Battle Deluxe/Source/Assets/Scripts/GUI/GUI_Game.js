@@ -2,11 +2,12 @@
 
 //enums
 var eActionName: byte=0;
-var eDesc: byte=1;
+var eFunc: byte=1;
+var eDesc: byte=2;
 
-var eAction: byte=0;
-var eAp: byte=1;
-var eFp: byte=2;
+var eAp: byte=0;
+var eFp: byte=1;
+var emRng: byte=2;
 var eRng: byte=3;
 var eMag: byte=4;
 var eDec: byte=5;
@@ -203,13 +204,13 @@ function ActionButtons(object: GameObject){//displays action buttons/activates A
 	//Debug.Log(stats.actText[9,0]);
 	var act: byte;
 	for (act=1; act<=9; act++){
-		var action: float = stats.actNums[act,eAction];
+		var func: String = stats.actText[act,eFunc];
 		var actionName: String = stats.actText[act,eActionName];
 		var ap: byte = stats.actNums[act,eAp];
 		var fp: byte = stats.actNums[act,eFp];
 		var used: boolean = actUsed[act];
 			
-		if (action!=0){
+		if (func!=null){
 			//Debug.Log(actionName);
 			if (GUI.Button(Rect(10,thumbscale+110+((act-1)*actbtn_height),160,actbtn_height),actionName)){
 				if (Event.current.button==0){
@@ -244,7 +245,7 @@ function QuickKeys(){
 				var stats: ObjectStats = viewedobject.GetComponent(ObjectStats);
 				for (act=1; act<=9; act+=1){
 					if (e.character==act){
-						if (stats.actNums[act,eAction]>0){
+						if (stats.actText[act,eFunc]!=null){
 							actionCoord.PerformAction(viewedobject,act);
 						}
 						else {error="No action assigned.";}

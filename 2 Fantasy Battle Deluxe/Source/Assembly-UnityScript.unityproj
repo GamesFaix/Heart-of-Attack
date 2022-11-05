@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>9.0.21022</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{BA60451F-7EC3-F551-E7E9-8BEE3DC91ADA}</ProjectGuid>
+	<ProjectGuid>{41464158-AC27-A000-BABA-8AA3957F8759}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\setup\ObstacleGenerator.js" />
      <Compile Include="Assets\Scripts\setup\SpawnNodeSetup.js" />
      <Compile Include="Assets\Scripts\setup\SpawnZoneSetup.js" />
+     <Compile Include="Assets\Scripts\setup\StartDebug.js" />
      <None Include="Assets\Shaders\Double.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

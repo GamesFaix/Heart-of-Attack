@@ -22,7 +22,7 @@ function Awake(){
 	GameObject.Find("GUIPrefab").GetComponent(GUI_Game).targeting=this;
 }
 //movement/object creation
-function MovSerpGND(rng: float, startcell: GameObject): boolean{//serpentine ground move/create unit
+function SerpGND(rng: float, startcell: GameObject): boolean{//serpentine ground move/create unit
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -55,7 +55,7 @@ function MovSerpGND(rng: float, startcell: GameObject): boolean{//serpentine gro
 	if (AnyCells()==false){return false;}
 	else {return true;}
 }
-function MovSerpTRM(rng: int, startcell: GameObject): boolean{//serpentine trample move/create unit
+function SerpTRM(rng: int, startcell: GameObject): boolean{//serpentine trample move/create unit
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -88,7 +88,7 @@ function MovSerpTRM(rng: int, startcell: GameObject): boolean{//serpentine tramp
 	if (AnyCells()==false){return false;}
 	else {return true;}
 }
-function MovSerpFLY(rng: int, startcell: GameObject): boolean{//serpentine flying move/create unit
+function SerpFLY(rng: int, startcell: GameObject): boolean{//serpentine flying move/create unit
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -124,7 +124,7 @@ function MovSerpFLY(rng: int, startcell: GameObject): boolean{//serpentine flyin
 
 
 
-function MovLinGND(rng: int, startcell: GameObject): boolean{//linear ground move
+function LinGND(rng: int, startcell: GameObject): boolean{//linear ground move
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -169,7 +169,7 @@ function MovLinGND(rng: int, startcell: GameObject): boolean{//linear ground mov
 	if (AnyCells()==false){return false;}
 	else {return true;}
 }
-function MovLinTRM(rng: int, startcell: GameObject): boolean{//linear trample move
+function LinTRM(rng: int, startcell: GameObject): boolean{//linear trample move
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
@@ -215,7 +215,7 @@ function MovLinTRM(rng: int, startcell: GameObject): boolean{//linear trample mo
 	else {return true;}
 }
 
-function MovLinFLY(rng: float, startcell: GameObject): boolean{//linear flying move
+function LinFLY(rng: float, startcell: GameObject): boolean{//linear flying move
 	targetcell=null;
 	var distance: byte;
 	var arrayflip: boolean = true;
