@@ -33,7 +33,7 @@ function Awake(){
 	gameindex=gameObject.GetComponent(GameIndex);
 	queue=gameObject.GetComponent(QueueScript);
 }
-
+///
 function FightingStart () {
 	gui_master.loading=true;
 	gui_menu.loadbox+="\n\tCreating map...";
@@ -61,13 +61,11 @@ function FightingStart () {
 	
 	yield PrepareFirstUnit();
 
-	////
 	gui_master.loading=false;
 	gui_menu.loadbox="Loading...";
-	gui_master.view="game";
-	
+	gui_master.view="game";	
 }
-
+///
 function MapSetup(): IEnumerator{
 
 	var terrain: Texture[] = new Texture[4]; 
@@ -129,7 +127,6 @@ function MapSetup(): IEnumerator{
 */
 	yield;
 }
-
 var cells_labeled: short;
 function CellGenerator(): IEnumerator{
 	cellMaster=Instantiate(cellMasterPrefab,transform.position,Quaternion.identity);
@@ -187,6 +184,7 @@ function CellChecker(): IEnumerator{
 		yield;
 	}
 }
+///
 function SpawnZoneGenerator(): IEnumerator{
 //spawn zone setup variables
 	var spawnzoneLocation: Vector3;
@@ -240,36 +238,36 @@ function HeroSpawner(player: byte): IEnumerator{
 	
 	var hero_numbers: int[]=[0,1014,1024,1034,1044,1054,1064,1074,1084];
 		
-		if (gameindex.player_team_numbers[player]>0){
-			//randomize random players
-			if(gameindex.player_team_numbers[player]==1){
-				gameindex.player_team_numbers[player]=Mathf.RoundToInt(Random.value*7)+2;
-			}
-			//subtract 1 from players' teams (teams now 1-8)
-			gameindex.player_team_numbers[player]-=1;
-			
-			var nodelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnnode");
-			
-			while(true){
-				var randomnode: GameObject = nodelist[Mathf.Floor(Random.value*nodelist.length)];
-				if (randomnode.GetComponent(SpawnNodeSetup).mycell){
-					var randomcell: GameObject = randomnode.GetComponent(SpawnNodeSetup).mycell;
-					var cellproperties: CellProperties = randomcell.GetComponent(CellProperties);
-					if (cellproperties.occA==0 && cellproperties.occB==0){break;}
-				}
-			}
-			
-			Destroy(randomnode.GetComponent(SpawnNodeSetup).myzone);
-				
-			//create hero @ spawn_point	
-			var hero: GameObject = Instantiate(objectPrefab,randomcell.transform.position,Quaternion.identity);
-			//set hero objno
-			hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[player]];
-			//set hero owner
-			hero.GetComponent(ObjectStats).owner=player;
-			//add to queue
-			queue.queuelist.Add(hero);						
+	if (gameindex.player_team_numbers[player]>0){
+		//randomize random players
+		if(gameindex.player_team_numbers[player]==1){
+			gameindex.player_team_numbers[player]=Mathf.RoundToInt(Random.value*7)+2;
 		}
+		//subtract 1 from players' teams (teams now 1-8)
+		gameindex.player_team_numbers[player]-=1;
+		
+		var nodelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnnode");
+		
+		while(true){
+			var randomnode: GameObject = nodelist[Mathf.Floor(Random.value*nodelist.length)];
+			if (randomnode.GetComponent(SpawnNodeSetup).mycell){
+				var randomcell: GameObject = randomnode.GetComponent(SpawnNodeSetup).mycell;
+				var cellproperties: CellProperties = randomcell.GetComponent(CellProperties);
+				if (cellproperties.occA==0 && cellproperties.occB==0){break;}
+			}
+		}
+		
+		Destroy(randomnode.GetComponent(SpawnNodeSetup).myzone);
+			
+		//create hero @ spawn_point	
+		var hero: GameObject = Instantiate(objectPrefab,randomcell.transform.position,Quaternion.identity);
+		//set hero objno
+		hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[player]];
+		//set hero owner
+		hero.GetComponent(ObjectStats).owner=player;
+		//add to queue
+		queue.queuelist.Add(hero);						
+	}
 }
 function DestroySpawnZones(): IEnumerator{
 	var	zonelist: GameObject[] = GameObject.FindGameObjectsWithTag("spawnzone");
@@ -288,10 +286,106 @@ function PrepareFirstUnit(): IEnumerator{
 }
 
 
+///
 function CreateObstacleMaster(): IEnumerator{
 	obstacleMaster=Instantiate(obstacleMasterPrefab,transform.position,Quaternion.identity);
 	obstacleMaster.name="ObstacleMaster";
 	var identifier = playManager.GetComponent(Identifier1);
 	identifier.obstacleMaster=obstacleMaster;
 	
+}
+///
+function DebugStart(){
+	gui_master.loading=true;
+	gui_menu.loadbox+="\n\tLoading debug mode...";
+	map=Instantiate(mapPrefab,transform.position,Quaternion.identity);
+
+	yield DebugMap();
+	yield CellGenerator();
+	yield CellChecker();
+	yield CreatePlayManager();
+	yield DebugHeroes();
+	yield PrepareFirstUnit();
+	yield CreateObstacleMaster();
+	yield obstacleMaster.GetComponent(ObstacleGenerator).ObstacleGenerator(); //yields to DebugObstacles() if map_id==255
+
+	gui_master.loading=false;
+	gui_menu.loadbox="Loading...";
+	gui_master.view="game";
+}
+function DebugMap(): IEnumerator{
+	map_id=255;
+	grid=2;
+	count=6;
+	Camera.main.orthographicSize=5.55;
+	var scaleFactor: float = 0.71;
+	map.transform.localScale=Vector3(scaleFactor,scaleFactor,scaleFactor);
+
+	var terrain: Texture2D = Resources.Load("terrain/turf_grass") as Texture2D;
+	map.renderer.material.SetTexture("_MainTex",terrain);
+
+	yield;
+}
+function DebugHeroes(): IEnumerator{
+
+	var hero_numbers: int[]=[0,1014,1024,1034,1044,1054,1064,1074,1084];
+
+	var spawnCells: Vector3[] = new Vector3[3];
+	spawnCells[1]=Vector3(3,3,0);
+	spawnCells[2]=Vector3(5,5,0);
+	
+	var spawnPoint: Vector3; //world point of spawning
+	
+	var i: byte;
+	for (i=1; i<spawnCells.length; i++){
+		spawnPoint=CellNumToWorldPoint(spawnCells[i]);
+		
+		//randomize random teams
+		if(gameindex.player_team_numbers[i]==1){
+			gameindex.player_team_numbers[i]=Mathf.RoundToInt(Random.value*7)+2;
+		}
+		//subtract 1 from players' teams (teams now 1-8)
+		gameindex.player_team_numbers[i]-=1;
+		
+		var hero: GameObject = Instantiate(objectPrefab,spawnPoint,Quaternion.identity);
+		//hero.GetComponent(ObjectStats).objno=hero_numbers[gameindex.player_team_numbers[i]];
+		hero.GetComponent(ObjectStats).objno=hero_numbers[2];
+		hero.GetComponent(ObjectStats).owner=i;
+		queue.queuelist.Add(hero);						
+	}
+	yield;
+}
+function CellNumToWorldPoint(cellNum: Vector3): Vector3 {
+	var gameX: byte = cellNum.x;
+	var gameY: byte = cellNum.y;
+	var gameZ: byte = cellNum.z;
+	
+	//Debug.Log(gameX+","+gameY+","+gameZ);
+	
+	var positionX: int = (gameX*grid)-count;
+	var positionY: int = (gameY*grid)-count;
+	var positionZ: int = (gameZ*grid)-count;
+	
+	var position: Vector3 =  Vector3(positionX,positionY,positionZ);
+	return position;
+}
+function DebugObstacles(): IEnumerator{
+
+	var obstacles: int[] = new int[5];
+	var spawnCells: Vector3[] = new Vector3[5];
+	spawnCells[0]=Vector3(3,4,0);  obstacles[0]=3101;
+	spawnCells[1]=Vector3(1,1,0);  obstacles[1]=3101;
+	spawnCells[2]=Vector3(5,3,0);  obstacles[2]=3101;
+	spawnCells[3]=Vector3(2,2,0);  obstacles[3]=3101;
+	spawnCells[4]=Vector3(0,4,0);  obstacles[4]=3101;
+	
+	var spawnPoint: Vector3; //world point of spawning
+	
+	var i: byte;
+	for (i=1; i<spawnCells.length; i++){
+		spawnPoint=CellNumToWorldPoint(spawnCells[i]);
+		var obstacle: GameObject = Instantiate(objectPrefab,spawnPoint,Quaternion.identity);
+		obstacle.GetComponent(ObjectStats).objno=obstacles[i];
+	}
+	yield;
 }

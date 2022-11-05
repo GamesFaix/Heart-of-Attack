@@ -160,6 +160,20 @@ function A100035(unit: GameObject, rng: float, mag: float, rad: float){//serp - 
 	}
 	yield;
 }//unit creation
+function A100036(unit: GameObject, rng: float, mag: float){//arc normal
+	if(targeting.T333(rng,unit.GetComponent(ObjectStats).mycell)==true){
+		yield targeting.WaitForTargetcell();
+	}
+	else {targeting.NoTargets();}
+	
+	if(targeting.T000(targeting.targetcell)==true){
+		yield targeting.WaitForTargetobject();
+		effects.E100(unit,mag,targeting.targetobject);
+	}
+	yield;
+
+}
+
 //create
 function A100071(unit: GameObject, mag: float){//create unit GND
 	if(targeting.T111(1, unit.GetComponent(ObjectStats).mycell)==true){

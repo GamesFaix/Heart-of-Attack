@@ -19,11 +19,13 @@ function Awake(){
 }
 
 function ObstacleGenerator(): IEnumerator{
+	if (map_id==255){yield fightingStart.DebugObstacles();}//debug mode
+
 	if (map_id==1){yield Level1B();}//grass
 	if (map_id==2){yield Level2();}//sand
 	if (map_id==3){yield Level3();}//lava
 	if (map_id==4){yield Level4();}//ice
-	
+
 	yield;
 }
 

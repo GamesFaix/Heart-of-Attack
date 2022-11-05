@@ -84,6 +84,7 @@ function PerformAction(unit: GameObject, act1to9: byte){
 		if (action==100033){yield actions.A100033(unit, rng, mag);}//leech life
 		if (action==100034){yield actions.A100034(unit, rng, mag, dec, rad);}//serp psn
 		if (action==100035){yield actions.A100035(unit, rng, mag, rad);}//serp elc
+		if (action==100036){yield actions.A100036(unit, rng, mag);}//arc normal
 		//creation
 		if (action==100071){yield actions.A100071(unit, mag);}//create GND
 		if (action==100072){yield actions.A100072(unit, mag);}//create TRM

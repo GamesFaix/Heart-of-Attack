@@ -260,7 +260,7 @@ function OnTriggerStay(object:Collider){//if unit, obstacle or spawnnode is in c
 			if (objectstats.obclass==4){occA=2;}
 			if (objectstats.obclass==3){occA=3;}
 			if (objectstats.obclass==2){occA=4;}
-			if (objectstats.obclass==1){occA=5;}
+			if (objectstats.obclass==1){occA=5; occB=1;}
 		}	
 		occupied=true;
 	}	

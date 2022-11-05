@@ -420,9 +420,9 @@ function I1024(object: GameObject){
 	stats.actNums[1,action]=100015;//lin trm
 		stats.actNums[1,tar]=lin;
 		stats.actNums[1,rng]=2;
-	stats.actNums[3,action]=100031;//lin
+	stats.actNums[3,action]=100036;//lin
 		stats.actText[3,actionName]="Shoot";
-		stats.actNums[3,tar]=lin;
+		stats.actNums[3,tar]=arc;
 		stats.actNums[3,rng]=3; stats.actNums[3,mag]=11;
 		stats.actNums[3,dmgtype]=nrml;
 	stats.actNums[4,action]=102441;
