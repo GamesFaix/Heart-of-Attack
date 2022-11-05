@@ -4,6 +4,8 @@ var gui_master: GUI_Master;
 var previousview: String;
 
 var background: Texture2D;
+var screenshot: Texture2D;
+
 var targeting: Texture[]= new Texture[4];
 
 var column1: short;		
@@ -15,6 +17,65 @@ var startY: short;
 var startX: short;
 var spacingY1: short;
 
+//enums
+var eActionName: byte=0;
+var eDesc: byte=1;
+
+var eAction: byte=0;
+var eAp: byte=1;
+var eFp: byte=2;
+var eRng: byte=3;
+var eMag: byte=4;
+var eDec: byte=5;
+var eRad: byte=6;
+var eCrz: byte=7;
+var eTar: byte=8;
+var eDmgType: byte=9;
+//
+
+//icons
+var iHp: Texture2D;
+var iDef: Texture2D;
+var iIn: Texture2D;
+
+var iAct: Texture[]=new Texture[8];
+var iMob: Texture[]=new Texture[5];
+var iTar: Texture[]=new Texture[5];
+var iDmgType: Texture[]=new Texture[7];
+
+function LoadIcons():IEnumerator{
+	//icons
+	iHp = Resources.Load("icons/hp") as Texture2D;
+	iDef = Resources.Load("icons/def") as Texture2D;
+	iIn = Resources.Load("icons/in") as Texture2D;
+
+	iAct[eAp] = Resources.Load("icons/ap") as Texture2D;
+	iAct[eFp] = Resources.Load("icons/fp") as Texture2D;
+	iAct[eRng] = Resources.Load("icons/rng") as Texture2D;
+	iAct[eMag] = Resources.Load("icons/dmg") as Texture2D;
+	iAct[eDec] = Resources.Load("icons/dec") as Texture2D;
+	iAct[eRad] = Resources.Load("icons/rad") as Texture2D;
+	iAct[eCrz] = Resources.Load("icons/crz") as Texture2D;
+
+	iMob[1] = Resources.Load("icons/gnd") as Texture2D;
+	iMob[2] = Resources.Load("icons/trm") as Texture2D;
+	iMob[3] = Resources.Load("icons/fly") as Texture2D;
+	iMob[4] = Resources.Load("icons/gas") as Texture2D;
+
+	iTar[1] = Resources.Load("icons/serp") as Texture2D;
+	iTar[2] = Resources.Load("icons/lin") as Texture2D;
+	iTar[3] = Resources.Load("icons/arc") as Texture2D;
+	// iAct[eRad]ial = Resources.Load("icons/radial") as Texture2D;
+	
+	iDmgType[2] = Resources.Load("icons/exp") as Texture2D;
+	iDmgType[3] = Resources.Load("icons/fir") as Texture2D;
+	iDmgType[4] = Resources.Load("icons/psn") as Texture2D;
+	iDmgType[5] = Resources.Load("icons/elc") as Texture2D;
+	iDmgType[6] = Resources.Load("icons/lsr") as Texture2D;
+	//	
+
+	yield;
+}
 function Awake(){
 	gui_master=gameObject.GetComponent(GUI_Master);
 	
@@ -22,8 +83,12 @@ function Awake(){
 	targeting[1]=Resources.Load("gui/help/targeting_lin") as Texture2D;
 	targeting[2]=Resources.Load("gui/help/targeting_lin_corner") as Texture2D;
 	targeting[3]=Resources.Load("gui/help/targeting_arc") as Texture2D;	
+	
+	screenshot=Resources.Load("gui/help/screenshot") as Texture2D;
 }
-
+function Start() {
+	yield LoadIcons();
+}
 function Update(){//scale to screen size
 	btnwidth=90;//(Screen.width-(column1*2))/5;
 	//if (btnwidth>150){btnwidth=150;}
@@ -75,6 +140,14 @@ if (gui_master.view=="help"){
 	}
 	if (GUI.Button(Rect(column1,startY+btnheight*4,btnwidth,btnheight),"Obstacles")){
 		if (displayInfo<5 || displayInfo>=6){displayInfo=5;}
+		else {displayInfo=0;}
+	}
+	if (GUI.Button(Rect(column1,startY+btnheight*5,btnwidth,btnheight),"Icons")){
+		if (displayInfo<6 || displayInfo>=7){displayInfo=6;}
+		else {displayInfo=0;}
+	}
+	if (GUI.Button(Rect(column1,startY+btnheight*6,btnwidth,btnheight),"Controls")){
+		if (displayInfo<7 || displayInfo>=8){displayInfo=7;}
 		else {displayInfo=0;}
 	}
 	if (displayInfo>=3 && displayInfo<4){//action subcategories
@@ -140,11 +213,11 @@ if (gui_master.view=="help"){
 		}
 		if (displayInfo==2){//turns
 			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight-20),
-				"Fantasy Battle: Deluxe is a game of turn-based. \n\nPlayers take turn for each Unit they having.  The order of turns is listed in the Queue. \n\t- The Current Unit is Unit at the top of the Queue, whose turn it is. \n\t- The Last Unit is the Unit at the bottom of the Queue. \n\nEach Unit has Initiative (in).  Units with higher in take another turn sooner. \nWhen the Current Unit's turn is over, if its in is higher than the Last Unit and the Last Unit has not already been skipped, the Current Unit skips ahead of the Last Unit in the Queue. \n\nAt the beginning of the game, all Heroes are randomly placed in the Queue. \n\nDuring a Unit's turn, it may spend resources to perform different Actions. \n\t- At the beginning of each Unit's turn, it recieves 2 Action Points (ap).\n\t- All ap are lost at the end of the turn.\n\nWhen a new Unit is created, it is added to the bottom of the Queue.\n\t- New Units do not skip ahead, regardless of their in.");
+				"Fantasy Battle: Deluxe is a game of turn-based. \n\nPlayers take turn for each Unit they are having.  The order of turns is listed in the Queue. \n\t- The Current Unit is the Unit at the top of the Queue, whose turn it is. \n\t- The Last Unit is the Unit at the bottom of the Queue. \n\nEach Unit has an Initiative (IN).  Units with higher IN take another turn sooner. \nWhen the Current Unit's turn is over, if its IN is higher than the Last Unit and the Last Unit has not already been skipped, the Current Unit skips ahead of the Last Unit in the Queue. \n\nAt the beginning of the game, all Heroes are randomly placed in the Queue. \n\nDuring a Unit's turn, it may spend resources to perform different Actions. \n\t- At the beginning of each Unit's turn, it recieves 2 Action Points (AP).\n\t- All ap are lost at the end of the turn.\n\nWhen a new Unit is created, it is added to the bottom of the Queue.\n\t- New Units do not skip ahead, regardless of their IN.");
 		}
 		if (displayInfo==3.1){//actions general
 			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight-20),
-				"Units may perform up to 9 different Actions during their turn. \n\t- No action may be performed twice in a turn. \n\nActions typically have a cost in Action Points (ap) and/or Focus Points (fp). \n\t- ap are lost at the end of the turn.  \n\t- fp are not lost and can accumulate. \n\nCommon Actions:\n\t- Most Units may Move for 1AP.\n\t- All Units may Focus for 1AP to gain 1FP. \n\t- Most Units may Attack for 1AP. \n\t- Heroes typically have 3 Unit creation Actions.\n\t- Units may have 1-3 additional special Actions. \n\nActions cannot be performed if:\n\t- There are no legal targets.\n\t- The Unit does not have the required resources.\n\t- The Action has already been performed this turn.");
+				"Units may perform up to 9 different Actions during their turn. \n\t- No action may be performed twice in a turn. \n\nActions typically have a cost in Action Points (AP) and/or Focus Points (FP). \n\t- AP are lost at the end of the turn.  \n\t- FP are not lost and can accumulate. \n\nCommon Actions:\n\t- Most Units may Move for 1AP.\n\t- All Units may Focus for 1AP to gain 1FP. \n\t- Most Units may Attack for 1AP. \n\t- Heroes typically have 3 Unit creation Actions.\n\t- Units may have 1-3 additional special Actions. \n\nActions cannot be performed if:\n\t- There are no legal targets.\n\t- The Unit does not have the required resources.\n\t- The Action has already been performed this turn.");
 		}
 		if (displayInfo==3.2){//actions targeting
 			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight-20),
@@ -251,22 +324,22 @@ if (gui_master.view=="help"){
 			}
 			switch(damageinfo){
 				case 1://normal
-					blahblah="Normal Damage \n\t- Target receives damage.\n\t- DMG: hp reduction to target, before target's def is subtracted. ";
+					blahblah="Normal Damage \n\t- Target receives damage.\n\t- DMG: HP reduction to target, before target's DEF is subtracted. ";
 					break;
 				case 2://fire
-					blahblah="Fire Damage (FIR)\n\t- Target receives damage.\n\t- Units touching damaged Units also receive some damage.\n\t- DMG: hp reduction to target, before target's def is subtracted.\n\t- DEC: % of DMG, after def subtracted, done to neighboring \n\tUnits. \n\t\t(DEC is compounded each time DMG is spread.)\n\t- RAD: Maximum distance DMG is spread.";
+					blahblah="Fire Damage (FIR)\n\t- Target receives damage.\n\t- Units touching damaged Units also receive some damage.\n\t- DMG: HP reduction to target, before target's DEF is subtracted.\n\t- DEC: % of DMG, after DEF subtracted, done to neighboring \n\tUnits. \n\t\t(DEC is compounded each time DMG is spread.)\n\t- RAD: Maximum distance DMG is spread.";
 					break;
 				case 3://laser
-					blahblah="Laser Damage (LSR)\n\t- Target receives damage.\n\t- Units behind target also receive some damage.\n\t- DMG: hp reduction to target, before target's def is subtracted.\n\t- DEC: % of DMG, after def subtracted, done to next Unit.\n\t\t(DEC is compounded each time DMG is passed.) \n\t- RAD: Maximum distance DMG can be dealt.\n\t- Laser Damage cannot move past Obstacles.";
+					blahblah="Laser Damage (LSR)\n\t- Target receives damage.\n\t- Units behind target also receive some damage.\n\t- DMG: HP reduction to target, before target's DEF is subtracted.\n\t- DEC: % of DMG, after def subtracted, done to next Unit.\n\t\t(DEC is compounded each time DMG is passed.) \n\t- RAD: Maximum distance DMG can be dealt.\n\t- Laser Damage cannot move past Obstacles.";
 					break;
 				case 4://explosive
-					blahblah="Explosive Damage (EXP)\n\t- Target and all Units within the Critical Zone receive damage.\n\t- Units outside of Critical Zone but within Radius also receive \n\tsome damage.\n\t- DMG: hp reduction to all Units in Critical Zone, before def \n\tsubtracted. \n\t- Critical Zone (CRZ): Size of box around target Cell where initial \n\tDMG is dealt.  \n\t\t(CRZ of 0 contains 1 Cell, CRZ of 1 contains 9 Cells, CRZ of 2 \n\t\tcontains 25 Cells.)\n\t- DEC: % of DMG done in each Radius outside of Critical Zone.\n\t\t(DEC is compounded in each successive Radius.)\n\t- RAD: Maximum distance damage is dealt.\n\t- Destructible Obstacles within the RAD of an explosion are\n\tdestroyed.";
+					blahblah="Explosive Damage (EXP)\n\t- Target and all Units within the Critical Zone receive damage.\n\t- Units outside of Critical Zone but within Radius also receive \n\tsome damage.\n\t- DMG: hp reduction to all Units in Critical Zone, before DEF \n\tsubtracted. \n\t- Critical Zone (CRZ): Size of box around target Cell where initial \n\tDMG is dealt.  \n\t\t(CRZ of 0 contains 1 Cell, CRZ of 1 contains 9 Cells, CRZ of 2 \n\t\tcontains 25 Cells.)\n\t- DEC: % of DMG done in each Radius outside of Critical Zone.\n\t\t(DEC is compounded in each successive Radius.)\n\t- RAD: Maximum distance damage is dealt.\n\t- Destructible Obstacles within the RAD of an explosion are\n\tdestroyed.";
 					break;
 				case 5://poison
-					blahblah="Poison Damage (PSN)\n\t- Damage is dealt to target.\n\t- If target is Biological, additional damage is dealt later.\n\t- DMG: Initial hp reduction to target, before target's def is \n\tsubtracted.\n\t- DEC: % of DMG dealt to target at the beginning of its next turn \n\t(if Biological).\n\t\t(DEC is compounded each turn.)\n\t- RAD: Maximum number of turns damage can be dealt.\n\t- DMG dealt after initial DMG does not subtract target's def. \n\n(See also Units/Composition)";
+					blahblah="Poison Damage (PSN)\n\t- Damage is dealt to target.\n\t- If target is Biological, additional damage is dealt later.\n\t- DMG: Initial HP reduction to target, before target's DEF is \n\tsubtracted.\n\t- DEC: % of DMG dealt to target at the beginning of its next turn \n\t(if Biological).\n\t\t(DEC is compounded each turn.)\n\t- RAD: Maximum number of turns damage can be dealt.\n\t- DMG dealt after initial DMG does not subtract target's def. \n\n(See also Units/Composition)";
 					break;
 				case 6://electrical
-					blahblah="Electrical Damage (ELC)\n\t- Target is dealt damage.  \n\t- Target's Speed is temporarily reduced by %50.\n\t- Target's Initiative is temporarily reduced by 1.\n\t- DMG: hp reduction to target, before target's def is subtracted.\n\t\t(Mechanical Units take +50% DMG, before def.)\n\t- RAD: Number of turns before target's sp and in are restored.\n\t\t(sp and in are restored at the end of the target's turn.)\n\n(See also Units/Composition)";
+					blahblah="Electrical Damage (ELC)\n\t- Target is dealt damage.  \n\t- Target's Move RNG is temporarily reduced by %50.\n\t- Target's Initiative is temporarily reduced by 1.\n\t- DMG: HP reduction to target, before target's def is subtracted.\n\t\t(Mechanical Units take +50% DMG, before DEF.)\n\t- RAD: Number of turns before target's Move RNG and IN are restored.\n\t\t(Move RNG and IN are restored at the end of the target's turn.)\n\n(See also Units/Composition)";
 			}
 			GUI.Label(Rect(infoX+170,infoY+70,400,400),blahblah);
 			
@@ -287,11 +360,75 @@ if (gui_master.view=="help"){
 		}
 		if (displayInfo==4.3){//unit combat stats
 			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight-20),
-				"Hit Points (hp)\n\t- Unit's current health. \nMax Hit Points (mhp)\n\t- Unit's maximum health. \n\nIf a Unit's hp is 0, it dies.  \n\t- In most cases, dead Units become Corpse Obstacles.\n\nDefense (def)\n\t- Amount reduced from any damage the Unit recieves.\n\t- Actions that give a direct hp reduction do not factor in the Unit's def.\n\n(See also Actions/Damage)");
+				"Hit Points (HP)\n\t- Unit's current health. \nMax Hit Points (MHP)\n\t- Unit's maximum health. \n\nIf a Unit's hp is 0, it dies.  \n\t- In most cases, dead Units become Corpse Obstacles.\n\nDefense (DEF)\n\t- Amount reduced from any damage the Unit recieves.\n\t- Actions that give a direct HP reduction do not factor in the Unit's DEF.\n\n(See also Actions/Damage)");
 		}
 		if (displayInfo==5){//obstacles
 			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight),
 		"Obstacles are non-Unit objects that can occupy Cells. They fall into several categories.\n\nImpassible Obstacles\n\t- Only Units with Gaseous mobility may move across Impassible Obstacles.\n\t- Target paths may not cross Impassible Obstacles.\n\t- All Impassible Obstacles are Indestructible.\n\nPassible Obstacles\n\t- Flying and Gaseous Units may move across Passible Obstacles.\n\t- Arc target paths may cross any Passible Obstacle.\n\t- Some Passible Obstacles are Destructible. \n\nDestructible Obstacles\n\t- Units with Trample mobility may move across Destructible Obstacles, destroying them.\n\t- Destructible Obstacles within the Radius of Explosive damage will be destroyed.\n\nCorpses\n\t- Corpses are a special kind of Destructible Obstacle.\n\t- Most Units will leave a Corpse in their Cell when they die.\n\t- Flying Units above other Units or Obstacles will not leave a Corpse.\n\n(See also Actions/Targeting, Units/Mobility)");}
+		if (displayInfo==6){//icons
+			GUI.Label(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight),"Basic stats:");
+				GUI.DrawTexture(Rect(infoX+10,infoY+30,20,20),iHp);
+					GUI.Label(Rect(infoX+30,infoY+30,30,20),"HP");
+				GUI.DrawTexture(Rect(infoX+70,infoY+30,20,20),iDef);
+					GUI.Label(Rect(infoX+90,infoY+30,30,20),"DEF");
+				GUI.DrawTexture(Rect(infoX+130,infoY+30,20,20),iIn);
+					GUI.Label(Rect(infoX+150,infoY+30,30,20),"IN");
+				GUI.DrawTexture(Rect(infoX+190,infoY+30,20,20),iAct[eAp]);
+					GUI.Label(Rect(infoX+210,infoY+30,30,20),"AP");
+				GUI.DrawTexture(Rect(infoX+250,infoY+30,20,20),iAct[eFp]);
+					GUI.Label(Rect(infoX+270,infoY+30,30,20),"FP");
+			GUI.Label(Rect(infoX+10,infoY+50,infoWidth-40,infoHeight),"Mobilities:");
+				GUI.DrawTexture(Rect(infoX+10,infoY+70,20,20),iMob[1]);
+					GUI.Label(Rect(infoX+30,infoY+70,30,20),"GND");
+				GUI.DrawTexture(Rect(infoX+70,infoY+70,20,20),iMob[2]);
+					GUI.Label(Rect(infoX+90,infoY+70,30,20),"TRM");
+				GUI.DrawTexture(Rect(infoX+130,infoY+70,20,20),iMob[3]);
+					GUI.Label(Rect(infoX+150,infoY+70,30,20),"FLY");
+				GUI.DrawTexture(Rect(infoX+190,infoY+70,20,20),iMob[4]);
+					GUI.Label(Rect(infoX+210,infoY+70,30,20),"GAS");		
+			GUI.Label(Rect(infoX+10,infoY+90,infoWidth-40,infoHeight),"Action stats:");
+				GUI.DrawTexture(Rect(infoX+10,infoY+110,20,20),iAct[eRng]);
+					GUI.Label(Rect(infoX+30,infoY+110,30,20),"RNG");
+				GUI.DrawTexture(Rect(infoX+70,infoY+110,20,20),iAct[eMag]);
+					GUI.Label(Rect(infoX+90,infoY+110,30,20),"DMG");
+				GUI.DrawTexture(Rect(infoX+130,infoY+110,20,20),iAct[eDec]);
+					GUI.Label(Rect(infoX+150,infoY+110,30,20),"DEC");
+				GUI.DrawTexture(Rect(infoX+190,infoY+110,20,20),iAct[eRad]);
+					GUI.Label(Rect(infoX+210,infoY+110,30,20),"RAD");
+				GUI.DrawTexture(Rect(infoX+250,infoY+110,20,20),iAct[eCrz]);
+					GUI.Label(Rect(infoX+270,infoY+110,30,20),"CRZ");
+			GUI.Label(Rect(infoX+10,infoY+130,infoWidth-40,infoHeight),"Targeting:");
+				GUI.DrawTexture(Rect(infoX+10,infoY+150,20,20),iTar[1]);
+					GUI.Label(Rect(infoX+30,infoY+150,30,20),"Serpentine");
+				GUI.DrawTexture(Rect(infoX+70,infoY+150,20,20),iTar[2]);
+					GUI.Label(Rect(infoX+90,infoY+150,30,20),"Linear");
+				GUI.DrawTexture(Rect(infoX+130,infoY+150,20,20),iTar[3]);
+					GUI.Label(Rect(infoX+150,infoY+150,30,20),"Arc");
+				//GUI.DrawTexture(Rect(infoX+190,infoY+150,20,20),iTar[4]);
+				//	GUI.Label(Rect(infoX+210,infoY+150,30,20),"Radial");
+			GUI.Label(Rect(infoX+10,infoY+170,infoWidth-40,infoHeight),"Damage types:");
+				GUI.DrawTexture(Rect(infoX+10,infoY+190,20,20),iDmgType[2]);
+					GUI.Label(Rect(infoX+30,infoY+190,30,20),"EXP");
+				GUI.DrawTexture(Rect(infoX+70,infoY+190,20,20),iDmgType[3]);
+					GUI.Label(Rect(infoX+90,infoY+190,30,20),"FIR");
+				GUI.DrawTexture(Rect(infoX+130,infoY+190,20,20),iDmgType[4]);
+					GUI.Label(Rect(infoX+150,infoY+190,30,20),"LSR");
+				GUI.DrawTexture(Rect(infoX+190,infoY+190,20,20),iDmgType[5]);
+					GUI.Label(Rect(infoX+210,infoY+190,30,20),"PSN");
+				GUI.DrawTexture(Rect(infoX+250,infoY+190,20,20),iDmgType[6]);
+					GUI.Label(Rect(infoX+270,infoY+190,30,20),"ELC");
+					
+					
+					
+					
+		
+		
+		}
+	
+	
+		if (displayInfo==7){//controls
+			GUI.DrawTexture(Rect(infoX+10,infoY+10,infoWidth-40,infoHeight),screenshot);
+		}
 	GUI.EndScrollView();
 	}
 }

@@ -1,59 +1,64 @@
 #pragma strict
 
+//enums
+var eActionName: byte=0;
+var eDesc: byte=1;
+
+var eAction: byte=0;
+var eAp: byte=1;
+var eFp: byte=2;
+var eRng: byte=3;
+var eMag: byte=4;
+var eDec: byte=5;
+var eRad: byte=6;
+var eCrz: byte=7;
+var eTar: byte=8;
+var eDmgType: byte=9;
+//
+
 //icons
-var iCore = new List.<Texture2D>();
-//var iCore: Texture[]=new Texture[6];
+var iHp: Texture2D;
+var iDef: Texture2D;
+var iIn: Texture2D;
+
+var iAct: Texture[]=new Texture[8];
 var iMob: Texture[]=new Texture[5];
 var iTar: Texture[]=new Texture[5];
 var iDmgType: Texture[]=new Texture[7];
-var iActNums: Texture[]=new Texture[8];
 
-//
-//enums
-	//core
-static var eHP: byte = 0;	
-static var eMHP: byte = 1;	
-static var eDEF: byte = 2;	
-static var eINIT: byte = 3;	
-static var eCoreAP: byte = 4;	
-static var eCoreFP: byte = 5;	
-static var eMOB: byte = 6;	
-static var eObjno: byte = 7;	
-static var eObclass: byte = 8;	
-static var eOwner: byte = 9;	
-static var eCorpsetype: byte = 10;	
-	//act text
-static var eName: byte = 0;	
-static var eDesc: byte = 1;	
-	//act nums
-static var eAction: byte = 0;	
-static var eActAP: byte = 1;	
-static var eActFP: byte = 2;	
-static var eRNG: byte = 3;	
-static var eMAG: byte = 4;	
-static var eDEC: byte = 5;	
-static var eRAD: byte = 6;	
-static var eCRZ: byte = 7;	
-static var eTAR: byte = 8;	
-static var eDMGType: byte = 9;	
-	//mob
-static var eGND: byte = 1;	
-static var eTRM: byte = 2;	
-static var eFLY: byte = 3;	
-static var eGAS: byte = 4;	
-	//tar
-static var eSerp: byte =1;
-static var eLin: byte =2;
-static var eArc: byte =3;
-static var eRadial: byte =4;
-	//dmg
-static var eNRML: byte =1;
-static var eEXP: byte =2;
-static var eFIR: byte =3;
-static var ePSN: byte =4;
-static var eELC: byte =5;
-static var eLSR: byte =6;
+function LoadIcons():IEnumerator{
+	//icons
+	iHp = Resources.Load("icons/hp") as Texture2D;
+	iDef = Resources.Load("icons/def") as Texture2D;
+	iIn = Resources.Load("icons/in") as Texture2D;
 
+	iAct[eAp] = Resources.Load("icons/ap") as Texture2D;
+	iAct[eFp] = Resources.Load("icons/fp") as Texture2D;
+	iAct[eRng] = Resources.Load("icons/rng") as Texture2D;
+	iAct[eMag] = Resources.Load("icons/dmg") as Texture2D;
+	iAct[eDec] = Resources.Load("icons/dec") as Texture2D;
+	iAct[eRad] = Resources.Load("icons/rad") as Texture2D;
+	iAct[eCrz] = Resources.Load("icons/crz") as Texture2D;
+
+	iMob[1] = Resources.Load("icons/gnd") as Texture2D;
+	iMob[2] = Resources.Load("icons/trm") as Texture2D;
+	iMob[3] = Resources.Load("icons/fly") as Texture2D;
+	iMob[4] = Resources.Load("icons/gas") as Texture2D;
+
+	iTar[1] = Resources.Load("icons/serp") as Texture2D;
+	iTar[2] = Resources.Load("icons/lin") as Texture2D;
+	iTar[3] = Resources.Load("icons/arc") as Texture2D;
+	// iAct[eRad]ial = Resources.Load("icons/radial") as Texture2D;
+	
+	iDmgType[2] = Resources.Load("icons/exp") as Texture2D;
+	iDmgType[3] = Resources.Load("icons/fir") as Texture2D;
+	iDmgType[4] = Resources.Load("icons/psn") as Texture2D;
+	iDmgType[5] = Resources.Load("icons/elc") as Texture2D;
+	iDmgType[6] = Resources.Load("icons/lsr") as Texture2D;
+	//	
+
+	yield;
+}
 //retrieve GUI background & map object
 var gui_frame: Texture2D;
 var leftbar: Texture2D;
@@ -79,7 +84,7 @@ var legalunits=new List.<GameObject>();
 var portalBtn: boolean=false;
 var gate: PortalScript;
 
-var camRig: GameObject;
+var camCenter: GameObject;
 
 function Awake(){//finds other GameObjects and scripts
 	//find important scripts
@@ -89,43 +94,11 @@ function Awake(){//finds other GameObjects and scripts
 	gui_master=gameObject.GetComponent(GUI_Master);
 	gui_help=gameObject.GetComponent(GUI_Help);
 	leftbar=Resources.Load("gui/panel_background") as Texture2D;
-	camRig=GameObject.Find("camRig");
-	
+	camCenter=GameObject.Find("camCenter");
 }	
+
 function Start(){
 	yield LoadIcons();
-}
-
-function LoadIcons(): IEnumerator{
-	iCore[eHP] = Resources.Load("icons/hp") as Texture2D;
-	iCore[eDEF] = Resources.Load("icons/def") as Texture2D;
-	iCore[eINIT] = Resources.Load("icons/in") as Texture2D;
-	iCore[eCoreAP] = Resources.Load("icons/ap") as Texture2D;
-	iCore[eCoreFP] = Resources.Load("icons/fp") as Texture2D;
-	
-	iMob[eGND] = Resources.Load("icons/gnd") as Texture2D;
-	iMob[eTRM] = Resources.Load("icons/trm") as Texture2D;
-	iMob[eFLY] = Resources.Load("icons/fly") as Texture2D;
-	iMob[eGAS] = Resources.Load("icons/gas") as Texture2D;
-
-	iTar[eSerp] = Resources.Load("icons/serp") as Texture2D;
-	iTar[eLin] = Resources.Load("icons/lin") as Texture2D;
-	iTar[eArc] = Resources.Load("icons/arc") as Texture2D;
-	// iRadial = Resources.Load("icons/radial") as Texture2D;
-	
-	iActNums[eRNG] = Resources.Load("icons/rng") as Texture2D;
-	iActNums[eMAG] = Resources.Load("icons/dmg") as Texture2D;
-	iActNums[eDEC] = Resources.Load("icons/dec") as Texture2D;
-	iActNums[eRAD] = Resources.Load("icons/rad") as Texture2D;
-	iActNums[eCRZ] = Resources.Load("icons/crz") as Texture2D;
-
-	iDmgType[eEXP] = Resources.Load("icons/exp") as Texture2D;
-	iDmgType[eFIR] = Resources.Load("icons/fir") as Texture2D;
-	iDmgType[ePSN] = Resources.Load("icons/psn") as Texture2D;
-	iDmgType[eELC] = Resources.Load("icons/elc") as Texture2D;
-	iDmgType[eLSR] = Resources.Load("icons/lsr") as Texture2D;
-
-	yield;
 }
 
 function MouseOnGUI(): boolean{
@@ -149,7 +122,7 @@ if (gui_master.view=="game"){
 		var viewedstats: ObjectStats = viewedobject.GetComponent(ObjectStats);
 			
 		//obstacles
-		if (!viewedstats.coreStats[eOwner]){
+		if (!viewedstats.owner){
 			//draw name button
 			if(GUI.Button(Rect(10,10,160,20),viewedstats.objname)){Focus(viewedobject);}
 			//draw thumb
@@ -158,38 +131,40 @@ if (gui_master.view=="game"){
 			GUI.Box(Rect(10,thumbscale+40,160,40),viewedstats.obtype);
 		}
 		//units
-		if (viewedstats.coreStats[eOwner]){//if viewedobject is a unit
+		if (viewedstats.owner){//if viewedobject is a unit
 			//draw leftbar to match viewed unit ownership
-			GUI.DrawTexture(Rect(5,5,170,Screen.height-10),gameindex.colors[gameindex.player_colors[viewedstats.coreStats[eOwner]]],ScaleMode.StretchToFill,true,0);
+			GUI.DrawTexture(Rect(5,5,170,Screen.height-10),gameindex.colors[gameindex.player_colors[viewedstats.owner]],ScaleMode.StretchToFill,true,0);
 			//draw name button
 			if(GUI.Button(Rect(10,10,160,20),viewedstats.objname)){
-				Focus(viewedobject);
+				Camera.main.GetComponent(CamOrbit).target=viewedobject.transform;
+				camCenter.transform.position=viewedobject.transform.position;
 			}
 			//draw thumb
 			GUI.DrawTexture(Rect((180-thumbscale)/2,35,thumbscale,thumbscale),viewedstats.thumb,ScaleMode.StretchToFill,true,0);
 			//draw statbar
-			GUI.Box(Rect(10,thumbscale+40,160,65),"");
+			GUI.Box(Rect(10,thumbscale+40,160,55),"");
 			GUI.Label(Rect(15,thumbscale+40,100,20),viewedstats.composition);
-			if (viewedstats.coreStats[eHP]){
-				GUI.DrawTexture(Rect(15,thumbscale+55,20,20),iCore[eHP],ScaleMode.StretchToFill,true,0);
-				GUI.Label(Rect(35,thumbscale+55,100,20),viewedstats.coreStats[eHP]+"/"+viewedstats.coreStats[eMHP]);
+			if (viewedstats.mob){
+				GUI.DrawTexture(Rect(95,thumbscale+40,20,20),iMob[viewedstats.mob],ScaleMode.StretchToFill,true,0);
 			}
-			if (viewedstats.coreStats[eDEF]){
-				GUI.DrawTexture(Rect(115,thumbscale+55,20,20),iCore[eDEF],ScaleMode.StretchToFill,true,0);
-				GUI.Label(Rect(135,thumbscale+55,25,20),(viewedstats.coreStats[eDEF]).ToString());
+			if (viewedstats.hp){
+				GUI.DrawTexture(Rect(15,thumbscale+55,20,20),iHp,ScaleMode.StretchToFill,true,0);
+				GUI.Label(Rect(35,thumbscale+55,100,20),viewedstats.hp+"/"+viewedstats.mhp);
 			}
-			if (viewedstats.coreStats[eINIT]){
-				GUI.DrawTexture(Rect(15,thumbscale+70,20,20),iCore[eINIT],ScaleMode.StretchToFill,true,0);
-				GUI.Label(Rect(35,thumbscale+70,30,20),(viewedstats.coreStats[eINIT]).ToString());
+			if (viewedstats.def){
+				GUI.DrawTexture(Rect(95,thumbscale+55,20,20),iDef,ScaleMode.StretchToFill,true,0);
+				GUI.Label(Rect(115,thumbscale+55,25,20),(viewedstats.def).ToString());
 			}
-			if (viewedstats.coreStats[eMOB]){
-				GUI.DrawTexture(Rect(65,thumbscale+70,20,20),iMob[viewedstats.coreStats[eMOB]],ScaleMode.StretchToFill,true,0);
+			if (viewedstats.init){
+				GUI.DrawTexture(Rect(15,thumbscale+70,20,20),iIn,ScaleMode.StretchToFill,true,0);
+				GUI.Label(Rect(35,thumbscale+70,30,20),(viewedstats.init).ToString());
 			}
-			GUI.DrawTexture(Rect(15,thumbscale+85,20,20),iCore[eCoreAP],ScaleMode.StretchToFill,true,0);
-			GUI.Label(Rect(35,thumbscale+85,20,20),(viewedstats.coreStats[eCoreAP]).ToString());
 			
-			GUI.DrawTexture(Rect(65,thumbscale+85,20,20),iCore[eCoreFP],ScaleMode.StretchToFill,true,0);
-			GUI.Label(Rect(85,thumbscale+85,20,20),(viewedstats.coreStats[eCoreFP]).ToString());
+			GUI.DrawTexture(Rect(70,thumbscale+70,20,20),iAct[eAp],ScaleMode.StretchToFill,true,0);
+			GUI.Label(Rect(90,thumbscale+70,20,20),(viewedstats.ap).ToString());
+			
+			GUI.DrawTexture(Rect(115,thumbscale+70,20,20),iAct[eFp],ScaleMode.StretchToFill,true,0);
+			GUI.Label(Rect(135,thumbscale+70,20,20),(viewedstats.fp).ToString());
 			//draw action buttons
 			ActionButtons(viewedobject);
 	
@@ -229,9 +204,9 @@ function ActionButtons(object: GameObject){//displays action buttons/activates A
 	var act: byte;
 	for (act=1; act<=9; act++){
 		var action: float = stats.actNums[act,eAction];
-		var actionName: String = stats.actText[act,eName];
-		var ap: byte = stats.actNums[act,eActAP];
-		var fp: byte = stats.actNums[act,eActFP];
+		var actionName: String = stats.actText[act,eActionName];
+		var ap: byte = stats.actNums[act,eAp];
+		var fp: byte = stats.actNums[act,eFp];
 		var used: boolean = actUsed[act];
 			
 		if (action!=0){
@@ -296,7 +271,8 @@ function QuickKeys(){
 				if (Input.GetKeyDown ("z") && !Input.GetKey("left shift")){//view watched1
 					if (watched[0]){
 						viewedobject=watched[0];
-						Focus(watched[0]);
+						Camera.main.GetComponent(CamOrbit).target=watched[0].transform;
+						camCenter.transform.position=watched[0].transform.position;
 					}
 				}
 			
@@ -306,7 +282,8 @@ function QuickKeys(){
 				if (Input.GetKeyDown ("x") && !Input.GetKey("left shift")){//view watched2
 					if (watched[1]){
 						viewedobject=watched[1];
-						Focus(watched[1]);
+						Camera.main.GetComponent(CamOrbit).target=watched[1].transform;
+						camCenter.transform.position=watched[1].transform.position;
 					}
 				}
 			
@@ -316,7 +293,8 @@ function QuickKeys(){
 				if (Input.GetKeyDown ("c") && !Input.GetKey("left shift")){//view watched3
 					if (watched[2]){
 						viewedobject=watched[2];
-						Focus(watched[2]);
+						Camera.main.GetComponent(CamOrbit).target=watched[2].transform;
+						camCenter.transform.position=watched[2].transform.position;
 					}
 				}
 			}
@@ -341,8 +319,8 @@ function DisplayWatchedUnits(){
 	for (i=0; i<3; i++){
 		if (watched[i]){
 			var stats: ObjectStats = watched[i].GetComponent(ObjectStats);
-			if (stats.coreStats[eOwner]){
-				GUI.DrawTexture(Rect(xPos+3+(height*i),yPos+3,height-6,height-6),gameindex.colors[gameindex.player_colors[stats.coreStats[eOwner]]],ScaleMode.StretchToFill,true,0);
+			if (stats.owner){
+				GUI.DrawTexture(Rect(xPos+3+(height*i),yPos+3,height-6,height-6),gameindex.colors[gameindex.player_colors[stats.owner]],ScaleMode.StretchToFill,true,0);
 			}
 			if (GUI.Button(Rect(xPos+2+(height*i),yPos+2,height-4,height-4),stats.thumb)){
 				if (Input.GetKey("left shift")) {watched[i]=null;}
@@ -407,20 +385,20 @@ var actionScrollView: Vector2 = Vector2.zero;
 function ActionInfo(object: GameObject, act1to9: byte){//displays action info
 	var stats: ObjectStats = object.GetComponent(ObjectStats);
 	
-	var name: String = stats.actText[act1to9,eName];
+	var name: String = stats.actText[act1to9,eActionName];
 	var desc: String = stats.actText[act1to9,eDesc];
 	
-	var ap: byte = stats.actNums[act1to9,eActAP];
-	var fp: byte = stats.actNums[act1to9,eActFP];
+	var ap: byte = stats.actNums[act1to9,eAp];
+	var fp: byte = stats.actNums[act1to9,eFp];
 	var used: boolean = actUsed[act1to9];
 	
-	var mag: int = stats.actNums[act1to9,eMAG];
-	var rng: int = stats.actNums[act1to9,eRNG];
-	var dec: int = stats.actNums[act1to9,eDEC];
-	var rad: int = stats.actNums[act1to9,eRAD];
-	var crz: int = stats.actNums[act1to9,eCRZ];		
-	var tar: int = stats.actNums[act1to9,eTAR];
-	var dmgtype: int = stats.actNums[act1to9,eDMGType];
+	var mag: float = stats.actNums[act1to9,eMag];
+	var rng: float = stats.actNums[act1to9,eRng];
+	var dec: float = stats.actNums[act1to9,eDec];
+	var rad: float = stats.actNums[act1to9,eRad];
+	var crz: float = stats.actNums[act1to9,eCrz];		
+	var tar: float = stats.actNums[act1to9,eTar];
+	var dmgtype: float = stats.actNums[act1to9,eDmgType];
 		
 	var yPos=thumbscale+actbtn_height*9+115;
 	
@@ -429,9 +407,9 @@ function ActionInfo(object: GameObject, act1to9: byte){//displays action info
 		GUI.Label(Rect(15,yPos,140,20),name);
 		yPos+=20;
 		//cost
-		GUI.DrawTexture(Rect(15,yPos,20,20),iCore[eCoreAP],ScaleMode.StretchToFill,true,0);
+		GUI.DrawTexture(Rect(15,yPos,20,20),iAct[eAp],ScaleMode.StretchToFill,true,0);
 		GUI.Label(Rect(35,yPos,20,20),ap.ToString());
-		GUI.DrawTexture(Rect(60,yPos,20,20),iCore[eCoreFP],ScaleMode.StretchToFill,true,0);
+		GUI.DrawTexture(Rect(60,yPos,20,20),iAct[eFp],ScaleMode.StretchToFill,true,0);
 		GUI.Label(Rect(80,yPos,20,20),fp.ToString());
 		if (used==true && viewedobject==currentunit){GUI.Label(Rect(105,yPos,40,20),"USED");}
 		yPos+=20;
@@ -439,13 +417,13 @@ function ActionInfo(object: GameObject, act1to9: byte){//displays action info
 		if (tar || rng){
 			if (tar){GUI.DrawTexture(Rect(15,yPos,20,20),iTar[tar],ScaleMode.StretchToFill,true,0);}
 			if (rng){
-				GUI.DrawTexture(Rect(40,yPos,20,20),iActNums[eRNG],ScaleMode.StretchToFill,true,0);
+				GUI.DrawTexture(Rect(40,yPos,20,20),iAct[eRng],ScaleMode.StretchToFill,true,0);
 				GUI.Label(Rect(60,yPos,20,20),rng.ToString());
 			}
 			yPos+=20;
 		}
 		if (dmgtype){
-			GUI.DrawTexture(Rect(15,yPos,20,20),iActNums[eMAG],ScaleMode.StretchToFill,true,0);
+			GUI.DrawTexture(Rect(15,yPos,20,20),iAct[eMag],ScaleMode.StretchToFill,true,0);
 			GUI.Label(Rect(35,yPos,20,20),mag.ToString());
 			
 			if (dmgtype>1){
@@ -453,18 +431,17 @@ function ActionInfo(object: GameObject, act1to9: byte){//displays action info
 				yPos+=20;
 				var xPos: short = 15;
 				if (dec){
-					var dec2: short = 100-dec;
-					GUI.DrawTexture(Rect(xPos,yPos,20,20),iActNums[eDEC],ScaleMode.StretchToFill,true,0);
-					GUI.Label(Rect(xPos+20,yPos,20,20),dec2.ToString()+"%");
+					GUI.DrawTexture(Rect(xPos,yPos,20,20),iAct[eDec],ScaleMode.StretchToFill,true,0);
+					GUI.Label(Rect(xPos+20,yPos,20,20),dec.ToString());
 					xPos+=45;
 				}
 				if (rad){
-					GUI.DrawTexture(Rect(xPos,yPos,20,20),iActNums[eRAD],ScaleMode.StretchToFill,true,0);
+					GUI.DrawTexture(Rect(xPos,yPos,20,20),iAct[eRad],ScaleMode.StretchToFill,true,0);
 					GUI.Label(Rect(xPos+20,yPos,20,20),rad.ToString());
 					xPos+=45;
 				}
 				if (dmgtype==2){
-					GUI.DrawTexture(Rect(xPos,yPos,20,20),iActNums[eCRZ],ScaleMode.StretchToFill,true,0);
+					GUI.DrawTexture(Rect(xPos,yPos,20,20),iAct[eCrz],ScaleMode.StretchToFill,true,0);
 					GUI.Label(Rect(xPos+20,yPos,20,20),crz.ToString());
 					xPos+=45;
 				}
@@ -546,7 +523,7 @@ function QueueDisplay(){//draws currentunit button
 	//current unit
 	var currentunitstats: ObjectStats = currentunit.GetComponent(ObjectStats);
 	GUI.Box(Rect(xPos,yPos,width,20),"Current turn:");		
-	GUI.DrawTexture(Rect(xPos+3,yPos+23,width-6,24),gameindex.colors[gameindex.player_colors[currentunitstats.coreStats[eOwner]]],ScaleMode.StretchToFill,true,0);
+	GUI.DrawTexture(Rect(xPos+3,yPos+23,width-6,24),gameindex.colors[gameindex.player_colors[currentunitstats.owner]],ScaleMode.StretchToFill,true,0);
 	if(GUI.Button(Rect(xPos,yPos+20,width,height),currentunitstats.objname)){
 		View(currentunit);
 		Focus(currentunit);
@@ -579,7 +556,7 @@ function QueueDisplay(){//draws currentunit button
 				unit=queue.queuelist[qOffset+i];
 				unitstats=unit.GetComponent(ObjectStats);
 				
-				GUI.DrawTexture(Rect(xPos+2,yPos+70+(qHeight*i)+2,width-4,qHeight-4),gameindex.colors[gameindex.player_colors[unitstats.coreStats[eOwner]]],ScaleMode.StretchToFill,true,0);
+				GUI.DrawTexture(Rect(xPos+2,yPos+70+(qHeight*i)+2,width-4,qHeight-4),gameindex.colors[gameindex.player_colors[unitstats.owner]],ScaleMode.StretchToFill,true,0);
 				if (GUI.Button(Rect(xPos,yPos+70+(qHeight*i),width,qHeight),unitstats.objname)){
 					View(unit);
 					Focus(unit);
@@ -658,6 +635,7 @@ function View(object: GameObject){
 	viewedobject=object;
 }
 function Focus(object: GameObject){
-	var camControl: CamRig = camRig.GetComponent(CamRig);
-	camControl.Focus(object);
+	Camera.main.GetComponent(CamOrbit).target=object.transform;
+	camCenter.transform.position=object.transform.position;
 }
+

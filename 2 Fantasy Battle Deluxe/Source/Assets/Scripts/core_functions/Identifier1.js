@@ -11,50 +11,38 @@ var sentShield: GameObject;
 var portalPrefab: GameObject;
 
 //enums
-	//core
-static var eHP: byte = 0;	
-static var eMHP: byte = 1;	
-static var eDEF: byte = 2;	
-static var eINIT: byte = 3;	
-static var eCoreAP: byte = 4;	
-static var eCoreFP: byte = 5;	
-static var eMOB: byte = 6;	
-static var eObjno: byte = 7;	
-static var eObclass: byte = 8;	
-static var eOwner: byte = 9;	
-static var eCorpsetype: byte = 10;	
-	//act text
-static var eName: byte = 0;	
-static var eDesc: byte = 1;	
-	//act nums
-static var eAction: byte = 0;	
-static var eActAP: byte = 1;	
-static var eActFP: byte = 2;	
-static var eRNG: byte = 3;	
-static var eMAG: byte = 4;	
-static var eDEC: byte = 5;	
-static var eRAD: byte = 6;	
-static var eCRZ: byte = 7;	
-static var eTAR: byte = 8;	
-static var eDMGType: byte = 9;	
-	//mob
-static var eGND: byte = 1;	
-static var eTRM: byte = 2;	
-static var eFLY: byte = 3;	
-static var eGAS: byte = 4;	
-	//tar
-static var eSerp: byte =1;
-static var eLin: byte =2;
-static var eArc: byte =3;
-static var eRadial: byte =4;
-	//dmg
-static var eNRML: byte =1;
-static var eEXP: byte =2;
-static var eFIR: byte =3;
-static var ePSN: byte =4;
-static var eELC: byte =5;
-static var eLSR: byte =6;
+var actionName: byte=0;
+var desc: byte=1;
 
+var action: byte=0;
+var ap: byte=1;
+var fp: byte=2;
+var rng: byte=3;
+var mag: byte=4;
+var dec: byte=5;
+var rad: byte=6;
+var crz: byte=7;
+var tar: byte=8;
+var dmgtype: byte=9;
+
+var im: byte=0;
+var gnd: byte=1;
+var trm: byte=2;
+var fly: byte=3;
+var gas: byte=4;
+
+var serp: byte=1;
+var lin: byte=2;
+var arc: byte=3;
+var radial: byte=4;
+
+var nrml: byte=1;
+var exp: byte=2;
+var fir: byte=3;
+var psn: byte=4;
+var elc: byte=5;
+var lsr: byte=6;
+//
 
 function Awake(){
 	actionCoord=gameObject.GetComponent(ActionCoordinator);
@@ -69,33 +57,32 @@ function Identity(object: GameObject, objno: short, owner: byte): IEnumerator{
 
 	if (objno<=1999){//units
 
-		stats.actText[1,eName]="Move";
-			stats.actNums[1,eActAP]=1;
-			stats.actNums[1,eActFP]=0;
-		stats.actText[2,eName]="Focus";
-			stats.actNums[2,eAction]=100020;
-			stats.actText[2,eDesc]="+1FP";
-			stats.actNums[2,eActAP]=1;
-			stats.actNums[2,eActFP]=0;
-			stats.actNums[2,eMAG]=1;
-		stats.actNums[3,eActAP]=1;
-			stats.actNums[3,eActFP]=0;	
-		stats.coreStats[eCorpsetype]=1;//normal corpse
-		stats.coreStats[eObclass]=0;
+		stats.actText[1,actionName]="Move";
+			stats.actNums[1,ap]=1;
+			stats.actNums[1,fp]=0;
+		stats.actText[2,actionName]="Focus";
+			stats.actNums[2,action]=100020;
+			stats.actText[2,desc]="+1FP";
+			stats.actNums[2,ap]=1;
+			stats.actNums[2,fp]=0;
+			stats.actNums[2,mag]=1;
+		stats.actNums[3,ap]=1;
+			stats.actNums[3,fp]=0;	
+		stats.corpsetype=1;//normal corpse
+		stats.obclass=0;
 		
 		iDtable[objno](object);
 		
 		object.tag="unit";
 		object.name="Unit - "+stats.objname+" - Player "+owner;
-		stats.coreStats[eCoreAP]=0; 
-		stats.coreStats[eCoreFP]=0;
+		stats.ap=0; stats.fp=0;
 		stats.skipped=false;
 		actionCoord.Mlog("Player"+owner+" created a "+stats.objname);
 	
-		if (stats.comp==[true,false]){stats.composition="Biological";}
-		if (stats.comp==[false,true]){stats.composition="Mechanical";}
-		if (stats.comp==[true,true]){stats.composition="Cybernetic";}
-		if (stats.comp==[false,false]){stats.composition="Ethereal";}
+		if (stats.bio==true && stats.mech==false){stats.composition="Biological";}
+		if (stats.bio==false && stats.mech==true){stats.composition="Mechanical";}
+		if (stats.bio==true && stats.mech==true){stats.composition="Cybernetic";}
+		if (stats.bio==false && stats.mech==false){stats.composition="Ethereal";}
 	}
 	
 	if (objno>=2000 && objno<=2999){
@@ -107,14 +94,14 @@ function Identity(object: GameObject, objno: short, owner: byte): IEnumerator{
 
 		iDtable[objno](object);
 
-		stats.coreStats[eCorpsetype]=0;
+		stats.corpsetype=0;
 	
-		if (objno>=3100 && objno<=3199){stats.coreStats[eObclass]=1;}
-		if (objno>=3200 && objno<=3299){stats.coreStats[eObclass]=2;}
-		if (objno>=3300 && objno<=3399){stats.coreStats[eObclass]=3;}
-		if (objno>=3400 && objno<=3499){stats.coreStats[eObclass]=4;}
+		if (objno>=3100 && objno<=3199){stats.obclass=1;}
+		if (objno>=3200 && objno<=3299){stats.obclass=2;}
+		if (objno>=3300 && objno<=3399){stats.obclass=3;}
+		if (objno>=3400 && objno<=3499){stats.obclass=4;}
 
-		switch (stats.coreStats[eObclass]){
+		switch (stats.obclass){
 			case 1: stats.obtype="Impassable\nIndestructible";
 			case 2: stats.obtype="Passable\nIndestructible";
 			case 3: stats.obtype="Passable\nDestructible";
@@ -209,56 +196,55 @@ function I1011(object: GameObject){
 	stats.objname="Ninjoid";	
 	stats.thumb=Resources.Load("thumbs/thumb1011") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1011") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=3; 
-	stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=8; stats.coreStats[eMHP]=8; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100014;
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=4;
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Slash";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; 
-		stats.actNums[3,eDMGType]=eNRML;
-		stats.actNums[3,eMAG]=6;
-	stats.actNums[4,eAction]=101141; //sprint
-		stats.actText[4,eName]="Sprint";
-		stats.actText[4,eDesc]="+4SP until end of next turn.";
-		stats.actNums[4,eActAP]=0; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eMAG]=4;
-	stats.actNums[5,eAction]=101151; //laser spin
-		stats.actText[5,eName]="Laser Spin";
-		stats.actNums[5,eTAR]=eRadial;
-		stats.actNums[5,eRNG]=1;
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eDMGType]=eLSR;
-		stats.actNums[5,eMAG]=8;
+	stats.bio=false; stats.mech=true;
+	stats.init=3; stats.mob=gnd;
+	stats.hp=8; stats.mhp=8; stats.def=0;
+	stats.actNums[1,action]=100014; //gnd lin
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=4;
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Slash";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; 
+		stats.actNums[3,dmgtype]=nrml;
+		stats.actNums[3,mag]=6;
+	stats.actNums[4,action]=101141; //sprint
+		stats.actText[4,actionName]="Sprint";
+		stats.actText[4,desc]="+4SP until end of next turn.";
+		stats.actNums[4,ap]=0; stats.actNums[4,fp]=1;
+		stats.actNums[4,mag]=4;
+	stats.actNums[5,action]=101151; //laser spin
+		stats.actText[5,actionName]="Laser Spin";
+		stats.actNums[5,tar]=radial;
+		stats.actNums[5,rng]=1;
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,dmgtype]=lsr;
+		stats.actNums[5,mag]=8;
 }		
 function I1012(object: GameObject){
 	stats.objname="Sentinel";
 	stats.thumb=Resources.Load("thumbs/thumb1012") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1012") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=13; stats.coreStats[eMHP]=13; stats.coreStats[eDEF]=5;
-	stats.actNums[1,eAction]=100010;
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;
-	stats.actNums[3,eAction]=100035; //serp elc
-		stats.actText[3,eName]="Shock";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=2;
-		stats.actNums[3,eDMGType]=eELC;
-		stats.actNums[3,eRAD]=1;
-	stats.actNums[4,eAction]=101241; //shield
-		stats.actText[4,eName]="Shield";
-		stats.actText[4,eDesc]="(Passive effect)\nNeighboring units +3DEF.";
-		stats.actNums[4,eActAP]=0; stats.actNums[4,eActFP]=0;
-	stats.actNums[5,eAction]=101251; //fortify shield
-		stats.actText[5,eName]="Fortify Shield";
-		stats.actText[5,eDesc]="Shield gives neighboring units +1DEF.\nLimit: 2";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=2;
+	stats.bio=false; stats.mech=true;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=13; stats.mhp=13; stats.def=5;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;
+	stats.actNums[3,action]=100035; //serp elc
+		stats.actText[3,actionName]="Shock";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=2;
+		stats.actNums[3,dmgtype]=elc;
+		stats.actNums[3,rad]=1;
+	stats.actNums[4,action]=101241; //shield
+		stats.actText[4,actionName]="Shield";
+		stats.actText[4,desc]="(Passive effect)\nNeighboring units +3DEF.";
+		stats.actNums[4,ap]=0; stats.actNums[4,fp]=0;
+	stats.actNums[5,action]=101251; //fortify shield
+		stats.actText[5,actionName]="Fortify Shield";
+		stats.actText[5,desc]="Shield gives neighboring units +1DEF.\nLimit: 2";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=2;
 
 	var mycell: GameObject = stats.mycell;
 	
@@ -269,975 +255,975 @@ function I1012(object: GameObject){
 }
 function I1013(object: GameObject){
 	stats.objname="Pterrordactyl";
-	stats.comp=[false,true];
+	stats.bio=false; stats.mech=true;
 	stats.thumb=Resources.Load("thumbs/thumb1013") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1013") as Texture2D;
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=22; stats.coreStats[eMHP]=22; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100016;
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=6;	
-	stats.actNums[3,eAction]=101331; //lin
-		stats.actText[3,eName]="Laser Gun";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=3; stats.actNums[3,eMAG]=12;
-		stats.actNums[3,eDMGType]=eLSR;
-	stats.actNums[4,eAction]=101341; //barrage
-		stats.actText[4,eName]="Barrage";
-		stats.actText[4,eDesc]="All bombs are removed.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eSerp;
-		stats.actNums[4,eRNG]=0; stats.actNums[4,eMAG]=9;
-		stats.actNums[4,eDMGType]=eEXP;
-		stats.actNums[4,eDEC]=50;
-		stats.actNums[4,eCRZ]=1; stats.actNums[4,eRAD]=1;
-	stats.actNums[5,eAction]=101351; //stockpile
-		stats.actText[5,eName]="Stockpile";
-		stats.actText[5,eDesc]="Add 1 bomb.\nBarrage DMG, RAD, & CRZ +1.";
-		stats.actNums[5,eActAP]=0; stats.actNums[5,eActFP]=1;
+	stats.init=2; stats.mob=fly;
+	stats.hp=22; stats.mhp=22; stats.def=0;
+	stats.actNums[1,action]=100016; //fly lin
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=6;	
+	stats.actNums[3,action]=101331; //lin
+		stats.actText[3,actionName]="Laser Gun";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=3; stats.actNums[3,mag]=12;
+		stats.actNums[3,dmgtype]=lsr;
+	stats.actNums[4,action]=101341; //barrage
+		stats.actText[4,actionName]="Barrage";
+		stats.actText[4,desc]="All bombs are removed.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=serp;
+		stats.actNums[4,rng]=0; stats.actNums[4,mag]=9;
+		stats.actNums[4,dmgtype]=exp;
+		stats.actNums[4,dec]=0.5;
+		stats.actNums[4,crz]=1; stats.actNums[4,rad]=1;
+	stats.actNums[5,action]=101351; //stockpile
+		stats.actText[5,actionName]="Stockpile";
+		stats.actText[5,desc]="Add 1 bomb.\nBarrage DMG, RAD, & CRZ +1.";
+		stats.actNums[5,ap]=0; stats.actNums[5,fp]=1;
 	stats.bombs=0;	
 }		
 function I1014(object: GameObject){	
 	stats.objname="Satellite Mech Ninja";
 	stats.thumb=Resources.Load("thumbs/thumb1014") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1014") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=45; stats.coreStats[eMHP]=45; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100016;
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=4;
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=15;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=101441;
-		stats.actText[4,eName]="Teleport Friendly";
-		stats.actText[4,eDesc]="Move any unit on your team to any cell it can occupy.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-	stats.actNums[5,eAction]=101451;
-		stats.actText[5,eName]="Advanced Plating";
-		stats.actText[5,eDesc]="Target unit +5HP & MHP.\nLimit: 2 per unit.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=2;
-		stats.actNums[5,eTAR]=eSerp; 
-		stats.actNums[5,eRNG]=1;
-	stats.actNums[6,eAction]=101461;
-		stats.actText[6,eName]="Superdirectional Laser";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=2;
-		stats.actNums[6,eTAR]=eLin;
-		stats.actNums[6,eRNG]=20;
-		stats.actNums[6,eMAG]=16;
-		stats.actNums[6,eDMGType]=eLSR;
-		stats.actNums[6,eDEC]=75;
-		stats.actNums[6,eRAD]=40;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Ninjoid";
-		stats.actText[7,eDesc]="Ground unit\nFast, but fragile infantry droid.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1011;
-	stats.actNums[8,eAction]=101481;
-		stats.actText[8,eName]="Create Sentinel";
-		stats.actText[8,eDesc]="Ground unit\nShield-generating support droid.";
-		stats.actNums[8,eActAP]=0; stats.actNums[8,eActFP]=2;
-		stats.actNums[8,eMAG]=1012;
-	stats.actNums[9,eAction]=100073;
-		stats.actText[9,eName]="Create Pterrordactyl";
-		stats.actText[9,eDesc]="Flying unit\nSpeedy bomber.";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1013;
+	stats.bio=false; stats.mech=true;
+	stats.init=3; stats.mob=fly;
+	stats.hp=45; stats.mhp=45; stats.def=0;
+	stats.actNums[1,action]=100016;//lin fly
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=4;
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=15;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=101441;
+		stats.actText[4,actionName]="Teleport Friendly";
+		stats.actText[4,desc]="Move any unit on your team to any cell it can occupy.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+	stats.actNums[5,action]=101451;
+		stats.actText[5,actionName]="Advanced Plating";
+		stats.actText[5,desc]="Target unit +5HP & MHP.\nLimit: 2 per unit.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=2;
+		stats.actNums[5,tar]=serp; 
+		stats.actNums[5,rng]=1;
+	stats.actNums[6,action]=101461;
+		stats.actText[6,actionName]="Superdirectional Laser";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=2;
+		stats.actNums[6,tar]=lin;
+		stats.actNums[6,rng]=20;
+		stats.actNums[6,mag]=16;
+		stats.actNums[6,dmgtype]=lsr;
+		stats.actNums[6,dec]=0.75;
+		stats.actNums[6,rad]=40;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Ninjoid";
+		stats.actText[7,desc]="Ground unit\nFast, but fragile infantry droid.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1011;
+	stats.actNums[8,action]=101481;
+		stats.actText[8,actionName]="Create Sentinel";
+		stats.actText[8,desc]="Ground unit\nShield-generating support droid.";
+		stats.actNums[8,ap]=0; stats.actNums[8,fp]=2;
+		stats.actNums[8,mag]=1012;
+	stats.actNums[9,action]=100073;
+		stats.actText[9,actionName]="Create Pterrordactyl";
+		stats.actText[9,desc]="Flying unit\nSpeedy bomber.";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1013;
 }	
 function I1021(object: GameObject){
 	stats.objname="Demolitia";
 	stats.thumb=Resources.Load("thumbs/thumb1021") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1021") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=10; stats.coreStats[eMHP]=10; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;
-	stats.actNums[3,eAction]=102131;
-		stats.actText[3,eName]="Grenade";
-		stats.actNums[3,eTAR]=eArc;
-		stats.actNums[3,eRNG]=4; stats.actNums[3,eMAG]=8;
-		stats.actNums[3,eDMGType]=eEXP;
-		stats.actNums[3,eDEC]=50; 
-		stats.actNums[3,eCRZ]=0; stats.actNums[3,eRAD]=1;
-	stats.actNums[4,eAction]=102141; //enhance stats.armor
-		stats.actText[4,eName]="Enhance stats.armor";
-		stats.actText[4,eDesc]="+1DEF\nLimit: 4";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=10; stats.mhp=10; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;
+	stats.actNums[3,action]=102131;
+		stats.actText[3,actionName]="Grenade";
+		stats.actNums[3,tar]=arc;
+		stats.actNums[3,rng]=4; stats.actNums[3,mag]=8;
+		stats.actNums[3,dmgtype]=exp;
+		stats.actNums[3,dec]=0.5; 
+		stats.actNums[3,crz]=0; stats.actNums[3,rad]=1;
+	stats.actNums[4,action]=102141; //enhance stats.armor
+		stats.actText[4,actionName]="Enhance stats.armor";
+		stats.actText[4,desc]="+1DEF\nLimit: 4";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
 	stats.armor=0;
 }
 function I1022(object: GameObject){	
 	stats.objname="Condor";
 	stats.thumb=Resources.Load("thumbs/thumb1022") as Texture2D;
 	stats.sprite=Resources.Load("sprites/sprite1022") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=15; stats.coreStats[eMHP]=15; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100014; //gnd lin
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=5;	
-	stats.actNums[3,eAction]=100031; //lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=8;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=102241; //lay mine
-		stats.actText[4,eName]="Lay Mine";
-		stats.actText[4,eDesc]="Item";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eMAG]=2021;
-	stats.actNums[5,eAction]=102251; //detonate
-		stats.actText[5,eName]="Detonate";
-		stats.actText[5,eDesc]="Destroy all mines on team.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=0;
+	stats.bio=false; stats.mech=true;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=15; stats.mhp=15; stats.def=0;
+	stats.actNums[1,action]=100014; //gnd lin
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=5;	
+	stats.actNums[3,action]=100031; //lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=8;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=102241; //lay mine
+		stats.actText[4,actionName]="Lay Mine";
+		stats.actText[4,desc]="Item";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,mag]=2021;
+	stats.actNums[5,action]=102251; //detonate
+		stats.actText[5,actionName]="Detonate";
+		stats.actText[5,desc]="Destroy all mines on team.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=0;
 }
 function I1023(object: GameObject){
 	stats.objname="Panopticlops";
 	stats.thumb=Resources.Load("thumbs/thumb1023") as Texture2D;
 	stats.sprite=Resources.Load("sprites/sprite1023A") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=38; stats.coreStats[eMHP]=38; stats.coreStats[eDEF]=1;
-	stats.actNums[1,eAction]=100011; //trm serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=102331; //arc
-		stats.actText[3,eName]="Lob";
-		stats.actNums[3,eTAR]=eArc;
-		stats.actNums[3,eRNG]=3; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=102341; //fortify
-		stats.actText[4,eName]="Fortify";
-		stats.actText[4,eDesc]="+1DEF \nLob & Tactical Missle +1RNG\nLimit: 2";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
+	stats.bio=false; stats.mech=true;
+	stats.init=1; stats.mob=trm;
+	stats.hp=38; stats.mhp=38; stats.def=1;
+	stats.actNums[1,action]=100011; //trm serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=102331; //arc
+		stats.actText[3,actionName]="Lob";
+		stats.actNums[3,tar]=arc;
+		stats.actNums[3,rng]=3; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=102341; //fortify
+		stats.actText[4,actionName]="Fortify";
+		stats.actText[4,desc]="+1DEF \nLob & Tactical Missle +1RNG\nLimit: 2";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
 	stats.armor=0;
-	stats.actNums[5,eAction]=102351; //tactical missile
-		stats.actText[5,eName]="Tactical Missile";
-		stats.actText[5,eDesc]="Ignores target's DEF.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=2;
-		stats.actNums[5,eTAR]=eArc;
-		stats.actNums[5,eRNG]=4; stats.actNums[5,eMAG]=12;
-		stats.actNums[5,eDMGType]=eNRML;
+	stats.actNums[5,action]=102351; //tactical missile
+		stats.actText[5,actionName]="Tactical Missile";
+		stats.actText[5,desc]="Ignores target's DEF.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=2;
+		stats.actNums[5,tar]=arc;
+		stats.actNums[5,rng]=4; stats.actNums[5,mag]=12;
+		stats.actNums[5,dmgtype]=nrml;
 }		
 function I1024(object: GameObject){
 	stats.objname="RoboTank Fortress";
 	stats.thumb=Resources.Load("thumbs/thumb1024A") as Texture2D;
 	stats.sprite=Resources.Load("sprites/sprite1024A") as Texture2D;
-	stats.comp=[false,true];
+	stats.bio=false; stats.mech=true;
 	stats.morph=0;
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=60; stats.coreStats[eMHP]=60; stats.coreStats[eDEF]=1;
-	stats.actNums[1,eAction]=100015;//lin trm
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=2;
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=3; stats.actNums[3,eMAG]=11;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=102441;
-		stats.actText[4,eName]="Artillery Mortar";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=2;
-		stats.actNums[4,eTAR]=eArc;
-		stats.actNums[4,eRNG]=8; stats.actNums[4,eMAG]=14;
-		stats.actNums[4,eDMGType]=eEXP;
-		stats.actNums[4,eDEC]=50;
-		stats.actNums[4,eCRZ]=0; stats.actNums[4,eRAD]=4;
-	stats.actNums[5,eAction]=102451;
-		stats.actText[5,eName]="Incendiary Fire";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eTAR]=eLin;
-		stats.actNums[5,eRNG]=2; stats.actNums[5,eMAG]=12;
-		stats.actNums[5,eDMGType]=eFIR;
-		stats.actNums[5,eDEC]=50;
-		stats.actNums[5,eRAD]=1;
-	stats.actNums[6,eAction]=102461;
-		stats.actText[6,eName]="Siege Mode";
-		stats.actText[6,eDesc]="+3DEF\nImmobilize";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=1;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Demolitia";
-		stats.actText[7,eDesc]="Ground unit\nGrenade-lobing infantry.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1021;
-	stats.actNums[8,eAction]=100071;
-		stats.actText[8,eName]="Create Condor";
-		stats.actText[8,eDesc]="Ground unit\nQuick, mine-laying speeder.";
-		stats.actNums[8,eActAP]=1; stats.actNums[8,eActFP]=1;
-		stats.actNums[8,eMAG]=1022;
-	stats.actNums[9,eAction]=100072;
-		stats.actText[9,eName]="Create Panopticlops";
-		stats.actText[9,eDesc]="Trample unit\nSlow, but devasting monolith tank.";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1023;
+	stats.init=2; stats.mob=trm;
+	stats.hp=60; stats.mhp=60; stats.def=1;
+	stats.actNums[1,action]=100015;//lin trm
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=2;
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=3; stats.actNums[3,mag]=11;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=102441;
+		stats.actText[4,actionName]="Artillery Mortar";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=2;
+		stats.actNums[4,tar]=arc;
+		stats.actNums[4,rng]=8; stats.actNums[4,mag]=14;
+		stats.actNums[4,dmgtype]=exp;
+		stats.actNums[4,dec]=0.5;
+		stats.actNums[4,crz]=0; stats.actNums[4,rad]=4;
+	stats.actNums[5,action]=102451;
+		stats.actText[5,actionName]="Incendiary Fire";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,tar]=lin;
+		stats.actNums[5,rng]=2; stats.actNums[5,mag]=12;
+		stats.actNums[5,dmgtype]=fir;
+		stats.actNums[5,dec]=0.5;
+		stats.actNums[5,rad]=1;
+	stats.actNums[6,action]=102461;
+		stats.actText[6,actionName]="Siege Mode";
+		stats.actText[6,desc]="+3DEF\nImmobilize";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=1;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Demolitia";
+		stats.actText[7,desc]="Ground unit\nGrenade-lobing infantry.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1021;
+	stats.actNums[8,action]=100071;
+		stats.actText[8,actionName]="Create Condor";
+		stats.actText[8,desc]="Ground unit\nQuick, mine-laying speeder.";
+		stats.actNums[8,ap]=1; stats.actNums[8,fp]=1;
+		stats.actNums[8,mag]=1022;
+	stats.actNums[9,action]=100072;
+		stats.actText[9,actionName]="Create Panopticlops";
+		stats.actText[9,desc]="Trample unit\nSlow, but devasting monolith tank.";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1023;
 }
 function I1031(object: GameObject){
 	stats.objname="Mournking";
 	stats.thumb=Resources.Load("thumbs/thumb1031") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1031") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=12; stats.coreStats[eMHP]=12; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010; //serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Good Mourning";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=103141; //wind up
-		stats.actText[4,eName]="Wind Up";
-		stats.actText[4,eDesc]="Good Mourning +1RNG.\nResets on next use.";
-		stats.actNums[4,eActAP]=0; stats.actNums[4,eActFP]=1;
+	stats.bio=true; stats.mech=false;
+	stats.init=3; stats.mob=gnd;
+	stats.hp=12; stats.mhp=12; stats.def=0;
+	stats.actNums[1,action]=100010; //serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Good Mourning";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=103141; //wind up
+		stats.actText[4,actionName]="Wind Up";
+		stats.actText[4,desc]="Good Mourning +1RNG.\nResets on next use.";
+		stats.actNums[4,ap]=0; stats.actNums[4,fp]=1;
 }
 function I1032(object: GameObject){	
 	stats.objname="Phoenix";
 	stats.thumb=Resources.Load("thumbs/thumb1032") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1032") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=15; stats.coreStats[eMHP]=15; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100012; //fly serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Claw";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=8;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=103241; //pickup
-	stats.actNums[5,eAction]=103251; //drop
-	stats.coreStats[eCorpsetype]=2; //become ashes
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=fly;
+	stats.hp=15; stats.mhp=15; stats.def=0;
+	stats.actNums[1,action]=100012; //fly serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Claw";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=8;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=103241; //pickup
+	stats.actNums[5,action]=103251; //drop
+	stats.corpsetype=2; //become ashes
 }	
 function I1033(object: GameObject){
 	stats.objname="Rambuchet";
 	stats.thumb=Resources.Load("thumbs/thumb1033") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1033") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=36; stats.coreStats[eMHP]=36; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100011; //trm serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=103331; //ram/lob
-		stats.actText[3,eName]="Rambuchetize";
-		stats.actText[3,eDesc]="10DMG may be dealt to an additional target exactly 2 cells behind first target.";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=14;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=103341; //momentum
-		stats.actText[4,eName]="Momentum";
-		stats.actText[4,eDesc]="Move up to 5 cells.  If path is blocked by a unit, deal 5DMG per cell moved.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eLin;
-		stats.actNums[4,eRNG]=5;
-		stats.actNums[4,eDMGType]=eNRML;
-	stats.actNums[5,eAction]=103351; //pickup corpse
-		stats.actText[5,eName]="Pick up Corpse";
-		stats.actText[5,eDesc]="Pick up any neighboring Corpse."; 
-		stats.actNums[5,eActAP]=0; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eRNG]=1;
-	stats.actNums[6,eAction]=103361; //fling corpse
-		stats.actText[6,eName]="Fling Corpse";
-		stats.actText[6,eDesc]="Move carried Corpse to target cell.  If cell is occupied, destroy Corpse and do 8DMG to occupying unit.";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=1;
-		stats.actNums[6,eTAR]=eArc;
-		stats.actNums[6,eRNG]=5; stats.actNums[6,eMAG]=8;
-		stats.actNums[6,eDMGType]=eNRML;
+	stats.bio=false; stats.mech=true;
+	stats.init=1; stats.mob=trm;
+	stats.hp=36; stats.mhp=36; stats.def=0;
+	stats.actNums[1,action]=100011; //trm serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=103331; //ram/lob
+		stats.actText[3,actionName]="Rambuchetize";
+		stats.actText[3,desc]="10DMG may be dealt to an additional target exactly 2 cells behind first target.";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=14;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=103341; //momentum
+		stats.actText[4,actionName]="Momentum";
+		stats.actText[4,desc]="Move up to 5 cells.  If path is blocked by a unit, deal 5DMG per cell moved.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=lin;
+		stats.actNums[4,rng]=5;
+		stats.actNums[4,dmgtype]=nrml;
+	stats.actNums[5,action]=103351; //pickup corpse
+		stats.actText[5,actionName]="Pick up Corpse";
+		stats.actText[5,desc]="Pick up any neighboring Corpse."; 
+		stats.actNums[5,ap]=0; stats.actNums[5,fp]=1;
+		stats.actNums[5,rng]=1;
+	stats.actNums[6,action]=103361; //fling corpse
+		stats.actText[6,actionName]="Fling Corpse";
+		stats.actText[6,desc]="Move carried Corpse to target cell.  If cell is occupied, destroy Corpse and do 8DMG to occupying unit.";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=1;
+		stats.actNums[6,tar]=arc;
+		stats.actNums[6,rng]=5; stats.actNums[6,mag]=8;
+		stats.actNums[6,dmgtype]=nrml;
 }		
 function I1034(object: GameObject){
 	stats.objname="Castle Dragon";		
 	stats.thumb=Resources.Load("thumbs/thumb1034A") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1034A") as Texture2D;
-	stats.comp=[true,false];
+	stats.bio=true; stats.mech=false;
 	stats.morph=0;
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=55; stats.coreStats[eMHP]=55; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100012;//serp fly
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=5;	
-	stats.actNums[3,eAction]=100030;//melee
-		stats.actText[3,eName]="Maul";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=15;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=103441;
-		stats.actText[4,eName]="Tail Spin";
-		stats.actText[4,eDesc]="Knockback: 1";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eRadial;
-		stats.actNums[4,eRNG]=1; stats.actNums[4,eMAG]=8;
-		stats.actNums[4,eDMGType]=eNRML;
-	stats.actNums[5,eAction]=103451;
-		stats.actText[5,eName]="Slash and Burn";
-		stats.actText[5,eDesc]="Move up to 5 cells.  Deal damage to each unit crossed.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eTAR]=eLin;
-		stats.actNums[5,eRNG]=5; stats.actNums[5,eMAG]=8;
-		stats.actNums[5,eDMGType]=eFIR;
-		stats.actNums[5,eDEC]=50; stats.actNums[5,eRAD]=1;
-	stats.actNums[6,eAction]=103461;
-		stats.actText[6,eName]="Castlize";
-		stats.actText[6,eDesc]="+3DEF \t Ground\nImmobilize\n+CNT (DEC 50%)";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=1;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Mournking";
-		stats.actText[7,eDesc]="Ground unit\nOrcish infantry brute.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1031;
-	stats.actNums[8,eAction]=100073;
-		stats.actText[8,eName]="Create Phoenix";
-		stats.actText[8,eDesc]="Flying unit\nFast, regenerating fire-breather.";
-		stats.actNums[8,eActAP]=1; stats.actNums[8,eActFP]=1;
-		stats.actNums[8,eMAG]=1032;
-	stats.actNums[9,eAction]=100072;
-		stats.actText[9,eName]="Create Rambuchet";
-		stats.actText[9,eDesc]="Trample unit\nSlow, crushing siege weapon.";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1033;
+	stats.init=2; stats.mob=fly;
+	stats.hp=55; stats.mhp=55; stats.def=0;
+	stats.actNums[1,action]=100012;//serp fly
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=5;	
+	stats.actNums[3,action]=100030;//melee
+		stats.actText[3,actionName]="Maul";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=15;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=103441;
+		stats.actText[4,actionName]="Tail Spin";
+		stats.actText[4,desc]="Knockback: 1";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=radial;
+		stats.actNums[4,rng]=1; stats.actNums[4,mag]=8;
+		stats.actNums[4,dmgtype]=nrml;
+	stats.actNums[5,action]=103451;
+		stats.actText[5,actionName]="Slash and Burn";
+		stats.actText[5,desc]="Move up to 5 cells.  Deal damage to each unit crossed.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,tar]=lin;
+		stats.actNums[5,rng]=5; stats.actNums[5,mag]=8;
+		stats.actNums[5,dmgtype]=fir;
+		stats.actNums[5,dec]=0.5; stats.actNums[5,rad]=1;
+	stats.actNums[6,action]=103461;
+		stats.actText[6,actionName]="Castlize";
+		stats.actText[6,desc]="+3DEF \t Ground\nImmobilize\n+CNT (DEC 50%)";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=1;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Mournking";
+		stats.actText[7,desc]="Ground unit\nOrcish infantry brute.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1031;
+	stats.actNums[8,action]=100073;
+		stats.actText[8,actionName]="Create Phoenix";
+		stats.actText[8,desc]="Flying unit\nFast, regenerating fire-breather.";
+		stats.actNums[8,ap]=1; stats.actNums[8,fp]=1;
+		stats.actNums[8,mag]=1032;
+	stats.actNums[9,action]=100072;
+		stats.actText[9,actionName]="Create Rambuchet";
+		stats.actText[9,desc]="Trample unit\nSlow, crushing siege weapon.";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1033;
 }
 function I1041(object: GameObject){
 	stats.objname="Grizzly Elder";
 	stats.thumb=Resources.Load("thumbs/thumb1041") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1041") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=11; stats.coreStats[eMHP]=11; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=100030;//melee
-		stats.actText[3,eName]="Claw";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=5;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=104141;//conjure terrain
-		stats.actText[4,eName]="Conjure Terrain";
-		stats.actText[4,eDesc]="Create destructible obstacle.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eSerp;
-		stats.actNums[4,eRNG]=1;
-	stats.actNums[5,eAction]=104151;//burial
-		stats.actText[5,eName]="Burial";
-		stats.actText[5,eDesc]="Destroy neighboring Corpse.\n+5HP";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=0;
-		stats.actNums[5,eMAG]=5;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=11; stats.mhp=11; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=100030;//melee
+		stats.actText[3,actionName]="Claw";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=5;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=104141;//conjure terrain
+		stats.actText[4,actionName]="Conjure Terrain";
+		stats.actText[4,desc]="Create destructible obstacle.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=serp;
+		stats.actNums[4,rng]=1;
+	stats.actNums[5,action]=104151;//burial
+		stats.actText[5,actionName]="Burial";
+		stats.actText[5,desc]="Destroy neighboring Corpse.\n+5HP";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=0;
+		stats.actNums[5,mag]=5;
 }
 function I1042(object: GameObject){
 	stats.objname="Laughing Owl";
 	stats.thumb=Resources.Load("thumbs/thumb1042") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1042") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=16; stats.coreStats[eMHP]=16; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100016; //fly lin
-		stats.actNums[1,eTAR]=eLin;
-		stats.actNums[1,eRNG]=6;
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Claw";
-		stats.actNums[3,eTAR]=1;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=7;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=104241; //transport enemy
-		stats.actText[4,eName]="Transport Enemy";
-		stats.actText[4,eDesc]="Move up to 6 cells and return to starting cell.  Pickup a target unit crossed along the way, and drop in any vacant cell.  Target unit takes 9DMG.";
-		stats.actNums[4,eTAR]=eLin;
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eRNG]=6; stats.actNums[4,eMAG]=9;
-		stats.actNums[4,eDMGType]=eNRML;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=fly;
+	stats.hp=16; stats.mhp=16; stats.def=0;
+	stats.actNums[1,action]=100016; //fly lin
+		stats.actNums[1,tar]=lin;
+		stats.actNums[1,rng]=6;
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Claw";
+		stats.actNums[3,tar]=1;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=7;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=104241; //transport enemy
+		stats.actText[4,actionName]="Transport Enemy";
+		stats.actText[4,desc]="Move up to 6 cells and return to starting cell.  Pickup a target unit crossed along the way, and drop in any vacant cell.  Target unit takes 9DMG.";
+		stats.actNums[4,tar]=lin;
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,rng]=6; stats.actNums[4,mag]=9;
+		stats.actNums[4,dmgtype]=nrml;
 }		
 function I1043(object: GameObject){
 	stats.objname="Meta-Terrainean";
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=40; stats.coreStats[eMHP]=40; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100011; //trm serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Punch";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=11;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=104341; //consume terrain
-		stats.actText[4,eName]="Consume Terrain";
-		stats.actText[4,eDesc]="Destroy any neighboring non-Corpse destructible obstacle.\n+8HP";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eSerp;
-		stats.actNums[4,eRNG]=1; stats.actNums[4,eMAG]=8;
+	stats.bio=true; stats.mech=false;
+	stats.init=1; stats.mob=trm;
+	stats.hp=40; stats.mhp=40; stats.def=0;
+	stats.actNums[1,action]=100011; //trm serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Punch";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=11;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=104341; //consume terrain
+		stats.actText[4,actionName]="Consume Terrain";
+		stats.actText[4,desc]="Destroy any neighboring non-Corpse destructible obstacle.\n+8HP";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=serp;
+		stats.actNums[4,rng]=1; stats.actNums[4,mag]=8;
 }		
 function I1044(object: GameObject){
 	stats.objname="Yeti Mtn Sloth Beast";
 	stats.thumb=Resources.Load("thumbs/thumb1044") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1044") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=50; stats.coreStats[eMHP]=50; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=100030;//melee
-		stats.actText[3,eName]="Claw";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=9;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=104441;
-		stats.actText[4,eName]="Stampede";
-		stats.actNums[4,eActAP]=2; stats.actNums[4,eActFP]=1;
-	stats.actNums[5,eAction]=104451;
-		stats.actText[5,eName]="Aural Discharge";
-		stats.actText[5,eDesc]="All other units on team:\n Deal 50% of Action3 DMG to neighboring units & take 3DMG. (Ignore all units' def.)";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=2;
-	stats.actNums[6,eAction]=104461;
-		stats.actText[6,eName]="Torch of Thaw";
-		stats.actText[6,eDesc]="All other units on team +1IN & Move RNG, until end of next turn.";
-		stats.actNums[6,eActAP]=0; stats.actNums[6,eActFP]=2;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Grizzly Elder";
-		stats.actText[7,eDesc]="Ground unit\nWeak, terrain-manipulating infantry.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1041;
-	stats.actNums[8,eAction]=100073;
-		stats.actText[8,eName]="Create Laughing Owl";
-		stats.actText[8,eDesc]="Flying unit\nFast transporter.";
-		stats.actNums[8,eActAP]=2; stats.actNums[8,eActFP]=0;
-		stats.actNums[8,eMAG]=1042;
-	stats.actNums[9,eAction]=104491;
-		stats.actText[9,eName]="Create Meta-Terrainean";
-		stats.actText[9,eDesc]="Trample unit\nSlow, regenerating brute.";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1043;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=50; stats.mhp=50; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=100030;//melee
+		stats.actText[3,actionName]="Claw";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=9;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=104441;
+		stats.actText[4,actionName]="Stampede";
+		stats.actNums[4,ap]=2; stats.actNums[4,fp]=1;
+	stats.actNums[5,action]=104451;
+		stats.actText[5,actionName]="Aural Discharge";
+		stats.actText[5,desc]="All other units on team:\n Deal 50% of Action3 DMG to neighboring units & take 3DMG. (Ignore all units' def.)";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=2;
+	stats.actNums[6,action]=104461;
+		stats.actText[6,actionName]="Torch of Thaw";
+		stats.actText[6,desc]="All other units on team +1IN & Move RNG, until end of next turn.";
+		stats.actNums[6,ap]=0; stats.actNums[6,fp]=2;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Grizzly Elder";
+		stats.actText[7,desc]="Ground unit\nWeak, terrain-manipulating infantry.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1041;
+	stats.actNums[8,action]=100073;
+		stats.actText[8,actionName]="Create Laughing Owl";
+		stats.actText[8,desc]="Flying unit\nFast transporter.";
+		stats.actNums[8,ap]=2; stats.actNums[8,fp]=0;
+		stats.actNums[8,mag]=1042;
+	stats.actNums[9,action]=104491;
+		stats.actText[9,actionName]="Create Meta-Terrainean";
+		stats.actText[9,desc]="Trample unit\nSlow, regenerating brute.";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1043;
 }
 function I1051(object: GameObject){
 	stats.objname="Gunslinger";
 	stats.thumb=Resources.Load("thumbs/thumb1051") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1051") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=11; stats.coreStats[eMHP]=11; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=8;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=105141; //load
-		stats.actText[4,eName]="Load";
-		stats.actText[4,eDesc]="Add 1 bullet.";
-		stats.actNums[4,eActAP]=0; stats.actNums[4,eActFP]=1;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=11; stats.mhp=11; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=8;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=105141; //load
+		stats.actText[4,actionName]="Load";
+		stats.actText[4,desc]="Add 1 bullet.";
+		stats.actNums[4,ap]=0; stats.actNums[4,fp]=1;
 		stats.bombs=0;
-	stats.actNums[5,eAction]=105151; //quickdraw
-		stats.actText[5,eName]="Quickdraw";
-		stats.actText[5,eDesc]="Repeat for each bullet, then remove all bullets.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eTAR]=eLin;
-		stats.actNums[5,eRNG]=1; stats.actNums[5,eMAG]=10;
-		stats.actNums[5,eDMGType]=eNRML;
+	stats.actNums[5,action]=105151; //quickdraw
+		stats.actText[5,actionName]="Quickdraw";
+		stats.actText[5,desc]="Repeat for each bullet, then remove all bullets.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,tar]=lin;
+		stats.actNums[5,rng]=1; stats.actNums[5,mag]=10;
+		stats.actNums[5,dmgtype]=nrml;
 }	
 function I1052(object: GameObject){
 	stats.objname="Piecemaker";
 	stats.thumb=Resources.Load("thumbs/thumb1052") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1052") as Texture2D;
-	stats.comp=[true,true];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=17; stats.coreStats[eMHP]=17; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010; //gnd serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;	
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Bludgeon";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=2;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=105241; //patience
-		stats.actText[4,eName]="Patience";
-		stats.actText[4,eDesc]="Neighboring allies +6HP.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-	stats.actNums[5,eAction]=105251; //create gateA
-		stats.actText[5,eName]="Open Gate (+)";
-		stats.actText[5,eDesc]="Creates a (+) portal gate.\nAny other (+) gates are destroyed.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eMAG]=0;
-	stats.actNums[6,eAction]=105251; //create gateB
-		stats.actText[6,eName]="Open Gate (-)";
-		stats.actText[6,eDesc]="Creates a (-) portal gate.\nAny other (-) gates are destroyed.";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=1;
-		stats.actNums[6,eMAG]=1;
+	stats.bio=true; stats.mech=true;
+	stats.init=1; stats.mob=gnd;
+	stats.hp=17; stats.mhp=17; stats.def=0;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;	
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Bludgeon";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=2;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=105241; //patience
+		stats.actText[4,actionName]="Patience";
+		stats.actText[4,desc]="Neighboring allies +6HP.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+	stats.actNums[5,action]=105251; //create gateA
+		stats.actText[5,actionName]="Open Gate (+)";
+		stats.actText[5,desc]="Creates a (+) portal gate.\nAny other (+) gates are destroyed.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,mag]=0;
+	stats.actNums[6,action]=105251; //create gateB
+		stats.actText[6,actionName]="Open Gate (-)";
+		stats.actText[6,desc]="Creates a (-) portal gate.\nAny other (-) gates are destroyed.";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=1;
+		stats.actNums[6,mag]=1;
 }		
 function I1053(object: GameObject){
 	stats.objname="Chieftomaton";
 	stats.thumb=Resources.Load("thumbs/thumb1053") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1053") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=20; stats.coreStats[eMHP]=20; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010; //gnd serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=105331; //timeahawk
-		stats.actText[3,eName]="Time-a-hawk";
-		stats.actText[3,eDesc]="Target -1FP";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=105341; //spirit time bomb
-		stats.actText[4,eName]="Spirit Time Bomb";
-		stats.actText[4,eDesc]="Target +2IN(if friendly)/-2IN(if enemy) until end of next turn. \nUnits neighboring target +1IN(if friendly)/-1IN(if enemy) until end of next turn.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eArc;
-		stats.actNums[4,eRNG]=5; stats.actNums[4,eMAG]=6;
-		stats.actNums[4,eDMGType]=eNRML;
+	stats.bio=false; stats.mech=true;
+	stats.init=1; stats.mob=gnd;
+	stats.hp=20; stats.mhp=20; stats.def=0;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=105331; //timeahawk
+		stats.actText[3,actionName]="Time-a-hawk";
+		stats.actText[3,desc]="Target -1FP";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=105341; //spirit time bomb
+		stats.actText[4,actionName]="Spirit Time Bomb";
+		stats.actText[4,desc]="Target +2IN(if friendly)/-2IN(if enemy) until end of next turn. \nUnits neighboring target +1IN(if friendly)/-1IN(if enemy) until end of next turn.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=arc;
+		stats.actNums[4,rng]=5; stats.actNums[4,mag]=6;
+		stats.actNums[4,dmgtype]=nrml;
 }		
 function I1054(object: GameObject){
 	stats.objname="Old GrandDad";
 	stats.thumb=Resources.Load("thumbs/thumb1054") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1054") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=57; stats.coreStats[eMHP]=57; stats.coreStats[eDEF]=1;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=3; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=105441;
-		stats.actText[4,eName]="Hour Saviour";
-		stats.actText[4,eDesc]="All units on your team advance in the Queue.  No unit may be skipped more than once.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=0;
-	stats.actNums[5,eAction]=105451;
-		stats.actText[5,eName]="Marksman";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eTAR]=eArc;
-		stats.actNums[5,eRNG]=5; stats.actNums[5,eMAG]=15;
-		stats.actNums[5,eDMGType]=eNRML;
-	stats.actNums[6,eAction]=105461;
-		stats.actText[6,eName]="Second in Command";
-		stats.actText[6,eDesc]="Target unit takes a turn next. It only gets 1AP that turn.";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=2;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Gunslinger";
-		stats.actText[7,eDesc]="Ground unit\nDamaging infantry.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1051;
-	stats.actNums[8,eAction]=100071;
-		stats.actText[8,eName]="Create Piecemaker";
-		stats.actText[8,eDesc]="Ground unit\nHealing support droid.";
-		stats.actNums[8,eActAP]=1; stats.actNums[8,eActFP]=1;
-		stats.actNums[8,eMAG]=1052;
-	stats.actNums[9,eAction]=100071;
-		stats.actText[9,eName]="Create Chieftomaton";
-		stats.actText[9,eDesc]="Ground unit\nTime-bending mecha-elder";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1053;
+	stats.bio=false; stats.mech=true;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=57; stats.mhp=57; stats.def=1;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=3; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=105441;
+		stats.actText[4,actionName]="Hour Saviour";
+		stats.actText[4,desc]="All units on your team advance in the Queue.  No unit may be skipped more than once.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
+	stats.actNums[5,action]=105451;
+		stats.actText[5,actionName]="Marksman";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,tar]=arc;
+		stats.actNums[5,rng]=5; stats.actNums[5,mag]=15;
+		stats.actNums[5,dmgtype]=nrml;
+	stats.actNums[6,action]=105461;
+		stats.actText[6,actionName]="Second in Command";
+		stats.actText[6,desc]="Target unit takes a turn next. It only gets 1AP that turn.";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=2;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Gunslinger";
+		stats.actText[7,desc]="Ground unit\nDamaging infantry.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1051;
+	stats.actNums[8,action]=100071;
+		stats.actText[8,actionName]="Create Piecemaker";
+		stats.actText[8,desc]="Ground unit\nHealing support droid.";
+		stats.actNums[8,ap]=1; stats.actNums[8,fp]=1;
+		stats.actNums[8,mag]=1052;
+	stats.actNums[9,action]=100071;
+		stats.actText[9,actionName]="Create Chieftomaton";
+		stats.actText[9,desc]="Ground unit\nTime-bending mecha-elder";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1053;
 }
 function I1060(object: GameObject){
 	stats.objname="Larva";
 	stats.thumb=Resources.Load("thumbs/thumb1060") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1060") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=10; stats.coreStats[eMHP]=10; stats.coreStats[eDEF]=2;
-	stats.actNums[1,eAction]=0;
-	stats.actNums[3,eAction]=100033;//leech life
-		stats.actText[3,eName]="Leech Life";
-		stats.actText[3,eDesc]="+1HP per DMG dealt.";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=5;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=106041;//evolve bee
-		stats.actText[4,eName]="Evolve: Beesassin";
-		stats.actText[4,eDesc]="Flying unit\nFast, but fragile assassin.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=0;
-		stats.actNums[4,eMAG]=1061;
-	stats.actNums[5,eAction]=106041;//evolve shrooman
-		stats.actText[5,eName]="Evolve: Shrooman";
-		stats.actText[5,eDesc]="Ground unit\nInfectious support unit.";
-		stats.actNums[5,eActAP]=2; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eMAG]=1062;
-	stats.actNums[6,eAction]=106041;//evolve flytrap
-		stats.actText[6,eName]="Evolve: Itza Trap";
-		stats.actText[6,eDesc]="Trample unit\nSlow, carnivorous plant.";
-		stats.actNums[6,eActAP]=0; stats.actNums[6,eActFP]=3;
-		stats.actNums[6,eMAG]=1063;
-	stats.coreStats[eCorpsetype]=0;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=10; stats.mhp=10; stats.def=2;
+	stats.actNums[1,action]=0;
+	stats.actNums[3,action]=100033;//leech life
+		stats.actText[3,actionName]="Leech Life";
+		stats.actText[3,desc]="+1HP per DMG dealt.";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=5;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=106041;//evolve bee
+		stats.actText[4,actionName]="Evolve: Beesassin";
+		stats.actText[4,desc]="Flying unit\nFast, but fragile assassin.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
+		stats.actNums[4,mag]=1061;
+	stats.actNums[5,action]=106041;//evolve shrooman
+		stats.actText[5,actionName]="Evolve: Shrooman";
+		stats.actText[5,desc]="Ground unit\nInfectious support unit.";
+		stats.actNums[5,ap]=2; stats.actNums[5,fp]=1;
+		stats.actNums[5,mag]=1062;
+	stats.actNums[6,action]=106041;//evolve flytrap
+		stats.actText[6,actionName]="Evolve: Itza Trap";
+		stats.actText[6,desc]="Trample unit\nSlow, carnivorous plant.";
+		stats.actNums[6,ap]=0; stats.actNums[6,fp]=3;
+		stats.actNums[6,mag]=1063;
+	stats.corpsetype=0;
 }	
 function I1061(object: GameObject){
 	stats.objname="Beesassin";
 	stats.thumb=Resources.Load("thumbs/thumb1061") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1061") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=9; stats.coreStats[eMHP]=9; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100012; //fly serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=5;	
-	stats.actNums[3,eAction]=100034; //serp psn
-		stats.actText[3,eName]="Poison Sting";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=6;
-		stats.actNums[3,eDMGType]=ePSN;
-		stats.actNums[3,eDEC]=50; stats.actNums[3,eRAD]=1;
-	stats.actNums[4,eAction]=106141; //death sting
-		stats.actText[4,eName]="Death Sting";
-		stats.actText[4,eDesc]="Beesassin is sacrificed.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eSerp;
-		stats.actNums[4,eRNG]=1; stats.actNums[4,eMAG]=12;
-		stats.actNums[4,eDMGType]=ePSN;
-		stats.actNums[4,eDEC]=50; stats.actNums[4,eRAD]=5;
+	stats.bio=true; stats.mech=false;
+	stats.init=3; stats.mob=fly;
+	stats.hp=9; stats.mhp=9; stats.def=0;
+	stats.actNums[1,action]=100012; //fly serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=5;	
+	stats.actNums[3,action]=100034; //serp psn
+		stats.actText[3,actionName]="Poison Sting";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=6;
+		stats.actNums[3,dmgtype]=psn;
+		stats.actNums[3,dec]=0.5; stats.actNums[3,rad]=1;
+	stats.actNums[4,action]=106141; //death sting
+		stats.actText[4,actionName]="Death Sting";
+		stats.actText[4,desc]="Beesassin is sacrificed.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=serp;
+		stats.actNums[4,rng]=1; stats.actNums[4,mag]=12;
+		stats.actNums[4,dmgtype]=psn;
+		stats.actNums[4,dec]=0.5; stats.actNums[4,rad]=5;
 }
 function I1062(object: GameObject){
 	stats.objname="Shrooman";
 	stats.thumb=Resources.Load("thumbs/thumb1062") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1062") as Texture2D;	
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=15; stats.coreStats[eMHP]=15; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010; //gnd serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=106231; //psn spores
-		stats.actText[3,eName]="Sporatic Emission";
-		stats.actNums[3,eTAR]=eArc;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=9;
-		stats.actNums[3,eDMGType]=ePSN;
-		stats.actNums[3,eDEC]=50; stats.actNums[3,eRAD]=3;
-	stats.actNums[4,eAction]=106241; //infest corpse
-		stats.actText[4,eName]="Infest Corpse";
-		stats.actText[4,eDesc]="Turn neighboring Corpse into a Larva.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=0;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=15; stats.mhp=15; stats.def=0;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=106231; //psn spores
+		stats.actText[3,actionName]="Sporatic Emission";
+		stats.actNums[3,tar]=arc;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=9;
+		stats.actNums[3,dmgtype]=psn;
+		stats.actNums[3,dec]=0.5; stats.actNums[3,rad]=3;
+	stats.actNums[4,action]=106241; //infest corpse
+		stats.actText[4,actionName]="Infest Corpse";
+		stats.actText[4,desc]="Turn neighboring Corpse into a Larva.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
 }		
 function I1063(object: GameObject){
 	stats.objname="Itza Trap";
 	stats.thumb=Resources.Load("thumbs/thumb1063") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1063") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=30; stats.coreStats[eMHP]=30; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100011; //trm serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=1;	
-	stats.actNums[3,eAction]=106331; //ensnare
-		stats.actText[3,eName]="Ensnare";
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
+	stats.bio=true; stats.mech=false;
+	stats.init=3; stats.mob=fly;
+	stats.hp=30; stats.mhp=30; stats.def=0;
+	stats.actNums[1,action]=100011; //trm serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=1;	
+	stats.actNums[3,action]=106331; //ensnare
+		stats.actText[3,actionName]="Ensnare";
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
 }		
 function I1064(object: GameObject){
 	stats.objname="Spider Queen";
 	stats.thumb=Resources.Load("thumbs/thumb1064") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1064") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=45; stats.coreStats[eMHP]=45; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;	
-	stats.actNums[3,eAction]=106431;//melee
-		stats.actText[3,eName]="Bite";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=10;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=106441;
-		stats.actText[4,eName]="Webshot";
-		stats.actText[4,eDesc]="Target -2 Move RNG until end of next turn, -1 Move RNG until end of two turns."; 
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eArc;
-		stats.actNums[4,eRNG]=3; stats.actNums[4,eMAG]=12;
-		stats.actNums[4,eDMGType]=ePSN;
-		stats.actNums[4,eDEC]=50; stats.actNums[4,eRAD]=1;
-	stats.actNums[5,eAction]=106451;
-		stats.actText[5,eName]="Swarm";
-		stats.actText[5,eDesc]="All non-Larva friendly units get +1DMG on Action3, for each non-Larva friendly unit, until the end of their next turn.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=2;
-	stats.actNums[6,eAction]=106461;
-		stats.actText[6,eName]="Megadearth";
-		stats.actText[6,eDesc]="All units of target team recieve 2PSN DMG per unit on their team.";
-		stats.actNums[6,eActAP]=2; stats.actNums[6,eActFP]=2;
-		stats.actNums[6,eDMGType]=ePSN;
-		stats.actNums[6,eDEC]=50; stats.actNums[6,eRAD]=1;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Larva";
-		stats.actText[7,eDesc]="Ground unit\nWeak, evolvable hatchling.";
-		stats.actNums[7,eActAP]=0; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1060;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=45; stats.mhp=45; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;	
+	stats.actNums[3,action]=106431;//melee
+		stats.actText[3,actionName]="Bite";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=10;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=106441;
+		stats.actText[4,actionName]="Webshot";
+		stats.actText[4,desc]="Target -2 Move RNG until end of next turn, -1 Move RNG until end of two turns."; 
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=arc;
+		stats.actNums[4,rng]=3; stats.actNums[4,mag]=12;
+		stats.actNums[4,dmgtype]=psn;
+		stats.actNums[4,dec]=0.5; stats.actNums[4,rad]=1;
+	stats.actNums[5,action]=106451;
+		stats.actText[5,actionName]="Swarm";
+		stats.actText[5,desc]="All non-Larva friendly units get +1DMG on Action3, for each non-Larva friendly unit, until the end of their next turn.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=2;
+	stats.actNums[6,action]=106461;
+		stats.actText[6,actionName]="Megadearth";
+		stats.actText[6,desc]="All units of target team recieve 2PSN DMG per unit on their team.";
+		stats.actNums[6,ap]=2; stats.actNums[6,fp]=2;
+		stats.actNums[6,dmgtype]=psn;
+		stats.actNums[6,dec]=0.5; stats.actNums[6,rad]=1;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Larva";
+		stats.actText[7,desc]="Ground unit\nWeak, evolvable hatchling.";
+		stats.actNums[7,ap]=0; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1060;
 }
 function I1071(object: GameObject){
 	stats.objname="Scarabot";
 	stats.thumb=Resources.Load("thumbs/thumb1071") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1071") as Texture2D;
-	stats.comp=[false,true];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=12; stats.coreStats[eMHP]=12; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100011;//serp trm
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Shoot";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=6;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=107141; //prism cannon
-		stats.actText[4,eName]="Prism Cannon";
-		stats.actNums[4,eTAR]=eLin;
-		stats.actNums[4,eRNG]=4; stats.actNums[4,eMAG]=10;
-		stats.actNums[4,eDMGType]=eLSR;
-		stats.actNums[4,eDEC]=50; stats.actNums[4,eRAD]=3;
+	stats.bio=false; stats.mech=true;
+	stats.init=2; stats.mob=trm;
+	stats.hp=12; stats.mhp=12; stats.def=0;
+	stats.actNums[1,action]=100011;//serp trm
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Shoot";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=6;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=107141; //prism cannon
+		stats.actText[4,actionName]="Prism Cannon";
+		stats.actNums[4,tar]=lin;
+		stats.actNums[4,rng]=4; stats.actNums[4,mag]=10;
+		stats.actNums[4,dmgtype]=lsr;
+		stats.actNums[4,dec]=0.5; stats.actNums[4,rad]=3;
 }
 function I1072(object: GameObject){
 	stats.objname="Haze";
 	stats.thumb=Resources.Load("thumbs/thumb1072") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1072") as Texture2D;
-	stats.comp=[false,false];
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eGAS;
-	stats.coreStats[eHP]=22; stats.coreStats[eMHP]=22; stats.coreStats[eDEF]=1;
-	stats.actNums[1,eAction]=100013; //gas serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=107231; //melee
-		stats.actText[3,eName]="Mnemonic Plague";
-		stats.actText[3,eDesc]="Self +1HP per 2 damage dealt.  You may give target co-occupying unit +1HP per damage dealt.";
-		stats.actNums[3,eRNG]=0; stats.actNums[3,eMAG]=7;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=107241; //accumulation
-		stats.actText[4,eName]="Accumulate";
-		stats.actText[4,eDesc]="Merge with any co-occupying Haze.  Gain half accumulated Haze's HP.  Gain accumulated Haze's FP, DEF. Size increases.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-	stats.actNums[5,eAction]=107251; //mirage
-		stats.actText[5,eName]="Mirage";
-		stats.actText[5,eDesc]="(Passive effect)\nCo-occupying friendly units have a 25% dodge rate.";
-		stats.actNums[5,eActAP]=0; stats.actNums[5,eActFP]=0;
-	stats.actNums[6,eAction]=107261; //tractor gust
-		stats.actText[6,eName]="Tractor Gust";
-		stats.actText[6,eDesc]="Move target unit into a space occupied by Haze.";
-		stats.actNums[6,eActAP]=0; stats.actNums[6,eActFP]=1;
-		stats.actNums[6,eTAR]=eSerp;
-		stats.actNums[6,eRNG]=2;
-	stats.coreStats[eCorpsetype]=0; //no corpse
+	stats.bio=false; stats.mech=false;
+	stats.init=1; stats.mob=gas;
+	stats.hp=22; stats.mhp=22; stats.def=1;
+	stats.actNums[1,action]=100013; //gas serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=107231; //melee
+		stats.actText[3,actionName]="Mnemonic Plague";
+		stats.actText[3,desc]="Self +1HP per 2 damage dealt.  You may give target co-occupying unit +1HP per damage dealt.";
+		stats.actNums[3,rng]=0; stats.actNums[3,mag]=7;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=107241; //accumulation
+		stats.actText[4,actionName]="Accumulate";
+		stats.actText[4,desc]="Merge with any co-occupying Haze.  Gain half accumulated Haze's HP.  Gain accumulated Haze's FP, DEF. Size increases.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+	stats.actNums[5,action]=107251; //mirage
+		stats.actText[5,actionName]="Mirage";
+		stats.actText[5,desc]="(Passive effect)\nCo-occupying friendly units have a 25% dodge rate.";
+		stats.actNums[5,ap]=0; stats.actNums[5,fp]=0;
+	stats.actNums[6,action]=107261; //tractor gust
+		stats.actText[6,actionName]="Tractor Gust";
+		stats.actText[6,desc]="Move target unit into a space occupied by Haze.";
+		stats.actNums[6,ap]=0; stats.actNums[6,fp]=1;
+		stats.actNums[6,tar]=serp;
+		stats.actNums[6,rng]=2;
+	stats.corpsetype=0; //no corpse
 }
 function I1073(object: GameObject){
 	stats.objname="Priest of Naja";
-	stats.comp=[true,true];
+	stats.bio=true; stats.mech=true;
 	stats.thumb=Resources.Load("thumbs/thumb1073") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1073") as Texture2D;
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=28; stats.coreStats[eMHP]=28; stats.coreStats[eDEF]=1;
-	stats.actNums[1,eAction]=100010; //gnd serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Bludgeon";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=9;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=107341; //force shove
-	stats.actNums[5,eAction]=107351; //super shove
+	stats.init=3; stats.mob=gnd;
+	stats.hp=28; stats.mhp=28; stats.def=1;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Bludgeon";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=9;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=107341; //force shove
+	stats.actNums[5,action]=107351; //super shove
 }
 function I1074(object: GameObject){
 	stats.objname="Cyborg Super Sultan";
 	stats.thumb=Resources.Load("thumbs/thumb1074") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1074") as Texture2D;
-	stats.comp=[true,true];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=55; stats.coreStats[eMHP]=55; stats.coreStats[eDEF]=2;
-	stats.actNums[1,eAction]=100012;//serp fly
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;	
-	stats.actNums[3,eAction]=100031;//lin
-		stats.actText[3,eName]="Psi Beam";
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=3; stats.actNums[3,eMAG]=9;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=107441;
-		stats.actText[4,eName]="Restoration";
-		stats.actText[4,eDesc]="Target unit gains HP equal to half it's MHP.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eTAR]=eArc;
-		stats.actNums[4,eRNG]=7;
-	stats.actNums[5,eAction]=107451;
-		stats.actText[5,eName]="Teleport Enemy";
-		stats.actText[5,eDesc]="Move an enemy unit to any legal space.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;		
-		stats.actNums[5,eTAR]=eArc;
-		stats.actNums[5,eRNG]=3;
-	stats.actNums[6,eAction]=107461;
-		stats.actText[6,eName]="Lightning Storm";
-		stats.actText[6,eDesc]="If a Haze is co-occupying the target's cell, repeat with 50% DMG.";
-		stats.actNums[6,eActAP]=2; stats.actNums[6,eActFP]=2;		
-		stats.actNums[6,eTAR]=eArc;
-		stats.actNums[6,eRNG]=5; stats.actNums[6,eMAG]=15;
-		stats.actNums[6,eDMGType]=eELC;
-		stats.actNums[6,eDEC]=50;
-	stats.actNums[7,eAction]=100072;
-		stats.actText[7,eName]="Create Scarabot";
-		stats.actText[7,eDesc]="Trample unit\nRugged infantry droid.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1071;
-	stats.actNums[8,eAction]=100074;
-		stats.actText[8,eName]="Create Haze";
-		stats.actText[8,eDesc]="Gaseous unit\nSlow, shielding support unit.";
-		stats.actNums[8,eActAP]=1; stats.actNums[8,eActFP]=1;
-		stats.actNums[8,eMAG]=1072;
-	stats.actNums[9,eAction]=100071;
-		stats.actText[9,eName]="Create Priest of Naja";
-		stats.actText[9,eDesc]="Ground unit\nFast, telekinetic brute.";
-		stats.actNums[9,eActAP]=1; stats.actNums[9,eActFP]=2;
-		stats.actNums[9,eMAG]=1073;
+	stats.bio=true; stats.mech=true;
+	stats.init=2; stats.mob=fly;
+	stats.hp=55; stats.mhp=55; stats.def=2;
+	stats.actNums[1,action]=100012;//serp fly
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;	
+	stats.actNums[3,action]=100031;//lin
+		stats.actText[3,actionName]="Psi Beam";
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=3; stats.actNums[3,mag]=9;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=107441;
+		stats.actText[4,actionName]="Restoration";
+		stats.actText[4,desc]="Target unit gains HP equal to half it's MHP.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,tar]=arc;
+		stats.actNums[4,rng]=7;
+	stats.actNums[5,action]=107451;
+		stats.actText[5,actionName]="Teleport Enemy";
+		stats.actText[5,desc]="Move an enemy unit to any legal space.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;		
+		stats.actNums[5,tar]=arc;
+		stats.actNums[5,rng]=3;
+	stats.actNums[6,action]=107461;
+		stats.actText[6,actionName]="Lightning Storm";
+		stats.actText[6,desc]="If a Haze is co-occupying the target's cell, repeat with 50% DMG.";
+		stats.actNums[6,ap]=2; stats.actNums[6,fp]=2;		
+		stats.actNums[6,tar]=arc;
+		stats.actNums[6,rng]=5; stats.actNums[6,mag]=15;
+		stats.actNums[6,dmgtype]=elc;
+		stats.actNums[6,dec]=0.5;
+	stats.actNums[7,action]=100072;
+		stats.actText[7,actionName]="Create Scarabot";
+		stats.actText[7,desc]="Trample unit\nRugged infantry droid.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1071;
+	stats.actNums[8,action]=100074;
+		stats.actText[8,actionName]="Create Haze";
+		stats.actText[8,desc]="Gaseous unit\nSlow, shielding support unit.";
+		stats.actNums[8,ap]=1; stats.actNums[8,fp]=1;
+		stats.actNums[8,mag]=1072;
+	stats.actNums[9,action]=100071;
+		stats.actText[9,actionName]="Create Priest of Naja";
+		stats.actText[9,desc]="Ground unit\nFast, telekinetic brute.";
+		stats.actNums[9,ap]=1; stats.actNums[9,fp]=2;
+		stats.actNums[9,mag]=1073;
 }
 function I1081(object: GameObject){
 	stats.objname="Corpse Fiend";
 	stats.thumb=Resources.Load("thumbs/thumb1081") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1081") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eObclass]=4;
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=15; stats.coreStats[eMHP]=15; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100010;//serp gnd
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=2;	
-	stats.actNums[3,eAction]=100032;
-		stats.actText[3,eName]="Rage";
-		stats.actText[3,eDesc]="-3HP";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=10; stats.actNums[3,eDEC]=(-3);
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=108141; //cannibalize
-		stats.actText[4,eName]="Cannibalize";
-		stats.actText[4,eDesc]="Destroy any neighboring Corpse.\n+5HP & MHP, +2DMG on Action3.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=0;
-		stats.actNums[4,eRNG]=1; stats.actNums[4,eMAG]=5;
-	stats.actNums[5,eAction]=108151; //explode
-		stats.actText[5,eName]="Explode";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=1;
-		stats.actNums[5,eRNG]=0; stats.actNums[5,eMAG]=15;
-		stats.actNums[5,eDMGType]=eEXP;
-		stats.actNums[5,eDEC]=50;
-		stats.actNums[5,eCRZ]=0; stats.actNums[5,eRAD]=3;
-	stats.coreStats[eCorpsetype]=0;//no corpse
+	stats.bio=true; stats.mech=false;
+	stats.obclass=4;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=15; stats.mhp=15; stats.def=0;
+	stats.actNums[1,action]=100010;//serp gnd
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=2;	
+	stats.actNums[3,action]=100032;
+		stats.actText[3,actionName]="Rage";
+		stats.actText[3,desc]="-3HP";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=10; stats.actNums[3,dec]=(-3);
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=108141; //cannibalize
+		stats.actText[4,actionName]="Cannibalize";
+		stats.actText[4,desc]="Destroy any neighboring Corpse.\n+5HP & MHP, +2DMG on Action3.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
+		stats.actNums[4,rng]=1; stats.actNums[4,mag]=5;
+	stats.actNums[5,action]=108151; //explode
+		stats.actText[5,actionName]="Explode";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=1;
+		stats.actNums[5,rng]=0; stats.actNums[5,mag]=15;
+		stats.actNums[5,dmgtype]=exp;
+		stats.actNums[5,dec]=0.5;
+		stats.actNums[5,crz]=0; stats.actNums[5,rad]=3;
+	stats.corpsetype=0;//no corpse
 }
 function I1082(object: GameObject){
 	stats.objname="Necrochancellor";
 	stats.thumb=Resources.Load("thumbs/thumb1082") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1082") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.coreStats[eHP]=17; stats.coreStats[eMHP]=17; stats.coreStats[eDEF]=2;
-	stats.actNums[1,eAction]=100010; //gnd serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=3;	
-	stats.actNums[3,eAction]=100030; //melee
-		stats.actText[3,eName]="Bludgeon";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=6;
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=108241; //move corpse
-		stats.actText[4,eName]="Move Corpse";
-		stats.actText[4,eDesc]="Move any neighboring Corpse to any legal cell.";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
-		stats.actNums[4,eRNG]=1;
-		stats.actNums[4,eTAR]=eSerp;
-	stats.actNums[5,eAction]=108251; //contagion
-	stats.actNums[6,eAction]=108261; //open void gate
-		stats.actText[6,eName]="Open Void Gate";
-		stats.actText[6,eDesc]="Create minion-spawning gate from the Void.";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=2;
-		stats.actNums[6,eRNG]=1;
-		stats.actNums[6,eTAR]=eSerp;
+	stats.bio=true; stats.mech=false;
+	stats.init=2; stats.mob=gnd;
+	stats.hp=17; stats.mhp=17; stats.def=2;
+	stats.actNums[1,action]=100010; //gnd serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=3;	
+	stats.actNums[3,action]=100030; //melee
+		stats.actText[3,actionName]="Bludgeon";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=6;
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=108241; //move corpse
+		stats.actText[4,actionName]="Move Corpse";
+		stats.actText[4,desc]="Move any neighboring Corpse to any legal cell.";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
+		stats.actNums[4,rng]=1;
+		stats.actNums[4,tar]=serp;
+	stats.actNums[5,action]=108251; //contagion
+	stats.actNums[6,action]=108261; //open void gate
+		stats.actText[6,actionName]="Open Void Gate";
+		stats.actText[6,desc]="Create minion-spawning gate from the Void.";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=2;
+		stats.actNums[6,rng]=1;
+		stats.actNums[6,tar]=serp;
 }
 function I1083(object: GameObject){
 	stats.objname="Magman";
 	stats.thumb=Resources.Load("thumbs/thumb1083A") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1083A") as Texture2D;
-	stats.comp=[true,false];
+	stats.bio=true; stats.mech=false;
 	stats.morph=0;
-	stats.coreStats[eINIT]=1; stats.coreStats[eMOB]=eTRM;
-	stats.coreStats[eHP]=25; stats.coreStats[eMHP]=25; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100011; //trm serp
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;	
-	stats.actNums[3,eAction]=108431; 
-		stats.actText[3,eName]="Magma Fist";
-		stats.actNums[3,eActAP]=2;
-		stats.actNums[3,eTAR]=eLin;
-		stats.actNums[3,eRNG]=2; stats.actNums[3,eMAG]=20;
-		stats.actNums[3,eDMGType]=eFIR;
-		stats.actNums[3,eDEC]=50; stats.actNums[3,eRAD]=1;
+	stats.init=1; stats.mob=trm;
+	stats.hp=25; stats.mhp=25; stats.def=0;
+	stats.actNums[1,action]=100011; //trm serp
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;	
+	stats.actNums[3,action]=108431; 
+		stats.actText[3,actionName]="Magma Fist";
+		stats.actNums[3,ap]=2;
+		stats.actNums[3,tar]=lin;
+		stats.actNums[3,rng]=2; stats.actNums[3,mag]=20;
+		stats.actNums[3,dmgtype]=fir;
+		stats.actNums[3,dec]=0.5; stats.actNums[3,rad]=1;
 		
-	stats.actNums[4,eAction]=108341; //transform
-		stats.actText[4,eName]="Solidify";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=1;
+	stats.actNums[4,action]=108341; //transform
+		stats.actText[4,actionName]="Solidify";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=1;
 }		
 function I1084(object: GameObject){
 	stats.objname="Cthulhoid";
 	stats.thumb=Resources.Load("thumbs/thumb1084") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb1084") as Texture2D;
-	stats.comp=[true,false];
-	stats.coreStats[eINIT]=3; stats.coreStats[eMOB]=eFLY;
-	stats.coreStats[eHP]=60; stats.coreStats[eMHP]=60; stats.coreStats[eDEF]=0;
-	stats.actNums[1,eAction]=100012;//serp fly
-		stats.actNums[1,eTAR]=eSerp;
-		stats.actNums[1,eRNG]=4;	
-	stats.actNums[3,eAction]=100032;
-		stats.actText[3,eName]="Rage";
-		stats.actText[3,eDesc]="-5HP";
-		stats.actNums[3,eTAR]=eSerp;
-		stats.actNums[3,eRNG]=1; stats.actNums[3,eMAG]=15; stats.actNums[3,eDEC]=(-5);
-		stats.actNums[3,eDMGType]=eNRML;
-	stats.actNums[4,eAction]=108441;
-		stats.actText[4,eName]="Sacrifize";
-		stats.actText[4,eDesc]="Destroy neighboring friendly unit.\n+1DEF, +1FP";
-		stats.actNums[4,eActAP]=1; stats.actNums[4,eActFP]=0;
-		stats.actNums[4,eRNG]=1;
-		stats.actNums[4,eTAR]=eSerp;
-	stats.actNums[5,eAction]=108451;
-		stats.actText[5,eName]="Devour";
-		stats.actText[5,eDesc]="+1HP per damage dealt.";
-		stats.actNums[5,eActAP]=1; stats.actNums[5,eActFP]=0;
-		stats.actNums[5,eTAR]=eSerp;
-		stats.actNums[5,eRNG]=1; stats.actNums[5,eMAG]=10;
-		stats.actNums[5,eDMGType]=eNRML;
-	stats.actNums[6,eAction]=108461;
-		stats.actText[6,eName]="Eternal Flame";
-		stats.actNums[6,eActAP]=1; stats.actNums[6,eActFP]=2;
-		stats.actNums[6,eTAR]=eLin;
-		stats.actNums[6,eRNG]=2; stats.actNums[6,eMAG]=12;
-		stats.actNums[6,eDMGType]=eFIR;
-		stats.actNums[6,eDEC]=100; stats.actNums[6,eRAD]=10;
-	stats.actNums[7,eAction]=100071;
-		stats.actText[7,eName]="Create Corpse Fiend";
-		stats.actText[7,eDesc]="Ground unit\nStrong, suicidal infantry.";
-		stats.actNums[7,eActAP]=1; stats.actNums[7,eActFP]=0;
-		stats.actNums[7,eMAG]=1081;
-	stats.actNums[8,eAction]=100071;
-		stats.actText[8,eName]="Create Necrochancellor";
-		stats.actText[8,eDesc]="Ground unit\nResilient Corpse-pedler.";
-		stats.actNums[8,eActAP]=2; stats.actNums[8,eActFP]=0;
-		stats.actNums[8,eMAG]=1082;
-	stats.actNums[9,eAction]=100071;
-		stats.actText[9,eName]="Create Magman";
-		stats.actText[9,eDesc]="Trample unit\nDamaging rock brute.";
-		stats.actNums[9,eActAP]=2; stats.actNums[9,eActFP]=1;
-		stats.actNums[9,eMAG]=1083;
+	stats.bio=true; stats.mech=false;
+	stats.init=3; stats.mob=fly;
+	stats.hp=60; stats.mhp=60; stats.def=0;
+	stats.actNums[1,action]=100012;//serp fly
+		stats.actNums[1,tar]=serp;
+		stats.actNums[1,rng]=4;	
+	stats.actNums[3,action]=100032;
+		stats.actText[3,actionName]="Rage";
+		stats.actText[3,desc]="-5HP";
+		stats.actNums[3,tar]=serp;
+		stats.actNums[3,rng]=1; stats.actNums[3,mag]=15; stats.actNums[3,dec]=(-5);
+		stats.actNums[3,dmgtype]=nrml;
+	stats.actNums[4,action]=108441;
+		stats.actText[4,actionName]="Sacrifize";
+		stats.actText[4,desc]="Destroy neighboring friendly unit.\n+1DEF, +1FP";
+		stats.actNums[4,ap]=1; stats.actNums[4,fp]=0;
+		stats.actNums[4,rng]=1;
+		stats.actNums[4,tar]=serp;
+	stats.actNums[5,action]=108451;
+		stats.actText[5,actionName]="Devour";
+		stats.actText[5,desc]="+1HP per damage dealt.";
+		stats.actNums[5,ap]=1; stats.actNums[5,fp]=0;
+		stats.actNums[5,tar]=serp;
+		stats.actNums[5,rng]=1; stats.actNums[5,mag]=10;
+		stats.actNums[5,dmgtype]=nrml;
+	stats.actNums[6,action]=108461;
+		stats.actText[6,actionName]="Eternal Flame";
+		stats.actNums[6,ap]=1; stats.actNums[6,fp]=2;
+		stats.actNums[6,tar]=lin;
+		stats.actNums[6,rng]=2; stats.actNums[6,mag]=12;
+		stats.actNums[6,dmgtype]=fir;
+		stats.actNums[6,dec]=1.0; stats.actNums[6,rad]=10;
+	stats.actNums[7,action]=100071;
+		stats.actText[7,actionName]="Create Corpse Fiend";
+		stats.actText[7,desc]="Ground unit\nStrong, suicidal infantry.";
+		stats.actNums[7,ap]=1; stats.actNums[7,fp]=0;
+		stats.actNums[7,mag]=1081;
+	stats.actNums[8,action]=100071;
+		stats.actText[8,actionName]="Create Necrochancellor";
+		stats.actText[8,desc]="Ground unit\nResilient Corpse-pedler.";
+		stats.actNums[8,ap]=2; stats.actNums[8,fp]=0;
+		stats.actNums[8,mag]=1082;
+	stats.actNums[9,action]=100071;
+		stats.actText[9,actionName]="Create Magman";
+		stats.actText[9,desc]="Trample unit\nDamaging rock brute.";
+		stats.actNums[9,ap]=2; stats.actNums[9,fp]=1;
+		stats.actNums[9,mag]=1083;
 }	
 //items
 function I2021(object: GameObject){
 	stats.objname="Mine";
 	stats.thumb=Resources.Load("thumbs/thumb2021") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb2021") as Texture2D;
-	stats.coreStats[eHP]=1; stats.coreStats[eMHP]=1;
+	stats.hp=1; stats.mhp=1;
 	object.tag="obstacle";
-	stats.coreStats[eObclass]=3;
-	actionCoord.Mlog("Player"+stats.coreStats[eOwner]+" laid a mine.");
-	object.name="Mine - Player "+stats.coreStats[eOwner];
+	stats.obclass=3;
+	actionCoord.Mlog("Player"+stats.owner+" laid a mine.");
+	object.name="Mine - Player "+stats.owner;
 	
 	var mycell: GameObject = stats.mycell;
 	
@@ -1249,20 +1235,20 @@ function I2031(object: GameObject){
 	stats.objname="Phoenix Ashes";
 	stats.thumb=Resources.Load("thumbs/thumb2031") as Texture2D;
 	stats.sprite=Resources.Load("thumbs/thumb2031") as Texture2D;
-	stats.coreStats[eCoreAP]=0; stats.coreStats[eCoreFP]=0;
-	stats.coreStats[eINIT]=2; stats.coreStats[eMOB]=eGND;
-	stats.actNums[1,eAction]=203110;
-	stats.actText[1,eName]="Arise";
-		stats.actNums[1,eActAP]=0; stats.actNums[1,eActFP]=2;
-	stats.actText[2,eName]="Focus";
-		stats.actText[2,eDesc]="+1FP";
-		stats.actNums[2,eActAP]=1; stats.actNums[2,eActFP]=0;
-	stats.coreStats[eCorpsetype]=0;
+	stats.ap=0; stats.fp=0;
+	stats.init=2; stats.mob=gnd;
+	stats.actNums[1,action]=203110;
+	stats.actText[1,actionName]="Arise";
+		stats.actNums[1,ap]=0; stats.actNums[1,fp]=2;
+	stats.actText[2,actionName]="Focus";
+		stats.actText[2,desc]="+1FP";
+		stats.actNums[2,ap]=1; stats.actNums[2,fp]=0;
+	stats.corpsetype=0;
 	object.tag="obstacle";
-	stats.coreStats[eObclass]=4;
+	stats.obclass=4;
 	stats.obtype="Corpse";	
 	stats.skipped=false;
-	actionCoord.Mlog("Player"+stats.coreStats[eOwner]+"'s Phoenix burnt to ash.");
+	actionCoord.Mlog("Player"+stats.owner+"'s Phoenix burnt to ash.");
 }
 function I2051(object: GameObject){
 	stats.objname="Portal Gate";

@@ -9,9 +9,6 @@ var map_id: byte;
 var density: byte;
 var count: byte;
 
-//enums
-static var eObjno: byte = 7;
-
 function Awake(){
 	var gameindexprefab: GameObject = GameObject.Find("GameIndexPrefab");
 	celllist= GameObject.FindGameObjectsWithTag("cell");
@@ -52,7 +49,7 @@ function MakeObstacle(count: short, objno: short): IEnumerator{
 		var randomcell: GameObject = emptyCells[random];
 		
 		var obstacle: GameObject = Instantiate(objectPrefab,randomcell.transform.position,Quaternion.identity);
-		obstacle.GetComponent(ObjectStats).coreStats[eObjno]=objno;
+		obstacle.GetComponent(ObjectStats).objno=objno;
 		emptyCells.RemoveAt(random);
 	}	
 	yield;
@@ -183,12 +180,12 @@ function Level1B(): IEnumerator{
 		var obstacle: GameObject;
 		var cell: GameObject = wallCells[i];
 		obstacle=Instantiate(objectPrefab, cell.transform.position, Quaternion.identity);
-		obstacle.GetComponent(ObjectStats).coreStats[eObjno]=3209;
+		obstacle.GetComponent(ObjectStats).objno=3209;
 	}
 	for (i=0; i<towerCells.Count; i++){
 		cell = towerCells[i];
 		obstacle=Instantiate(objectPrefab, cell.transform.position, Quaternion.identity);
-		obstacle.GetComponent(ObjectStats).coreStats[eObjno]=3104;
+		obstacle.GetComponent(ObjectStats).objno=3104;
 	}
 	var emptyCells = new List.<GameObject>();
 	emptyCells=FindEmpty();

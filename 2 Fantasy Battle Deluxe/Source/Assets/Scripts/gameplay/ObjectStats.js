@@ -3,7 +3,9 @@
 var obprefab: GameObject;
 
 //general
+var objno: short; //object number
 var objname: String;
+var owner: byte;
 var thumb: Texture2D;
 var sprite: Texture2D;
 
@@ -12,21 +14,24 @@ var gameX: byte;
 var gameY: byte; 
 var gameZ: byte;
 
-//enums
-	//core
-static var eMOB: byte = 6;
-static var eObjno: byte = 7;
-static var eOwner: byte = 9;
-static var eCorpsetype: byte = 10;
-
 //unit
-var comp: boolean[] = new boolean[2];
+var ap: byte;
+var fp: byte;
+var init: byte; 
+var mob: byte;
+var hp: byte; 
+var mhp: byte; 
+var def: byte;
+var tar: byte;
+
+var bio: boolean; 
+var mech: boolean; 
 var composition: String;
 
-var coreStats: short[] = new short[11];
 var actText : String[,] = new String[10,2];
-var actNums : int[,] = new int[10,10];
+var actNums : float[,] = new float[10,10];
 
+var corpsetype: byte; //object on die?
 var morph: byte; //for morphing units (tank/fortress) (castle/dragon)
 var bombs: byte; //pterrordactyl
 var armor: byte; //demolitia, panopticlops
@@ -48,15 +53,15 @@ var endTimer: float = 0;
 var skipped: boolean; //skipped on queue
 
 //obstacles
+var obclass: byte; 
 var obtype: String;
 
 //other objects
-static var gameindexprefab: GameObject;
-static var gui_game: GUI_Game;
-static var playmanager: GameObject;
-static var actionCoord: ActionCoordinator;
-static var identifier: Identifier1;
-var plane: GameObject; //plane prefab
+var gameindexprefab: GameObject;
+var gui_game: GUI_Game;
+var playmanager: GameObject;
+var actionCoord: ActionCoordinator;
+var identifier: Identifier1;
 
 function Awake(){
 	gameindexprefab=GameObject.Find("GameIndexPrefab");
@@ -68,12 +73,13 @@ function Awake(){
 function Start(){
 	var me: GameObject = this.gameObject;
 	yield ClearActData();
-	yield identifier.Identity(me,coreStats[eObjno],coreStats[eOwner]);
+	yield identifier.Identity(me,objno,owner);
 	yield CreateSprite();
 }
 function Update(){	
 	PivotSprite();
 }
+var plane: GameObject; //plane prefab
 function CreateSprite(): IEnumerator{
 	var mysprite: GameObject;
 	mysprite = Instantiate(plane,Vector3(transform.position.x,transform.position.y+1,transform.position.z),Quaternion.identity);
@@ -89,7 +95,7 @@ function Die(){
 	var queue: QueueScript = gameindexprefab.GetComponent(QueueScript);
 	var mycellstats: CellProperties = mycell.GetComponent(CellProperties);
 	
-	if(coreStats[eOwner]){
+	if(owner){
 		var i: short;
 		for (i=0; i<queue.queuelist.Count; i++){
 			if (queue.queuelist[i]==gameObject){
@@ -102,21 +108,21 @@ function Die(){
 	
 		//report death in mLog
 		var gui_game: GUI_Game = GameObject.Find("GUIPrefab").GetComponent(GUI_Game);
-		gui_game.mlog.Add("Player"+coreStats[eOwner]+"'s "+objname+" was destroyed.");
+		gui_game.mlog.Add("Player"+owner+"'s "+objname+" was destroyed.");
 	}
 	//create corpse 
-	if (coreStats[eCorpsetype]==1){
-		if (coreStats[eMOB]!=3 || (coreStats[eMOB]==3 && mycellstats.occA==0)){
+	if (corpsetype==1){
+		if (mob!=3 || (mob==3 && mycellstats.occA==0)){
 			var myCorpse: GameObject;
 			myCorpse= Instantiate(obprefab,mycell.transform.position,Quaternion.identity);
-			myCorpse.GetComponent(ObjectStats).coreStats[eObjno]=3401;
+			myCorpse.GetComponent(ObjectStats).objno=3401;
 		}
 	}
-	if (coreStats[eCorpsetype]==2){
+	if (corpsetype==2){
 		if (mycellstats.occA==0){
 			myCorpse= Instantiate(obprefab,mycell.transform.position,Quaternion.identity);
-			myCorpse.GetComponent(ObjectStats).coreStats[eObjno]=2031;
-			myCorpse.GetComponent(ObjectStats).coreStats[eOwner]=coreStats[eOwner];
+			myCorpse.GetComponent(ObjectStats).objno=2031;
+			myCorpse.GetComponent(ObjectStats).owner=owner;
 			queue.queuelist.Add(myCorpse);
 		}
 	}

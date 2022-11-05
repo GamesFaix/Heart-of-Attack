@@ -1,57 +1,27 @@
 #pragma strict
 
-static var guiprefab: GameObject;
-static var gui_game: GUI_Game;
-static var queue: QueueScript;
-static var actions: Actions;
+var guiprefab: GameObject;
+var gui_game: GUI_Game;
+var queue: QueueScript;
+var actions: Actions;
 
-static var currentunit: GameObject;
-static var currentunitstats: ObjectStats;
-static var currentact1to9: byte;
+var currentunit: GameObject;
+var currentunitstats: ObjectStats;
+var currentact1to9: byte;
 
 //enums
-	//core
-static var eHP: byte =0;	
-static var eMHP: byte =1;
-static var eDEF: byte =2;
-static var eINIT: byte =3;
-static var eCoreAP: byte =4;
-static var eCoreFP: byte =5;
-static var eMOB: byte =6;
-static var eObjno: byte =7;
-static var eObclass: byte =8;
-static var eOwner: byte =9;
-	//act text
-static var eName: byte =0;
-static var eDesc: byte =1;
-	//act nums
-static var eAction: byte =0;
-static var eActAP: byte =1;
-static var eActFP: byte =2;
-static var eRNG: byte =3;
-static var eMAG: byte =4;
-static var eDEC: byte =5;
-static var eRAD: byte =6;
-static var eCRZ: byte =7;
-static var eTAR: byte =8;		
-static var eDMGType: byte =9;	
-	//mob
-static var eGND: byte =1;
-static var eTRM: byte =2;
-static var eFLY: byte =3;
-static var eGAS: byte =4;	
-	//tar
-static var eSerp: byte =1;
-static var eLin: byte =2;
-static var eArc: byte =3;
-static var eRadial: byte =4;
-	//dmg
-static var eNRML: byte =1;
-static var eEXP: byte =2;
-static var eFIR: byte =3;
-static var ePSN: byte =4;
-static var eELC: byte =5;
-static var eLSR: byte =6;
+var eActionName: byte=0;
+var eDesc: byte=1;
+
+var eAction: byte=0;
+var eAp: byte=1;
+var eFp: byte=2;
+var eRng: byte=3;
+var eMag: byte=4;
+var eDec: byte=5;
+var eRad: byte=6;
+var eCrz: byte=7;
+//	
 
 //setup
 function Start(){
@@ -83,18 +53,18 @@ function OnEnable(){
 function PerformAction(unit: GameObject, act1to9: byte){
 	var unitstats: ObjectStats = unit.GetComponent(ObjectStats);
 	
-	var action: short = unitstats.actNums[act1to9,eAction];
-	var ap: short = unitstats.actNums[act1to9,eActAP]; 
-	var fp: short = unitstats.actNums[act1to9,eActFP];
-	var rng: short = unitstats.actNums[act1to9,eRNG]; 
-	var mag: short = unitstats.actNums[act1to9,eMAG]; 
-	var dec: short = unitstats.actNums[act1to9,eDEC]; 
-	var rad: short = unitstats.actNums[act1to9,eRAD]; 
-	var crz: short = unitstats.actNums[act1to9,eCRZ];
+	var action: float = unitstats.actNums[act1to9,eAction];
+	var ap: float = unitstats.actNums[act1to9,eAp]; 
+	var fp: float = unitstats.actNums[act1to9,eFp];
+	var rng: float = unitstats.actNums[act1to9,eRng]; 
+	var mag: float = unitstats.actNums[act1to9,eMag]; 
+	var dec: float = unitstats.actNums[act1to9,eDec]; 
+	var rad: float = unitstats.actNums[act1to9,eRad]; 
+	var crz: float = unitstats.actNums[act1to9,eCrz];
 	var used: boolean = gui_game.actUsed[act1to9];
 
 	//check if action valid
-	if(used==false && unitstats.coreStats[eCoreAP]>=ap && unitstats.coreStats[eCoreFP]>=fp && unit==currentunit){
+	if(used==false && unitstats.ap>=ap && unitstats.fp>=fp && unit==currentunit){
 		//pay	
 		DeductCost(unitstats,act1to9);
 		//perform	
@@ -159,18 +129,18 @@ function PerformAction(unit: GameObject, act1to9: byte){
 	else{
 		if (unit!=currentunit){Error("It's not your turn.");}
 		else if (used==true){Error("Action already used.");}
-		else if (unitstats.coreStats[eCoreAP]<ap || unitstats.coreStats[eCoreFP]<fp){Error("Not enough AP/FP.");}
+		else if (unitstats.ap<ap || unitstats.fp<fp){Error("Not enough ap/fp.");}
 	}	
 	ResetAction();
 }
 
 //utility functions
 function DeductCost(unitstats:ObjectStats, act1to9: byte){//deducts ap/fp cost of actions
-	var ap: byte = unitstats.actNums[act1to9,eActAP]; 
-	var fp: byte = unitstats.actNums[act1to9,eActFP]; 
+	var ap: byte = unitstats.actNums[act1to9,eAp]; 
+	var fp: byte = unitstats.actNums[act1to9,eFp]; 
 	
-	unitstats.coreStats[eCoreAP]-=ap;
-	unitstats.coreStats[eCoreFP]-=fp;
+	unitstats.ap-=ap;
+	unitstats.fp-=fp;
 }
 
 function Error(error: String){
@@ -182,8 +152,8 @@ function Mlog(message: String){//adds message to message log
 }
 
 function Refund(act1to9:byte, error:String){//refunds cost of action if cancelled, displays errors
-	currentunitstats.coreStats[eCoreAP]+=currentunitstats.actNums[act1to9,eActAP];
-	currentunitstats.coreStats[eCoreFP]+=currentunitstats.actNums[act1to9,eActFP];
+	currentunitstats.ap+=currentunitstats.actNums[act1to9,eAp];
+	currentunitstats.fp+=currentunitstats.actNums[act1to9,eFp];
 	gui_game.actUsed[act1to9]=false;
 	Error(error);
 }

@@ -1,29 +1,17 @@
 #pragma strict
-static var gameindexprefab: GameObject;
+var gameindexprefab: GameObject;
 
-static var cell_tex: Texture[] = new Texture[6]; //all values set in inspector
+var cell_tex: Texture[] = new Texture[6]; //all values set in inspector
 	
 var gameX: byte; 
 var gameY: byte; 
 var gameZ: byte;
 	
-static var count: short;
-static var grid: byte;
+var count: short;
+var grid: byte;
 var cellPosition: Vector3;
 var shellprefabs: GameObject[] = new GameObject[3];
 var shell: GameObject;
-
-//enums
-	//core
-static var eMOB: byte = 6;
-static var eObclass: byte = 8;
-	
-	//mob
-static var eGND: byte=1;
-static var eTRM: byte=2;
-static var eFLY: byte=3;
-static var eGAS: byte=4;
-	
 	
 function Awake() {//give cell game coordinates & rotation
 	//retrieve count & grid from map_properties
@@ -212,7 +200,7 @@ var legal: boolean = false;
 var selected=false;
 	
 var hit : RaycastHit;
-static var celllist: GameObject[];
+var celllist: GameObject[];
 
 function Update () {//update texture if legal / check if cell selected
 	//face
@@ -260,21 +248,19 @@ function OnTriggerStay(object:Collider){//if unit, obstacle or spawnnode is in c
 		objectstats.gameZ=gameZ;
 
 		//unit
-		if (objectstats.coreStats[eMOB]){
+		if (objectstats.mob){
 			//set cell occupancy
-			var mob: byte = objectstats.coreStats[eMOB];
-			if (mob==eGND || mob==eTRM){occA=1;}
-			if (mob==eFLY){occB=1;}
+			var mob: byte = objectstats.mob;
+			if (mob==1 || mob==2){occA=1;}
+			if (mob==3){occB=1;}
 		}
 			
 		//obstacle
-		if (objectstats.coreStats[eObclass]){
-			switch (objectstats.coreStats[eObclass]){
-				case 4: occA=2; break;
-				case 3: occA=3; break;
-				case 2: occA=4; break;
-				case 1: occA=5;
-			}
+		if (objectstats.obclass){
+			if (objectstats.obclass==4){occA=2;}
+			if (objectstats.obclass==3){occA=3;}
+			if (objectstats.obclass==2){occA=4;}
+			if (objectstats.obclass==1){occA=5;}
 		}	
 		occupied=true;
 	}	
@@ -303,7 +289,7 @@ function OnTriggerExit(object:Collider){//when unit or obstacle leaves
 	if (object.CompareTag("unit") || object.CompareTag("obstacle")){
 		objectstats=object.GetComponent(ObjectStats);
 		occupied=true;
-		if (objectstats.coreStats[eMOB] && objectstats.coreStats[eMOB]==eFLY){
+		if (objectstats.mob && objectstats.mob==3){
 			occB=0;
 		}
 		else{

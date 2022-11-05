@@ -1,0 +1,13 @@
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.17.12.5936]
+    Renderer: NVIDIA GeForce GT 430
+    Vendor:   NVIDIA
+    VRAM:     993 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 DF24=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+<I> Initializing (RawInput).
+<RI> Input initialized.
+desktop: 1280x1024 75Hz; virtual: 2720x1024 at 0,0
+Non platform assembly: data-0BE20048 (this message is harmless)
+Non platform assembly: data-031A9F20 (this message is harmless)
+Platform assembly: E:\Game Design\_FBD\_Unity\FantasyBattleDeluxe4-25-12\builds\build 4-26_Data\Managed\Boo.Lang.dll (this message is harmless)
+Platform assembly: E:\Game Design\_FBD\_Unity\FantasyBattleDeluxe4-25-12\builds\build 4-26_Data\Managed\UnityScript.Lang.dll (this message is harmless)
