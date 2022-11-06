@@ -6,7 +6,7 @@ Heart of Attack is a multi-player, turn-based, strategy computer game. It was de
 
 ---
 
-## Get the last stable version [here](https://github.com/GamesFaix/Heart-of-Attack/releases/download/4.02/v4-02.zip).
+## Get the last stable version [here](https://github.com/GamesFaix/Heart-of-Attack/releases/download/3.44/v3-44.zip).
 
 ---
 

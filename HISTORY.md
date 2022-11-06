@@ -97,15 +97,17 @@ Some time during this phase we picked the name Heart of Attack, and beta testing
 
 <img src="Screenshots/v3-37_1.gif" alt="v3.37"/>
 
+#### v3.44
+
+<img src="Screenshots/v3-44_1.jpg" alt="v3.44"/>
+
 ---
 
 ### v4 Heart of Attack (Sep 2014 - Oct 2014)
 
-This was really a fluid evolution of the v3 codebase. I think this was the point where I decided that there needed to be some kind of versioning system for the whole project's history, so v1 was given to GameMaker, v2 to the first cube-based Unity implementation, v3 to this codebase up to this point, and v4 starting "now".
+This was the point where I decided that there needed to be some kind of versioning system for the whole project's history, so v1 was given to GameMaker, v2 to the first cube-based Unity implementation, v3 to this codebase up to this point, and v4 starting "now".
 
-A lot of emphasis in this phase was on usability improvements to facilitate beta testing with outsiders.
-
-These versions were all labeled `v4.01`, `v4.02`, etc. Most versions will either not compile or have runtime errors.
+These versions were all labeled `v4.01`, `v4.02`, etc. Most versions will either not compile, have runtime errors, or have incorrect game behavior that makes them unplayable.
 
 ---
 
