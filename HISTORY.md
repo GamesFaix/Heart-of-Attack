@@ -13,6 +13,10 @@ We discussed a lot of game ideas casually, without any intent to make any of the
 
 We decided the full scope of Fantasy Battle Deluxe was too much to take on, so we attempted a game whose sequel could be FBD. I created a rough prototype in YoYo GameMaker. It is interactive, but not really playable. You can see from the menus that the 8 faction themes are there, although barely any units are implemented.
 
+<img src="Screenshots/v1_1.jpg" alt="v1"/>
+<img src="Screenshots/v1_2.jpg" alt="v1"/>
+<img src="Screenshots/v1_3.jpg" alt="v1"/>
+
 ---
 
 ### v2 Fantasy Battle Deluxe (Feb 2012 - July 2013)
@@ -24,6 +28,12 @@ At the time, versions of this project were labelled by the date they were archiv
 #### v2.03
 
 <img src="Screenshots/v2-03_1.jpg" alt="v2.03"/>
+
+#### v2.13
+
+<img src="Screenshots/v2-13_3.gif" alt="v2.13"/>
+<img src="Screenshots/v2-13_1.jpg" alt="v2.13"/>
+<img src="Screenshots/v2-13_2.jpg" alt="v2.13"/>
 
 ---
 
